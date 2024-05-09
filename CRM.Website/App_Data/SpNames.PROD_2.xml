@@ -135,7 +135,7 @@
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsWagers" SpName="Acc_CRM_Rpt_FeedbackStatisticsWagers" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewRpt_DailyStatisticsDetail" SpName="Acc_CRM_NewRpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsPeriod" SpName="Acc_CRM_Rpt_FeedbackStatisticsPeriod" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatistics" SpName="Acc_CRM_Rpt_FeedbackStatistics" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -163,7 +163,7 @@
     </Function>
     <Function Name="Pic and Headline">
         <Setting Key="Acc_CRM_PicIns" SpName="Acc_CRM_PicIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_PicUpd" SpName="Acc_CRM_PicUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_PicUpd" SpName=" Acc_CRM_PicUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_PicManagementSel" SpName="Acc_CRM_PicManagementSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_PICStatusUpd" SpName="Acc_CRM_PICStatusUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_PICAssignmentValidation" SpName="Acc_CRM_PICAssignmentValidation" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -175,6 +175,7 @@
         <Setting Key="Acc_CRM_PicDefaultDel" SpName="Acc_CRM_PicDefaultDel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_PicDefaultIns" SpName="Acc_CRM_PicDefaultIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_PicUpdValidation" SpName="Acc_CRM_PicUpdValidation" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewAccDetail_PicUpdValidation" SpName="Acc_CRM_NewAccDetail_PicUpdValidation" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_DirectAccountLogSel" SpName="Acc_CRM_DirectAccountLogSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_PicLogSel" SpName="Acc_CRM_PicLogSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_ActionTypeSel" SpName="Acc_CRM_ActionTypeSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -199,6 +200,11 @@
         <Setting Key="Age_SelBalanceUpDay" SpName="Age_SelBalanceUpDay" DbName="DBAGE.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_GuestFeedbackIns" SpName="Acc_CRM_GuestFeedbackIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns" SpName="Acc_CRM_NewManualFeedback_FeedbackIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Guest" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Guest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew" SpName="Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackUpd" SpName="Acc_CRM_NewManualFeedback_FeedbackUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackSelByID" SpName="Acc_CRM_NewManualFeedback_FeedbackSelByID" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Funtcion name="Customer">
         <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.wsv_nap">
@@ -211,9 +217,29 @@
             <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
             <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
         </Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSearch" DbName="DBCRM.bodb_CRM.wsv_nap">
+            <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
+            <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
+            <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
+            <Mapping DataField="Wire_AccountNo" ObjectProperty="BankAccountNumber" />
+            <Mapping DataField="CustStatus" ObjectProperty="Status" />
+            <Mapping DataField="danger" ObjectProperty="OriginalDangerLevel" />
+            <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
+            <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
+        </Setting>
         <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="SiteType" ObjectProperty="CustomerType" class="CustomerPermissionInfo" />
         </Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" SpName="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_GetHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_GetHeadlineCompanyService" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_GetHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_GetHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" SpName="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_CheckCustomerExistsOnCRM" SpName="Acc_CRM_NewAccDetail_CheckCustomerExistsOnCRM" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
@@ -261,6 +287,7 @@
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="CRM_MultipleLogs_VerifyRelatedCustomer" SpName="CRM_MultipleLogs_VerifyRelatedCustomer" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_GuestFeedbackCheck_Multiple" SpName="Acc_CRM_GuestFeedbackCheck_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CommunicationLogSel" SpName="Acc_CRM_CommunicationLogSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_GuestFeedbackUpd_Multiple" SpName="Acc_CRM_GuestFeedbackUpd_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -294,7 +321,7 @@
     </Function>
     <Function Name="NewRemark">
         <Setting Key="Acc_CRM_CustomerRemarkNewSearch" SpName="Acc_CRM_CustomerRemarkNewSearch" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_CustomerRemarkNewCheck" SpName="Acc_CRM_CustomerRemarkNewCheck" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewCheck" SpName=" Acc_CRM_CustomerRemarkNewCheck" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerRemarkNewDel" SpName="Acc_CRM_CustomerRemarkNewDel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerRemarkNewIns" SpName="Acc_CRM_CustomerRemarkNewIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerRemarkNewUpd" SpName="Acc_CRM_CustomerRemarkNewUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
