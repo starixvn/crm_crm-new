@@ -92,6 +92,7 @@
         [HttpPost]
         public async Task<IActionResult> SaveFilesAndCreate([FromForm] CreateAnnouncementCommand command)
         {
+            command.UploadFileType = "Single";
             command.UserId = napSession.UserId;
             command.LoginIP = ClientIP;
             var commandResult = await announcementService.NewAnnouncementAsync(command);
@@ -128,6 +129,7 @@
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] EditAnnouncementCommand command)
         {
+            command.UploadFileType = "Single";
             command.UserId = napSession.UserId;
             command.LoginIP = ClientIP;
             var commandResult = await announcementService.EditAnnouncementAsync(command);

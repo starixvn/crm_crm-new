@@ -35,6 +35,8 @@ namespace CRM.Criteria.Announcement
         public string Status { get; set; }
         public string LoginIP { get; set; }
 
+        public string UploadFileType { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Upd";
 
         public override bool IsValid() => IsValidParams();

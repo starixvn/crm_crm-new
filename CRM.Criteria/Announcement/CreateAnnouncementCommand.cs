@@ -37,6 +37,8 @@ namespace CRM.Criteria.Announcement
 
         public int AnnouncementId { get; set; }
 
+        public string UploadFileType { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Ins";
 
         public override bool IsValid() => UserId > 0;
