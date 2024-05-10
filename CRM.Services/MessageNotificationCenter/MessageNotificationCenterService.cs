@@ -74,7 +74,7 @@
             var command = new EditResultAdmNotificationCommand
             {
                 UpdaterID = napSession.UserId,
-                NotiID = param.NotiID,
+                NotiID = param.NotificationId,
                 NewStatus = param.NewStatus,
                 NewContentEN = param.NewContentEN,
                 NewContentCH = param.NewContentCH,

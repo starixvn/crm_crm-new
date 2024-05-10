@@ -30,7 +30,8 @@ export class ActionNotification extends Component {
                 content_cs: null,
                 content_ch: null
             },
-            affectedTicketPopup: { show: false, isCredit: true, siteTickets: null }
+            affectedTicketPopup: { show: false, isCredit: true, siteTickets: null },
+            isSubmitting: false
         }
 
         this.languages = [
@@ -72,13 +73,52 @@ export class ActionNotification extends Component {
         this.setState({content});
     };
 
+    getParams = status => {
+        const { content_en, content_cs, content_ch } = this.state.content;
+        const params = {
+            notificationId: this.props.actionParam.notificationId,
+            newStatus: status,
+            newContentEN: content_en,
+            newContentCS: content_cs,
+            newContentCH: content_ch
+        };
+        return params;
+    };
+
     handleChangeTab = selected =>{
         this.setState({tab: selected});
     };
 
-    handleSaveDraft = (x,y) => {
-
+    handleCreateNotification = async params => {
+        await this.props.editAdmNotification(params).then(() => {
+            if (this.props.editAdmNotificationResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.setEditAdmNotification(null);
+                    this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
+                }, 3000);
+            } else {
+                this.setState({ isSubmitting: false });
+            }
+        });
     };
+
+    handleSaveDraft = async event => {
+        this.setState({ isSubmitting: true });
+        event.preventDefault();
+
+        const params = this.getParams('Draft');
+        await this.handleCreateNotification(params);
+    };
+
+    handleSubmit = async event => {
+        this.setState({ isSubmitting: true });
+        event.preventDefault();
+
+        const status = this.props.actionParam.isOstUser ? 'Sending' : 'Active';
+        const params = this.getParams(status);
+        await this.handleCreateNotification(params);
+    };
+
 
     getStateData = () => {
         const stateData = {
@@ -89,12 +129,7 @@ export class ActionNotification extends Component {
     };
 
     handleClose = () => {
-        console.log('clcocococococose');
         this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
-    };
-
-    handleSubmit = () => {
-
     };
 
     handleOpenPopup = async siteType => {
@@ -102,8 +137,6 @@ export class ActionNotification extends Component {
         Site.blockUI();
         await this.props.getSiteTicketsById(notificationId).then(response => {
             const siteTickets = response.data;
-            console.log('siteTicketsssssssssssssssss', siteTickets);
-            console.log('siteType', siteType);
             this.setState({ affectedTicketPopup: { show: true, isCredit: siteType === 'Credit', siteTickets }})
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
@@ -156,11 +189,16 @@ export class ActionNotification extends Component {
         if(!data) {
             return null;
         }
-        console.log('content', this.state.content);
 
         return (
             <>
                 <Form noValidate onSubmit={this.handleSubmit}>
+                    {
+                        this.props.editAdmNotificationResult &&
+                        <ResponseMessage isSuccessful={this.props.editAdmNotificationResult.isSuccessful}
+                            messages={this.renderMessage(this.props.editAdmNotificationResult)}
+                        />
+                    }
                     <div className="action-notification">
                         <div className='action-content'>
                             <Form.Row bsPrefix='form-row'>
@@ -234,8 +272,8 @@ export class ActionNotification extends Component {
 
                             <div className="group-btn">
                                 <Button className="btn-cancel" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
-                                <Button className="btn-save" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
-                                <Button className="btn-send" type="submit" variant="primary" size="sm">{LangHelper.getResource('Push')}</Button>
+                                <Button className="btn-save" variant="primary" size="md" disabled={this.state.isSubmitting} onClick={event => this.handleSaveDraft(event)}>{LangHelper.getResource('Save as Draft')}</Button>
+                                <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.state.isSubmitting}>{LangHelper.getResource('Push')}</Button>
                             </div>
                         </div>
                     </div>

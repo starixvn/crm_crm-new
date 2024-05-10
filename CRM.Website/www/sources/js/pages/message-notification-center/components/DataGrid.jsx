@@ -58,11 +58,11 @@ export class DataGrid extends Component {
             <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationID')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Event Info')}</HeaderCell>
             <HeaderCell colWidth={30}>{LangHelper.getResource('Sites')}</HeaderCell>
-            <HeaderCell colWidth={60}>{LangHelper.getResource('Content')}</HeaderCell>
+            <HeaderCell colWidth={65}>{LangHelper.getResource('Content')}</HeaderCell>
             <HeaderCell colWidth={10}>{LangHelper.getResource('status')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Sender/SendDate')}</HeaderCell>
             {
-                isHost && <HeaderCell colWidth={15}>{LangHelper.getResource('Action')}</HeaderCell>
+                isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Action')}</HeaderCell>
             }
         </HeaderRow>
     );
@@ -105,6 +105,18 @@ export class DataGrid extends Component {
         newStatus: status
     });
 
+    handleUpdateStatus = async params => {
+        await this.props.editAdmStatus(params).then(response => {
+            this.handleClosePopup();
+            if (response.isSuccessful) {
+                toast.success(LangHelper.getResource('Update notification status successfully!'));
+                this.props.getGridData(this.props.gridParams);
+            } else {
+                toast.error(response.message);
+            }
+        });
+    };
+
     handleCancel = notificationId => {
         this.setState({ cancelPopup: { show: true, notificationId: notificationId } });
     };
@@ -112,33 +124,17 @@ export class DataGrid extends Component {
     handleCancelConfirm = async notificationId => {
         console.log('handleCancelConfirm');
         const params = this.getParamStatus(notificationId, 'cancelled');
-        // await this.props.editAdmStatus(params).then(response => {
-        //     this.handleClosePopup();
-        //     if (response.isSuccessful) {
-        //         toast.success(LangHelper.getResource('Update notification status successfully!'));
-        //         this.props.getGridData(this.props.gridParams);
-        //     } else {
-        //         toast.error(response.message);
-        //     }
-        // });
+        await this.handleUpdateStatus(params);
     };
 
     handleResendFail = notificationId => {
         this.setState({ resendFailPopup: { show: true, notificationId: notificationId } });
     };
 
-    handleResendConfirm = () => {
+    handleResendConfirm = async notificationId => {
         console.log('handleResendConfirm');
         const params = this.getParamStatus(notificationId, 'sending');
-        // await this.props.editAdmStatus(params).then(response => {
-        //     this.handleClosePopup();
-        //     if (response.isSuccessful) {
-        //         toast.success(LangHelper.getResource('Update notification status successfully!'));
-        //         this.props.getGridData(this.props.gridParams);
-        //     } else {
-        //         toast.error(response.message);
-        //     }
-        // });
+        await this.handleUpdateStatus(params);
     };
 
     handleDeactivate = notificationId => {
@@ -148,15 +144,17 @@ export class DataGrid extends Component {
     handleDeactivateConfirm = async notificationId => {
         console.log('handleDeactivateConfirm');
         const params = this.getParamStatus(notificationId, 'inactive');
-        // await this.props.editAdmStatus(params).then(response => {
-        //     this.handleClosePopup();
-        //     if(response.isSuccessful) {
-        //         toast.success(LangHelper.getResource('Update notification status successfully!'));
-        //         this.props.getGridData(this.props.gridParams);
-        //     }else{
-        //         toast.error(response.message);
-        //     }
-        // });
+        await this.handleUpdateStatus(params);
+    };
+
+    copyGroupIdToClipboard = conversationId => {
+        const input = document.createElement('input');
+        input.value = conversationId;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        input.remove();
+        Site.displayCopiedToClipboard();
     };
 
     renderTooltipComponent = (title, component) => {
@@ -175,34 +173,28 @@ export class DataGrid extends Component {
     };
 
     renderActionButtonOST = (status, notificationId) => {
-        return (
-            <>
-                <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
-                <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-            </>
-        );
-        // switch (status) {
-        //     case 'New':
-        //         return (
-        //             <>
-        //                 <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
-        //                 <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-        //             </>
-        //         );
-        //     case 'Failed':
-        //         return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
-        //     case 'Draft':
-        //         return (
-        //             <>
-        //                 <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
-        //                 <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-        //             </>
-        //         );
-        //     case 'Cancelled':
-        //         return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
-        //     default:
-        //         return null;
-        // }
+        switch (status) {
+            case 'New':
+                return (
+                    <>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
+                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
+                    </>
+                );
+            case 'Failed':
+                return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
+            case 'Draft':
+                return (
+                    <>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
+                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
+                    </>
+                );
+            case 'Cancelled':
+                return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
+            default:
+                return null;
+        }
     };
 
     renderActionButtonCSD = (status, notificationId) => {
@@ -287,7 +279,7 @@ export class DataGrid extends Component {
     };
 
     horizontalLine = () => (
-        <div>------------------------------------------------------------------------------------------------------------------------------</div>
+        <div>---------------------------------------------------------------------------------------------------------------------------------------------</div>
     );
 
     contentBlock = (title, content) => (
@@ -329,7 +321,7 @@ export class DataGrid extends Component {
                         {
                             item.sessionID &&
                             (
-                                <div className='show-icon'>
+                                <div className='show-icon' onClick={() => this.copyGroupIdToClipboard(item.sessionID)}>
                                     {
                                         this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
                                             <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-info.png')} />

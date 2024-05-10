@@ -2,7 +2,7 @@
 {
     public class EditResultAdmNotification
     {
-        public int NotiID { get; set; }
+        public int NotificationId { get; set; }
 
         public string NewStatus { get; set; }
 

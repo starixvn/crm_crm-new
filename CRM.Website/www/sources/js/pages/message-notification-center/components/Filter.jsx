@@ -10,7 +10,6 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import { statusOptionOST, statusOptionCSD, isEitherExitsFromToId, isFromIdOverToId } from '../common.functions';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
-import Site from '@jsroot/common/site';
 
 export class Filter extends Component {
     constructor(props) {
@@ -171,9 +170,7 @@ export class Filter extends Component {
         };
     };
 
-    handleSubmit = event => {
-        event.preventDefault();
-
+    submit = () => {
         if (!this.isValidParams().isValid) {
             this.isValidParams().errMsg.forEach(item => {
                 toast.error(item);
@@ -186,12 +183,17 @@ export class Filter extends Component {
         }
     };
 
+    handleSubmit = event => {
+        event.preventDefault();
+        this.submit();
+    };
+
     handleChangeUser = id => {
         this.setState({
             filter: { ...this.state.filter, statuses: id === 0 ? statusOptionOST.map(x=> x.name).join(','): statusOptionCSD.map(x=> x.name).join(',')},
             statusOptions: id === 0 ? statusOptionOST : statusOptionCSD,
             isOstUser: id === 0
-        });
+        }, () => this.submit());
     };
 
     render() {

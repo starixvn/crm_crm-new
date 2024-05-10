@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { Table, HeaderRow, HeaderCell, Row, Cell, Tabs, Tab } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { PAGING_SIZES } from '@jsroot/common/constants';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-import Panel, { PanelHeader } from '@jsroot/components/panel/index';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ExcelIcon from '@jsroot/components/ExcelIcon';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -179,12 +175,11 @@ export default class AffectedTicket extends Component {
         if (!siteTickets) {
             return null;
         }
-        console.log('this.props.siteTickets', this.props.siteTickets);
 
         return (
             <Modal show className="affected-ticket-modal" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="lg" centered
-                onHide={() => this.hide()}
+                onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('AffectedTickets')}</Modal.Title>
