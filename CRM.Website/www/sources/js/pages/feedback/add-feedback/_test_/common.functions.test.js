@@ -26,14 +26,14 @@ describe('common functions', () => {
             };
 
             const state = {
-                content : {
+                content: {
                     solution: '1',
                     description: '1'
                 }
             }
 
             const expected = {
-                identityInformation: LangHelper.formatString(LangHelper.getResource('FieldRequired'),LangHelper.getResource('Identity')),
+                identityInformation: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Identity')),
                 communication: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Communication')),
                 category: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Category')),
                 subCategory: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory')),
@@ -68,7 +68,7 @@ describe('common functions', () => {
             };
 
             const state = {
-                content : {
+                content: {
                     solution: '1',
                     description: '1'
                 }
@@ -79,15 +79,15 @@ describe('common functions', () => {
             };
             const props = {
                 settings: {
-                    mainCategories: [{mainCategoryID: 1, name: 'settingName'}, {mainCategoryID: 2, name: 'settingName'}],
-                    subCategories: [{subCategoryId: 1, mainCategoryID: 1}]
+                    mainCategories: [{ mainCategoryID: 1, name: 'settingName' }, { mainCategoryID: 2, name: 'settingName' }],
+                    subCategories: [{ subCategoryId: 1, mainCategoryID: 1 }]
                 },
                 customerDetail: null
             };
 
             // Act
             const errors = commonFuncs.validateFormik(values, props.customerDetail, props.settings, state);
-            shareScripts.getInvalidCategoryParams = jest.fn(() => [[{mainCategoryID: 1, settingName: 'settingName'}]]);
+            shareScripts.getInvalidCategoryParams = jest.fn(() => [[{ mainCategoryID: 1, settingName: 'settingName' }]]);
 
             // Assert
             expect(errors).toEqual(expected);
@@ -97,15 +97,15 @@ describe('common functions', () => {
     describe('init values', () => {
         const props = {
             settings: {
-                titles: [{id: 1}],
-                licenseeTypes: [{id: 1}],
-                statuses: [{statusId: 1}],
-                responses: [{id: 1}],
-                languages: [{languageId: 1}]
+                titles: [{ id: 1 }],
+                licenseeTypes: [{ id: 1 }],
+                statuses: [{ statusId: 1 }],
+                responses: [{ id: 1 }],
+                languages: [{ languageId: 1 }]
             },
-            confirmCreateGuestDialog: {show: false}
+            confirmCreateGuestDialog: { show: false }
         };
-        const {statuses, languages, responses, licenseeTypes} = props.settings;
+        const { statuses, languages, responses, licenseeTypes } = props.settings;
         window.currentClientTime = '2021-01-01';
         const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
@@ -117,7 +117,7 @@ describe('common functions', () => {
             communication: '',
             category: '',
             subCategory: '',
-            statusId:statuses[0].statusId,
+            statusId: statuses[0].statusId,
             responseId: responses[0].id,
             solution: '',
             product: '',
@@ -126,14 +126,14 @@ describe('common functions', () => {
             languageId: languages[0].languageId,
             noOfInquiries: '',
             customerNameInput: '',
-            description:'',
+            description: '',
             subject: '',
             ticketRefInput: ''
         };
 
         it('initialValues correctly', () => {
             // Arrange
-            const expected = {...values};
+            const expected = { ...values };
             const customer = {
                 guestCommunicationInfos: null
             };
@@ -148,15 +148,15 @@ describe('common functions', () => {
 
         it('initValuesAddCustomerFb correctly', () => {
             // Arrange
-            const expected = {...values};
+            const expected = { ...values };
             expected.country = undefined;
             expected.languageId = 1200;
             expected.refCodes = '';
             expected.secretCode = '';
             expected.role = '';
             expected.siteName = '';
-            expected.solution =''
-            const customerDetail = {...values};
+            expected.solution = ''
+            const customerDetail = { ...values };
             customerDetail.yahoo = '';
             customerDetail.pic1 = '';
             customerDetail.pic2 = '';
@@ -170,18 +170,18 @@ describe('common functions', () => {
             customerDetail.bettingCode = ['', ''];
             customerDetail.roleId = '';
             customerDetail.siteId = '';
-            customerDetail.siteSetting = {name: ''};
-            customerDetail.phoneInfo = [{countryCode: '', phoneNumber: '', areaCode: ''},
-                                    {countryCode: '', phoneNumber: '', areaCode: ''}, {countryCode: '', phoneNumber: '', areaCode: ''}];
-            customerDetail.mobile = {countryCode: '', phoneNumber: '', areaCode: ''};
-            customerDetail.faxInfo = {countryCode: '', phoneNumber: '', areaCode: ''};
-            customerDetail.country = {id: ''};
-            customerDetail.siteSetting = {name: ''};
+            customerDetail.siteSetting = { name: '' };
+            customerDetail.phoneInfo = [{ countryCode: '', phoneNumber: '', areaCode: '' },
+            { countryCode: '', phoneNumber: '', areaCode: '' }, { countryCode: '', phoneNumber: '', areaCode: '' }];
+            customerDetail.mobile = { countryCode: '', phoneNumber: '', areaCode: '' };
+            customerDetail.faxInfo = { countryCode: '', phoneNumber: '', areaCode: '' };
+            customerDetail.country = { id: '' };
+            customerDetail.siteSetting = { name: '' };
             customerDetail.languages = [1200];
-            customerDetail.faxInfo = {countryCode: '', faxNumber: '', areaCode: ''};
+            customerDetail.faxInfo = { countryCode: '', faxNumber: '', areaCode: '' };
             // Act
             const initialValues = commonFuncs.initValuesAddCustomerFb(props.settings, customerDetail);
-    
+
             // Assert
             expect(initialValues).toEqual(expected);
         });
@@ -234,26 +234,26 @@ describe('common functions', () => {
                 siteName: ''
             };
 
-            const customerDetail = {...values};
+            const customerDetail = { ...values };
             customerDetail.birthday = birthday;
             customerDetail.pic1Name = '',
-            customerDetail.pic2Name = '',
-            customerDetail.pic3Name = '',
-            customerDetail.pic4Name = '',
-            customerDetail.qq = '',
-            customerDetail.siteId = '',
-            customerDetail.siteName = '',
-            customerDetail.skype = '',
-            customerDetail.titleId = '',
-            customerDetail.weChat = '',
-            customerDetail.yahoo = '';
+                customerDetail.pic2Name = '',
+                customerDetail.pic3Name = '',
+                customerDetail.pic4Name = '',
+                customerDetail.qq = '',
+                customerDetail.siteId = '',
+                customerDetail.siteName = '',
+                customerDetail.skype = '',
+                customerDetail.titleId = '',
+                customerDetail.weChat = '',
+                customerDetail.yahoo = '';
             customerDetail.email = '',
-            customerDetail.firstName = '',
-            customerDetail.isOverwriteInfo = false,
-            customerDetail.lastName = '',
-            customerDetail.licenseeType = 1,
-            customerDetail.line = '',
-            customerDetail.pic1 = '';
+                customerDetail.firstName = '',
+                customerDetail.isOverwriteInfo = false,
+                customerDetail.lastName = '',
+                customerDetail.licenseeType = 1,
+                customerDetail.line = '',
+                customerDetail.pic1 = '';
             customerDetail.pic2 = '';
             customerDetail.pic3 = '';
             customerDetail.pic4 = '';
@@ -265,72 +265,23 @@ describe('common functions', () => {
             customerDetail.bettingCode = ['', ''];
             customerDetail.roleId = '';
             customerDetail.siteId = '';
-            customerDetail.siteSetting = {name: ''};
-            customerDetail.phoneInfo = [{countryCode: '', phoneNumber: '', areaCode: ''},
-                                    {countryCode: '', phoneNumber: '', areaCode: ''}, {countryCode: '', phoneNumber: '', areaCode: ''}];
-            customerDetail.mobile = {countryCode: '', phoneNumber: '', areaCode: ''};
-            customerDetail.faxInfo = {countryCode: '', phoneNumber: '', areaCode: ''};
-            customerDetail.country = {id: ''};
-            customerDetail.siteSetting = {name: ''};
+            customerDetail.siteSetting = { name: '' };
+            customerDetail.phoneInfo = [{ countryCode: '', phoneNumber: '', areaCode: '' },
+            { countryCode: '', phoneNumber: '', areaCode: '' }, { countryCode: '', phoneNumber: '', areaCode: '' }];
+            customerDetail.mobile = { countryCode: '', phoneNumber: '', areaCode: '' };
+            customerDetail.faxInfo = { countryCode: '', phoneNumber: '', areaCode: '' };
+            customerDetail.country = { id: '' };
+            customerDetail.siteSetting = { name: '' };
             customerDetail.languages = [1200];
-            customerDetail.faxInfo = {countryCode: '', faxNumber: '', areaCode: ''};
-            
+            customerDetail.faxInfo = { countryCode: '', faxNumber: '', areaCode: '' };
+
             // Act
             const initialValues = commonFuncs.initCustomerInfo(customerDetail);
-    
+
             // Assert
             expect(initialValues).toEqual(expected);
         });
-    });  
-
-    // it('getParams return exact params', () => {
-    //     // Arrange
-    //     const values = {
-    //         birthday: '',
-    //         identityInformation: '1',
-    //         product: [],
-    //         subProduct: [],
-    //         betType: [],
-    //         category: '1,2',
-    //         subCategory:'1,2',
-    //         noOfInquiries: ''
-    //     };
-    //     const listOfCustomerValid = [
-    //         {custId: '1', localeCompare: jest.fn()},
-    //         {custId: '2', localeCompare: jest.fn()}
-    //     ];
-        
-    //     const settings = {
-    //         subCategories: [{subCategoryId: 1, mainCategoryID: 1}],
-    //         extensionNA: {id: 1}
-    //     };
-
-    //     const state = {
-    //         listOfCustomerValid: listOfCustomerValid,
-    //         content: {
-    //             solution: '',
-    //             description: '',
-    //             autoGenerated: ''
-    //         },
-    //         customerInfo: {
-    //             birthday: ''
-    //         }
-    //     };
-
-    //     shareScripts.getProductParams = jest.fn(()=>'getProductParams');
-    //     shareScripts.getCategoryParams = jest.fn(()=>'getCategoryParams');
-    //     // Act
-    //     const params = commonFuncs.getParams(values, null, settings, state);
-
-    //     // Assert
-    //     expect(params.Products).toEqual('getProductParams');
-    //     expect(params.Categories).toEqual('getCategoryParams');
-    //     expect(params.Birthday).toEqual(null);
-    //     expect(params.StationId).toEqual(1);
-    //     expect(params.CountryId).toEqual(0);
-    //     expect(params.NoInquiries).toEqual(0);
-    //     expect(params.RelatedCustID).toEqual('1,2');
-    // });
+    });
 
     it('getParams return exact params when values not null', () => {
         // Arrange
@@ -339,16 +290,16 @@ describe('common functions', () => {
             subProduct: '1,2,',
             betType: '1,2,',
             category: '1,2',
-            subCategory:'1,2',
+            subCategory: '1,2',
             extension: 1,
             country: 1,
             noOfInquiries: 1
         };
         const listOfCustomerValid = [];
-        
+
         const settings = {
-            subCategories: [{subCategoryId: 1, mainCategoryID: 1}],
-            extensionNA: {id: 1}
+            subCategories: [{ subCategoryId: 1, mainCategoryID: 1 }],
+            extensionNA: { id: 1 }
         };
         const state = {
             listOfCustomerValid: listOfCustomerValid,
@@ -357,15 +308,15 @@ describe('common functions', () => {
                 description: '',
                 autoGenerated: ''
             },
-            customerInfo: { birthday: '2021-01-01'}
+            customerInfo: { birthday: '2021-01-01' }
         };
 
-        const expectedProductParams = {"extensionNA": {"id": 1}, "subCategories": [{"mainCategoryID": 1, "subCategoryId": 1}]};
+        const expectedProductParams = { "extensionNA": { "id": 1 }, "subCategories": [{ "mainCategoryID": 1, "subCategoryId": 1 }] };
 
         shareScripts.getProductParams = jest.fn();
-        shareScripts.getCategoryParams = jest.fn(()=>'getCategoryParams');
+        shareScripts.getCategoryParams = jest.fn(() => 'getCategoryParams');
         // Act
-        const params = commonFuncs.getParams (values, null, settings, state);
+        const params = commonFuncs.getParams(values, null, settings, state);
 
         // Assert
         expect(shareScripts.getProductParams).toHaveBeenCalledWith(["1", "2"], ["1", "2", ""], ["1", "2", ""], expectedProductParams);
@@ -374,5 +325,253 @@ describe('common functions', () => {
         expect(params.CountryId).toEqual(1);
         expect(params.NoInquiries).toEqual(1);
         expect(params.RelatedCustID).toEqual(null);
+    });
+
+    describe('validateFormik', () => {
+        let values;
+        let customerDetail;
+        let settings;
+        let state;
+
+        beforeEach(() => {
+            values = { communication: [], category: '', subCategory: '' };
+            customerDetail = null;
+            settings = {};
+            state = { content: { description: '' } };
+        });
+
+        it('should return errors for missing identity information', () => {
+            values.identityInformation = '';
+            const errors = commonFuncs.validateFormik(values, customerDetail, settings, state);
+            expect(errors.identityInformation).toBeDefined();
+        });
+
+        it('should return errors for invalid category combination', () => {
+            values.category = 'InvalidCategory';
+            values.subCategory = 'InvalidSubCategory';
+            const errors = commonFuncs.validateFormik(values, customerDetail, settings, state);
+            expect(errors.category).toBeDefined();
+        });
+
+        it('should return errors for guest communication exceeding max length', () => {
+            values.guestCommunicationInfos = [
+                {
+                    communicationID: '1',
+                    communicationValue: 'Too long text exceeding 200 characters Too long text exceeding 200 ch' +
+                        'aracters Too long text exceeding 200 characters Too long text exceeding 200 characters Too lo' +
+                        'ng text exceeding 200 characters Too long text exceeding 200 characters Too long text exceeding 200 characters '
+                }];
+            const errors = commonFuncs.validateFormik(values, customerDetail, settings, state);
+            expect(errors.guestCommunicationInfos).toBeDefined();
+        });
+    });
+
+    describe('GetParamsNewUser', () => {
+        it('should return the correct parameter object', () => {
+            const custId = '123456';
+            const values = {
+                firstName: 'John',
+                lastName: 'Doe',
+                titleId: 'Mr',
+                birthDay: new Date('1990-01-01'),
+                languages: [1, 2, 3],
+            };
+
+            const result = commonFuncs.GetParamsNewUser(custId, values);
+
+            expect(result).toEqual({
+                customerId: '123456',
+                firstName: 'John',
+                lastName: 'Doe',
+                titleId: 'Mr',
+                birthDay: '01/01/1990',
+                languageId: '1,2,3',
+                bankAccountNumber: undefined,
+                bankCity: undefined,
+                bankCode: undefined,
+                bankCountryId: undefined,
+                bankHolderName: undefined,
+                bankLine1: undefined,
+                bankLine2: undefined,
+                bankLine3: undefined,
+                bankName: undefined,
+                bankState: undefined,
+                bankSwiftCode: undefined,
+                bbm: undefined,
+                bettingCode: undefined,
+                birthDay: "Jan 01, 1990",
+                city: undefined,
+                countryId: undefined,
+                customerId: "123456",
+                email: undefined,
+                fax: undefined,
+                faxAreaCode: undefined,
+                faxCountryCode: undefined,
+                firstName: "John",
+                ignored: undefined,
+                introducedBy: undefined,
+                isVip: undefined,
+                languageId: "1,2,3",
+                lastName: "Doe",
+                licenseeType: undefined,
+                line: undefined,
+                line1: undefined,
+                line2: undefined,
+                line3: undefined,
+                mobilePhone: undefined,
+                mobilePhoneAreaCode: undefined,
+                mobilePhoneCountryCode: undefined,
+                msn: undefined,
+                passport: undefined,
+                phone: undefined,
+                phone2: undefined,
+                phone2AreaCode: undefined,
+                phone2CountryCode: undefined,
+                phone3: undefined,
+                phone3AreaCode: undefined,
+                phone3CountryCode: undefined,
+                phoneAreaCode: undefined,
+                phoneCountryCode: undefined,
+                pic1: undefined,
+                pic1Name: undefined,
+                pic2: undefined,
+                pic2Name: undefined,
+                pic3: undefined,
+                pic3Name: undefined,
+                pic4: undefined,
+                pic4Name: undefined,
+                postCode: undefined,
+                qq: undefined,
+                refCode2: undefined,
+                siteId: undefined,
+                skype: undefined,
+                state: undefined,
+                titleId: "Mr",
+                weChat: undefined,
+                whatsApp: undefined,
+                yahoo: undefined
+            });
+        });
+    });
+
+    describe('getParams', () => {
+        it('should return the correct parameter object', () => {
+            const values = {
+                product: '',
+                subProduct: '',
+                betType: '',
+                category: '',
+                subCategory: ''
+            };
+
+            const customerDetail = {
+            };
+
+            const settings = {
+                subCategories: '',
+                extensionNA: {
+                    id: 1
+                }
+            };
+
+            const state = {
+                customerInfo: {
+                    headlineStaffInfoCommunications: [
+                        {
+                            picID : 1,
+                            picCommunicationId: 1,
+                            picCommunicationValue: 'test'
+                        }
+                    ],
+                    otherAccountCommunicationInfos: [
+                        {
+                            picID : 1,
+                            picCommunicationId: 1,
+                            picCommunicationValue: 'test'
+                        }
+                    ],
+                    guestCommunicationInfos: [
+                        {
+                            communicationID: 1,
+                            communicationValue: 'test'
+                        },
+                        {
+                            communicationID: 1,
+                            communicationValue: 'test2'
+                        }
+                    ]
+                },
+                customerDetail: {
+                    headlineStaffInfoPics: [
+                        {
+                            picID : 1,
+                            picName: 'test',
+                            picRoleName: 'test',
+                        }
+                    ]
+                },
+                listOfCustomerValid: [],
+                content: {
+                }
+            };
+
+            DateTimeService.toShortDateTimeFormat = jest.fn();
+            DateTimeService.toLongDateTimeFormat = jest.fn();
+            const result = commonFuncs.getParams(values, customerDetail, settings, state);
+            expect(result).toEqual({
+                AutoField: undefined,
+                Birthday: undefined,
+                Categories: "getCategoryParams",
+                CommunicationID: undefined,
+                CountryId: 0,
+                CustId: undefined,
+                Description: undefined,
+                FeedbackDate: undefined,
+                FirstName: undefined,
+                GuestCommunicationInfos: [
+                    {
+                        communicationID: 1,
+                        communicationValue: "test, test2",
+                    }
+                ],
+                HeadlineStaffInfoCommunications: [
+                    {
+                        communicationID: 1,
+                        communicationValue: "test",
+                        isHeadline: undefined,
+                        picInfo: "",
+                    }
+                ],
+                IsHeadline: undefined,
+                IsVIP: undefined,
+                LanguageId: NaN,
+                LicenseeType: NaN,
+                NoInquiries: undefined,
+                OtherAccountCommunicationInfos: [
+                    {
+                        communicationID: undefined,
+                        communicationValue: undefined,
+                        isHeadline: undefined,
+                        picInfo: ""
+                    }
+                ],
+                Passport: undefined,
+                Products: undefined,
+                RefCode: undefined,
+                RelatedCustID: null,
+                ResolutionDate: undefined,
+                ResponseId: NaN,
+                RoleId: 7004,
+                SecretCode: undefined,
+                SiteId: NaN,
+                Solution: undefined,
+                StationId: 1,
+                StatusId: NaN,
+                Subject: undefined,
+                TitleId: NaN,
+                UserName: undefined,
+                lastName: undefined
+            });
+        });
     });
 });
