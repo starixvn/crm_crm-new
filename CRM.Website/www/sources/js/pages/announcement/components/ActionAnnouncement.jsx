@@ -242,7 +242,7 @@ export class ActionAnnouncement extends Component {
         this.formik.setFieldValue('sendDate', value);
     };
 
-    setStateUploadFile = (uploadedFiles, fileNameRemove) => {
+    setStateUploadFile = (uploadedFiles, languageKey, fileNameRemove) => {
         if(!fileNameRemove){
             uploadedFiles.forEach((file) => {
                 if(file.type !== 'string'){
@@ -258,15 +258,15 @@ export class ActionAnnouncement extends Component {
                             width
                         } = image;
                         if (height > maximumHeightWidth || width > maximumHeightWidth) {
-                            this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, file.name]});
+                            this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, file]});
                         }
                     }};
                 }
             });
         }else{
-            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x !== fileNameRemove);
-            const invalidFileSizeDraft = this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove);
-            const invalidFileTypeDraft = this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove);
+            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
+            const invalidFileSizeDraft = this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
+            const invalidFileTypeDraft = this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
             this.setState({
                 invalidWidthHeight,
                 errorDrafts: {

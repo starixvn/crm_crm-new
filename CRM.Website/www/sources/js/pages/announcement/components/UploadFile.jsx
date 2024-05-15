@@ -1,5 +1,6 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
+import LangHelper from '@jsroot/common/langHelper';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {Col, Form, Row } from 'react-bootstrap';
 import Site from '@jsroot/common/site';
@@ -7,37 +8,57 @@ import Site from '@jsroot/common/site';
 const portal = document.createElement("div");
 document.body.appendChild(portal);
 
-export default class UploadFile extends PureComponent {
+export default class UploadFile extends Component {
     handleUploadFiles = files => {
         const uploaded = [...this.props.uploadedFiles];
-        const { languageKey } = this.props;
+        const { languageKey, isAllLanguages } = this.props;
+        const keyFile = isAllLanguages ? 'All' : languageKey;
         files.some((file, key) => {
-            const isNotExist = uploaded.findIndex(item => (item.name === file.name && item.key === languageKey)) === -1;
+            const isNotExist = uploaded.findIndex(item => (item.name === file.name && item.key === languageKey && item.isAllLanguages === isAllLanguages)) === -1;
             if (isNotExist) {
-                file.key = languageKey;
+                file.key = keyFile;
+                //file.isAllLanguages = isAllLanguages
                 uploaded.push(file);
             }
         });
-        this.props.setStateUploadFile(uploaded);
+        console.log('uploaded', uploaded);
+        this.props.setStateUploadFile(uploaded, keyFile);
     };
 
     handleFileEvent = e => {
-        e.preventDefault();
         const chosenFiles = Array.prototype.slice.call(e.target.files);
         this.handleUploadFiles(chosenFiles);
     };
 
     handleRemoveFile = (event, fileName) => {
         event.stopPropagation();
-        const { uploadedFiles, languageKey, setStateUploadFile } = this.props;
-        const fileToRemove = uploadedFiles.find(file => (file.name === fileName && file.key === languageKey));
-        const filteredFiles = uploadedFiles.filter(file => (file.name !== fileToRemove.name || file.key !== fileToRemove.key));
-        setStateUploadFile(filteredFiles, fileName);
+        const { uploadedFiles, languageKey, setStateUploadFile, isAllLanguages } = this.props;
+
+        if (isAllLanguages) {
+            this.handleRemoveAllFile(uploadedFiles, fileName, setStateUploadFile);
+        } else {
+            this.handleRemoveSingleFile(uploadedFiles, fileName, languageKey, setStateUploadFile);
+        }
+    };
+
+    handleRemoveAllFile = (uploadedFiles, fileName, setStateUploadFile) => {
+        const fileToRemove = uploadedFiles.find(file => file.name === fileName && file.key === 'All');
+        const filteredFiles = uploadedFiles.filter(file => file.name !== fileToRemove.name || file.key !== 'All');
+        setStateUploadFile(filteredFiles, 'All', fileName);
+    };
+
+    handleRemoveSingleFile = (uploadedFiles, fileName, languageKey, setStateUploadFile) => {
+        const fileToRemove = uploadedFiles.find(file => (file.name === fileName && file.key === languageKey && file.key !== 'All'));
+        const filteredFiles = uploadedFiles.filter(file => (file.name !== fileToRemove.name || file.key !== fileToRemove.key || file.key === 'All'));
+        setStateUploadFile(filteredFiles, languageKey, fileName);
     };
 
     getFilterUploadFiles = () => {
-        const { uploadedFiles, languageKey } = this.props;
-        return uploadedFiles.filter(item => item.key === languageKey);
+        const { uploadedFiles, languageKey, isAllLanguages } = this.props;
+        if (!isAllLanguages) {
+            return uploadedFiles.filter(item => item.key === languageKey);
+        }
+        return uploadedFiles.filter(item => item.key === 'All');
     };
 
     onDragEnd = result => {
@@ -45,10 +66,12 @@ export default class UploadFile extends PureComponent {
             return;
         }
         const { source, destination } = result;
-        const { uploadedFiles, languageKey } = this.props;
+        const { uploadedFiles, languageKey, isAllLanguages } = this.props;
         const filteredUploadedFiles = this.getFilterUploadFiles();
         const reorderedFiles = this.reorder(filteredUploadedFiles, source.index, destination.index);
-        const otherFiles = uploadedFiles.filter(item => item.key !== languageKey);
+        const otherFiles = uploadedFiles.filter(item => 
+            isAllLanguages ? item.key !== 'All' : item.key !== languageKey
+        );
         otherFiles.push(...reorderedFiles);
 
         this.props.setStateUploadFile(otherFiles);
@@ -68,7 +91,7 @@ export default class UploadFile extends PureComponent {
                     URL.createObjectURL(fileName);
         window.open(url);
     };
-    
+   
     renderListPortalFile = (provided, snapshot, item) =>{
         const usePortal = snapshot.isDragging;
 
@@ -101,11 +124,36 @@ export default class UploadFile extends PureComponent {
     };
 
     render() {
-        const { invalidContentMaxLength,  textInvalidContentMaxLength } = this.props;
+        const { invalidContentMaxLength,  textInvalidContentMaxLength, languageKey } = this.props;
         const filterUploadFiles = this.getFilterUploadFiles();
         return (
         <Fragment>
-            <Form.Group as={Row} controlId="formFileMultiple">
+            <div className='type-choose-file'>
+                <div className='group-choose-file'>
+                    <input
+                        className="custom"
+                        type="radio"
+                        name={`allLanguage_${languageKey}`}
+                        value={this.props.isAllLanguages}
+                        checked={this.props.isAllLanguages}
+                        onChange={() => this.props.handleCheckTypeLanguage()}
+                    />
+                    <Form.Label>{LangHelper.getResource('AllLanguage')}</Form.Label>
+                </div>
+                <div className='group-choose-file'>
+                    <input
+                        className="custom"
+                        type="radio"
+                        name={`singleLanguage_${languageKey}`}
+                        value={!this.props.isAllLanguages}
+                        checked={!this.props.isAllLanguages}
+                        onChange={() => this.props.handleCheckTypeLanguage()}
+                    />
+                    <Form.Label>{LangHelper.getResource('SingleLanguage')}</Form.Label>
+                </div>
+            </div>
+            <div style={{'marginTop': '8px'}} className="group-upload-file">
+                <Form.Group as={Row} controlId="formFileMultiple">
                     <Form.Label column sm="2" md="2" />
                     <Col className='mt-2'>
                         <span className='file-upload'>
@@ -149,6 +197,7 @@ export default class UploadFile extends PureComponent {
                     )}
                     </Droppable>
                 </DragDropContext>
+            </div>
         </Fragment>
         );
     };

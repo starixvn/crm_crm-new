@@ -31,7 +31,8 @@ const initialState = {
     },
     isRefresh: true,
     validateAnnouncementResult: null,
-    redirectActionParams: null
+    redirectActionParams: null,
+    isAllLanguages: false
 };
 const announcementSlice = createSlice({
     name: 'announcement',
@@ -79,6 +80,9 @@ const announcementSlice = createSlice({
         },
         setRedirectActionParams: (state, action) => {
             state.redirectActionParams = action.payload;
+        },
+        setLanguageType: (state, action) => {
+            state.isAllLanguages = action.payload;
         }
     }
 });
@@ -103,7 +107,8 @@ export const {
     setAutoRefresh,
     setIsRefresh,
     setValidateAnnouncement,
-    setRedirectActionParams
+    setRedirectActionParams,
+    setLanguageType
 } = actions;
 
 export default reducer;

@@ -1,10 +1,18 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 import { Col, Form, Row, Tabs, Tab } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import UploadFile from './UploadFile';
 
-export default class ContentTab extends PureComponent {
+export class ContentTab extends Component {
+    handleCheckTypeLanguage = () => {
+        document.getElementById("file-btn").value = "";
+        this.props.setLanguageType(!this.props.isAllLanguages);
+    };
+
     render() {
     const {
         languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false, isChangeTemplate, parameters,
@@ -65,12 +73,11 @@ export default class ContentTab extends PureComponent {
                                         </div>
                                     </Form.Group>
                                 }
-                                <div style={{'margin-top': '8px'}} className="group-upload-file">
-                                    <UploadFile id={actionParam?.announcementId}
-                                        setStateUploadFile={setStateUploadFile} uploadedFiles={uploadedFiles} languageKey={language.mapLabel}
-                                        invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
-                                    />
-                                </div>
+                                <UploadFile id={actionParam?.announcementId}
+                                    setStateUploadFile={setStateUploadFile} uploadedFiles={uploadedFiles} languageKey={language.mapLabel}
+                                    invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
+                                    isAllLanguages={this.props.isAllLanguages} handleCheckTypeLanguage={this.handleCheckTypeLanguage}
+                                />
                             </Tab>)
                         )
                     }
@@ -80,3 +87,13 @@ export default class ContentTab extends PureComponent {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const {isAllLanguages} = state;
+
+    return {isAllLanguages};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContentTab);

@@ -493,6 +493,20 @@
         }
       }
 
+      .type-choose-file {
+        display: flex;
+        margin-top: 8px;
+        border-radius: 3px;
+        border: 1px solid #bbb;
+        padding: 8px 12px;
+        background: #f5f5f5;
+
+        .group-choose-file {
+          width: 15%;
+          display: flex;
+        }
+      }
+
       .group-upload-file {
         border-radius: 3px;
         border: 1px solid #bbb;
@@ -637,6 +651,7 @@
         width: 16px;
         height: 16px;
         margin-right: 12px;
+        cursor: pointer;
       }
 
       .form-option-wrapper {

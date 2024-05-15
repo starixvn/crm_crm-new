@@ -2,7 +2,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import React from 'react';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
-export const validateFormik = (values, files, state) => {
+export const validateFormik = (values, files, state, isAllLanguages) => {
     const dateTimeNowClient= new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     const { invalidWidthHeight, errorDrafts, isHeadlineGroup } = state;
     let errors = {};
@@ -46,8 +46,13 @@ export const validateFormik = (values, files, state) => {
 
     if(invalidWidthHeight.length > 0){
         const uniqInvalidImage = [...new Set(invalidWidthHeight)];
-        const nameFileError = uniqInvalidImage.map(x => x).join(', ');
-        errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
+        console.log('uniqInvalidImage', uniqInvalidImage);
+        console.log('isAllLanguages', isAllLanguages);
+        const nameFileError = uniqInvalidImage.filter(x => isAllLanguages ? x.key === 'All' : x.key !== 'All').map(x => x.name);
+        const uniqErr = [...new Set(nameFileError)].join(', ');
+        if (uniqErr) {
+            errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), [...new Set(nameFileError)].join(', '));
+        }
     }
 
     if (isHeadlineGroup.isSiteType) {

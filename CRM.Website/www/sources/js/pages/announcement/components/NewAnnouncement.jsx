@@ -80,7 +80,7 @@ export class NewAnnouncement extends Component {
         });
     };
 
-    setStateUploadFile = (uploadedFiles, fileNameRemove) => {
+    setStateUploadFile = (uploadedFiles, languageKey, fileNameRemove) => {
         if (!fileNameRemove) {
             uploadedFiles.forEach((file) => {
                 const maximumHeightWidth = 2560;
@@ -95,13 +95,15 @@ export class NewAnnouncement extends Component {
                             width
                         } = image;
                         if (height > maximumHeightWidth || width > maximumHeightWidth) {
-                            this.setState({ invalidWidthHeight: [...this.state.invalidWidthHeight, file.name] });
+                            console.log('file.name', file);
+                            this.setState({ invalidWidthHeight: [...this.state.invalidWidthHeight, file] });
                         }
                     };
                 };
             });
         } else {
-            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x !== fileNameRemove);
+            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
+            console.log('invalidWidthHeight', invalidWidthHeight);
             this.setState({ invalidWidthHeight });
         }
 
@@ -425,6 +427,8 @@ export class NewAnnouncement extends Component {
         const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
         const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, this.state.tab);
         const isInvalidContent = this.handleCheckValidAllContent(values.content);
+
+        console.log('this.state.invalidWidthHeight', this.state.invalidWidthHeight);
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <div className="add-announcement">
@@ -621,7 +625,7 @@ export class NewAnnouncement extends Component {
     };
 
     render() {
-        const { announcementTemplate, settings } = this.props;
+        const { announcementTemplate, settings, isAllLanguages } = this.props;
         if (!this.state.languages || !announcementTemplate || !settings) {
             return null;
         }
@@ -659,7 +663,7 @@ export class NewAnnouncement extends Component {
                 <Formik
                     innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
-                    validate={values => validateFormik(values, this.state.uploadedFiles, this.state)}
+                    validate={values => validateFormik(values, this.state.uploadedFiles, this.state, isAllLanguages)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}
@@ -689,8 +693,8 @@ export class NewAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { announcementTemplate, createAnnouncementResult, settings, validateAnnouncementResult } = state;
-    return { announcementTemplate, createAnnouncementResult, settings, validateAnnouncementResult };
+    const { announcementTemplate, createAnnouncementResult, settings, validateAnnouncementResult, isAllLanguages } = state;
+    return { announcementTemplate, createAnnouncementResult, settings, validateAnnouncementResult, isAllLanguages };
 };
 
 const NewAnnouncementNavigation = WithNavigation(NewAnnouncement);
