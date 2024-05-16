@@ -500,10 +500,25 @@
         border: 1px solid #bbb;
         padding: 8px 12px;
         background: #f5f5f5;
+        border-bottom-width: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
 
         .group-choose-file {
           width: 15%;
           display: flex;
+        }
+
+        .fa-question-circle-o {
+          font-size: 17px;
+          color: #0789d1;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+
+        .isActive {
+          color: #466ab6 !important;
+          accent-color: #466ab6 !important;
         }
       }
 
@@ -512,6 +527,8 @@
         border: 1px solid #bbb;
         padding: 8px 12px;
         background: #f5f5f5;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
 
         .form-group {
           margin: 0;
@@ -761,4 +778,10 @@
 .flex-maxItem {
   display: flex;
   width: 100%;
+}
+
+#tooltip-upload [class$="inner"]{
+  max-width: 380px;
+  min-width: 380px;
+  text-align: left;
 }

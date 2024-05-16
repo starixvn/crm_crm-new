@@ -233,6 +233,7 @@
     FieldLessThanOrEqualTo: '{0} must be less than or equal to {1}!',
     FieldMaxLength: '{0} must not over {1} characters long!',
     FieldRequired: '{0} is required!',
+    FileAttachment: 'File Attachment',
     From: 'From',
     FromDate: 'From Date',
     FromMonth: 'From Month',

@@ -72,9 +72,10 @@ export class ActionAnnouncement extends Component {
         await this.props.getAnnouncementById(announcementId).then(response => {
             const {data, contents} = response.data;
             const announcement = data[0];
-            this.setState({ data: announcement, uploadedFiles: getFileString(contents), contents });
+            this.setState({ data: announcement, uploadedFiles: getFileString(contents, announcement.uploadFileType), contents });
             this.getContentByLanguage(contents);
             this.getSettingOption(announcement);
+            this.props.setLanguageType(announcement.uploadFileType === 'All');
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
 
@@ -267,6 +268,7 @@ export class ActionAnnouncement extends Component {
             const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
             const invalidFileSizeDraft = this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
             const invalidFileTypeDraft = this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
+
             this.setState({
                 invalidWidthHeight,
                 errorDrafts: {
@@ -287,14 +289,16 @@ export class ActionAnnouncement extends Component {
 
         if (uploadedFiles.length > 0) {
             uploadedFiles.map(item => urls.push({
-                fileName: item.name,
+                name: item.name,
+                key: item.key,
                 url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item.name}`)
             }));
 
             urls.forEach(async (item) => {
                 const response = await fetch(item.url);
                 const data = await response.blob();
-                const file = new File([data], item.fileName);
+                const file = new File([data], item.name);
+                file.key = item.key;
 
                 const image = new Image();
                 image.src = item.url;
@@ -305,7 +309,7 @@ export class ActionAnnouncement extends Component {
                     } = image;
 
                     if (height > maximumHeightWidth || width > maximumHeightWidth) {
-                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, item.fileName]});
+                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, item]});
                     }
                 }
 
@@ -393,7 +397,7 @@ export class ActionAnnouncement extends Component {
     handleSaveDraft = (event, values) => {
         event.preventDefault();
         values.status = 'Draft';
-        const params = getParams(values, this.state);
+        const params = getParams(values, this.state, this.props.isAllLanguages);
         const {announcementId, isEdit} = this.props.actionParam;
         const {createAnnouncement, editAnnouncement} = this.props;
         const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
@@ -416,7 +420,7 @@ export class ActionAnnouncement extends Component {
         if(!isInvalid) {
             setSubmitting(true);
             values.status = 'Planned';
-            const params = getParams(values, this.state);
+            const params = getParams(values, this.state, this.props.isAllLanguages);
             const {announcementId, isEdit} = this.props.actionParam;
             params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
 
@@ -762,12 +766,12 @@ export class ActionAnnouncement extends Component {
     };
 
     render() {
-        const {settings, announcementTemplate} = this.props;
+        const { settings, announcementTemplate, isAllLanguages } = this.props;
         const { data, contents } = this.state; 
         if(!data || !announcementTemplate || !this.state.languages || !settings || !this.state.content) {
             return null;
         }
-        const fileStrings = getFileString(contents);
+        const fileStrings = getFileString(contents, data.uploadFileType);
         const initialValues = {
             notificationTemplate: data.notificationTemplateName,
             notificationTemplateId: data.notificationTemplateId,
@@ -792,7 +796,7 @@ export class ActionAnnouncement extends Component {
                 <Formik
                     innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
-                    validate={values => validateFormik(values, excludeOldImage, this.state)}
+                    validate={values => validateFormik(values, excludeOldImage, this.state, isAllLanguages)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}
@@ -821,8 +825,8 @@ export class ActionAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult, validateAnnouncementResult } = state;
-    return { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult, validateAnnouncementResult };
+    const { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult, validateAnnouncementResult, isAllLanguages } = state;
+    return { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult, validateAnnouncementResult, isAllLanguages };
 };
 
 const ActionAnnouncementNavigation = WithNavigation(ActionAnnouncement);

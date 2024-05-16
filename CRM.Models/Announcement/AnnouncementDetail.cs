@@ -21,5 +21,6 @@ namespace CRM.Models.Announcement
         public int Code { get; set; } = 1;
         public string Message { get; set; } = "Invalid data.";
         public bool IsSuccessful => Code == 0;
+        public string UploadFileType { get; set; }
     }
 }

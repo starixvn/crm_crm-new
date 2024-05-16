@@ -95,7 +95,6 @@ export class NewAnnouncement extends Component {
                             width
                         } = image;
                         if (height > maximumHeightWidth || width > maximumHeightWidth) {
-                            console.log('file.name', file);
                             this.setState({ invalidWidthHeight: [...this.state.invalidWidthHeight, file] });
                         }
                     };
@@ -103,7 +102,6 @@ export class NewAnnouncement extends Component {
             });
         } else {
             const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove || x.key !== languageKey);
-            console.log('invalidWidthHeight', invalidWidthHeight);
             this.setState({ invalidWidthHeight });
         }
 
@@ -238,7 +236,7 @@ export class NewAnnouncement extends Component {
         if(!isInvalid) {
             setSubmitting(true);
             values.status = 'Planned';
-            const param = getParams(values, this.state);
+            const param = getParams(values, this.state, this.props.isAllLanguages);
             this.props.validateAnnouncement(param).then(() => {
                 const contentConfirm = this.props.validateAnnouncementResult;
                 if (!contentConfirm?.code && contentConfirm.length > 0) {
@@ -292,7 +290,7 @@ export class NewAnnouncement extends Component {
     handleSaveDraft = (event, values) => {
         event.preventDefault();
         values.status = 'Draft';
-        const param = getParams(values, this.state);
+        const param = getParams(values, this.state, this.props.isAllLanguages);
 
         this.props.createAnnouncement(param).then(() => {
             if (this.props.createAnnouncementResult.isSuccessful) {
@@ -428,7 +426,6 @@ export class NewAnnouncement extends Component {
         const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, this.state.tab);
         const isInvalidContent = this.handleCheckValidAllContent(values.content);
 
-        console.log('this.state.invalidWidthHeight', this.state.invalidWidthHeight);
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <div className="add-announcement">

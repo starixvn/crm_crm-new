@@ -28,17 +28,19 @@ export const validateFormik = (values, files, state, isAllLanguages) => {
         errors.sendType = LangHelper.getResource('SendDateSmallerThanNow');
     }
 
-    const invalidFileType = files.filter(x => !validFileType(x) || !validFileExtension(x));
+    const filterFile = files.filter(x => isAllLanguages ? x.key === 'All' : x.key !== 'All');
+
+    const invalidFileType = filterFile.filter(x => !validFileType(x) || !validFileExtension(x));
     if(invalidFileType.length > 0 || errorDrafts?.invalidFileTypeDraft.length > 0){
-        errorDrafts?.invalidFileTypeDraft.map(item => invalidFileType.push(item));
+        errorDrafts?.invalidFileTypeDraft.filter(x => isAllLanguages ? x.key === 'All' : x.key !== 'All').map(item => invalidFileType.push(item));
         const newInvalidFileType = [...new Set(invalidFileType)];
         const nameFileError = newInvalidFileType.map(x => x.name).join(', ');
         errors.imageFileType = LangHelper.formatString(LangHelper.getResource('ImageFileTypeError'), nameFileError);
     }
 
-    const invalidFileSize = files.filter(x => !validFileSize(x));
+    const invalidFileSize = filterFile.filter(x => !validFileSize(x));
     if(invalidFileSize.length > 0 || errorDrafts?.invalidFileSizeDraft.length > 0){
-        errorDrafts?.invalidFileSizeDraft.map(item => invalidFileSize.push(item));
+        errorDrafts?.invalidFileSizeDraft.filter(x => isAllLanguages ? x.key === 'All' : x.key !== 'All').map(item => invalidFileSize.push(item));
         const newInvalidFileSize = [...new Set(invalidFileSize)];
         const nameFileError = newInvalidFileSize.map(x => x.name).join(', ');
         errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
@@ -46,8 +48,6 @@ export const validateFormik = (values, files, state, isAllLanguages) => {
 
     if(invalidWidthHeight.length > 0){
         const uniqInvalidImage = [...new Set(invalidWidthHeight)];
-        console.log('uniqInvalidImage', uniqInvalidImage);
-        console.log('isAllLanguages', isAllLanguages);
         const nameFileError = uniqInvalidImage.filter(x => isAllLanguages ? x.key === 'All' : x.key !== 'All').map(x => x.name);
         const uniqErr = [...new Set(nameFileError)].join(', ');
         if (uniqErr) {
@@ -116,12 +116,13 @@ const getFileStringRemove = (oldFileName, uploadedFiles) => {
     return filterDuplicate(fileStringRemove);
 };
 
-export const getParams = (values, state) => {
+export const getParams = (values, state, isAllLanguages) => {
     const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
     const formData = new FormData();
+    const uploadedFiles = state.uploadedFiles.filter(item => isAllLanguages ? item.key === 'All' : item.key !== 'All');
 
     if (values.oldFileName) {
-        const fileStringRemoves = getFileStringRemove(values.oldFileName, state.uploadedFiles);
+        const fileStringRemoves = getFileStringRemove(values.oldFileName, uploadedFiles);
         if (fileStringRemoves.length > 0) {
             fileStringRemoves.forEach(oldFile => {
                 formData.append('fileStringRemove', oldFile.name);
@@ -129,7 +130,7 @@ export const getParams = (values, state) => {
         }
     }
 
-    const filerDupFiles = filterFormStringFiles(state.uploadedFiles);
+    const filerDupFiles = filterFormStringFiles(uploadedFiles);
     filerDupFiles.forEach(file => {
         if (file.type === 'string') {
             formData.append('fileString', file.name);
@@ -140,13 +141,14 @@ export const getParams = (values, state) => {
 
     let index = 0;
     for (const [key, value] of Object.entries(content)) {
-        if((value && value.length > 0) || state.uploadedFiles.filter(item => item?.key === key).length > 0){
+        const filterKey = isAllLanguages ? 'All' : key;
+        if ((value && value.length > 0) || uploadedFiles.filter(item => item?.key === filterKey).length > 0) {
             const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
-            const fileNames = getFileName(state.uploadedFiles, key);
-
-            if(languageId){
+            const fileNames = getFileName(uploadedFiles, filterKey);
+    
+            if (languageId) {
                 formData.append(`contents[${index}][languageId]`, languageId);
-                formData.append(`contents[${index}][value]`, value.replace( /\n/g, ''));
+                formData.append(`contents[${index}][value]`, value.replace(/\n/g, ''));
                 formData.append(`contents[${index}][fileName]`, fileNames);
                 index++;
             }
@@ -164,7 +166,8 @@ export const getParams = (values, state) => {
         title: values.title,
         sendDate: isSendImmediately ? null : (sendType === 'Send At' ? DateTimeService.toLongDateTimeFormat(sendDate) : null),
         sendImmediately: isSendImmediately,
-        status: values.status
+        status: values.status,
+        uploadFileType: isAllLanguages ? 'All' : 'Single'
     };
 
     Object.keys(params).forEach(key => {
@@ -174,21 +177,34 @@ export const getParams = (values, state) => {
     return formData;
 };
 
-export const getFileString = contents => {
+export const getFileString = (contents, uploadFileType) => {
     const fileStrings = [];
-    contents.forEach(item => {
-        if (item.fileName) {
-            const fileNames = item.fileName.split(',');
-            fileNames.forEach(file => {
-                const fileString = {
-                    key: item.languageCode.replace(/[^A-Z0-9]/ig, ''),
-                    name: file,
-                    type: 'string'
-                };
-                fileStrings.push(fileString);
-            });
-        }
-    });
+    if (uploadFileType === 'All') {
+        const fileNames = contents[0].fileName && contents[0].fileName?.split(',');
+        fileNames && fileNames.length > 0 && fileNames.forEach(file => {
+            const fileString = {
+                key: 'All',
+                name: file,
+                type: 'string'
+            };
+            fileStrings.push(fileString);
+        });
+    } else {
+        contents.forEach(item => {
+            if (item.fileName) {
+                const fileNames = item.fileName.split(',');
+                fileNames.forEach(file => {
+                    const fileString = {
+                        key: item.languageCode.replace(/[^A-Z0-9]/ig, ''),
+                        name: file,
+                        type: 'string'
+                    };
+                    fileStrings.push(fileString);
+                });
+            }
+        });
+    }
+
     return fileStrings;
 };
 
