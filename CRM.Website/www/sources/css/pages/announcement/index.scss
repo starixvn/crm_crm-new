@@ -520,6 +520,10 @@
           color: #466ab6 !important;
           accent-color: #466ab6 !important;
         }
+
+        .choose-file label{
+          cursor: pointer;
+        }
       }
 
       .group-upload-file {
@@ -667,7 +671,7 @@
         accent-color: #333;
         width: 16px;
         height: 16px;
-        margin-right: 12px;
+        margin-right: 8px;
         cursor: pointer;
       }
 
