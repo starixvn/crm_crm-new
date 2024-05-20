@@ -4,6 +4,68 @@
 }
 
 .add-feedback {
+    .headline-account-communication {
+        .comm-tool {
+            width: 85% !important;
+        }
+
+        .custom-label-communicationTool {
+            flex: 0 0 33.33333333%;
+            max-width: 33.33333333%;
+            padding-left: 10px;
+            padding-bottom: calc(0.375rem + 1px);
+        }
+
+        .custom-select-communicationTool {
+            border: none;
+            background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
+            appearance: none;
+            background-position: right;
+        }
+
+        .field-icon {
+            display: flex;
+            align-items: center;
+            position: relative;
+
+            .icon {
+                position: absolute;
+                cursor: pointer;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+                background-size: 17px !important;
+
+                &:nth-child(2) {
+                    right: -28px;
+                }
+
+                &:nth-child(3) {
+                    right: -48px;
+                }
+            }
+        }
+
+        .icon-delete {
+            height: 20px;
+            width: 20px;
+            background: url("/www/dist/css/images/icon/icon-delete.svg");
+
+            &:hover {
+                background: url("/www/dist/css/images/icon/icon-delete-hover.svg");
+            }
+        }
+
+        .icon-plus {
+            height: 16px;
+            width: 16px;
+            background: url("/www/dist/css/images/icon/icon-plus.svg");
+
+            &:hover {
+                background: url("/www/dist/css/images/icon/icon-plus-hover.svg");
+            }
+        }
+    }
+
     .panel-group {
         .username {
             font-weight: bold;

@@ -102,56 +102,100 @@ export class CustomerInfo extends PureComponent{
         return headlineCommunicationInfo;
     }   
 
-    handleChangeHeadlineStaffInfoCommunications = (value, index) => {
+    handleChangeValueHeadlineStaffInfoCommunications = (value, index) => {
         const headlineStaffInfoCommunications = this.state.headlineStaffInfoCommunications;
         headlineStaffInfoCommunications[index].picCommunicationValue = value;
-        this.setState({ headlineStaffInfoCommunications: headlineStaffInfoCommunications })
+        this.setState({ headlineStaffInfoCommunications: headlineStaffInfoCommunications });
         return headlineStaffInfoCommunications;
     }
 
-    handleChangeOtherAccountCommunicationInfos = (value, index) => {
-        const otherAccountCommunicationInfos = this.state.otherAccountCommunicationInfos;
-        otherAccountCommunicationInfos[index].communicationValue = value;
-        this.setState({ otherAccountCommunicationInfos: otherAccountCommunicationInfos })
-        return otherAccountCommunicationInfos;
+    handleChangeTypeHeadlineStaffInfoCommunications = (value, index) => {
+        const headlineStaffInfoCommunications = this.state.headlineStaffInfoCommunications;
+        headlineStaffInfoCommunications[index].picCommunicationId = value;
+        this.setState({ headlineStaffInfoCommunications: headlineStaffInfoCommunications });
+        return headlineStaffInfoCommunications;
     }
 
+    addNewHeadlineCommunicationTool = index => {
+        const headlineStaffInfoCommunications = this.state.headlineStaffInfoCommunications;
+        headlineStaffInfoCommunications.push({
+            headlineID: headlineStaffInfoCommunications[index].headlineID,
+            picCommunicationId : 0,
+            picCommunicationName : null,
+            picCommunicationValue : null,
+            picID: headlineStaffInfoCommunications[index].picID
+        });
+        this.setState({ headlineStaffInfoCommunications: headlineStaffInfoCommunications });
+        this.props.handleChangeValueInfo('headlineStaffInfoCommunications', headlineStaffInfoCommunications);
+    }
+       
     renderHeadlineAccountCommunication = customerInfo => {
         const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(customerInfo);
         return <>
             {
                 headlineCommunicationInfo.map(item => {
-                    return <>
-                        <div className="separate">
-                            <hr />
+                    return <div key={`pic-${item.picName}-${item.picRoleName}`} className="headline-account-communication">
+                            <div className="separate">
+                                <hr />
+                            </div>
+                            <div className="bold">{`${item.picName} (${item.picRoleName})`}</div>
+                            <Form.Group as={Row} className="pt-2">
+                                {
+                                    item.picCommunicationTools.map((itemCom, indexCom) => {
+                                        return <>
+                                            <Col sm="4" md="4">
+                                                <Form.Group as={Row}>
+                                                    <div className="custom-label-communicationTool">
+                                                        <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
+                                                            style={{
+                                                                width: `${itemCom.type !== '' ? this.getWidth(itemCom.type, this.props.settingCommunicationTool) : 115}px`
+                                                            }}
+                                                            value={itemCom.type} onChange={event => {
+                                                                this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
+                                                                    this.handleChangeTypeHeadlineStaffInfoCommunications(parseInt(event.target.value, 10), itemCom.index));
+                                                            }}>
+                                                            <option value="0" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                            {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                                        </Form.Control>
+                                                    </div>
+                                                    <Col sm="8" md="8">
+                                                        <div className='field-icon comm-tool'>
+                                                            <Form.Control type="text" size="sm" maxLength="200" value={itemCom.value} className="shadow-none" autoComplete="off"
+                                                                onChange={event => {
+                                                                    this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
+                                                                        this.handleChangeValueHeadlineStaffInfoCommunications(event.target.value, itemCom.index));
+                                                                }} />
+                                                            {
+                                                                this.state.isHostOnCurrentCustomer && item.picCommunicationTools.length > 1 &&
+                                                                <div title='Delete communication tool'
+                                                                    className='icon icon-delete'>
+                                                                </div>
+                                                            }
+                                                            {
+                                                                this.state.isHostOnCurrentCustomer && indexCom === (item.picCommunicationTools.length - 1) &&
+                                                                <div title='Add communication tool'
+                                                                    className='icon icon-plus' onClick={() => { this.addNewHeadlineCommunicationTool(itemCom.index); }}>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </Col>
+                                                </Form.Group>
+                                            </Col>
+                                        </>
+                                    })
+                                }
+                            </Form.Group>
                         </div>
-                        <div className="bold">{`${item.picName} (${item.picRoleName})`}</div>
-                        <Form.Group as={Row} className="pt-2">
-                            {
-                                item.picCommunicationTools.map(itemCom => {
-                                    return <>
-                                        <Col sm="4" md="4">
-                                            <Form.Group as={Row}>
-                                                <Form.Label column sm="4" md="4" htmlFor="title">
-                                                    {itemCom.name}
-                                                </Form.Label>
-                                                <Col sm="8" md="8">
-                                                    <Form.Control type="text" size="sm" maxLength="200" value={itemCom.value}  className="shadow-none" autoComplete="off"
-                                                        onChange={event => {
-                                                            this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
-                                                                this.handleChangeHeadlineStaffInfoCommunications(event.target.value, itemCom.index));
-                                                        }} />
-                                                </Col>
-                                            </Form.Group>
-                                        </Col>
-                                    </>
-                                })
-                            }
-                        </Form.Group>
-                    </>
                 })
             }
         </>
+    }
+
+    handleChangeOtherAccountCommunicationInfos = (value, index) => {
+        const otherAccountCommunicationInfos = this.state.otherAccountCommunicationInfos;
+        otherAccountCommunicationInfos[index].communicationValue = value;
+        this.setState({ otherAccountCommunicationInfos: otherAccountCommunicationInfos });
+        return otherAccountCommunicationInfos;
     }
 
     renderOtherAccountCommunication = (customerInfo) => {
@@ -184,8 +228,8 @@ export class CustomerInfo extends PureComponent{
         </>
     }
 
-    getWidth = (picCommunicationTool, settingCommunicationTool) =>
-        (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 17;
+    getWidth = (type, settingCommunicationTool) =>
+        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 20;
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
@@ -240,7 +284,7 @@ export class CustomerInfo extends PureComponent{
                                                 <div className="custom-label-communicationTool">
                                                     <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
                                                         style={{
-                                                            width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
+                                                            width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool.communicationID, this.props.settingCommunicationTool) : 115}px`
                                                         }}
                                                         value={picCommunicationTool.communicationID} onChange={event => {
                                                             this.handleChangeGuestCommunicationInfo('communicationID', parseInt(event.target.value, 10), index);

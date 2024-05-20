@@ -28,10 +28,11 @@ export class AppContainer extends Component {
         super(props);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
-        this.props.getCustomerDetail({customerId: this.props.currentCustomer.custId});
+        await this.props.getSettingPicCommunicationTools();
+        this.props.getCustomerDetail({ customerId: this.props.currentCustomer.custId});
         document.title = LangHelper.getResource('AddFeedback');
     }
 
@@ -40,10 +41,10 @@ export class AppContainer extends Component {
      }
 
     render() {
-        const { currentCustomer, settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
+        const { currentCustomer, settings, balanceUpday, customerDetail, feedbackSubjectTemplates, settingCommunicationTool,
             confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult, setFeedbackSubjectTemplates, getFeedbackSubjectTemplates
         } = this.props;
-        if (settings === null || balanceUpday === null || customerDetail === null) {
+        if (settings === null || balanceUpday === null || customerDetail === null || settingCommunicationTool === null) {
             return null;
         }
         return (
@@ -53,7 +54,7 @@ export class AppContainer extends Component {
                 addFeedbackResult={addFeedbackResult} verifyUserName={this.props.verifyUserName} getTicketInfoByRef={this.props.getTicketInfoByRef}
                 setAddFeedback={this.props.setAddFeedback} duplicateFeedbackResult={duplicateFeedbackResult} addFeedback={this.props.addFeedback}
                 getFeedbackSubjectTemplates={getFeedbackSubjectTemplates} setFeedbackSubjectTemplates={setFeedbackSubjectTemplates} isGuest={false}
-                settingCommunicationTool={ null }
+                settingCommunicationTool={ settingCommunicationTool }
             />
         );
     }
@@ -62,9 +63,9 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
+    const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, settingCommunicationTool,
         confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = state;
-    return { settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
+    return { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, settingCommunicationTool,
         confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult };
 };
 
