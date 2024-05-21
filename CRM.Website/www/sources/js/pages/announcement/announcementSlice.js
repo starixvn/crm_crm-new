@@ -32,7 +32,7 @@ const initialState = {
     isRefresh: true,
     validateAnnouncementResult: null,
     redirectActionParams: null,
-    isAllLanguages: false
+    isAllLanguages: true
 };
 const announcementSlice = createSlice({
     name: 'announcement',

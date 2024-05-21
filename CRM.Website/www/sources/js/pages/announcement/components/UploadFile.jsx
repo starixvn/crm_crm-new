@@ -9,11 +9,10 @@ const portal = document.createElement("div");
 document.body.appendChild(portal);
 
 export default class UploadFile extends Component {
-    isFileNotExist = (file, uploaded, languageKey, isAllLanguages) => {
+    isFileNotExist = (file, uploaded, languageKey) => {
         return uploaded.findIndex(item => 
             item.name === file.name && 
-            item.key === languageKey && 
-            item.isAllLanguages === isAllLanguages
+            item.key === languageKey
         ) === -1;
     };
 
@@ -22,7 +21,7 @@ export default class UploadFile extends Component {
         const { languageKey, isAllLanguages } = this.props;
         const keyFile = isAllLanguages ? 'All' : languageKey;
         files.some((file, key) => {
-            if (this.isFileNotExist(file, uploaded, languageKey, isAllLanguages)) {
+            if (this.isFileNotExist(file, uploaded, keyFile)) {
                 file.key = keyFile;
                 uploaded.push(file);
             }
