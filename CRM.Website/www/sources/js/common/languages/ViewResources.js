@@ -11,7 +11,7 @@
     AddRelatedCustomers: 'Add Related Customers',
     AddNewCaseSuccessfully: 'Add New Case Successfully!',
     All: 'All',
-    AllLanguage: 'All Language',
+    AllLanguages: 'All Languages',
     Amount: 'Amount',
     Any: 'Any',
     ApplyDefaultCommunicationTool: 'Apply default Communication Tool.',

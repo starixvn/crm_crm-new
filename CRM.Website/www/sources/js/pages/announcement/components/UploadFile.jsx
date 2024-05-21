@@ -156,7 +156,7 @@ export default class UploadFile extends Component {
                         value={this.props.isAllLanguages}
                         checked={this.props.isAllLanguages}
                     />
-                    <Form.Label className={`${this.props.isAllLanguages ? 'isActive' : ''}`}>{LangHelper.getResource('AllLanguage')}</Form.Label>
+                    <Form.Label className={`${this.props.isAllLanguages ? 'isActive' : ''}`}>{LangHelper.getResource('AllLanguages')}</Form.Label>
                 </div>
                 <div className='group-choose-file choose-file' onClick={() => this.props.handleCheckTypeLanguage()}>
                     <input
