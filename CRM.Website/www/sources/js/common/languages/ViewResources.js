@@ -404,6 +404,7 @@
     OpenCase: 'Open case',
     OverMaxUnernameWhenAssignPic: 'You are not allowed to input over {0} usernames. Please check it!',
     OverwriteCurrentCRMInfo: 'Overwrite current CRM Info',
+    OverwriteCurrentAccountDetails: 'Overwrite current Account Details',
     PersonalInfo: 'Personal Info',
     PIC: 'PIC',
     PIC1: 'PIC 1',

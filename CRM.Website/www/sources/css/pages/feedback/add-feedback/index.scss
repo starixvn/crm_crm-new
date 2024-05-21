@@ -4,7 +4,35 @@
 }
 
 .add-feedback {
-    .headline-account-communication {
+    .textarea-communication-tool {
+        width: 100%;
+        border-radius: 3px;
+        border-color: #cecccd;
+        overflow: auto;
+        height: 60px;
+        min-height: 26px;
+        padding: 2px 6px;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        margin-bottom: 7px;
+
+        &.invalid {
+            border-color: red;
+        }
+    }
+
+    .textarea-communication-tool:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: #80bdff;
+    }
+
+    .headline-account-communication, .normal-account-communication {
         .comm-tool {
             width: 85% !important;
         }

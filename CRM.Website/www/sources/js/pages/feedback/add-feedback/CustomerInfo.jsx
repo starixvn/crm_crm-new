@@ -6,6 +6,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 export class CustomerInfo extends PureComponent{
     constructor(props) {
@@ -14,7 +15,13 @@ export class CustomerInfo extends PureComponent{
             headlineInfoPolicy: null,
             isHostOnCurrentCustomer: false,
             headlineStaffInfoCommunications: [],
-            guestCommunicationInfos: []
+            otherAccountCommunicationInfos: [],
+            guestCommunicationInfos: [],
+            confirmDeleteCommunicationTool: {
+                show: false,
+                picCommunicationTool: null,
+                indexCom: -1
+            }            
         };
     }
 
@@ -37,7 +44,8 @@ export class CustomerInfo extends PureComponent{
                 picCommunicationId: item.picCommunicationId,
                 picCommunicationName: item.picCommunicationName,
                 picCommunicationValue: item.picCommunicationValue,
-                picID: item.picID
+                picID: item.picID,
+                isNew: false
             });
         });
         this.setState({
@@ -52,7 +60,8 @@ export class CustomerInfo extends PureComponent{
                 communicationName: item.communicationName,
                 communicationID: item.communicationID,
                 communicationValue: item.communicationValue,
-                custId: item.custId
+                custId: item.custId,
+                isNew: false
             });
         });
         this.setState({
@@ -123,10 +132,40 @@ export class CustomerInfo extends PureComponent{
             picCommunicationId : 0,
             picCommunicationName : null,
             picCommunicationValue : null,
-            picID: headlineStaffInfoCommunications[index].picID
+            picID: headlineStaffInfoCommunications[index].picID,
+            isNew: true
         });
         this.setState({ headlineStaffInfoCommunications: headlineStaffInfoCommunications });
         this.props.handleChangeValueInfo('headlineStaffInfoCommunications', headlineStaffInfoCommunications);
+    }
+
+    deleteHeadlineCommunicationTool = indexCom => {
+        const data = [...this.state.headlineStaffInfoCommunications];
+        data.splice(indexCom, 1);
+        this.setState({
+            headlineStaffInfoCommunications: data,
+            confirmDeleteCommunicationTool: {
+                show: false,
+                picCommunicationTool: null,
+                indexCom: -1
+            }
+        });
+        this.props.handleChangeValueInfo('headlineStaffInfoCommunications', data);
+    }
+
+    confirmDeleteHeadlineCommunicationTool = index => {
+        if (this.state.headlineStaffInfoCommunications[index].isNew) {
+            this.deleteHeadlineCommunicationTool(index);
+        }
+        else {
+            this.setState({
+                confirmDeleteCommunicationTool: {
+                    show: true,
+                    picCommunicationTool: this.props.customerInfo.headlineStaffInfoCommunications[index].picCommunicationId,
+                    indexCom: index
+                }
+            });
+        }
     }
        
     renderHeadlineAccountCommunication = customerInfo => {
@@ -160,7 +199,7 @@ export class CustomerInfo extends PureComponent{
                                                     </div>
                                                     <Col sm="8" md="8">
                                                         <div className='field-icon comm-tool'>
-                                                            <Form.Control type="text" size="sm" maxLength="200" value={itemCom.value} className="shadow-none" autoComplete="off"
+                                                            <textarea type="text" size="sm" maxLength="200" value={itemCom.value} className="shadow-none textarea-communication-tool" autoComplete="off"
                                                                 onChange={event => {
                                                                     this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
                                                                         this.handleChangeValueHeadlineStaffInfoCommunications(event.target.value, itemCom.index));
@@ -168,7 +207,7 @@ export class CustomerInfo extends PureComponent{
                                                             {
                                                                 this.state.isHostOnCurrentCustomer && item.picCommunicationTools.length > 1 &&
                                                                 <div title='Delete communication tool'
-                                                                    className='icon icon-delete'>
+                                                                    className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(itemCom.index); }}>
                                                                 </div>
                                                             }
                                                             {
@@ -198,8 +237,57 @@ export class CustomerInfo extends PureComponent{
         return otherAccountCommunicationInfos;
     }
 
+    handleChangeTypeOtherAccountCommunicationInfos = (value, index) => {
+        const otherAccountCommunicationInfos = this.state.otherAccountCommunicationInfos;
+        otherAccountCommunicationInfos[index].communicationID = value;
+        this.setState({ otherAccountCommunicationInfos: otherAccountCommunicationInfos });
+        return otherAccountCommunicationInfos;
+    }
+
+    addNewOtherCommunicationTool = () => {
+        const otherAccountCommunicationInfos = this.state.otherAccountCommunicationInfos;
+        otherAccountCommunicationInfos.push({
+            communicationName: null,
+            communicationID: 0,
+            communicationValue: null,
+            custId: this.props.customerDetail.custId,
+            isNew: true
+        });
+        this.setState({ otherAccountCommunicationInfos: otherAccountCommunicationInfos });
+        this.props.handleChangeValueInfo('otherAccountCommunicationInfos', otherAccountCommunicationInfos);
+    }
+
+    deleteOtherCommunicationTool = indexCom => {
+        const data = [...this.state.otherAccountCommunicationInfos];
+        data.splice(indexCom, 1);
+        this.setState({
+            otherAccountCommunicationInfos: data,
+            confirmDeleteCommunicationTool: {
+                show: false,
+                picCommunicationTool: null,
+                indexCom: -1
+            }
+        });
+        this.props.handleChangeValueInfo('otherAccountCommunicationInfos', data);
+    }
+
+    confirmOtherHeadlineCommunicationTool = index => {
+        if (this.state.otherAccountCommunicationInfos[index].isNew) {
+            this.deleteOtherCommunicationTool(index);
+        }
+        else {
+            this.setState({
+                confirmDeleteCommunicationTool: {
+                    show: true,
+                    picCommunicationTool: this.props.customerInfo.otherAccountCommunicationInfos[index]?.communicationID,
+                    indexCom: index
+                }
+            });
+        }
+    }
+
     renderOtherAccountCommunication = (customerInfo) => {
-        return <>
+        return <div className="normal-account-communication">
             <div className="separate">
                 <hr />
             </div>
@@ -209,15 +297,39 @@ export class CustomerInfo extends PureComponent{
                         return <>
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="title">
-                                        {item.communicationName}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" maxLength="200" value={item.communicationValue} className="shadow-none" autoComplete="off"
-                                            onChange={event => {
+                                    <div className="custom-label-communicationTool">
+                                        <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
+                                            style={{
+                                                width: `${item.communicationID !== '' ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
+                                            }}
+                                            value={item.communicationID} onChange={event => {
                                                 this.props.handleChangeValueInfo('otherAccountCommunicationInfos',
-                                                    this.handleChangeOtherAccountCommunicationInfos(event.target.value, index));
-                                            }} />
+                                                    this.handleChangeTypeOtherAccountCommunicationInfos(parseInt(event.target.value, 10), index));
+                                            }}>
+                                            <option value="0" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                            {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                        </Form.Control>
+                                    </div>
+                                    <Col sm="8" md="8">
+                                        <div className='field-icon comm-tool'>
+                                            <textarea type="text" size="sm" maxLength="200" value={item.communicationValue} className="shadow-none textarea-communication-tool" autoComplete="off"
+                                                onChange={event => {
+                                                    this.props.handleChangeValueInfo('otherAccountCommunicationInfos',
+                                                        this.handleChangeOtherAccountCommunicationInfos(event.target.value, index));
+                                                }} />
+                                            {
+                                                this.state.isHostOnCurrentCustomer && customerInfo.otherAccountCommunicationInfos.length > 1 &&
+                                                <div title='Delete communication tool'
+                                                    className='icon icon-delete' onClick={() => { this.confirmOtherHeadlineCommunicationTool(index); } }>
+                                                </div>
+                                            }
+                                            {
+                                                this.state.isHostOnCurrentCustomer && index === (customerInfo.otherAccountCommunicationInfos.length - 1) &&
+                                                <div title='Add communication tool'
+                                                        className='icon icon-plus' onClick={() => { this.addNewOtherCommunicationTool(); } }>
+                                                </div>
+                                            }
+                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Col>
@@ -225,7 +337,7 @@ export class CustomerInfo extends PureComponent{
                     })
                 }
             </Form.Group>
-        </>
+        </div>
     }
 
     getWidth = (type, settingCommunicationTool) =>
@@ -315,11 +427,29 @@ export class CustomerInfo extends PureComponent{
         </>
     }
 
+    renderComfirmDeleteCommunicationTool() {
+        const { settingCommunicationTool } = this.props;
+        const communicationToolIndex = settingCommunicationTool.findIndex(x => x.settingId === this.state.confirmDeleteCommunicationTool.picCommunicationTool);
+        return <>
+            <div className="confirm-headline">Are you going to delete the <strong>{settingCommunicationTool[communicationToolIndex].settingValue}</strong> communication tool?</div>
+        </>
+    }
+
+    handleDeleteCommunicationTool(isGuest, customerDetail) {
+        if (!isGuest && customerDetail.isGroupHeadLine && this.state.headlineInfoPolicy >= Policy.Read) {
+            this.deleteHeadlineCommunicationTool(this.state.confirmDeleteCommunicationTool.indexCom);
+        }
+        else if (!isGuest && !customerDetail.isGroupHeadLine) {
+            this.deleteOtherCommunicationTool(this.state.confirmDeleteCommunicationTool.indexCom);
+        }
+    }
+
     render() {
         const { customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo, isGuest } = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         const isAddGuestFb = customerInfo.siteId === undefined;
+        const isDisplayOverrideCustInfo = this.state.isHostOnCurrentCustomer;
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >
@@ -472,7 +602,18 @@ export class CustomerInfo extends PureComponent{
                         </Col>
                         {this.renderLicenseeType(customerInfo, handleChange)}
                     </Form.Group>
-                }                   
+                }  
+                {
+                    customerDetail !== null && isDisplayOverrideCustInfo &&
+                    <Form.Group as={Row} className="pt-1 pb-2">
+                        <Col sm="3" md="3">
+                            <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentAccountDetails')}
+                                htmlFor="check-box-overwrite" checked={customerInfo.isOverwriteInfo}
+                                onChange={() => handleChangeValueInfo('isOverwriteInfo', !customerInfo.isOverwriteInfo)}
+                            />
+                        </Col>
+                    </Form.Group>
+                }
                 {
                     !isGuest && customerDetail.isGroupHeadLine && this.state.headlineInfoPolicy >= Policy.Read &&
                     this.renderHeadlineAccountCommunication(customerInfo)
@@ -484,6 +625,27 @@ export class CustomerInfo extends PureComponent{
                 {
                     isGuest && 
                     this.renderGuestCommunication()
+                }
+                {
+                    this.state.confirmDeleteCommunicationTool.show &&
+                    <ConfirmPopup
+                        className='confirm-headline-modal'
+                        title={LangHelper.getResource('ConfirmDeleteCommunicationTool')}
+                        content={this.renderComfirmDeleteCommunicationTool()}
+                        size='lg'
+                        onSubmit={() => {
+                            this.handleDeleteCommunicationTool(isGuest, customerDetail);
+                        }}
+                        onClose={() => {
+                            this.setState({
+                                confirmDeleteCommunicationTool: {
+                                    show: false,
+                                    picCommunicationTool: null,
+                                    indexCom: -1
+                                }
+                            });
+                        }}
+                    />
                 }
             </div>
         );
