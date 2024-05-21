@@ -46,7 +46,7 @@
             await ProcessActionableNotifications(actionableNotifications);
         }
 
-        private (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
+        private static (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
         {
             var empty = notifications.Where(n => string.IsNullOrWhiteSpace(n.Content) && string.IsNullOrWhiteSpace(n.FileName));
             var actionable = notifications.Except(empty).ToList();
