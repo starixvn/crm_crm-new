@@ -55,8 +55,11 @@
             try
             {
                 var isUM = await IsUM();
+                DateTime today = DateTime.Today;
+                DateTime tomorrow = today.AddDays(1);
+                bool areWeekends = AreWeekends(today, tomorrow);
                 if (jobSetting.IsEnabled
-                    && (!jobSetting.HasCheckUM || !isUM))
+                    && (!jobSetting.HasCheckUM || !isUM) && (!areWeekends || !jobSetting.IsDisableAtWeekend))
                 {
                     logService.LogInformation($"{jobSetting.JobName} running");
                     await ExecuteJobAsync();
@@ -88,6 +91,21 @@
         {
             var maintanceTime = await maintenanceService.GetUnderMaintenanceTimeAsync();
             return maintanceTime.IsUnderMaintenanceTime;
+        }
+
+        private static bool IsWeekend(DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
+        }
+
+        private static bool AreConsecutiveDays(DateTime date1, DateTime date2)
+        {
+            return (date2 - date1).TotalDays == 1;
+        }
+
+        private static bool AreWeekends(DateTime date1, DateTime date2)
+        {
+            return IsWeekend(date1) && IsWeekend(date2) && AreConsecutiveDays(date1, date2);
         }
     }
 }

@@ -8,6 +8,8 @@
 
         public bool HasCheckUM { get; set; }
 
+        public bool IsDisableAtWeekend { get; set; }
+
         public int TimeInterval { get; set; }
     }
 }
