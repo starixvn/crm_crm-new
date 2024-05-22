@@ -14,21 +14,34 @@
     public class MessageNotificationCenterController : BaseController
     {
         private readonly IMessageNotificationCenterService messageNotificationCenterService;
+        private readonly ICommonService commonService;
         private readonly IExportExcelService excelService;
 
         public MessageNotificationCenterController(
             IMessageNotificationCenterService messageNotificationCenterService,
+            ICommonService commonService,
             IExportExcelService excelService
         )
         {
             this.messageNotificationCenterService = messageNotificationCenterService;
+            this.commonService = commonService;
             this.excelService = excelService;
         }
 
         [HttpPost]
         public async Task<IActionResult> GetResultAdmNotification([FromBody] GetResultAdmNotification param)
         {
+            if (param.FromDate.HasValue && param.ToDate.HasValue)
+            {
+                param.FromDate = commonService.ConvertToServerDateTime(param.FromDate.Value);
+                param.ToDate = commonService.ConvertToServerDateTime(param.ToDate.Value);
+            }
             var (notifications, allSite) = await messageNotificationCenterService.GetResultAdmNotificationAsync(param);
+            foreach (var notification in notifications)
+            {
+                notification.SendDate = commonService.ConvertToClientDateTime(notification.SendDate);
+                notification.CreatedTime = commonService.ConvertToClientDateTime(notification.CreatedTime);
+            }
             return Json(new { totalItems = param.TotalRows, data = notifications, allSite });
         }
 
