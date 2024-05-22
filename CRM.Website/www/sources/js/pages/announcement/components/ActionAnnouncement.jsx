@@ -59,11 +59,11 @@ export class ActionAnnouncement extends Component {
     }
 
     async componentDidMount() {
+        handleResetWhenBackPage(this.props);
         await this.getLanguages();
         await this.props.getAnnouncementTemplate();
         await this.getAnnounceDetail();
         await this.changeStringToFile();
-        handleResetWhenBackPage(this.props);
     }
 
     getAnnounceDetail = async () =>{

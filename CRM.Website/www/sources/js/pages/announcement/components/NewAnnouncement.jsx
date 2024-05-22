@@ -46,6 +46,7 @@ export class NewAnnouncement extends Component {
 
     async componentDidMount() {
         handleResetWhenBackPage(this.props);
+        this.props.setLanguageType(true);
         await this.props.getLanguages().then(response => {
             const firstLanguage = response?.[0]?.settingValue;
             const languages = mapLabelLanguage(response);
