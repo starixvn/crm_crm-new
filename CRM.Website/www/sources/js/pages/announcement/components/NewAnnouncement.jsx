@@ -258,6 +258,7 @@ export class NewAnnouncement extends Component {
                 }
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
+                    this.props.setLanguageType(true);
                     this.props.setCreateAnnouncement(null);
                     this.props.setValidateAnnouncement(null);
                     this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
@@ -284,6 +285,7 @@ export class NewAnnouncement extends Component {
     handleClose = () => {
         this.props.setCreateAnnouncement(null);
         this.props.setValidateAnnouncement(null);
+        this.props.setLanguageType(true);
         this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
     };
 
@@ -296,6 +298,7 @@ export class NewAnnouncement extends Component {
             if (this.props.createAnnouncementResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
+                    this.props.setLanguageType(true);
                     this.props.setCreateAnnouncement(null);
                     this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
                 }, 3000);
