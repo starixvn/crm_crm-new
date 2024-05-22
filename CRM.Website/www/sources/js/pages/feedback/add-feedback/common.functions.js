@@ -119,7 +119,7 @@ export const initValues = (settings, customerInfo) =>{
 };
 
 export const initCustomerInfo = customerDetail =>{
-    const birthday = new Date(DateTimeService.toShortDateTimeFormat(new Date(customerDetail.birthday)));
+    const birthday = customerDetail.birthday ? new Date(DateTimeService.toShortDateTimeFormat(new Date(customerDetail.birthday))) : null;
     const initialValues = {
         title: customerDetail.titleId,
         firstName: customerDetail.firstName,
