@@ -55,9 +55,7 @@
             try
             {
                 var isUM = await IsUM();
-                DateTime today = DateTime.Today;
-                DateTime tomorrow = today.AddDays(1);
-                bool isWeekend = IsWeekend(today) && IsWeekend(tomorrow);
+                bool isWeekend = IsWeekend(DateTime.Today);
 
                 if (jobSetting.IsEnabled
                     && (!jobSetting.HasCheckUM || !isUM) && (!isWeekend || !jobSetting.IsDisableAtWeekend))
