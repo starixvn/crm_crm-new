@@ -17,7 +17,10 @@ export const validateFormik = (values, customerDetail, settings, state) => {
     }
 
     if (moment(values.feedbackDate).isAfter(moment(values.resolutionTime))) {
-        errors.feedbackDate = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('FeedbackDate'), LangHelper.getResource('ResolutionTime'));
+        errors.feedbackDate = LangHelper.formatString(
+            LangHelper.getResource('FieldLessThanOrEqualTo'),
+            LangHelper.getResource('FeedbackDate'),
+            LangHelper.getResource('ResolutionTime'));
     }
 
     if (values.communication.length === 0) {
@@ -60,28 +63,74 @@ export const validateFormik = (values, customerDetail, settings, state) => {
         errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
     }
 
-    values.guestCommunicationInfos?.map((comTool,indexTool) => {
-        if (comTool.communicationID && comTool.communicationValue) {
-            const lengthValue = GetLengthNormalCommunicationValue(comTool, indexTool, values.guestCommunicationInfos);
-            if (lengthValue > 200) {
-                errors.guestCommunicationInfos = LangHelper.getResource('CommunicationExceedMaxLength');
-                comTool.isError = true;
-            }
-            else {
-                comTool.isError = false;
-            }
+    state.customerInfo.guestCommunicationInfos?.map((comTool, indexTool) => {
+        if (!comTool.communicationID || !comTool.communicationValue) {
+            errors.guestCommunicationInfos =LangHelper.getResource('CommunicationRequired');
+            comTool.isError = true;
         }
-    })
+        else {
+            comTool.isError = false;
+        }
+
+        const lengthValue = GetLengthNormalCommunicationValue(comTool, indexTool, values.guestCommunicationInfos);
+        if (comTool.communicationID && comTool.communicationValue && lengthValue > 200) {
+            errors.guestCommunicationInfos = LangHelper.getResource('CommunicationExceedMaxLength');
+            comTool.isError = true;
+        }
+    });
+
+    state.customerInfo.headlineStaffInfoCommunications?.map((comTool, indexTool) => {
+        if (!comTool.picCommunicationId || !comTool.picCommunicationValue) {
+            errors.headlineStaffInfoCommunications = LangHelper.getResource('CommunicationRequired');
+            comTool.isError = true;
+        }
+        else {
+            comTool.isError = false;
+        }
+
+        const lengthValue = GetLengthHeadlineCommunicationValue(comTool, indexTool, values.headlineStaffInfoCommunications);
+        if (comTool.picCommunicationId && comTool.picCommunicationValue && lengthValue > 200) {
+            errors.headlineStaffInfoCommunications = LangHelper.getResource('CommunicationExceedMaxLength');
+            comTool.isError = true;
+        }
+    });
+
+    state.customerInfo.otherAccountCommunicationInfos?.map((comTool, indexTool) => {
+        if (!comTool.communicationID || !comTool.communicationValue) {
+            errors.otherAccountCommunicationInfos = LangHelper.getResource('CommunicationRequired');
+            comTool.isError = true;
+        }
+        else {
+            comTool.isError = false;
+        }
+
+        const lengthValue = GetLengthNormalCommunicationValue(comTool, indexTool, values.otherAccountCommunicationInfos);
+        if (comTool.communicationID && comTool.communicationValue && lengthValue > 200) {
+            errors.otherAccountCommunicationInfos = LangHelper.getResource('CommunicationExceedMaxLength');
+            comTool.isError = true;
+        }
+    });
 
     return errors;
 };
+
+export const GetLengthHeadlineCommunicationValue = (compic, indexCompic, communicationTools) => {
+    let value = compic.picCommunicationValue;
+    communicationTools.map((item, index) => {
+        if (item.picCommunicationId && item.picCommunicationValue &&
+            index !== indexCompic && compic.picCommunicationId === item.picCommunicationId) {
+            value += `,${item.picCommunicationValue}`;
+        }
+    })
+    return value.length;
+}
 
 export const GetLengthNormalCommunicationValue = (compic, indexCompic, communicationTools) => {
     let value = compic.communicationValue;
     communicationTools.map((item, index) => {
         if (item.communicationID && item.communicationValue &&
             index !== indexCompic && compic.communicationID === item.communicationID) {
-            value += ',' + item.communicationValue;
+            value += `,${item.communicationValue}`;
         }
     })
     return value.length;
@@ -172,7 +221,7 @@ export const initCustomerInfo = customerDetail =>{
     return initialValues;
 };
 
-export const initValuesAddCustomerFb = (settings, customerDetail) =>{
+export const initValuesAddCustomerFb = (settings, customerDetail, customerInfo) =>{
     const { statuses, responses  } = settings;
     const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
@@ -200,7 +249,9 @@ export const initValuesAddCustomerFb = (settings, customerDetail) =>{
         subject: '',
         ticketRefInput: '',
         description: '',
-        solution: ''
+        solution: '',
+        headlineStaffInfoCommunications: customerInfo.headlineStaffInfoCommunications,
+        otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos
     };
 
     return initialValues;
@@ -323,58 +374,64 @@ export const GetParamsNewUser = (custId, values) => {
 
 const getHeadlineCommunicationToolAddFeedBack = (communicationTools, customerDetail) => {
     let newCommunicationTools = [];
-    communicationTools?.map(item => {
-        newCommunicationTools.push({
-            isHeadline: customerDetail.isGroupHeadLine,
-            picInfo: getPicInfo(item, customerDetail),
-            communicationID: item.picCommunicationId,
-            communicationValue: item.picCommunicationValue
-        });
+    communicationTools?.map((picCom, indexCom) => {
+        const picinfo2 = getPicInfo(picCom, customerDetail);
+        const index = newCommunicationTools.findIndex(item => item.communicationID === picCom.picCommunicationId && item.picInfo === picinfo2);
+        if (index >= 0 && index !== indexCom) {
+            const newValue = newCommunicationTools[index].communicationValue.concat(', ', picCom.picCommunicationValue);
+            newCommunicationTools[index].communicationValue = newValue;
+        }
+        else {
+            const newPicCom = {
+                isHeadline: customerDetail.isGroupHeadLine,
+                picInfo: getPicInfo(picCom, customerDetail),
+                communicationID: picCom.picCommunicationId,
+                communicationValue: picCom.picCommunicationValue
+            };
+            newCommunicationTools.push({ ...newPicCom });
+        }
     });
     return newCommunicationTools;
 };
 
 const getNoneHeadlineCommunicationToolAddFeedBack = (communicationTools, customerDetail) => {
     let newCommunicationTools = [];
-    communicationTools?.map(item => {
-        newCommunicationTools.push({
-            isHeadline: customerDetail.isGroupHeadLine,
-            picInfo: getPicInfo(item, customerDetail),
-            communicationID: item.communicationID,
-            communicationValue: item.communicationValue
-        });
+    communicationTools?.map((picCom, indexCom) => {
+        const index = newCommunicationTools.findIndex(item => item.communicationID === picCom.communicationID);
+        if (index >= 0 && index !== indexCom) {
+            const newValue = newCommunicationTools[index].communicationValue.concat(', ', picCom.communicationValue);
+            newCommunicationTools[index].communicationValue = newValue;
+        }
+        else {
+            const newPicCom = {
+                isHeadline: customerDetail.isGroupHeadLine,
+                picInfo: getPicInfo(picCom, customerDetail),
+                communicationID: picCom.communicationID,
+                communicationValue: picCom.communicationValue
+            };
+            newCommunicationTools.push({ ...newPicCom });
+        }
     });
     return newCommunicationTools;
 };
 
 const getCommunicationToolAddGuestFeedBack = communicationTools => {
     let newCommunicationTools = [];
-    communicationTools?.map(item => {
-        if (item.communicationID && item.communicationValue) {
-            newCommunicationTools.push({
-                communicationID: item.communicationID,
-                communicationValue: item.communicationValue
-            });
-        }
-    });
-
-    let picCommunicationTools = [];
-    newCommunicationTools.map((picCom, indexCom) => {
-        const index = picCommunicationTools.findIndex(item => item.communicationID === picCom.communicationID);
+    communicationTools?.map((picCom, indexCom) => {
+        const index = newCommunicationTools.findIndex(item => item.communicationID === picCom.communicationID);
         if (index >= 0 && index !== indexCom) {
-            const newValue = picCommunicationTools[index].communicationValue.concat(', ', picCom.communicationValue);
-            picCommunicationTools[index].communicationValue = newValue;
+            const newValue = newCommunicationTools[index].communicationValue.concat(', ', picCom.communicationValue);
+            newCommunicationTools[index].communicationValue = newValue;
         }
         else {
             const newPicCom = {
                 communicationID: picCom.communicationID,
                 communicationValue: picCom.communicationValue
             };
-            picCommunicationTools.push({ ...newPicCom });
+            newCommunicationTools.push({ ...newPicCom });
         }
-    })
-
-    return picCommunicationTools;
+    });
+    return newCommunicationTools;
 };
 
 const getPicInfo = (communicationTool, customerDetail) => {
