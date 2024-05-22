@@ -13,6 +13,16 @@ export class ContentTab extends Component {
         this.props.setLanguageType(!this.props.isAllLanguages);
     };
 
+    handleCheckAllLanguages = () => {
+        document.getElementById("file-btn").value = "";
+        this.props.setLanguageType(true);
+    };
+
+    handleCheckSingleLanguage = () => {
+        document.getElementById("file-btn").value = "";
+        this.props.setLanguageType(false);
+    };
+
     render() {
     const {
         languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false, isChangeTemplate, parameters,
@@ -73,10 +83,10 @@ export class ContentTab extends Component {
                                         </div>
                                     </Form.Group>
                                 }
-                                <UploadFile id={actionParam?.announcementId}
-                                    setStateUploadFile={setStateUploadFile} uploadedFiles={uploadedFiles} languageKey={language.mapLabel}
-                                    invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
-                                    isAllLanguages={this.props.isAllLanguages} handleCheckTypeLanguage={this.handleCheckTypeLanguage}
+                                <UploadFile id={actionParam?.announcementId} setStateUploadFile={setStateUploadFile}
+                                    uploadedFiles={uploadedFiles} languageKey={language.mapLabel} invalidContentMaxLength={invalidContentMaxLength}
+                                    textInvalidContentMaxLength={textInvalidContentMaxLength} isAllLanguages={this.props.isAllLanguages}
+                                    handleCheckAllLanguages={this.handleCheckAllLanguages} handleCheckSingleLanguage={this.handleCheckSingleLanguage}
                                 />
                             </Tab>)
                         )

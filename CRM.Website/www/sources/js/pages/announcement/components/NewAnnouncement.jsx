@@ -45,6 +45,7 @@ export class NewAnnouncement extends Component {
     }
 
     async componentDidMount() {
+        handleResetWhenBackPage(this.props);
         await this.props.getLanguages().then(response => {
             const firstLanguage = response?.[0]?.settingValue;
             const languages = mapLabelLanguage(response);
@@ -52,7 +53,6 @@ export class NewAnnouncement extends Component {
         });
         await this.props.getAnnouncementTemplate();
         await this.handleOptionSettings();
-        handleResetWhenBackPage(this.props);
     }
 
     handleOptionSettings = async () => {
@@ -258,7 +258,6 @@ export class NewAnnouncement extends Component {
                 }
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
-                    this.props.setLanguageType(true);
                     this.props.setCreateAnnouncement(null);
                     this.props.setValidateAnnouncement(null);
                     this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
@@ -285,7 +284,6 @@ export class NewAnnouncement extends Component {
     handleClose = () => {
         this.props.setCreateAnnouncement(null);
         this.props.setValidateAnnouncement(null);
-        this.props.setLanguageType(true);
         this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
     };
 
@@ -298,7 +296,6 @@ export class NewAnnouncement extends Component {
             if (this.props.createAnnouncementResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
-                    this.props.setLanguageType(true);
                     this.props.setCreateAnnouncement(null);
                     this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
                 }, 3000);

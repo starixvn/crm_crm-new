@@ -272,6 +272,7 @@ export function validFileExtension(file) {
 }
 
 export const handleResetWhenBackPage = (props) => {
+    props.setLanguageType(true);
     props.setCreateAnnouncement(null);
     props.setEditAnnouncement(null);
     props.setValidateAnnouncement(null);

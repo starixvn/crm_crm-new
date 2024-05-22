@@ -147,7 +147,7 @@ export default class UploadFile extends Component {
                         <span className="fa fa-question-circle-o" />
                     </OverlayTrigger>
                 </div>
-                <div className='group-choose-file choose-file' onClick={() => this.props.handleCheckTypeLanguage()}>
+                <div className='group-choose-file choose-file' onClick={() => this.props.handleCheckAllLanguages()}>
                     <input
                         className={`custom ${this.props.isAllLanguages ? 'isActive' : ''}`}
                         type="radio"
@@ -157,7 +157,7 @@ export default class UploadFile extends Component {
                     />
                     <Form.Label className={`${this.props.isAllLanguages ? 'isActive' : ''}`}>{LangHelper.getResource('AllLanguages')}</Form.Label>
                 </div>
-                <div className='group-choose-file choose-file' onClick={() => this.props.handleCheckTypeLanguage()}>
+                <div className='group-choose-file choose-file' onClick={() => this.props.handleCheckSingleLanguage()}>
                     <input
                         className={`custom ${!this.props.isAllLanguages ? 'isActive' : ''}`}
                         type="radio"
