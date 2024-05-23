@@ -83,6 +83,7 @@
                 "SportType" => commonFeedback.GetSportName(id, languageCode),
                 "TeamID" => commonFeedback.GetTeamName(id, languageCode),
                 "ResourceCricket" => commonFeedback.GetResourceCricketName(id, languageCode),
+                "ResultSettlement" => commonFeedback.GetResultSettlementName(id, languageCode),
                 _ => string.Empty
             };
         }

@@ -38,6 +38,8 @@
 
         string GetResourceCricketName(string resourceCricketId, string languageCode);
 
+        string GetResultSettlementName(string resultSettlementId, string languageCode);
+
 
         T GetFeedbackTemplates<T>(string fileXml);
 
@@ -146,8 +148,14 @@
 
         public string GetResourceCricketName(string resourceCricketId, string languageCode)
         {
-            var categoryName = remotingRefService.GetResourceDataByRefIdAndResourceId("ResourceCricket", resourceCricketId, languageCode, string.Empty);
-            return categoryName;
+            var resourceCricketName = remotingRefService.GetResourceDataByRefIdAndResourceId("ResourceCricket", resourceCricketId, languageCode, string.Empty);
+            return resourceCricketName;
+        }
+
+        public string GetResultSettlementName(string resultSettlementId, string languageCode)
+        {
+            var resultSettlementName = remotingRefService.GetResourceDataByRefIdAndResourceId("ResultSettlement", resultSettlementId, languageCode, string.Empty);
+            return resultSettlementName;
         }
 
         public T GetFeedbackTemplates<T>(string fileXml)
