@@ -204,7 +204,7 @@ export class NormalCommunicationInfo extends Component {
                 };
                 picCommunicationTools.push({ ...newPicCom });
             }
-        })
+        });
         return picCommunicationTools;
     }
 

@@ -7,6 +7,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import { getHeadlineStaffInfoCommunications, getOtherAccountCommunicationInfos, getHeadlineCommunicationInfoPIC } from './common.functions';
 
 export class CustomerInfo extends PureComponent{
     constructor(props) {
@@ -32,45 +33,13 @@ export class CustomerInfo extends PureComponent{
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({isHostOnCurrentCustomer: response});
         });
-        this.getHeadlineStaffInfoCommunications();
-        this.getOtherAccountCommunicationInfos();
-    }
 
-    getHeadlineStaffInfoCommunications() {
-        const headlineStaffInfoCommunications = [];
-        this.props.customerInfo.headlineStaffInfoCommunications?.map(item => {
-            headlineStaffInfoCommunications.push({
-                headlineID: item.headlineID,
-                picCommunicationId: item.picCommunicationId,
-                picCommunicationName: item.picCommunicationName,
-                picCommunicationValue: item.picCommunicationValue,
-                picID: item.picID,
-                isNew: false,
-                isError: false
-            });
-        });
+        const headlineStaffInfoCommunications = getHeadlineStaffInfoCommunications(this.props.customerInfo.headlineStaffInfoCommunications);
+        const otherAccountCommunicationInfos = getOtherAccountCommunicationInfos(this.props.customerInfo.otherAccountCommunicationInfos);
         this.setState({
-            headlineStaffInfoCommunications: headlineStaffInfoCommunications
-        });
-        this.props.handleChangeValueInfo('headlineStaffInfoCommunications', headlineStaffInfoCommunications);
-    }
-
-    getOtherAccountCommunicationInfos() {
-        const otherAccountCommunicationInfos = [];
-        this.props.customerInfo.otherAccountCommunicationInfos?.map(item => {
-            otherAccountCommunicationInfos.push({
-                communicationName: item.communicationName,
-                communicationID: item.communicationID,
-                communicationValue: item.communicationValue,
-                custId: item.custId,
-                isNew: false,
-                isError: false
-            });
-        });
-        this.setState({
+            headlineStaffInfoCommunications: headlineStaffInfoCommunications,
             otherAccountCommunicationInfos: otherAccountCommunicationInfos
         });
-        this.props.handleChangeValueInfo('otherAccountCommunicationInfos', otherAccountCommunicationInfos);
     }
 
     renderLicenseeType = (customerInfo, handleChange) => (
@@ -89,32 +58,7 @@ export class CustomerInfo extends PureComponent{
                 </Col>
             </Form.Group>
         </Col>
-    );
-
-    getHeadlineCommunicationInfo = headlineStaffInfoCommunications => {
-        let headlineCommunicationInfo = [];
-        this.props.customerInfo.headlineStaffInfoPics.map(pic => {
-            let communicationTools = [];            
-            headlineStaffInfoCommunications.map((communication, indexCom) => {
-                if (communication.picID === pic.picID) {
-                    communicationTools.push({
-                        picCommunicationId: communication.picCommunicationId,
-                        picCommunicationName: communication.picCommunicationName,
-                        picCommunicationValue: communication.picCommunicationValue,
-                        index: indexCom,
-                        isError: communication.isError
-                    });
-                }
-            });
-            headlineCommunicationInfo.push({
-                picCommunicationTools: communicationTools,
-                picId: pic.picID,
-                picName: pic.picName,
-                picRoleName: pic.picRoleName
-            });
-        });
-        return headlineCommunicationInfo;
-    }   
+    );    
 
     handleChangeHeadlineStaffInfoCommunications = (name, value, index) => {
         const headlineStaffInfoCommunications = this.state.headlineStaffInfoCommunications;
@@ -135,6 +79,7 @@ export class CustomerInfo extends PureComponent{
             isNew: true
         });
         this.setState({ headlineStaffInfoCommunications: headlineStaffInfoCommunications });
+        this.props.setFieldValue('headlineStaffInfoCommunications', headlineStaffInfoCommunications);
         this.props.handleChangeValueInfo('headlineStaffInfoCommunications', headlineStaffInfoCommunications);
     }
 
@@ -169,7 +114,7 @@ export class CustomerInfo extends PureComponent{
        
     renderHeadlineAccountCommunication = headlineStaffInfoCommunications => {
         const { touched, errors } = this.props;
-        const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(headlineStaffInfoCommunications);
+        const headlineCommunicationInfo = getHeadlineCommunicationInfoPIC(headlineStaffInfoCommunications, this.props.customerInfo.headlineStaffInfoPics);
         return <>
             {
                 headlineCommunicationInfo.map(item => {

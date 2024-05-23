@@ -19,6 +19,7 @@
         public string SecretCode { get; set; }
         public bool IsCommunicationLog { get; set; }
         public bool IsHeadline { get; set; }
+        public bool IsOverwrite { get; set; }
 
         public int UserId { get; set; }
 
