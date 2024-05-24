@@ -85,13 +85,21 @@
 
         public async Task<CommandResult> EditResultAdmStatusAsync(EditResultAdmNotiStatus param)
         {
-            var command = new EditResultAdmNotiStatusCommand
+            try
             {
-                NotiID = param.NotificationId,
-                NewStatus = param.NewStatus,
-                UpdaterID = napSession.UserId
-            };
-            return await baseService.ExecuteNonQueryAsync(command);
+                var command = new EditResultAdmNotiStatusCommand
+                {
+                    NotiID = param.NotificationId,
+                    NewStatus = param.NewStatus,
+                    UpdaterID = napSession.UserId
+                };
+                return await baseService.ExecuteNonQueryAsync(command);
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public async Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId)
