@@ -194,11 +194,15 @@
     .split-content {
         width: 670px;
     }
+
+    .failed-siteName {
+        color: $error-color;
+    }
 }
 
 .message-notification-center-action {
     .action-notification {
-        width: 1000px;
+        max-width: 1000px;
         line-height: normal;
         border: 1px solid #b7b7b7;
 
@@ -351,6 +355,10 @@
                 }
             }
         }
+    }
+
+    .alert {
+        max-width: 1000px;
     }
 }
 

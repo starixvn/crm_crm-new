@@ -115,7 +115,7 @@ export default class DatePickerField extends React.Component {
                                 {
                                     RANGE_DATE_OPTION.map((item, index) =>{
                                         return (
-                                            <div index={index} className='item-range-date' onClick={() => this.handleClickRangeDate(item)}>{item.label}</div>
+                                            <div key={index} className='item-range-date' onClick={() => this.handleClickRangeDate(item)}>{item.label}</div>
                                         )
                                     })
                                 }

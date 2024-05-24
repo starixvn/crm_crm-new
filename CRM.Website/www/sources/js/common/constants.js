@@ -96,7 +96,8 @@ export const FunctionKey = {
     SMAPersonalMessage: 'SMAPersonalMessage',
     Announcement: 'Announcement',
     Remarks: 'Remarks',
-    CategoryClassification: 'CategoryClassification'
+    CategoryClassification: 'CategoryClassification',
+    MessageNotificationCenter: 'MessageNotificationCenter'
 };
 
 export const BorderStyle = {

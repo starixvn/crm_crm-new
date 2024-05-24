@@ -48,6 +48,7 @@ const exportExcel = params => async () => {
 export const ActionCreators = {
     setGridParams,
     setGridData,
+    setEditAdmNotification,
     getGridData,
     getAdmNotificationById,
     editAdmNotification,

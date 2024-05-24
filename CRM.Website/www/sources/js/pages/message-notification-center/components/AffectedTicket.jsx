@@ -43,7 +43,6 @@ export default class AffectedTicket extends Component {
     };
 
     handleChangeSite = (currentItem, selectedItemsKey) => {
-        console.log('selectedItemsKey', selectedItemsKey);
         const siteNames = selectedItemsKey.split(',');
         const siteType = this.state.isCredit ? 'Credit' : 'Licensee';
         const siteByFilter = this.props.siteTickets.filter(item => item.siteType === siteType && siteNames.includes(item.siteName));
@@ -88,7 +87,6 @@ export default class AffectedTicket extends Component {
 
     buildBody = () => {
         const data = this.getData(this.state.isCredit);
-        console.log('dataaa', data);
         if (data.length > 0) {
             return data.map((item, index) => this.renderRow(item, index));
         }

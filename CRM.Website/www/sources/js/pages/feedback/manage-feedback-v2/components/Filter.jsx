@@ -80,9 +80,6 @@ export class Filter extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        if (!isHavePermissionOnSite()) {
-            return;
-        }
 
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
             reviewer, statusId, responseId, isReviewed, isGuest } = this.state;

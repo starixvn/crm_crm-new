@@ -150,8 +150,8 @@ export class ActionNotification extends Component {
                 <div className='content-parent'>
                     <span className='text-bold'>{title}</span>: <span onClick={() => this.handleOpenPopup(sites[0].siteType)} className='link-ticket'>{ticketCnt}</span>
                 </div>
-                {sites.map(item => (
-                    <div key={item.siteGroup} className='text-line content-child'>
+                {sites.map((item, index) => (
+                    <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>
                         {item.siteGroup}: {item.siteNames}
                     </div>
                 ))}
@@ -182,7 +182,15 @@ export class ActionNotification extends Component {
 
     handleClosePopup = () => {
         this.setState({affectedTicketPopup: { show: false, isCredit: true, siteTickets: null }});
-    }
+    };
+
+    renderMessage = (result, message) =>{
+        if(!result.isSuccessful){
+            return result.message.split(';');
+        }else{
+            return [result.message || message];
+        }
+    };
 
     render() {
         const { data, content, affectedTicketPopup } = this.state;
@@ -196,7 +204,7 @@ export class ActionNotification extends Component {
                     {
                         this.props.editAdmNotificationResult &&
                         <ResponseMessage isSuccessful={this.props.editAdmNotificationResult.isSuccessful}
-                            messages={this.renderMessage(this.props.editAdmNotificationResult)}
+                            messages={this.renderMessage(this.props.editAdmNotificationResult, LangHelper.getResource('EditNotificationSuccessfully'))}
                         />
                     }
                     <div className="action-notification">
@@ -298,8 +306,8 @@ export class ActionNotification extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams } = state;
-    return { gridParams };
+    const { gridParams, editAdmNotificationResult } = state;
+    return { gridParams, editAdmNotificationResult };
 };
 
 const ActionNotificationNavigation = WithNavigation(ActionNotification);

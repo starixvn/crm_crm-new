@@ -13,6 +13,7 @@ import WithNavigation from '@jsroot/components/WithNavigation';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { filterAndSortSites } from '../common.functions';
 import Site from '@jsroot/common/site';
+import { toast } from 'react-toastify';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -88,7 +89,6 @@ export class DataGrid extends Component {
             isOstUser: isOstUser,
             redirectParams: this.props.gridParams
         };
-        console.log('actionParam', actionParam);
         this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter/Action'), {state: actionParam});
     };
 
@@ -109,7 +109,7 @@ export class DataGrid extends Component {
         await this.props.editAdmStatus(params).then(response => {
             this.handleClosePopup();
             if (response.isSuccessful) {
-                toast.success(LangHelper.getResource('Update notification status successfully!'));
+                toast.success(LangHelper.getResource('UpdateNotificationStatusSuccessfully'));
                 this.props.getGridData(this.props.gridParams);
             } else {
                 toast.error(response.message);
@@ -122,8 +122,7 @@ export class DataGrid extends Component {
     };
 
     handleCancelConfirm = async notificationId => {
-        console.log('handleCancelConfirm');
-        const params = this.getParamStatus(notificationId, 'cancelled');
+        const params = this.getParamStatus(notificationId, 'Cancelled');
         await this.handleUpdateStatus(params);
     };
 
@@ -132,8 +131,7 @@ export class DataGrid extends Component {
     };
 
     handleResendConfirm = async notificationId => {
-        console.log('handleResendConfirm');
-        const params = this.getParamStatus(notificationId, 'sending');
+        const params = this.getParamStatus(notificationId, 'Sending');
         await this.handleUpdateStatus(params);
     };
 
@@ -142,8 +140,7 @@ export class DataGrid extends Component {
     };
 
     handleDeactivateConfirm = async notificationId => {
-        console.log('handleDeactivateConfirm');
-        const params = this.getParamStatus(notificationId, 'inactive');
+        const params = this.getParamStatus(notificationId, 'Inactive');
         await this.handleUpdateStatus(params);
     };
 
@@ -239,7 +236,7 @@ export class DataGrid extends Component {
         );
     };
 
-    renderSiteSection = (sites, title) => {
+    renderSiteSection = (sites, title, status) => {
         if (sites.length === 0) {
             return null;
         }
@@ -248,14 +245,14 @@ export class DataGrid extends Component {
                 <div className='text-bold'>{title}</div>
                 {sites.map(item => (
                     <div key={item.siteGroup} className='text-padding-bottom'>
-                        {item.siteGroup}: {item.siteNames}
+                        {item.siteGroup}: <span className={status === 'Failed' ? 'failed-siteName' : ''}>{item.siteNames}</span>
                     </div>
                 ))}
             </div>
         );
     };
 
-    renderMapSite = id => {
+    renderMapSite = (id, status) => {
         const { allSite } = this.props.gridData;
         const sites = allSite.filter(item => item.notificationID === id);
         const creditSites = filterAndSortSites(sites, 'Credit');
@@ -263,8 +260,8 @@ export class DataGrid extends Component {
 
         return (
             <div>
-                {this.renderSiteSection(creditSites, 'Credit')}
-                {this.renderSiteSection(licenseeSites, 'Licensee')}
+                {this.renderSiteSection(creditSites, 'Credit', status)}
+                {this.renderSiteSection(licenseeSites, 'Licensee', status)}
             </div>
         );
     };
@@ -282,12 +279,12 @@ export class DataGrid extends Component {
         <div>---------------------------------------------------------------------------------------------------------------------------------------------</div>
     );
 
-    contentBlock = (title, content) => (
-        <>
+    contentBlock = (index, title, content) => (
+        <div key={index}>
             {this.horizontalLine()}
             <div className='text-bold'>{title}</div>
             <div className='text-padding-bottom text-line' dangerouslySetInnerHTML={{ __html: content }} />
-        </>
+        </div>
     );
 
 
@@ -302,8 +299,8 @@ export class DataGrid extends Component {
             <div>
                 <div className='text-it'>Created on {DateTimeService.toLongDateTimeFormat(item.createdTime)}</div>
                 <div className='text-bold'>{item.subject}</div>
-                {languages.map(({ code, title }) => 
-                    item[`content_${code}`] && this.contentBlock(title, item[`content_${code}`])
+                {languages.map(({ code, title }, index) =>
+                    item[`content_${code}`] && this.contentBlock(index, title, item[`content_${code}`])
                 )}
             </div>
         );
@@ -311,7 +308,6 @@ export class DataGrid extends Component {
 
     renderRow = (item, index, isHost) => {
         const isExistContent = item.content_en || item.content_cs || item.content_ch;
-        console.log('item', item);
 
         return (
             <Row key={item.notificationID+'-'+index}>
@@ -338,7 +334,7 @@ export class DataGrid extends Component {
                     <div>{item.eventName}</div>
                 </Cell>
                 <Cell className='text-left'>
-                    {this.renderMapSite(item.notificationID)}
+                    {this.renderMapSite(item.notificationID, item.status)}
                 </Cell>
                 <Cell className='text-left'>
                     <div className='content-item'>
@@ -360,13 +356,17 @@ export class DataGrid extends Component {
                     <div className='text-padding-bottom'>{item.sender}</div>
                     <div>{item.sendDate && DateTimeService.toLongDateTimeFormat(item.sendDate)}</div>
                 </Cell>
-                <Cell className='text-center'>
-                    <div className='action-button'>
-                        {
-                            this.props.gridParams.isOstUser ? this.renderActionButtonOST(item.status, item.notificationID) : this.renderActionButtonCSD(item.status, item.notificationID)
-                        }
-                    </div>
-                </Cell>
+                {
+                    isHost && (
+                        <Cell className='text-center'>
+                            <div className='action-button'>
+                                {
+                                    this.props.gridParams.isOstUser ? this.renderActionButtonOST(item.status, item.notificationID) : this.renderActionButtonCSD(item.status, item.notificationID)
+                                }
+                            </div>
+                        </Cell>
+                    )
+                }
             </Row>
         )
     };
@@ -401,6 +401,7 @@ export class DataGrid extends Component {
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     adjustedHeight={10}
+                    shouldResetScrollPosition={false}
                 />
                 {
                     (cancelPopup.show || resendFailPopup.show || deactivatePopup.show) &&

@@ -90,8 +90,6 @@ export class Filter extends Component {
 
     handleDateChange = (dates) => {
         const [start, end] = dates;
-        console.log('start', start);
-        console.log('end', end);
         this.handleFilterChange('fromDate', start);
         this.handleFilterChange('toDate', end);
     };
@@ -333,6 +331,7 @@ export class Filter extends Component {
                         <Form.Group style={{justifyContent: 'space-between'}}>
                             <Form.Check type="checkbox" id="check-box-include" label={LangHelper.getResource('IncludeTestData')}
                                 htmlFor="check-box-include" checked={this.state.filter.isIncludeTestData}
+                                value={this.state.filter.isIncludeTestData}
                                 disabled={this.isDisabledField()}
                                 onChange={this.handleChangeTestData}
                             />

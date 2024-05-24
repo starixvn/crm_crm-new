@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
-import ActionNotification from './ActionNotification';
-import AffectedTicket from './AffectedTicket';
-import DateTimeService from '@jsroot/common/dateTimeService';
 import { isEitherExitsFromToId, isFromIdOverToId } from '../common.functions';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -18,30 +18,35 @@ export class AppContainer extends Component {
     }
 
     componentDidMount() {
+        getPermission(FunctionKey.MessageNotificationCenter).then(response => {
+            this.setState({policy: response});
+        });
+        document.title = LangHelper.getResource('MessageNotificationCenter');
+
         const { isLoadGrid, filterParams } = this.props;
         if (isLoadGrid) {
             if (!isEitherExitsFromToId(filterParams) && !isFromIdOverToId(filterParams)) {
-                console.log('container true', filterParams);
-
                 this.props.getGridData(filterParams);
-            } else {
-                console.log('container fali', filterParams);
             }
             window.history.replaceState(null, '');
         }
     };
 
-    // componentWillUnmount(){
-    //     this.props.setGridData(null);
-    // }
+    componentWillUnmount() {
+        console.log('ooooo');
+        this.props.setGridData(null);
+    };
 
     render() {
-        console.log('this.props.isLoadGrid', this.props.isLoadGrid);
-        console.log('this.props.filterParams', this.props.filterParams);
+        if(!this.state.policy){
+            return null;
+        }
+        const isHost = this.state.policy === Policy.Host;
+
         return (
             <Fragment>
                 <Filter isLoadGrid={this.props.isLoadGrid} filterParams={this.props.filterParams}/>
-                <DataGrid isHost={true}/>
+                <DataGrid isHost={isHost}/>
             </Fragment>
         );
     }
