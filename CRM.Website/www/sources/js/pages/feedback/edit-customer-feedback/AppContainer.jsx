@@ -266,7 +266,8 @@ export class AppContainer extends Component {
             isPreviewDescription: true,
             isPreviewSolution: true,
             customerNameInput: '',
-            reviewNameInput: ''
+            reviewNameInput: '',
+            latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools)
         };
     };
 
@@ -315,10 +316,29 @@ export class AppContainer extends Component {
             zalo: feedback.bbm,
             siteId: feedback.siteId,
             relatedCustomers: feedback.relatedCustomers,
-            latestFeedbackCommunicationTools: feedback.latestFeedbackCommunicationTools,
-            isCheckFeedbackIdIsNew: feedback.isCheckFeedbackIdIsNew
+            latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools),
+            isCheckFeedbackIdIsNew: feedback.isCheckFeedbackIdIsNew,
+            isOverwrite: feedback.isOverwrite
         };
     };
+
+    getLatestFeedbackCommunicationTools = latestFeedbackCommunicationTools => {
+        let communicationTools = [];
+        latestFeedbackCommunicationTools.map(item => {
+            communicationTools.push({
+                communicationID: item.communicationID,
+                communicationName: item.communicationName,
+                communicationValue: item.communicationValue,
+                custID: item.custID,
+                feedbackID: item.feedbackID,
+                isHeadline: item.isHeadline,
+                picInfo: item.picInfo,
+                isNew: false,
+                isError: false
+            })
+        });
+        return communicationTools;
+    }
 
     handleCollapseExpand = section => {
         this.setState(prevState => ({
@@ -500,8 +520,39 @@ export class AppContainer extends Component {
         const { mainCategories, subCategories } = this.state.settings;
         validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
         this.validateFormikEmpty(values, errors);
+        this.validateFormikCommunicationTools(values, errors);
         return errors;
     };
+
+    validateFormikCommunicationTools = (values, errors) => {
+        values.latestFeedbackCommunicationTools?.map((comTool, indexTool) => {
+            if (!comTool.communicationID || !comTool.communicationValue) {
+                errors.latestFeedbackCommunicationTools = LangHelper.getResource('CommunicationRequired');
+                comTool.isError = true;
+            }
+            else {
+                comTool.isError = false;
+            }
+
+            const lengthValue = this.getLengthCommunicationValue(comTool, indexTool, values.latestFeedbackCommunicationTools);
+            if (comTool.communicationID && comTool.communicationValue && lengthValue > 200) {
+                errors.latestFeedbackCommunicationTools = LangHelper.getResource('CommunicationExceedMaxLength');
+                comTool.isError = true;
+            }
+        });
+        return errors;
+    };
+
+    getLengthCommunicationValue = (compic, indexCompic, communicationTools) => {
+        let value = compic.communicationValue;
+        communicationTools.map((item, index) => {
+            if (item.communicationID && item.communicationValue &&
+                index !== indexCompic && compic.communicationID === item.communicationID && compic.picInfo === item.picInfo) {
+                value += `,${item.communicationValue}`;
+            }
+        })
+        return value.length;
+    }
 
     validateFormikEmpty = (values, errors) => {
         if (values.subject === '') {
@@ -580,7 +631,6 @@ export class AppContainer extends Component {
 
     handleConfirmOverwriteCustomerInfo = () => {
         const { params } = this.state.confirmOverwriteCustomerInfoDialog;
-        const { fieldInput } = this.state;
         this.setState({
             confirmOverwriteCustomerInfoDialog: { show: false }
         });
@@ -835,7 +885,8 @@ export class AppContainer extends Component {
                         onCollapseExpand={this.handleCollapseExpand}
                         settingCommunicationTool={settingCommunicationTool}
                         customerType={feedback.custType}
-                        customerInfo={customerInfo }
+                        customerInfo={customerInfo}
+                        touched={touched} errors={errors}
                     />
                     <FeedbackInfo collapse={collapse} values={values} touched={touched} errors={errors} settings={settings}
                         extensionOptions={extensionOptions} communicationToolOptions={communicationToolOptions}
@@ -871,8 +922,8 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { feedback, settings, confirmEditFeedbackDialog, confirmOverwriteCustomerInfoDialog } = this.state;
-        if (feedback === null || settings === null) {
+        const { feedback, settings, confirmEditFeedbackDialog, confirmOverwriteCustomerInfoDialog, customerInfo } = this.state;
+        if (feedback === null || settings === null || customerInfo === null) {
             return null;
         }
 
