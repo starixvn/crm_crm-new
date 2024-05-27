@@ -276,3 +276,39 @@ export const ParamsSubmit = (custId, values) => {
         bbm: values.zalo
     };
 };
+
+export const getHeadlineCommunicationInfo = customerInfo => {
+    let headlineCommunicationInfo = [];
+    customerInfo.headlineStaffInfoPics.map(pic => {
+        let languages = [];
+        let communicationTools = [];
+        customerInfo.headlineStaffInfoLanguages.map(language => {
+            if (language.picID === pic.picID) {
+                languages.push(language.picLanguageID);
+            }
+        });
+        customerInfo.headlineStaffInfoCommunications.map(communication => {
+            if (communication.picID === pic.picID) {
+                communicationTools.push({
+                    type: communication.picCommunicationId,
+                    value: communication.picCommunicationValue,
+                    isError: false,
+                    isNew: false
+                });
+            }
+        });
+        headlineCommunicationInfo.push({
+            country: pic.picCountryID,
+            language: languages.join(","),
+            picCommunicationTools: communicationTools,
+            picId: pic.picID,
+            picName: pic.picName,
+            picType: pic.picTypeID,
+            role: pic.picRoleID,
+            roleName: pic.picRoleName,
+            isNameError: false,
+            isRoleError: false
+        });
+    });
+    return headlineCommunicationInfo;
+} 

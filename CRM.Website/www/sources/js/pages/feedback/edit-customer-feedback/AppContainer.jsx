@@ -47,6 +47,7 @@ export class AppContainer extends Component {
                 description: false,
                 solution: false
             },
+            settingCommunicationTool: [],
             extensionOptions: [],
             communicationToolOptions: [],
             mainCategoryOptions: [],
@@ -64,7 +65,8 @@ export class AppContainer extends Component {
             settings: null,
             hasReviewFeedbackPermission: false,
             editResult: null,
-            fieldInput: {}
+            fieldInput: {},
+            customerInfo: null
         };
     }
 
@@ -149,6 +151,14 @@ export class AppContainer extends Component {
                 betTypeOptions,
                 relatedCustomers
             });
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+
+        await DataService.getDataAsync(Site.resolveClientUrl(`AccountDetail/GetSettingPicCommunicationTools`)).then(response => {
+            this.setState({settingCommunicationTool: response.data});
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+
+        await DataService.postDataAsync(Site.resolveClientUrl(`AccountDetail/GetCustomerById`), { customerId: this.state.feedback.custId }).then(response => {
+            this.setState({ customerInfo: response.data });
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
@@ -803,7 +813,7 @@ export class AppContainer extends Component {
         handleSubmit,
         isSubmitting
     }) => {
-        const { collapse, settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
+        const { collapse, settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions, settingCommunicationTool, customerInfo,
             productOptions, subProductOptions, betTypeOptions, relatedCustomers, feedbackSubjectTemplates, editResult, feedback
         } = this.state;
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
@@ -823,7 +833,9 @@ export class AppContainer extends Component {
                         values={values}
                         handleChangeInput={this.handleChangeInput}
                         onCollapseExpand={this.handleCollapseExpand}
+                        settingCommunicationTool={settingCommunicationTool}
                         customerType={feedback.custType}
+                        customerInfo={customerInfo }
                     />
                     <FeedbackInfo collapse={collapse} values={values} touched={touched} errors={errors} settings={settings}
                         extensionOptions={extensionOptions} communicationToolOptions={communicationToolOptions}

@@ -21,7 +21,7 @@ import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
 import { getPermission } from '@jsroot/common/shareScripts';
-import { ParamsSubmit, ValidateHeadlineCommunicationInfo } from '../common.functions';
+import { ParamsSubmit, ValidateHeadlineCommunicationInfo, getHeadlineCommunicationInfo } from '../common.functions';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
@@ -45,13 +45,13 @@ export class HeadlineCommunicationInfo extends Component {
     async componentDidUpdate(nextProps, nextState) {
         if (nextProps.customerInfo?.custId !== this.props.customerInfo?.custId) {
             await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
-            const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+            const headlineCommunicationInfo = getHeadlineCommunicationInfo(this.props.customerInfo);
             this.setState({ headlineCommunicationInfo: headlineCommunicationInfo});
         }
 
         if (this.props.activeTab != null) {
             const { activeTab, customerInfo } = this.props;            
-            const initialValues = this.getHeadlineCommunicationInfo(customerInfo);
+            const initialValues = getHeadlineCommunicationInfo(customerInfo);
             if (!this.state.headlineCommunicationInfo || !initialValues) {
                 return null;
             }
@@ -98,7 +98,7 @@ export class HeadlineCommunicationInfo extends Component {
     async componentDidMount() {
         await this.props.getHeadlinePicRoles(HeadlinePicID);
         await this.props.getAccountingPicRoles(AccountingPicID);
-        const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+        const headlineCommunicationInfo = getHeadlineCommunicationInfo(this.props.customerInfo);
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
         this.props.setShowConfirmUnSaved(false);
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
@@ -116,42 +116,6 @@ export class HeadlineCommunicationInfo extends Component {
         document.querySelector("#tab-headline-communication-info").scrollTo(0, topPic);
         window.picID = undefined;
     }
-
-    getHeadlineCommunicationInfo = customerInfo => {
-        let headlineCommunicationInfo = [];
-        customerInfo.headlineStaffInfoPics.map(pic => {
-            let languages = [];
-            let communicationTools = [];
-            customerInfo.headlineStaffInfoLanguages.map(language => {
-                if (language.picID === pic.picID) {
-                    languages.push(language.picLanguageID);
-                }
-            });
-            customerInfo.headlineStaffInfoCommunications.map(communication => {
-                if (communication.picID === pic.picID) {
-                    communicationTools.push({
-                        type: communication.picCommunicationId,
-                        value: communication.picCommunicationValue,
-                        isError: false,
-                        isNew: false
-                    });
-                }
-            });
-            headlineCommunicationInfo.push({
-                country: pic.picCountryID,
-                language: languages.join(","),
-                picCommunicationTools: communicationTools,
-                picId: pic.picID,
-                picName: pic.picName,
-                picType: pic.picTypeID,
-                role: pic.picRoleID,
-                roleName: pic.picRoleName,
-                isNameError: false,
-                isRoleError: false
-            });
-        });
-        return headlineCommunicationInfo;
-    }   
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
@@ -236,7 +200,7 @@ export class HeadlineCommunicationInfo extends Component {
 
     getPicChangeInformation() {
         let { headlineCommunicationInfo } = this.state;
-        const originalHeadlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+        const originalHeadlineCommunicationInfo = getHeadlineCommunicationInfo(this.props.customerInfo);
         let headlineChangeCommunicationInfo = [];
         headlineCommunicationInfo.map((item, index) => {
             if (JSON.stringify(item).toString() !== JSON.stringify(originalHeadlineCommunicationInfo[index]).toString()) {
@@ -283,7 +247,7 @@ export class HeadlineCommunicationInfo extends Component {
                 window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
                 await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
-                const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+                const headlineCommunicationInfo = getHeadlineCommunicationInfo(this.props.customerInfo);
                 this.setState({
                     headlineCommunicationInfo: headlineCommunicationInfo,
                     isValidate: false

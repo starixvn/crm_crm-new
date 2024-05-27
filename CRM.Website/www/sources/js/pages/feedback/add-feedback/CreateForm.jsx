@@ -4,7 +4,18 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import { validateFormik, initValues, initCustomerInfo, initValuesAddCustomerFb, getParams, GetParamsNewUser, getHeadlineCommunicationInfoPIC } from './common.functions';
+import {
+    validateFormik,
+    initValues,
+    initCustomerInfo,
+    initValuesAddCustomerFb,
+    getParams,
+    GetParamsNewUser,
+    getHeadlineCommunicationInfoPIC
+} from './common.functions';
+import {   
+    getHeadlineCommunicationInfo
+} from '../../customer/account-detail/common.functions';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import {
   getSubCategories,
@@ -755,7 +766,7 @@ export class CreateForm extends Component {
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
                         content={this.renderComfirmChatTypeMapping()}
                         size='lg'
-                        onSubmit={() => { this.handleCheckDuplicateFeedback(this.props.confirmCreateGuestDialog.params); } }
+                        onSubmit={this.createFeedback }
                         onClose={() => { this.setState({ checkChattypeMappingDialog: { show: false, data: [] } }); } }
                     />
                 }
@@ -860,45 +871,9 @@ export class CreateForm extends Component {
         return validResult;
     }
 
-    getHeadlineCommunicationInfo = customerInfo => {
-        let headlineCommunicationInfo = [];
-        customerInfo.headlineStaffInfoPics.map(pic => {
-            let languages = [];
-            let communicationTools = [];
-            customerInfo.headlineStaffInfoLanguages.map(language => {
-                if (language.picID === pic.picID) {
-                    languages.push(language.picLanguageID);
-                }
-            });
-            customerInfo.headlineStaffInfoCommunications.map(communication => {
-                if (communication.picID === pic.picID) {
-                    communicationTools.push({
-                        type: communication.picCommunicationId,
-                        value: communication.picCommunicationValue,
-                        isError: false,
-                        isNew: false
-                    });
-                }
-            });
-            headlineCommunicationInfo.push({
-                country: pic.picCountryID,
-                language: languages.join(","),
-                picCommunicationTools: communicationTools,
-                picId: pic.picID,
-                picName: pic.picName,
-                picType: pic.picTypeID,
-                role: pic.picRoleID,
-                roleName: pic.picRoleName,
-                isNameError: false,
-                isRoleError: false
-            });
-        });
-        return headlineCommunicationInfo;
-    }   
-
     getPicChangeInformation() {
-        const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.state.customerInfo);
-        const originalHeadlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerDetail);
+        const headlineCommunicationInfo = getHeadlineCommunicationInfo(this.state.customerInfo);
+        const originalHeadlineCommunicationInfo = getHeadlineCommunicationInfo(this.props.customerDetail);
         let headlineChangeCommunicationInfo = [];
         headlineCommunicationInfo.map((item, index) => {
             if (JSON.stringify(item).toString() !== JSON.stringify(originalHeadlineCommunicationInfo[index]).toString()) {
@@ -984,10 +959,7 @@ export class CreateForm extends Component {
 
     async checkChattypeMapping() {
         let validResult = await this.validateChattypeMappingPic();
-        if (!validResult || validResult.length === 0) {
-            if (this.state.customerInfo.isOverwriteInfo && !this.props.customerDetail?.isGroupHeadLine) {
-                await this.editOtherAccountCommunicationInfo();
-            }
+        if (!validResult || validResult.length === 0) {            
             this.createFeedback();
         }
         else {
@@ -1025,20 +997,24 @@ export class CreateForm extends Component {
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
-    createFeedback = () => {
+    createFeedback = async () => {
+        this.setState({ checkChattypeMappingDialog: { show: false, data: [] } });
+        if (this.state.customerInfo.isOverwriteInfo && !this.props.customerDetail?.isGroupHeadLine) {
+            await this.editOtherAccountCommunicationInfo();
+        }
         const { params } = this.props.confirmCreateGuestDialog;
         this.formik.setSubmitting(true);
         this.props.addFeedback(params).then(() => {
             this.setState({ checkDuplicateDialog: { show: false } });
             this.props.setConfirmCreateGuestDialog({ show: false });
-            if (this.props.addFeedbackResult && this.props.addFeedbackResult.isSuccessful) {
+            if (this.props.addFeedbackResult?.isSuccessful) {
                 const paramsCustomer = {
                     searchInfo: params.UserName,
                     isGuest: !this.props.currentCustomer ? true : this.props.currentCustomer.isGuest
                 };
                 const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
                 DataService.postDataAsync(url, paramsCustomer).then(response => {
-                    if (!response || !response.data) {
+                    if (!response?.data) {
                         return;
                     }
                     if(this.props.addFeedbackResult.isSuccessful){
