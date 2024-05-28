@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { statusOptionOST, statusOptionCSD, isEitherExitsFromToId, isFromIdOverToId } from '../common.functions';
+import { isHavePermissionOnSite, isHaveLicenseePermissionOnSite } from '@jsroot/common/shareScripts';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
 
@@ -169,8 +170,14 @@ export class Filter extends Component {
     };
 
     submit = () => {
-        if (!this.isValidParams().isValid) {
-            this.isValidParams().errMsg.forEach(item => {
+        const { isOstUser } = this.state;
+        const hasPermission = isOstUser ? isHavePermissionOnSite() : isHaveLicenseePermissionOnSite();
+    
+        if (!hasPermission) return;
+    
+        const validation = this.isValidParams();
+        if (!validation.isValid) {
+            validation.errMsg.forEach(item => {
                 toast.error(item);
                 this.setState({ isValidNotification: true });
             });
@@ -186,12 +193,20 @@ export class Filter extends Component {
         this.submit();
     };
 
+    handleResetPaging = async () => {
+        const params = { ...this.props.gridParams };
+        params['pageIndex'] = 1;
+        params['pageSize'] = 100;
+        await this.props.setGridParams(params);
+        this.submit();
+    };
+
     handleChangeUser = id => {
         this.setState({
             filter: { ...this.state.filter, statuses: id === 0 ? statusOptionOST.map(x=> x.name).join(','): statusOptionCSD.map(x=> x.name).join(',')},
             statusOptions: id === 0 ? statusOptionOST : statusOptionCSD,
             isOstUser: id === 0
-        }, () => this.submit());
+        }, () => this.handleResetPaging());
     };
 
     render() {

@@ -33,5 +33,9 @@
         public int PageSize { get; set; }
 
         public int TotalRows { get; set; }
+
+        public string SitePermission {  get; set; }
+
+        public short LicenseeType { get; set; }
     }
 }

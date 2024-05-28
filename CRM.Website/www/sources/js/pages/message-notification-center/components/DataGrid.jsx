@@ -23,7 +23,7 @@ export class DataGrid extends Component {
             expandPanels: false,
             cancelPopup: { show: false, notificationId: null },
             resendFailPopup: { show: false, notificationId: null },
-            deactivatePopup: { show: false, notificationId: null },
+            deactivatePopup: { show: false, notificationId: null }
         };
         this.panels = [];
     }
@@ -59,7 +59,7 @@ export class DataGrid extends Component {
             <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationID')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Event Info')}</HeaderCell>
             <HeaderCell colWidth={30}>{LangHelper.getResource('Sites')}</HeaderCell>
-            <HeaderCell colWidth={65}>{LangHelper.getResource('Content')}</HeaderCell>
+            <HeaderCell colWidth={isHost ? 65 : 57}>{LangHelper.getResource('Content')}</HeaderCell>
             <HeaderCell colWidth={10}>{LangHelper.getResource('status')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Sender/SendDate')}</HeaderCell>
             {

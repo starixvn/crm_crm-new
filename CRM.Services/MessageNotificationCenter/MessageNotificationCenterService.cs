@@ -52,7 +52,9 @@
                 Sender = param.Sender,
                 IncludeTest = param.IsIncludeTestData,
                 PageIndex = param.PageIndex,
-                PageSize = param.PageSize
+                PageSize = param.PageSize,
+                //SitePermission = param.SitePermission,
+                //LicenseeType = param.LicenseeType
             };
             var (notifications, allSite) = await baseService.FetchMultipleAsync<ResultAdmNotification, ResultAdmSite>(criteria);
             param.TotalRows = criteria.TotalRows;
@@ -85,21 +87,13 @@
 
         public async Task<CommandResult> EditResultAdmStatusAsync(EditResultAdmNotiStatus param)
         {
-            try
+            var command = new EditResultAdmNotiStatusCommand
             {
-                var command = new EditResultAdmNotiStatusCommand
-                {
-                    NotiID = param.NotificationId,
-                    NewStatus = param.NewStatus,
-                    UpdaterID = napSession.UserId
-                };
-                return await baseService.ExecuteNonQueryAsync(command);
-            }
-            catch (System.Exception ex)
-            {
-
-                throw ex;
-            }
+                NotiID = param.NotificationId,
+                NewStatus = param.NewStatus,
+                UpdaterID = napSession.UserId
+            };
+            return await baseService.ExecuteNonQueryAsync(command);
         }
 
         public async Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId)

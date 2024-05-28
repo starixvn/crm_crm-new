@@ -18,7 +18,8 @@ export default class CkEditor extends PureComponent {
         username: window.currentUsername,
         className: '',
         isInvalid: false,
-        isRemoveToolbarForChatbot: false
+        isRemoveToolbarForChatbot: false,
+        isRemoveAllToolbar: false
     };
 
     constructor(props) {
@@ -142,11 +143,11 @@ export default class CkEditor extends PureComponent {
 
 
     render() {
-        const { className, isInvalid, isRemoveToolbarForChatbot , ...rest } = this.props;
+        const { className, isInvalid, isRemoveToolbarForChatbot, isRemoveAllToolbar , ...rest } = this.props;
         const {toolbar, removePlugins} = this.removeToolbarForChatBot(isRemoveToolbarForChatbot);
 
         return (
-            <div ref={this.editorRef} className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
+            <div ref={this.editorRef} className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''} ${isRemoveAllToolbar ? 'remove-toolbar' : ''}`}>
                 <CKEditor
                     {...rest}
                     initData={this.props.data}
@@ -154,8 +155,8 @@ export default class CkEditor extends PureComponent {
                     config={{
                         removeButtons: '',
                         colorButton_enableMore: true,
-                        extraPlugins: EXTRA_TOOLBAR,
-                        toolbar: toolbar,
+                        extraPlugins: isRemoveAllToolbar ? [] : EXTRA_TOOLBAR,
+                        toolbar: isRemoveAllToolbar ? [] : toolbar,
                         allowedContent: true,
                         removePlugins: removePlugins,
                         entities: false,

@@ -12,6 +12,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Site from '@jsroot/common/site';
 import { filterAndSortSites } from '../common.functions';
 import AffectedTicket from './AffectedTicket';
@@ -31,7 +32,11 @@ export class ActionNotification extends Component {
                 content_ch: null
             },
             affectedTicketPopup: { show: false, isCredit: true, siteTickets: null },
-            isSubmitting: false
+            isSubmitting: false,
+            pushPopup: { show: false },
+            savePopup: { show: false },
+            activatePopup: { show: false },
+            messageSuccessful: null
         }
 
         this.languages = [
@@ -52,6 +57,7 @@ export class ActionNotification extends Component {
 
     componentDidMount() {
         this.getAdmNotificationDetail();
+        this.props.setEditAdmNotification(null);
     };
 
     getAdmNotificationDetail = async () =>{
@@ -89,9 +95,11 @@ export class ActionNotification extends Component {
         this.setState({tab: selected});
     };
 
-    handleCreateNotification = async params => {
+    handleCreateNotification = async (params, message) => {
         await this.props.editAdmNotification(params).then(() => {
+            this.handleClosePopup();
             if (this.props.editAdmNotificationResult.isSuccessful) {
+                this.setState({ messageSuccessful: message });
                 setTimeout(() => {
                     this.props.setEditAdmNotification(null);
                     this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
@@ -107,18 +115,22 @@ export class ActionNotification extends Component {
         event.preventDefault();
 
         const params = this.getParams('Draft');
-        await this.handleCreateNotification(params);
+        const message = LangHelper.getResource('UpdateNotificationSuccessfully');
+        await this.handleCreateNotification(params, message);
     };
 
-    handleSubmit = async event => {
-        this.setState({ isSubmitting: true });
-        event.preventDefault();
-
+    handleSubmitConfirm = async () => {
         const status = this.props.actionParam.isOstUser ? 'Sending' : 'Active';
         const params = this.getParams(status);
-        await this.handleCreateNotification(params);
+        const message = status === 'Sending' ? 'SendNotificationSuccessfully' : 'ActiveNotificationSuccessfully';
+        await this.handleCreateNotification(params, LangHelper.getResource(message));
     };
 
+    handleSaveConfirm = async () => {
+        const params = this.getParams(this.state.data.status);
+        const message = LangHelper.getResource('UpdateNotificationSuccessfully');
+        await this.handleCreateNotification(params, message);
+    };
 
     getStateData = () => {
         const stateData = {
@@ -129,6 +141,7 @@ export class ActionNotification extends Component {
     };
 
     handleClose = () => {
+        this.props.setEditAdmNotification(null);
         this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
     };
 
@@ -152,7 +165,7 @@ export class ActionNotification extends Component {
                 </div>
                 {sites.map((item, index) => (
                     <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>
-                        {item.siteGroup}: {item.siteNames}
+                        {item.siteGroup}: <span className={this.state.data.status === 'Failed' ? 'failed-siteName' : ''}>{item.siteNames}</span>
                     </div>
                 ))}
             </div>
@@ -181,8 +194,66 @@ export class ActionNotification extends Component {
     };
 
     handleClosePopup = () => {
-        this.setState({affectedTicketPopup: { show: false, isCredit: true, siteTickets: null }});
+        this.setState({
+            affectedTicketPopup: { show: false, isCredit: true, siteTickets: null },
+            pushPopup: { show: false },
+            savePopup: { show: false },
+            activatePopup: { show: false }
+        });
     };
+
+    handleActive = popup => {
+        this.setState({ [popup]: { show: true }});
+    };
+
+    renderConfirmPopup = () => {
+        const popups = [
+            { data: this.state.pushPopup, status: 'push', handler: 'handleSubmitConfirm' },
+            { data: this.state.savePopup, status: 'update', handler: 'handleSaveConfirm' },
+            { data: this.state.activatePopup, status: 'activate', handler: 'handleSubmitConfirm' }
+        ];
+        const activePopup = popups.find(popup => popup.data.show);
+        const { status, handler } = activePopup;
+
+        if (!activePopup) {
+            return null;
+        }
+
+        return (
+            <ConfirmPopup
+                size='lg'
+                className='confirmNotification'
+                title={LangHelper.getResource('Confirmation')}
+                content={
+                    <div>
+                        Are you sure you want to {status} this notification?
+                    </div>
+                }
+                onSubmit={() => this[handler]()}
+                onClose={this.handleClosePopup}
+            />
+        );
+    };
+
+    renderButton = () => {
+        const isOstUser = this.props.actionParam.isOstUser;
+
+        if (isOstUser) {
+            return(
+                <>
+                    <Button className="btn-save" variant="primary" size="md" disabled={this.state.isSubmitting} onClick={event => this.handleSaveDraft(event)}>{LangHelper.getResource('Save as Draft')}</Button>
+                    <Button className="btn-send" variant="primary" size="sm" disabled={this.state.isSubmitting} onClick={() => this.handleActive('pushPopup')}>{LangHelper.getResource('Push')}</Button>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Button className="btn-save" variant="primary" size="md" disabled={this.state.isSubmitting} onClick={() => this.handleActive('savePopup')}>{LangHelper.getResource('Save')}</Button>
+                    <Button className="btn-send" variant="primary" size="sm" disabled={this.state.isSubmitting} onClick={() => this.handleActive('activatePopup')}>{LangHelper.getResource('Activate')}</Button>
+                </>
+            )
+        }
+    }
 
     renderMessage = (result, message) =>{
         if(!result.isSuccessful){
@@ -193,18 +264,18 @@ export class ActionNotification extends Component {
     };
 
     render() {
-        const { data, content, affectedTicketPopup } = this.state;
+        const { data, content, affectedTicketPopup, pushPopup, savePopup, activatePopup, messageSuccessful } = this.state;
         if(!data) {
             return null;
         }
 
         return (
             <>
-                <Form noValidate onSubmit={this.handleSubmit}>
+                <Form noValidate>
                     {
                         this.props.editAdmNotificationResult &&
                         <ResponseMessage isSuccessful={this.props.editAdmNotificationResult.isSuccessful}
-                            messages={this.renderMessage(this.props.editAdmNotificationResult, LangHelper.getResource('EditNotificationSuccessfully'))}
+                            messages={this.renderMessage(this.props.editAdmNotificationResult, messageSuccessful)}
                         />
                     }
                     <div className="action-notification">
@@ -218,7 +289,7 @@ export class ActionNotification extends Component {
                             <Form.Row bsPrefix='form-row'>
                                 <Form.Group className='info-notice'>
                                     <Form.Label className='infoId'>{LangHelper.getResource('Status')}</Form.Label>
-                                    <div className='status-button status-New'>{data.status}</div>
+                                    <div className={`status-button status-${data.status}`}>{data.status}</div>
                                 </Form.Group>
                             </Form.Row>
                             <div className="group-item">
@@ -269,6 +340,7 @@ export class ActionNotification extends Component {
                                                             username={window.currentUsername}
                                                             onChange={value => this.handleChangeContent(language.mapLabel, value)}
                                                             isRemoveToolbarForChatbot
+                                                            isRemoveAllToolbar={this.props.actionParam.isOstUser}
                                                         />
                                                     </Tab>)
                                                 )
@@ -280,8 +352,9 @@ export class ActionNotification extends Component {
 
                             <div className="group-btn">
                                 <Button className="btn-cancel" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
-                                <Button className="btn-save" variant="primary" size="md" disabled={this.state.isSubmitting} onClick={event => this.handleSaveDraft(event)}>{LangHelper.getResource('Save as Draft')}</Button>
-                                <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.state.isSubmitting}>{LangHelper.getResource('Push')}</Button>
+                                {
+                                    this.renderButton()
+                                }
                             </div>
                         </div>
                     </div>
@@ -297,6 +370,10 @@ export class ActionNotification extends Component {
                         siteTickets={affectedTicketPopup.siteTickets}
                         onClose={this.handleClosePopup}
                     />
+                }
+                {
+                    (pushPopup.show || savePopup.show || activatePopup.show) &&
+                    this.renderConfirmPopup()
                 }
             </>
         );

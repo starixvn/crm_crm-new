@@ -67,64 +67,6 @@
         }
     }
 
-    .status {
-        &-button {
-            width: 75px;
-            margin: auto;
-            display: block;
-            border-radius: 3px;
-            font-size: 12px;
-            padding: 3px 0px;
-            height: 28px;
-            text-align: center;
-            border: 1px solid transparent;
-            font-weight: 400;
-            line-height: 1.5;
-            //box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
-        }
-
-        &-New {
-            background-color: $white;
-            border-color: $black;
-            color: $black;
-        }
-        &-Draft {
-            background-color:#c1c1c1;
-            border-color: #c1c1c1;
-            color: $black;
-        }
-        &-Cancelled {
-            background-color: #df750c;
-            border-color: #df750c;
-            color: $white;
-        }
-        &-Failed {
-            background-color: #b73d39;
-            border-color: #b73d39;
-            color: $white;
-        }
-        &-Sent {
-            background-color: #77933c;
-            border-color: #77933c;
-            color: $white;
-        }
-        &-Sending {
-            background-color: #598ac7;
-            border-color: #598ac7;
-            color: $white;
-        }
-        &-Active {
-            background-color: #77933c;
-            border-color: #77933c;
-            color: $white;
-        }
-        &-Inactive {
-            background-color: $white;
-            border-color: #77933c;
-            color: $black;
-        }
-    }
-
     .action-button {
         width: 100px;
         margin: auto;
@@ -193,10 +135,6 @@
 
     .split-content {
         width: 670px;
-    }
-
-    .failed-siteName {
-        color: $error-color;
     }
 }
 
@@ -419,6 +357,70 @@
         .body-content {
             max-height: 400px !important;
         }
+    }
+}
+
+.message-notification-center, .message-notification-center-action {
+    .status {
+        &-button {
+            width: 75px;
+            margin: auto;
+            display: block;
+            border-radius: 3px;
+            font-size: 12px;
+            padding: 3px 0px;
+            height: 28px;
+            text-align: center;
+            border: 1px solid transparent;
+            font-weight: 400;
+            line-height: 1.5;
+            //box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
+        }
+
+        &-New {
+            background-color: $white;
+            border-color: $black;
+            color: $black;
+        }
+        &-Draft {
+            background-color:#c1c1c1;
+            border-color: #c1c1c1;
+            color: $black;
+        }
+        &-Cancelled {
+            background-color: #df750c;
+            border-color: #df750c;
+            color: $white;
+        }
+        &-Failed {
+            background-color: #b73d39;
+            border-color: #b73d39;
+            color: $white;
+        }
+        &-Sent {
+            background-color: #77933c;
+            border-color: #77933c;
+            color: $white;
+        }
+        &-Sending {
+            background-color: #598ac7;
+            border-color: #598ac7;
+            color: $white;
+        }
+        &-Active {
+            background-color: #77933c;
+            border-color: #77933c;
+            color: $white;
+        }
+        &-Inactive {
+            background-color: $white;
+            border-color: #77933c;
+            color: $black;
+        }
+    }
+
+    .failed-siteName {
+        color: $error-color;
     }
 }
 

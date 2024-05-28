@@ -6,6 +6,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Models.MessageNotificationCenter;
     using CRM.Resources;
     using CRM.Services;
@@ -18,23 +19,33 @@
     {
         private readonly IMessageNotificationCenterService messageNotificationCenterService;
         private readonly IExportExcelService excelService;
+        private readonly IPermissionService permissionService;
 
         public MessageNotificationCenterController(
             IMessageNotificationCenterService messageNotificationCenterService,
-            IExportExcelService excelService
+            IExportExcelService excelService,
+            IPermissionService permissionService
         )
         {
             this.messageNotificationCenterService = messageNotificationCenterService;
             this.excelService = excelService;
+            this.permissionService = permissionService;
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> GetResultAdmNotification([FromBody] GetResultAdmNotification param)
         {
+            var sitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            param.SitePermission = sitePermission;
+            param.LicenseeType = licenseeType;
+
             var (notifications, allSite) = await messageNotificationCenterService.GetResultAdmNotificationAsync(param);
             return Json(new { totalItems = param.TotalRows, data = notifications, allSite });
         }
 
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> GetResultAdmNotificationById(int id)
         {
             var (notificationDetails, sites) = await messageNotificationCenterService.GetResultAdmNotificationByIdAsync(id);
@@ -64,7 +75,6 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.MessageNotificationCenter, Policy = Policy.Host)]
         public async Task<IActionResult> ExportExcel([FromBody] ExcelSiteTicket param)
         {
             IEnumerable<AdmSiteTicket> siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId);
