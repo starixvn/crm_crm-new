@@ -1,9 +1,8 @@
 ﻿namespace CRM.Criteria.MessageNotificationCenter
 {
     using System;
-    using Fanex.Data.Repository;
 
-    public class GetResultAdmNotificationCriteria : CriteriaBase
+    public class GetResultAdmNotificationCriteria : BaseSitePermisionCriteria
     {
         public DateTime? FCreatedDateGMT8 { get; set; }
 

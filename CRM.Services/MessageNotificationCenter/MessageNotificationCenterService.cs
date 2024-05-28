@@ -43,7 +43,7 @@
                 FCreatedDateGMT8 = param.FromDate,
                 TCreatedDateGMT8 = param.ToDate,
                 NotiType = param.IsOstUser ? UserAmendment.OST : UserAmendment.CSD,
-                FNotiID = param.NotificationId ??  param.FromNotificationId,
+                FNotiID = param.NotificationId ?? param.FromNotificationId,
                 TNotiID = param.NotificationId ?? param.ToNotificationId,
                 MatchID = param.MatchId,
                 MsgID = param.MessageId,
@@ -53,8 +53,8 @@
                 IncludeTest = param.IsIncludeTestData,
                 PageIndex = param.PageIndex,
                 PageSize = param.PageSize,
-                //SitePermission = param.SitePermission,
-                //LicenseeType = param.LicenseeType
+                SitePermission = param.SitePermission,
+                LicenseeType = param.LicenseeType
             };
             var (notifications, allSite) = await baseService.FetchMultipleAsync<ResultAdmNotification, ResultAdmSite>(criteria);
             param.TotalRows = criteria.TotalRows;
