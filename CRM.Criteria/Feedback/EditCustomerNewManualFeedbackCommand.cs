@@ -65,6 +65,7 @@
         public byte UpdateReviewedMode { get; set; }
 
         public bool IsReviewed { get; set; }
+        public bool IsOverwrite { get; set; }
 
         public string Review { get; set; }
 

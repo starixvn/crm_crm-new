@@ -733,7 +733,20 @@ export class CreateForm extends Component {
                     this.props.confirmCreateGuestDialog.show &&
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('Confirmation')}
-                        contents={<div dangerouslySetInnerHTML={{ __html: this.props.confirmCreateGuestDialog.confirmMessage }} />}
+                        contents={
+                            <>
+                                <div dangerouslySetInnerHTML={{ __html: this.props.confirmCreateGuestDialog.confirmMessage }} />
+                                {
+                                    this.state.customerInfo.isOverwriteInfo &&
+                                    <div>
+                                        <strong>{`Attention: `}</strong>
+                                        <span>You have checked to overwrite the current</span>
+                                        <strong>{` Account Details! `}</strong>
+                                        <span >Account and communication information will be updated accordingly.</span>
+                                    </div>
+                                }
+                            </>
+                        }
                         buttons={[
                             <Button variant="primary" size="sm" disabled={isSubmitting} onClick={this.handleCreateFeedback}>
                                 {LangHelper.getResource('OK')}
