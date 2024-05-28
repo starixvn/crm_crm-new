@@ -133,8 +133,12 @@
         }
     }
 
-    .split-content {
-        width: 670px;
+    .nap-panel {
+        width: 100%;
+
+        .split-content {
+            width: 100%;
+        }
     }
 }
 
