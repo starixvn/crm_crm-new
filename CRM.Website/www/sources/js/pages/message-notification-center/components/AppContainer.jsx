@@ -33,7 +33,6 @@ export class AppContainer extends Component {
     };
 
     componentWillUnmount() {
-        console.log('ooooo');
         this.props.setGridData(null);
     };
 
