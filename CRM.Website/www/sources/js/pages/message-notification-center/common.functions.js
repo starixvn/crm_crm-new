@@ -3,7 +3,8 @@ export const statusOptionOST = [
     {id: 'Sent', name: 'Sent', checked: true},
     {id: 'Failed', name: 'Failed', checked: true},
     {id: 'Cancelled', name: 'Cancelled', checked: true},
-    {id: 'Draft', name: 'Draft', checked: true}
+    {id: 'Draft', name: 'Draft', checked: true},
+    {id: 'Sending', name: 'Sending', checked: true},
 ];
 
 export const statusOptionCSD = [
