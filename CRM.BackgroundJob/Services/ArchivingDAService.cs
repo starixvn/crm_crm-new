@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CRM.BackgroundJob.Models.ArchivingDA;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using Fanex.CRM.BackgroundJob.Constants;
-using Fanex.CRM.BackgroundJob.Criteria;
-using Fanex.CRM.BackgroundJob.Models;
-using Fanex.CRM.BackgroundJob.Services;
-using Microsoft.Extensions.Options;
-
-namespace CRM.BackgroundJob.Services
+﻿namespace CRM.BackgroundJob.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using CRM.BackgroundJob.Models.ArchivingDA;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Criteria;
+    using Fanex.CRM.BackgroundJob.Models;
+    using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Options;
+
     public interface IArchivingDAService
     {
         Task CreateFeedbackForArchivingDAAsync(ArchivingDASetting archivingDASetting, bool isUAT,
