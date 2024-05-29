@@ -122,6 +122,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Fanex.BotService.Client.AspNetCore" Version="1.0.2" />
         <PackageReference Include="Fanex.Caching.Redis.AspNetCore" Version="2.2.1" />
         <PackageReference Include="Fanex.Data.Repository" Version="4.2.3" />
         <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.3" />

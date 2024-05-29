@@ -7,6 +7,10 @@
     using CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
     using CRM.BackgroundJob.Criteria.PushResultAmendment;
+    using Fanex.BotService.Client.Core.Services.Interfaces;
+    using CRM.BackgroundJob.Models;
+    using CRM.Core.Enumerables;
+    using CRM.BackgroundJob.Constants;
 
     public interface IMessageNotificationCenterService
     {
@@ -27,6 +31,8 @@
         private readonly IGenerateResultAmendmentService generateResultAmendmentService;
         private readonly IPushNotificationResultAmendmentService pushNotificationResultAmendmentService;
         private readonly IGenerateLapNotificationService generateLapNotificationService;
+        private readonly IBotService botService;
+        private readonly BotServiceSetting botSetting;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -38,7 +44,9 @@
             ICaptureSettlementDataService captureSettlementDataService,
             IGenerateResultAmendmentService generateResultAmendmentService,
             IPushNotificationResultAmendmentService pushNotificationResultAmendmentService,
-            IGenerateLapNotificationService generateLapNotificationService
+            IGenerateLapNotificationService generateLapNotificationService,
+            IBotService botService,
+            BotServiceSetting botSetting
         )
         {
             this.logService = logService;
@@ -47,6 +55,8 @@
             this.generateResultAmendmentService = generateResultAmendmentService;
             this.pushNotificationResultAmendmentService = pushNotificationResultAmendmentService;
             this.generateLapNotificationService = generateLapNotificationService;
+            this.botService = botService;
+            this.botSetting = botSetting;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -161,6 +171,12 @@
             {
                 await logService.ErrorAsync(ex);
             }
+        }
+
+        public async Task SendMessageByChannel()
+        {
+            var conversationId = botSetting.ConversationConfigs.Find(x => x.Channel == BotChannel.Skype && x.BotName == BotName.NotificationAlert).ConversationId;
+            await botService.SendSkypeAsync(conversationId, "messageContent");
         }
     }
 }
