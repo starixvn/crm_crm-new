@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
-using CRM.BackgroundJob.Models.ProblemsAccount;
-using CRM.BackgroundJob.Services;
-using CRM.BackgroundJob.UnitTests.Testable;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using Fanex.CRM.BackgroundJob.Constants;
-using Fanex.CRM.BackgroundJob.Criteria;
-using Fanex.CRM.BackgroundJob.Models;
-using Fanex.CRM.BackgroundJob.Services;
-using Microsoft.Extensions.Options;
-using NSubstitute;
-using Xunit;
-
-namespace CRM.BackgroundJob.UnitTests.Services
+﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Services;
+    using CRM.BackgroundJob.UnitTests.Testable;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Criteria;
+    using Fanex.CRM.BackgroundJob.Models;
+    using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Options;
+    using NSubstitute;
+    using Xunit;
+
     public class ProblemsAccountFeedbackServiceTests
     {
         private AppJobSettings appSettings;
