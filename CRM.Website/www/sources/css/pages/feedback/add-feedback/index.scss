@@ -4,6 +4,12 @@
 }
 
 .add-feedback {
+    .tab-account-info {
+        padding: 8px;
+        border: 1px solid #BBBBBB;
+        margin-bottom: 10px;
+    }
+
     .bold {
         font-weight: bold;
     }
@@ -126,14 +132,6 @@
 
             Label {
                 cursor: pointer;
-            }
-        }
-
-        .separate {
-            hr {
-                border-top-color: #b1b1b1;
-                height: 1px;
-                margin: 6px -15px 0;
             }
         }
 

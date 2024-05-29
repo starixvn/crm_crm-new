@@ -342,7 +342,7 @@ export class AppContainer extends Component {
 
     getLatestFeedbackCommunicationTools = latestFeedbackCommunicationTools => {
         let communicationTools = [];
-        latestFeedbackCommunicationTools.map(item => {
+        latestFeedbackCommunicationTools?.map(item => {
             communicationTools.push({
                 communicationID: item.communicationID,
                 communicationName: item.communicationName,
@@ -866,7 +866,7 @@ export class AppContainer extends Component {
             refCode1: fieldInput.refCode1,
             refCode2: fieldInput.refCode2,
             licenseeTypeId: fieldInput.licenseeTypeId,
-            isOverwrite: fieldInput.isOverwrite,
+            isOverwrite: false,
             phone: fieldInput.phoneNumber1,
             phoneCountryCode: fieldInput.countryCode1,
             phoneAreaCode: fieldInput.areaCode1,
@@ -1152,8 +1152,11 @@ export class AppContainer extends Component {
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
                         content={this.renderComfirmChatTypeMapping()}
                         size='lg'
-                        onSubmit={this.createFeedback}
-                        onClose={() => { this.setState({ checkChattypeMappingDialog: { show: false, data: [] } }); }}
+                        onSubmit={() => { this.handleEditFeedback(this.state.confirmEditFeedbackDialog.params); }}
+                        onClose={() => {
+                            this.setState({ checkChattypeMappingDialog: { show: false, data: [] } });
+                            this.formik.setSubmitting(false);
+                        }}
                     />
                 }
             </Fragment>
