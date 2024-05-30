@@ -151,7 +151,7 @@
                 IsSuccessful = true,
                 ErrMsg = string.Empty
             }).ToList();
-            
+
             if (!string.IsNullOrWhiteSpace(notification.Content))
             {
                 try
@@ -238,9 +238,17 @@
             }
             else
             {
-                foreach (var result in sendResult.Where(result => pushResult.FailList.Exists(i => i.Equals(result.ConversationId))))
+                if (pushResult.FailList.Any())
                 {
-                    SetResultSendImage(result, image);
+                    foreach (var result in sendResult.Where(result => pushResult.FailList.Exists(i => i.Equals(result.ConversationId))))
+                    {
+                        SetResultSendImage(result, image);
+                    }
+                }
+
+                if (pushResult.BlockList.Any())
+                {
+                    HandlleBlockList(pushResult.BlockList, sendResult);
                 }
             }
         }
