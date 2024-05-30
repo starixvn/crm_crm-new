@@ -11,6 +11,7 @@
     using CRM.BackgroundJob.Models;
     using CRM.Core.Enumerables;
     using CRM.BackgroundJob.Constants;
+    using CRM.Core.Models;
 
     public interface IMessageNotificationCenterService
     {
@@ -21,6 +22,8 @@
         Task PushNotificationResultAmendmentAsync();
 
         Task GenerateLapNotificationAsync();
+
+        Task SendMessageNotificationCenter();
     }
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
@@ -31,6 +34,7 @@
         private readonly IGenerateResultAmendmentService generateResultAmendmentService;
         private readonly IPushNotificationResultAmendmentService pushNotificationResultAmendmentService;
         private readonly IGenerateLapNotificationService generateLapNotificationService;
+        private readonly ISendNotificationCenterService sendNotificationCenterService;
         private readonly IBotService botService;
         private readonly BotServiceSetting botSetting;
         private readonly string Environment;
@@ -45,6 +49,7 @@
             IGenerateResultAmendmentService generateResultAmendmentService,
             IPushNotificationResultAmendmentService pushNotificationResultAmendmentService,
             IGenerateLapNotificationService generateLapNotificationService,
+            ISendNotificationCenterService sendNotificationCenterService,
             IBotService botService,
             BotServiceSetting botSetting
         )
@@ -55,6 +60,7 @@
             this.generateResultAmendmentService = generateResultAmendmentService;
             this.pushNotificationResultAmendmentService = pushNotificationResultAmendmentService;
             this.generateLapNotificationService = generateLapNotificationService;
+            this.sendNotificationCenterService = sendNotificationCenterService;
             this.botService = botService;
             this.botSetting = botSetting;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
@@ -173,10 +179,31 @@
             }
         }
 
-        public async Task SendMessageByChannel()
+        public async Task SendMessageNotificationCenter()
         {
-            var conversationId = botSetting.ConversationConfigs.Find(x => x.Channel == BotChannel.Skype && x.BotName == BotName.NotificationAlert).ConversationId;
-            await botService.SendSkypeAsync(conversationId, "messageContent");
+            try
+            {
+                CommandResult commandResult = await sendNotificationCenterService.InsertNotificationAlertAsync();
+                
+                if (commandResult.IsSuccessful)
+                {
+                    var messages = await sendNotificationCenterService.GetNotificationAlertAsync();
+                    
+                    if (messages.Any())
+                    {
+                        foreach (var item in messages)
+                        {
+                            var conversationId = botSetting.ConversationConfigs.Find(x => x.Channel == BotChannel.Skype && x.BotName == BotName.NotificationAlert).ConversationId;
+                            await botService.SendSkypeAsync(conversationId, item.Content);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                await logService.ErrorAsync(ex);
+            }
         }
     }
 }
