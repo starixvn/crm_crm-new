@@ -97,7 +97,7 @@ export const FunctionKey = {
     Announcement: 'Announcement',
     Remarks: 'Remarks',
     CategoryClassification: 'CategoryClassification',
-    MessageNotificationCenter: 'MessageNotificationCenter'
+    NotificationCenter: 'NotificationCenter'
 };
 
 export const BorderStyle = {

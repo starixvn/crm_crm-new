@@ -190,7 +190,7 @@ export default class AffectedTicket extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>
-                        {LangHelper.getResource('close')}
+                        {LangHelper.getResource('Close')}
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -98,7 +98,7 @@ export class ActionNotification extends Component {
                 this.setState({ messageSuccessful: message });
                 setTimeout(() => {
                     this.props.setEditAdmNotification(null);
-                    this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
+                    this.props.navigate(Site.resolveClientUrl('NotificationCenter'), { state: this.getStateData() });
                 }, 3000);
             } else {
                 this.setState({ isSubmitting: false });
@@ -138,7 +138,7 @@ export class ActionNotification extends Component {
 
     handleClose = () => {
         this.props.setEditAdmNotification(null);
-        this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
+        this.props.navigate(Site.resolveClientUrl('NotificationCenter'), { state: this.getStateData() });
     };
 
     handleOpenPopup = async siteType => {
@@ -157,7 +157,7 @@ export class ActionNotification extends Component {
         return (
             <div>
                 <div className='content-parent'>
-                    <span className='text-bold'>{title}</span>: <span onClick={() => this.handleOpenPopup(sites[0].siteType)} className='link-ticket'>{ticketCnt}</span>
+                    <span className='text-bold'>{title}</span><span onClick={() => this.handleOpenPopup(sites[0].siteType)} className='link-ticket'>{ticketCnt}</span>
                 </div>
                 {sites.map((item, index) => (
                     <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>

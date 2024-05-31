@@ -14,7 +14,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.MessageNotificationCenter, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Read)]
     public class MessageNotificationCenterController : BaseController
     {
         private readonly IMessageNotificationCenterService messageNotificationCenterService;
@@ -53,7 +53,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.MessageNotificationCenter, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Host)]
         public async Task<IActionResult> EditResultAdmNotification([FromBody] EditResultAdmNotification param)
         {
             CommandResult commandResult = await messageNotificationCenterService.EditResultAdmNotificationAsync(param);
@@ -61,7 +61,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.MessageNotificationCenter, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Host)]
         public async Task<IActionResult> EditResultAdmStatus([FromBody] EditResultAdmNotiStatus param)
         {
             CommandResult commandResult = await messageNotificationCenterService.EditResultAdmStatusAsync(param);

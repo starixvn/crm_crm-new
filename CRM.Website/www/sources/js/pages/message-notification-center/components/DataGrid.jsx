@@ -57,11 +57,11 @@ export class DataGrid extends Component {
     buildHeader = isHost => (
         <HeaderRow>
             <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationID')}</HeaderCell>
-            <HeaderCell colWidth={20}>{LangHelper.getResource('Event Info')}</HeaderCell>
+            <HeaderCell colWidth={20}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell>
             <HeaderCell colWidth={30}>{LangHelper.getResource('Sites')}</HeaderCell>
             <HeaderCell colWidth={isHost ? 65 : 57}>{LangHelper.getResource('Content')}</HeaderCell>
-            <HeaderCell colWidth={10}>{LangHelper.getResource('status')}</HeaderCell>
-            <HeaderCell colWidth={20}>{LangHelper.getResource('Sender/SendDate')}</HeaderCell>
+            <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
+            <HeaderCell colWidth={20}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
             {
                 isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Action')}</HeaderCell>
             }
@@ -89,7 +89,7 @@ export class DataGrid extends Component {
             isOstUser: isOstUser,
             redirectParams: this.props.gridParams
         };
-        this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter/Action'), {state: actionParam});
+        this.props.navigate(Site.resolveClientUrl('NotificationCenter/Action'), {state: actionParam});
     };
 
     handleClosePopup = () => {
@@ -389,7 +389,7 @@ export class DataGrid extends Component {
         return (
             <>
                 <div className='d-flex table-title justify-content-between align-items-center'>
-                    <div>{LangHelper.getResource('MessageNotificationCenter')}</div>
+                    <div>{LangHelper.getResource('NotificationCenter')}</div>
                 </div>
                 <Table
                     minWidth={960}

@@ -18,10 +18,10 @@ export class AppContainer extends Component {
     }
 
     componentDidMount() {
-        getPermission(FunctionKey.MessageNotificationCenter).then(response => {
+        getPermission(FunctionKey.NotificationCenter).then(response => {
             this.setState({policy: response});
         });
-        document.title = LangHelper.getResource('MessageNotificationCenter');
+        document.title = LangHelper.getResource('NotificationCenter');
 
         const { isLoadGrid, filterParams } = this.props;
         if (isLoadGrid) {

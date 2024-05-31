@@ -120,7 +120,7 @@ export default class Filter extends Component {
             '/Announcement/NewAnnouncement': ['New Announcement'],
             '/Announcement/EditAnnouncement': ['Edit Announcement'],
             '/Announcement/CloneAnnouncement': ['Clone Announcement'],
-            '/MessageNotificationCenter/Action': ['Action Notification Center']
+            '/NotificationCenter/Action': ['Action Notification Center']
         };
         const arrPathNewPage = Object.keys(pathNewPage);
         const selectPathNewPage = arrPathNewPage.find(x => x === pathname);

@@ -20,7 +20,7 @@ const NewAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announc
 const EditAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/editAnnouncement'));
 const CloneAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/editAnnouncement'));
 const SMAPersonalMessage = lazy(() => import(/* webpackChunkName: 'sma-personal-message' */ '@jsroot/pages/add-sma-personal-message/index'));
-const MessageNotificationCenter = lazy(() => import(/* webpackChunkName: 'message-notification-center' */ '@jsroot/pages/message-notification-center/index'));
+const NotificationCenter = lazy(() => import(/* webpackChunkName: 'message-notification-center' */ '@jsroot/pages/message-notification-center/index'));
 const ActionMessageNotificationComponent = lazy(() => import(/* webpackChunkName: 'message-notification-center' */ '@jsroot/pages/message-notification-center/actionMessageNotification'));
 
 const ManagementComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-management' */ '@jsroot/pages/pic-and-headline/management/index'));
@@ -74,7 +74,7 @@ const MenuRouteArray = [
     { url: 'ChatTypeMapping', component: ChatTypeMappingComponent },
     { url: 'NotificationType', component: NotificationTypeComponent },
     { url: 'SMAPersonalMessage', component: SMAPersonalMessage },
-    { url: 'MessageNotificationCenter', component: MessageNotificationCenter },
+    { url: 'NotificationCenter', component: NotificationCenter },
     { url: 'Announcement', component: AnnouncementComponent },
     { url: 'PicManagement', component: ManagementComponent },
     { url: 'PicOfHeadline', component: PicAssignmentComponent },
@@ -118,7 +118,7 @@ const MenuRouteArray = [
     { url: 'Announcement/NewAnnouncement', component: NewAnnouncementComponent },
     { url: 'Announcement/EditAnnouncement', component: EditAnnouncementComponent },
     { url: 'Announcement/CloneAnnouncement', component: CloneAnnouncementComponent },
-    { url: 'MessageNotificationCenter/Action', component: ActionMessageNotificationComponent },
+    { url: 'NotificationCenter/Action', component: ActionMessageNotificationComponent },
 ];
 
 export default class Index extends PureComponent {

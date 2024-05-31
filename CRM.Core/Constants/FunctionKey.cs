@@ -50,6 +50,6 @@
         public const string SettingManagement = "SettingManagement";
         public const string JobSettingManagement = "JobSettingManagement";
         public const string CategoryClassification = "CategoryClassification";
-        public const string MessageNotificationCenter = "MessageNotificationCenter";
+        public const string NotificationCenter = "NotificationCenter";
     }
 }
