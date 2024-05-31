@@ -26,6 +26,6 @@
         public const string GenerateResultAmendment = "GenerateResultAmendment";
         public const string PushNotificationResultAmendment = "PushNotificationResultAmendment";
         public const string GenerateLapNotification = "GenerateLapNotification";
-        public const string SendMessageNotificationCenter = "SendMessageNotificationCenter";
+        public const string SendNotificationCenter = "SendNotificationCenter";
     }
 }

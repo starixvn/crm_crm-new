@@ -22,12 +22,12 @@
                 : base(maintenanceService, logService)
         {
             this.messageNotificationCenter = messageNotificationCenter;
-            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.SendMessageNotificationCenter);
+            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.SendNotificationCenter);
         }
 
         public override async Task ExecuteJobAsync()
         {
-            await messageNotificationCenter.SendMessageNotificationCenter();
+            await messageNotificationCenter.SendNotificationCenter();
         }
     }
 }
