@@ -11,6 +11,7 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { Link } from 'react-router-dom';
 
 export default class DataGrid extends PureComponent {
     static defaultProps = {
@@ -114,160 +115,160 @@ export default class DataGrid extends PureComponent {
                 <div className='group-acc-info'>
                     <div className='group-title' onClick={() => this.setState(prevState => ({ isShowAccInfo: !prevState.isShowAccInfo }))}>
                         <span>{LangHelper.getResource('AccountInfo')}</span>
-                        <span className='icon-dropdown'/>
+                        <span className='icon-dropdown' />
                     </div>
                     {
                         this.state.isShowAccInfo ? (
-                        <div className='group-content'>
-                            <Form.Group className="mrb0">
-                                {
-                                    values.uplineInfo.map((value, index) => {
-                                        return (
-                                            <Row className="item " key={index}>
-                                                <Col className="text-left group-label">
-                                                    {value.roleName}
-                                                </Col>
-                                                <Col className="text-left group-label">
-                                                    {
-                                                        value.username === 'Unassigned'
-                                                            ? value.username
-                                                            : <span className='upline-username' onClick={() => this.props.handleSearchUplineInfo(value.username)}>{value.username}</span>
-                                                    }
-                                                </Col>
-                                                <Col className="status text-right">
-                                                    {value.status !== '' ? value.status : ''}
-                                                </Col>
-                                            </Row>
-                                        );
-                                    })
-                                }
-                            </Form.Group>
-                            <Form.Group className="row item current ">
-                                <Col className="text-left group-label">
-                                    {values.roleName}
-                                </Col>
-                                <Col className="text-left group-label">
-                                    {values.username}
-                                </Col>
-                                <Col className="status text-right group-icon-acc">
-                                    <div className='show-icon'>
-                                        {
-                                            values.isGroupHeadLine &&
+                            <div className='group-content'>
+                                <Form.Group className="mrb0">
+                                    {
+                                        values.uplineInfo.map((value, index) => {
+                                            return (
+                                                <Row className="item " key={index}>
+                                                    <Col className="text-left group-label">
+                                                        {value.roleName}
+                                                    </Col>
+                                                    <Col className="text-left group-label">
+                                                        {
+                                                            value.username === 'Unassigned'
+                                                                ? value.username
+                                                                : <span className='upline-username' onClick={() => this.props.handleSearchUplineInfo(value.username)}>{value.username}</span>
+                                                        }
+                                                    </Col>
+                                                    <Col className="status text-right">
+                                                        {value.status !== '' ? value.status : ''}
+                                                    </Col>
+                                                </Row>
+                                            );
+                                        })
+                                    }
+                                </Form.Group>
+                                <Form.Group className="row item current ">
+                                    <Col className="text-left group-label">
+                                        {values.roleName}
+                                    </Col>
+                                    <Col className="text-left group-label">
+                                        {values.username}
+                                    </Col>
+                                    <Col className="status text-right group-icon-acc">
+                                        <div className='show-icon'>
+                                            {
+                                                values.isGroupHeadLine &&
                                                 <img className='icon-boss' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.svg')}
                                                     title={LangHelper.getResource('HeadlineAccount')}
                                                     alt='icon acc boss' />
-                                        }
-                                        {
-                                            values.isVIP &&
-                                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.svg')} alt='icon vip' />
-                                        }
-                                    </div>
-                                    {values.status}
-                                </Col>
-                            </Form.Group>
-                                <Form.Group className="row item field-info">
-                                <Form.Label className="group-label" column htmlFor="name" >
-                                    {LangHelper.getResource('Site')}
-                                </Form.Label>
-                                <Col >
-                                    <SelectWithSearch
-                                        className='basic-single'
-                                        onChange={handleChange}
-                                        options={siteOptions}
-                                        value={values.siteId}
-                                        name={values.site.name}
-                                        isHideNA={false}
-                                        OnChangeValue={this.handleChangeSite}
-                                    />
-                                </Col>
-                            </Form.Group>
-                            {
-                                isShowInactiveMsg &&
-                                <Form.Group className="row item inactive-site field-info">
-                                    <Form.Label column />
-                                    <Col >
-                                        {LangHelper.getResource('CannotCreateInactiveSite')}
+                                            }
+                                            {
+                                                values.isVIP &&
+                                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.svg')} alt='icon vip' />
+                                            }
+                                        </div>
+                                        {values.status}
                                     </Col>
                                 </Form.Group>
-                            }
-                            <Form.Group className="row item field-info country-select">
-                                <Form.Label className="group-label" column htmlFor="name" >
-                                    {LangHelper.getResource('Country')}
-                                </Form.Label>
-                                <Col>
-                                    <SearchableDropdown
-                                        className='basic-single'
-                                        onChange={handleChange}
-                                        options={settings.countries}
-                                        value={values.countryId}
-                                        name="countryId"
-                                        isHideNA={false}
-                                        OnChangeValue={this.handleChangeCountry}
-                                    />
-                                </Col>
-                            </Form.Group>
-
-                            <Form.Group className="row item field-info">
-                                <Form.Label className="group-label" column htmlFor="name" >
-                                    {LangHelper.getResource('FirstName')}
-                                </Form.Label>
-                                <Col>
-                                    <Form.Control type="text" size="sm" className="shadow-none"
-                                        onChange={handleChange} name="firstName" value={values.firstName} autoComplete="off"
-                                    />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group className="row item field-info">
-                                <Form.Label className="group-label" column htmlFor="lastName" >
-                                    {LangHelper.getResource('LastName')}
-                                </Form.Label>
-                                <Col>
-                                    <Form.Control type="text" size="sm" className="shadow-none"
-                                        onChange={handleChange} name="lastName" value={values.lastName} autoComplete="off"
-                                    />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group className="row item field-info field-nickname">
-                                <Form.Label className="group-label" column htmlFor="nickname" >
-                                    {LangHelper.getResource('Nickname')}
-                                </Form.Label>
-                                <Col>
-                                    <Form.Label className="group-label" size="sm" className="">
-                                        {values.nickname}
+                                <Form.Group className="row item field-info">
+                                    <Form.Label className="group-label" column htmlFor="name" >
+                                        {LangHelper.getResource('Site')}
                                     </Form.Label>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group className="row item field-info">
-                                <Form.Label className="group-label" column htmlFor="name" >
-                                    {LangHelper.getResource('Language')}
-                                </Form.Label>
-                                <Col className="form-control-wrapper form-control-language">
-                                    <MultipleSelect
-                                        isInvalid={touched.languageId && errors.languageId}
-                                        dataSource={this.state.languages}
-                                        keyField='languageId'
-                                        valueField='name'
-                                        statusField='checked'
-                                        isNAOption
-                                        isAllTextShown
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            setFieldValue('languageId', selectedItemsKey);
-                                        }}
-                                    />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group className="row item btn-submit">
-                                <Col />
-                                <Col>
-                                    {
-                                        this.state.isHostOnCurrentCustomer &&
-                                        <Button variant="primary" size="sm" type="submit" disabled={isSubmitting}>
+                                    <Col >
+                                        <SelectWithSearch
+                                            className='basic-single'
+                                            onChange={handleChange}
+                                            options={siteOptions}
+                                            value={values.siteId}
+                                            name={values.site.name}
+                                            isHideNA={false}
+                                            OnChangeValue={this.handleChangeSite}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                                {
+                                    isShowInactiveMsg &&
+                                    <Form.Group className="row item inactive-site field-info">
+                                        <Form.Label column />
+                                        <Col >
+                                            {LangHelper.getResource('CannotCreateInactiveSite')}
+                                        </Col>
+                                    </Form.Group>
+                                }
+                                <Form.Group className="row item field-info country-select">
+                                    <Form.Label className="group-label" column htmlFor="name" >
+                                        {LangHelper.getResource('Country')}
+                                    </Form.Label>
+                                    <Col>
+                                        <SearchableDropdown
+                                            className='basic-single'
+                                            onChange={handleChange}
+                                            options={settings.countries}
+                                            value={values.countryId}
+                                            name="countryId"
+                                            isHideNA={false}
+                                            OnChangeValue={this.handleChangeCountry}
+                                        />
+                                    </Col>
+                                </Form.Group>
+
+                                <Form.Group className="row item field-info">
+                                    <Form.Label className="group-label" column htmlFor="name" >
+                                        {LangHelper.getResource('FirstName')}
+                                    </Form.Label>
+                                    <Col>
+                                        <Form.Control type="text" size="sm" className="shadow-none"
+                                            onChange={handleChange} name="firstName" value={values.firstName} autoComplete="off"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group className="row item field-info">
+                                    <Form.Label className="group-label" column htmlFor="lastName" >
+                                        {LangHelper.getResource('LastName')}
+                                    </Form.Label>
+                                    <Col>
+                                        <Form.Control type="text" size="sm" className="shadow-none"
+                                            onChange={handleChange} name="lastName" value={values.lastName} autoComplete="off"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group className="row item field-info field-nickname">
+                                    <Form.Label className="group-label" column htmlFor="nickname" >
+                                        {LangHelper.getResource('Nickname')}
+                                    </Form.Label>
+                                    <Col>
+                                        <Form.Label className="group-label" size="sm">
+                                            {values.nickname}
+                                        </Form.Label>
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group className="row item field-info">
+                                    <Form.Label className="group-label" column htmlFor="name" >
+                                        {LangHelper.getResource('Language')}
+                                    </Form.Label>
+                                    <Col className="form-control-wrapper form-control-language">
+                                        <MultipleSelect
+                                            isInvalid={touched.languageId && errors.languageId}
+                                            dataSource={this.state.languages}
+                                            keyField='languageId'
+                                            valueField='name'
+                                            statusField='checked'
+                                            isNAOption
+                                            isAllTextShown
+                                            onChange={(currentItem, selectedItemsKey) => {
+                                                setFieldValue('languageId', selectedItemsKey);
+                                            }}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group className="row item btn-submit">
+                                    <Col />
+                                    <Col>
+                                        {
+                                            this.state.isHostOnCurrentCustomer &&
+                                            <Button variant="primary" size="sm" type="submit" disabled={isSubmitting}>
                                                 {LangHelper.getResource('Update')}
-                                        </Button>
-                                    }
-                                </Col>
-                            </Form.Group>
-                        </div>
+                                            </Button>
+                                        }
+                                    </Col>
+                                </Form.Group>
+                            </div>
                         ) : null
                     }
                 </div>
@@ -293,17 +294,24 @@ export default class DataGrid extends PureComponent {
     }
 
     renderOtherAccountInfo = values => {
-        if (values === undefined || values.length === 0) {
-            return null;
-        }
         return (
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
                     <span>{LangHelper.getResource('CommunicationInfo')}</span>
-                    <span className='icon-dropdown'/>
+                    <span className='icon-dropdown' />
                 </div>
                 {
-                this.state.isShowCommInfo ? (
+                    (values === undefined || values.length === 0) && this.state.isShowCommInfo &&
+                    <div className='custom-scrollbar group-content'>
+                        <div className="none-communication-tool">
+                            <div>There is no communication info available</div>
+                            <span>To add the communication tool for this account, simply click on</span>
+                            <span className="add-communication-tool" onClick={() => { this.props.handleNavigate('AccountDetail'); }}>{` Add Communication Tool`}</span>
+                        </div>
+                    </div>
+                }
+                {
+                    values !== undefined && values.length > 0 && this.state.isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         <div className='account-item'>
                             {
@@ -326,7 +334,6 @@ export default class DataGrid extends PureComponent {
                             }
                         </div>
                     </div>
-                ) : null
                 }
             </div>
         );
@@ -340,16 +347,28 @@ export default class DataGrid extends PureComponent {
 
     renderAccountHeadlineInfo = values => {
         if (values.headlineStaffInfoPics.length === 0) {
-            return null;
+            window.assignPIC = {
+                username: this.props.customerInfo.username
+            };
         }
         return (
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
                     <span>{LangHelper.getResource('CommunicationInfo')}</span>
-                    <span className='icon-dropdown'/>              
+                    <span className='icon-dropdown' />
                 </div>
                 {
-                this.state.isShowCommInfo ? (
+                    values.headlineStaffInfoPics.length === 0 && this.state.isShowCommInfo &&
+                    <div className='custom-scrollbar group-content'>
+                        <div className="none-communication-tool">
+                            <div>There is no communication info available</div>
+                            <span>{`To add the communication tool for this account, simply click on `}</span>
+                            <Link to='/PicOfHeadline' className="add-communication-tool">Assign PIC</Link>
+                        </div>
+                    </div>
+                }
+                {
+                    values.headlineStaffInfoPics.length > 0 && this.state.isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         {
                             values.headlineStaffInfoPics.map(pic => {
@@ -391,7 +410,6 @@ export default class DataGrid extends PureComponent {
                             })
                         }
                     </div>
-                ) : null
                 }
             </div>
         );
@@ -416,7 +434,7 @@ export default class DataGrid extends PureComponent {
                     onClick={() => this.setState(prevState => ({ isShowDetail: !prevState.isShowDetail }))}
                 >
                     {LangHelper.getResource('Detail')}
-                    <span className='icon-dropdown'/>
+                    <span className='icon-dropdown' />
 
                 </div>
                 {
@@ -425,46 +443,46 @@ export default class DataGrid extends PureComponent {
                         {
                             ((!isShowInactiveMsg && hasCreateFeedbackPermission) ||
                                 hasReadFeedbackPermission || hasReadFeedbackPermission ||
-                                    ((hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission)) &&
-                                <Form.Group className="row form-row-detail">
-                                    <ul className='list-unstyled list-menu pull-left'>
-                                        {
-                                            !isShowInactiveMsg && hasCreateFeedbackPermission &&
-                                            <li>
-                                                <a onClick={() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
-                                            </li>
-                                        }
-                                        {
-                                            hasReadFeedbackPermission &&
-                                            <li>
-                                                <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
-                                            </li>
-                                        }
-                                    </ul>
+                                ((hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission)) &&
+                            <Form.Group className="row form-row-detail">
+                                <ul className='list-unstyled list-menu pull-left'>
+                                    {
+                                        !isShowInactiveMsg && hasCreateFeedbackPermission &&
+                                        <li>
+                                            <a onClick={() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
+                                        </li>
+                                    }
+                                    {
+                                        hasReadFeedbackPermission &&
+                                        <li>
+                                            <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                        </li>
+                                    }
+                                </ul>
 
-                                    <ul className='list-unstyled list-menu pull-left list-menu-right'>
-                                        {
-                                            hasReadFeedbackPermission &&
-                                            <li>
-                                                <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
-                                            </li>
-                                        }
-                                        {
-                                            (hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission &&
-                                            <li>
-                                                <a onClick={() => this.props.handleNavigate('Communication')}>{LangHelper.getResource('CommunicationLog')}</a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </Form.Group>
-                        }                        
+                                <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                                    {
+                                        hasReadFeedbackPermission &&
+                                        <li>
+                                            <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                                        </li>
+                                    }
+                                    {
+                                        (hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission &&
+                                        <li>
+                                            <a onClick={() => this.props.handleNavigate('Communication')}>{LangHelper.getResource('CommunicationLog')}</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </Form.Group>
+                        }
                         <Form.Group className="row form-row-detail">
                             <ul className='list-unstyled list-menu pull-left'>
                                 <li>
                                     <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Home')}</a>
                                 </li>
                                 {
-                                    isReadRemark && this.props.isCreditSite  &&
+                                    isReadRemark && this.props.isCreditSite &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
                                     </li>
@@ -493,7 +511,7 @@ export default class DataGrid extends PureComponent {
                                     <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
                                 </li>
                                 {
-                                    hasReadSitePermission  &&
+                                    hasReadSitePermission &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
                                     </li>
@@ -642,7 +660,7 @@ export default class DataGrid extends PureComponent {
             return this.renderEmptyData('EmptyData');
         }
         const initialValues = this.getInitialValues();
-        
+
         return (
             <Formik
                 enableReinitialize

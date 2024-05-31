@@ -8,8 +8,9 @@ import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission 
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { getHeadlineStaffInfoCommunications, getOtherAccountCommunicationInfos, getHeadlineCommunicationInfoPIC } from './common.functions';
+import { Link } from 'react-router-dom';
 
-export class CustomerInfo extends PureComponent{
+export class CustomerInfo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +23,7 @@ export class CustomerInfo extends PureComponent{
                 show: false,
                 picCommunicationTool: null,
                 indexCom: -1
-            }            
+            }
         };
     }
 
@@ -31,7 +32,7 @@ export class CustomerInfo extends PureComponent{
             this.setState({ headlineInfoPolicy: response });
         });
         checkHostPermissionOnCurrentCustomer().then(response => {
-            this.setState({isHostOnCurrentCustomer: response});
+            this.setState({ isHostOnCurrentCustomer: response });
         });
 
         const headlineStaffInfoCommunications = getHeadlineStaffInfoCommunications(this.props.customerInfo.headlineStaffInfoCommunications);
@@ -58,7 +59,7 @@ export class CustomerInfo extends PureComponent{
                 </Col>
             </Form.Group>
         </Col>
-    );    
+    );
 
     handleChangeHeadlineStaffInfoCommunications = (name, value, index) => {
         const headlineStaffInfoCommunications = this.state.headlineStaffInfoCommunications;
@@ -72,9 +73,9 @@ export class CustomerInfo extends PureComponent{
         const headlineStaffInfoCommunications = this.state.headlineStaffInfoCommunications;
         headlineStaffInfoCommunications.push({
             headlineID: headlineStaffInfoCommunications[index].headlineID,
-            picCommunicationId : 0,
-            picCommunicationName : '',
-            picCommunicationValue : '',
+            picCommunicationId: 0,
+            picCommunicationName: '',
+            picCommunicationValue: '',
             picID: headlineStaffInfoCommunications[index].picID,
             isNew: true
         });
@@ -111,11 +112,24 @@ export class CustomerInfo extends PureComponent{
             });
         }
     }
-       
+
     renderHeadlineAccountCommunication = headlineStaffInfoCommunications => {
         const { touched, errors } = this.props;
         const headlineCommunicationInfo = getHeadlineCommunicationInfoPIC(headlineStaffInfoCommunications, this.props.customerInfo.headlineStaffInfoPics);
+        if (headlineStaffInfoCommunications.length === 0) {
+            window.assignPIC = {
+                username: this.props.customerDetail.username
+            };
+        }
         return <>
+            {
+                headlineStaffInfoCommunications.length === 0 &&
+                <div className="none-communication-tool">
+                    <div>There is no communication info available</div>
+                    <span>{`To add the communication tool for this account, simply click on `}</span>
+                    <Link to='/PicOfHeadline' className="add-communication-tool">Assign PIC</Link>
+                </div>
+            }
             {
                 headlineCommunicationInfo.map((item, index) => {
                     return <div key={`pic-${item.picName}-${item.picRoleName}`} className="headline-account-communication">
@@ -230,8 +244,21 @@ export class CustomerInfo extends PureComponent{
 
     renderOtherAccountCommunication = otherAccountCommunicationInfos => {
         const { touched, errors } = this.props;
-        return <div className="normal-account-communication">           
+        return <div className="normal-account-communication">
+            <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewOtherCommunicationTool}>
+                    {LangHelper.getResource('AddCommunicationTool')}
+                </Button>
             <Form.Group as={Row} className="pt-2">
+                {
+                    otherAccountCommunicationInfos.length === 0 &&
+                    <div>
+                        <div className="none-normal-communication-tool">
+                            <div>There is no communication info available</div>
+                            <span>To add the communication tool for this account, simply click on</span>
+                            <span className="add-communication-tool" onClick={this.addNewOtherCommunicationTool}>{` Add Communication Tool`}</span>
+                        </div>
+                    </div>
+                }
                 {
                     otherAccountCommunicationInfos.map((item, index) => {
                         return <>
@@ -258,15 +285,9 @@ export class CustomerInfo extends PureComponent{
                                                     this.handleChangeOtherAccountCommunicationInfos('communicationValue', event.target.value, index);
                                                 }} />
                                             {
-                                                this.state.isHostOnCurrentCustomer && otherAccountCommunicationInfos.length > 1 &&
+                                                this.state.isHostOnCurrentCustomer &&
                                                 <div title='Delete communication tool'
-                                                    className='icon icon-delete' onClick={() => { this.confirmOtherHeadlineCommunicationTool(index); } }>
-                                                </div>
-                                            }
-                                            {
-                                                this.state.isHostOnCurrentCustomer && index === (otherAccountCommunicationInfos.length - 1) &&
-                                                <div title='Add communication tool'
-                                                        className='icon icon-plus' onClick={() => { this.addNewOtherCommunicationTool(); } }>
+                                                    className='icon icon-delete' onClick={() => { this.confirmOtherHeadlineCommunicationTool(index); }}>
                                                 </div>
                                             }
                                         </div>
@@ -313,17 +334,29 @@ export class CustomerInfo extends PureComponent{
         this.props.setFieldValue('guestCommunicationInfos', data);
     }
 
-    renderGuestCommunication () {
+    renderGuestCommunication() {
         const { guestCommunicationInfos } = this.state;
         const { settingCommunicationTool, touched, errors } = this.props;
-        return <>            
+        return <>
             <div className="add-comm-tool">
                 <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewGuestCommunicationTool}>
                     {LangHelper.getResource('AddCommunicationTool')}
                 </Button>
+                {
+                    guestCommunicationInfos.length === 0 &&
+                    <Form.Group as={Row}>
+                        <div>
+                            <div className="none-normal-communication-tool">
+                                <div>There is no communication info available</div>
+                                <span>To add the communication tool for this account, simply click on</span>
+                                <span className="add-communication-tool" onClick={this.addNewGuestCommunicationTool}>{` Add Communication Tool`}</span>
+                            </div>
+                        </div>
+                    </Form.Group>
+                }
                 <div>
                     {
-                        guestCommunicationInfos.length !== 0 && 
+                        guestCommunicationInfos.length !== 0 &&
                         <Form.Group as={Row}>
                             {
                                 guestCommunicationInfos.map((picCommunicationTool, index) => {
@@ -359,9 +392,9 @@ export class CustomerInfo extends PureComponent{
                                 })
                             }
                         </Form.Group>
-                    }                    
+                    }
                 </div>
-            </div>
+            </div >
         </>
     }
 
@@ -542,8 +575,8 @@ export class CustomerInfo extends PureComponent{
                             </Col>
                             {this.renderLicenseeType(customerInfo, handleChange)}
                         </Form.Group>
-                    }  
-                </div>                
+                    }
+                </div>
                 <span>{LangHelper.getResource('CommunicationInfo')}</span>
                 <div className="tab-account-info">
                     {

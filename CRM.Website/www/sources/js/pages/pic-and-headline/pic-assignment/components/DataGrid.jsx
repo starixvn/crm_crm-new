@@ -13,6 +13,13 @@ export class DataGrid extends Component {
         super(props);
     }
 
+    componentDidUpdate = () => {
+        if(window.assignPIC !== undefined && document.getElementById('plus-icon-assign-pic') !== null){
+            document.getElementById('plus-icon-assign-pic').click();
+            window.assignPIC = undefined;
+        }
+    };
+
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
         params.pageIndex = pageIndex;
@@ -332,6 +339,7 @@ export class DataGrid extends Component {
         if (pics === null || pics.length === 0) {
             if (isHost) {
                 return <span
+                    id='plus-icon-assign-pic'
                     className='plus-icon'
                     onClick={() => this.handleOpenAssignPicPopup(headlineId, accountNames)
                     }>+</span>;

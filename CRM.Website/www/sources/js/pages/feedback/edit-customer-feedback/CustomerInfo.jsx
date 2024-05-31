@@ -1,11 +1,13 @@
 ﻿import React, { PureComponent } from 'react';
-import { Col, Form, Row, Collapse } from 'react-bootstrap';
+import { Col, Form, Row, Collapse, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { changeSiteSetting, getPermission, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { Link } from 'react-router-dom';
+
 export default class CustomerInfo extends PureComponent {
     constructor(props) {
         super(props);
@@ -36,7 +38,7 @@ export default class CustomerInfo extends PureComponent {
         newCommunicationTools?.map(pic => {
             let communicationTools = [];
             if (latestFeedbackCommunicationTools.findIndex(x => x.picInfo === pic.picInfo) === -1) {
-                newCommunicationTools.map((communication, indexCom) => {
+                newCommunicationTools?.map((communication, indexCom) => {
                     if (communication.picInfo === pic.picInfo) {
                         communicationTools.push({
                             communicationID: communication.communicationID,
@@ -58,7 +60,7 @@ export default class CustomerInfo extends PureComponent {
             }
         });
         return latestFeedbackCommunicationTools;
-    }   
+    }
 
     handleChangeCommunicationTools = (name, value, index) => {
         const latestFeedbackCommunicationTools = this.state.latestFeedbackCommunicationTools;
@@ -137,16 +139,31 @@ export default class CustomerInfo extends PureComponent {
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
+
+
     renderHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
         const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
         const { touched, errors } = this.props;
+        if (latestFeedbackCommunicationTools.length === 0) {
+            window.assignPIC = {
+                username: this.props.customerInfo.username
+            };
+        }
         return <>
             <div className="tab-account-info">
+                {
+                    latestFeedbackCommunicationTools.length === 0 &&
+                    <div className="none-communication-tool">
+                        <div>There is no communication info available</div>
+                        <span>{`To add the communication tool for this account, simply click on `}</span>
+                        <Link to='/PicOfHeadline' className="add-communication-tool">Assign PIC</Link>
+                    </div>
+                }
                 {
                     communicationTools.map((item, indexCom) => {
                         return <div key={`pic-${item.picInfo}`} className="headline-account-communication">
                             {
-                                indexCom !== 0 && 
+                                indexCom !== 0 &&
                                 <div className="separate">
                                     <hr />
                                 </div>
@@ -206,22 +223,61 @@ export default class CustomerInfo extends PureComponent {
     }
 
     renderNoneHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
+        const { touched, errors, customerInfo, feedback } = this.props;
+        const picInfo = {
+            custID: customerInfo.custId,
+            feedbackID: feedback.feedbackId,
+            isHeadline: customerInfo.isGroupHeadLine,
+            picInfo: ''
+        };
         return <>
-            <div className="tab-account-info">
+            <div className="tab-account-info normal-account-communication">
+                <Button className='btn-add' variant="primary" size="sm" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>
+                    {LangHelper.getResource('AddCommunicationTool')}
+                </Button>
                 <Form.Group as={Row} className="pt-2">
+                    {
+                        latestFeedbackCommunicationTools.length === 0 &&
+                        <div>
+                            <div className="none-normal-communication-tool">
+                                <div>There is no communication info available</div>
+                                <span>To add the communication tool for this account, simply click on</span>
+                                <span className="add-communication-tool" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>{` Add Communication Tool`}</span>
+                            </div>
+                        </div>
+                    }
                     {
                         latestFeedbackCommunicationTools.map((item, index) => {
                             return <>
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="title">
-                                            {item.communicationName}
-                                        </Form.Label>
+                                        <div className="custom-label-communicationTool">
+                                            <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
+                                                style={{
+                                                    width: `${item.communicationID !== '' ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
+                                                }}
+                                                value={item.communicationID} onChange={event => {
+                                                    this.handleChangeCommunicationTools('communicationID', parseInt(event.target.value, 10), index);
+                                                }}>
+                                                <option value="0" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                {this.props.settingCommunicationTool.map(setting => this.renderOptions(setting.settingValue, setting.settingId))}
+                                            </Form.Control>
+                                        </div>
                                         <Col sm="8" md="8">
-                                            <Form.Control type="text" size="sm" maxLength="200" value={item.communicationValue} className="shadow-none" autoComplete="off"
-                                                onChange={event => {
-                                                    this.handleChangeCommunicationTools('communicationValue', event.target.value, index);
-                                                }} />
+                                            <div className='field-icon comm-tool'>
+                                                <textarea type="text" size="sm" value={item.communicationValue} autoComplete="off"
+                                                    className={`textarea-communication-tool shadow-none 
+                                                                    ${item.isError && touched.latestFeedbackCommunicationTools && errors.latestFeedbackCommunicationTools && 'invalid'}`}
+                                                    onChange={event => {
+                                                        this.handleChangeCommunicationTools('communicationValue', event.target.value, index);
+                                                    }} />
+                                                {
+                                                    this.state.isHostOnCurrentCustomer &&
+                                                    <div title='Delete communication tool'
+                                                        className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(index); }}>
+                                                    </div>
+                                                }
+                                            </div>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -235,16 +291,14 @@ export default class CustomerInfo extends PureComponent {
 
     renderNewCommunicationTool() {
         const { latestFeedbackCommunicationTools, headlineInfoPolicy } = this.state;
-        if (latestFeedbackCommunicationTools.length < 1) {
-            return null;
-        }
+
         return <>
             {
-                latestFeedbackCommunicationTools[0].isHeadline && headlineInfoPolicy >= Policy.Read &&
+                this.props.customerInfo?.isGroupHeadLine && headlineInfoPolicy >= Policy.Read &&
                 this.renderHeadlineCommunicationTools(latestFeedbackCommunicationTools)
             }
             {
-                !latestFeedbackCommunicationTools[0].isHeadline &&
+                !this.props.customerInfo?.isGroupHeadLine &&
                 this.renderNoneHeadlineCommunicationTools(latestFeedbackCommunicationTools)
             }
         </>
@@ -650,8 +704,8 @@ export default class CustomerInfo extends PureComponent {
     }
 
     render() {
-        const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue} = this.props;
-        
+        const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue } = this.props;
+
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         return (
             <div className="panel-group">
@@ -664,10 +718,10 @@ export default class CustomerInfo extends PureComponent {
                 <Collapse in={!collapse.customerInfo}>
                     <div id="collapse-expand-customerInfo" className="panel-content">
                         {
-                            this.state.latestFeedbackCommunicationTools.length > 0 &&
+                            fieldInput.isCheckFeedbackIdIsNew &&
                             <span>{LangHelper.getResource('AccountInfo')}</span>
                         }
-                        <div className={`${this.state.latestFeedbackCommunicationTools.length > 0 && 'tab-account-info' }`}>
+                        <div className={`${fieldInput.isCheckFeedbackIdIsNew && 'tab-account-info'}`}>
                             <Form.Group as={Row}>
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
@@ -796,7 +850,7 @@ export default class CustomerInfo extends PureComponent {
                             </Form.Group>
                         </div>
                         {
-                            this.state.latestFeedbackCommunicationTools.length > 0 &&
+                            fieldInput.isCheckFeedbackIdIsNew &&
                             <span>{LangHelper.getResource('CommunicationInfo')}</span>
                         }
                         {
@@ -806,17 +860,17 @@ export default class CustomerInfo extends PureComponent {
                             !fieldInput.isCheckFeedbackIdIsNew && this.renderOldCommunicationTool()
                         }
                         {
-                            this.state.isHostOnCurrentCustomer && this.state.latestFeedbackCommunicationTools.length > 0 &&
+                            this.state.isHostOnCurrentCustomer && fieldInput.isCheckFeedbackIdIsNew &&
                             <Form.Group as={Row} className="pt-1 pb-2">
                                 <Col sm="3" md="3">
                                     <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentAccountDetails')}
                                         htmlFor="check-box-overwrite" checked={fieldInput.isOverwrite}
-                                            onChange={() => handleChangeInput({
-                                                target: {
-                                                    name: 'isOverwrite',
-                                                    value: !fieldInput.isOverwrite
-                                                }
-                                            })}
+                                        onChange={() => handleChangeInput({
+                                            target: {
+                                                name: 'isOverwrite',
+                                                value: !fieldInput.isOverwrite
+                                            }
+                                        })}
                                     />
                                 </Col>
                             </Form.Group>

@@ -4,6 +4,18 @@
 }
 
 .add-feedback {
+    .none-communication-tool, .none-normal-communication-tool {
+        margin-left: 25%;
+        width: max-content;
+        margin-top: 10px;   
+
+        .add-communication-tool{
+            font-weight: bold;
+            color: blue;
+            cursor: pointer;
+        }
+    }
+
     .tab-account-info {
         padding: 8px;
         border: 1px solid #BBBBBB;
@@ -42,9 +54,26 @@
         border-color: #80bdff;
     }
 
-    .headline-account-communication, .normal-account-communication {
+    .normal-account-communication, .add-comm-tool{
+        .none-normal-communication-tool{
+            padding: 0.5rem 0 6px;
+            margin-left: 70% ;
+        }
+        .btn-add{
+            margin: 0.5rem 0 1rem 0;
+        }
         .comm-tool {
-            width: 85% !important;
+            width: 90% !important;
+        }
+    }
+
+    .headline-account-communication, .normal-account-communication {      
+        .btn-add{
+            margin: 0.5rem 0 0.5rem 0;
+        }
+
+        .comm-tool {
+            width: 85%;
         }
 
         .custom-label-communicationTool {
@@ -140,8 +169,6 @@
         }
 
         .add-comm-tool {
-            padding: 12px 0 6px;
-
             .guest-communication-value {
                 display: flex;
                 padding: 0 12px;
@@ -151,21 +178,12 @@
                 }
             }
 
-            .btn-add {
-                margin-bottom: 12px;
-            }
-
-            .col-md-4 {
-                margin-bottom: 6px;
-            }
-
             .no-data {
                 border-radius: 3px;
                 border: 1px #b7b7b7 solid;
                 padding: 4px 48px;
                 margin: auto;
                 width: fit-content;
-                margin-bottom: 6px;
             }
 
             .custom-label-communicationTool {

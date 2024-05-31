@@ -26,7 +26,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.PICManagement).then(response => {
             this.setState({policyPicManagement: response});
         });
-        document.title = LangHelper.getResource('PICAssignment');
+        document.title = LangHelper.getResource('PICAssignment');        
     }
 
     componentWillUnmount(){

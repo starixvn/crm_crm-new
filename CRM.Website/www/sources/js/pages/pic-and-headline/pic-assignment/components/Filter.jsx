@@ -35,7 +35,7 @@ export class Filter extends Component {
     }
 
     componentDidMount = () => {
-        this.props.getSettings().then(() => {
+        this.props.getSettings().then( async () => {
             const siteIds = [], siteOptions = [];
 
             this.props.settings.siteList.map((item, key) => {
@@ -83,19 +83,24 @@ export class Filter extends Component {
                 };
             });
 
-            this.setState(prevState => ({
+            await this.setState(prevState => ({
                 siteOptions,
                 currencyOptions,
                 statusOptions,
                 positionOptions,
                 filter: {
                     ...prevState.filter,
+                    groupHeadline: window.assignPIC !== undefined ? window.assignPIC.username : '',
                     site: siteIds.toString(),
                     currency: currencyIds.toString(),
                     status: this.props.settings.statusList.toString(),
                     position: positionIds.toString()
                 }
             }));
+
+            if(window.assignPIC !== undefined){
+                this.handleSubmit();
+            }
         });
     };
 
