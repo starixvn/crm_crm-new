@@ -168,14 +168,16 @@ export class ActionNotification extends Component {
         );
     };
 
+    getTicketCount = sites => sites.reduce((count, item) => count + item.ticketCnt, 0);
+
     renderMapSite = () => {
         const creditSites = filterAndSortSites(this.state.sites, 'Credit');
         const licenseeSites = filterAndSortSites(this.state.sites, 'Licensee');
 
         return (
             <div>
-                {this.renderSiteSection(creditSites, LangHelper.getResource('CreditTotalTickets'), creditSites[0]?.ticketCnt)}
-                {this.renderSiteSection(licenseeSites, LangHelper.getResource('LicenseeTotalTickets'), licenseeSites[0]?.ticketCnt)}
+                {this.renderSiteSection(creditSites, LangHelper.getResource('CreditTotalTickets'), this.getTicketCount(creditSites))}
+                {this.renderSiteSection(licenseeSites, LangHelper.getResource('LicenseeTotalTickets'), this.getTicketCount(licenseeSites))}
             </div>
         );
     };
