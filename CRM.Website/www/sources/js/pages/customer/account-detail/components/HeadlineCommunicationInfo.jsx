@@ -39,7 +39,8 @@ export class HeadlineCommunicationInfo extends Component {
                 picCommunicationTool: null,
                 indexPic: 0
             },
-            headlineInfoPolicy: null
+            headlineInfoPolicy: null,
+            picAssignmentPolicy: null
         };
     }
 
@@ -104,6 +105,9 @@ export class HeadlineCommunicationInfo extends Component {
         this.props.setShowConfirmUnSaved(false);
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
+        });
+        getPermission(FunctionKey.PICAssignment).then(response => {
+            this.setState({ picAssignmentPolicy: response });
         });
         window.addEventListener("autoScroll", this.handleAutoScroll);
     }
@@ -494,7 +498,7 @@ export class HeadlineCommunicationInfo extends Component {
 
     render() {
         let { headlinePicRoles, accountingPicRoles, settingCommunicationTool, customerInfo } = this.props;
-        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
+        let { headlineCommunicationInfo, headlineInfoPolicy, picAssignmentPolicy } = this.state;
         if (!headlinePicRoles || !accountingPicRoles || !settingCommunicationTool || !headlineCommunicationInfo || !customerInfo) {
             return null;
         }
@@ -512,20 +516,22 @@ export class HeadlineCommunicationInfo extends Component {
                     </div>
                 }
                 {
-                    headlineCommunicationInfo.length === 0 &&
-                    // <div className='group-content group-data'>
-                    //     <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
-                    // </div>
+                    headlineCommunicationInfo.length === 0 && 
                     <div className="none-communication-tool">
                         <div>There is no communication info available</div>
-                        <span>{`To add the communication tool for this account, simply click on `}</span>
-                        <Link to='/PicOfHeadline' onClick={()=> {
-                            if(headlineCommunicationInfo.length === 0){
-                                window.assignPIC = {
-                                    username: customerInfo.username
-                                };
-                            }
-                        }} className="add-communication-tool">Assign PIC</Link>
+                        {
+                            picAssignmentPolicy === Policy.Host &&
+                            <>
+                                <span>{`To add the communication tool for this account, simply click on `}</span>
+                                <Link to='/PicOfHeadline' onClick={() => {
+                                    if (headlineCommunicationInfo.length === 0) {
+                                        window.assignPIC = {
+                                            username: customerInfo.username
+                                        };
+                                    }
+                                }} className="add-communication-tool">Assign PIC</Link>
+                            </>
+                        }
                     </div>
                 }
                 {

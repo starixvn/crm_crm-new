@@ -14,6 +14,7 @@ export class CustomerInfo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            picAssignmentPolicy: null,
             headlineInfoPolicy: null,
             isHostOnCurrentCustomer: false,
             headlineStaffInfoCommunications: [],
@@ -30,6 +31,9 @@ export class CustomerInfo extends PureComponent {
     componentDidMount() {
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
+        });
+        getPermission(FunctionKey.PICAssignment).then(response => {
+            this.setState({ picAssignmentPolicy: response });
         });
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({ isHostOnCurrentCustomer: response });
@@ -118,17 +122,22 @@ export class CustomerInfo extends PureComponent {
         const headlineCommunicationInfo = getHeadlineCommunicationInfoPIC(headlineStaffInfoCommunications, this.props.customerInfo.headlineStaffInfoPics);        
         return <>
             {
-                headlineStaffInfoCommunications.length === 0 &&
+                headlineStaffInfoCommunications.length === 0 && 
                 <div className="none-communication-tool">
                     <div>There is no communication info available</div>
-                    <span>{`To add the communication tool for this account, simply click on `}</span>
-                    <Link to='/PicOfHeadline' onClick={() => {
-                        if (headlineStaffInfoCommunications.length === 0) {
-                            window.assignPIC = {
-                                username: this.props.customerDetail.username
-                            };
-                        }
-                    }} className="add-communication-tool">Assign PIC</Link>
+                    {
+                        this.state.picAssignmentPolicy === Policy.Host &&
+                        <>
+                            <span>{`To add the communication tool for this account, simply click on `}</span>
+                            <Link to='/PicOfHeadline' onClick={() => {
+                                if (headlineStaffInfoCommunications.length === 0) {
+                                    window.assignPIC = {
+                                        username: this.props.customerDetail.username
+                                    };
+                                }
+                            }} className="add-communication-tool">Assign PIC</Link>
+                        </>
+                    }
                 </div>
             }
             {

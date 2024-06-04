@@ -12,6 +12,7 @@ export default class CustomerInfo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            picAssignmentPolicy: null,
             latestFeedbackCommunicationTools: [],
             isHostOnCurrentCustomer: false,
             headlineInfoPolicy: null,
@@ -30,6 +31,9 @@ export default class CustomerInfo extends PureComponent {
         });
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({ isHostOnCurrentCustomer: response });
+        });
+        getPermission(FunctionKey.PICAssignment).then(response => {
+            this.setState({ picAssignmentPolicy: response });
         });
     }
 
@@ -147,17 +151,22 @@ export default class CustomerInfo extends PureComponent {
         return <>
             <div className="tab-account-info">
                 {
-                    latestFeedbackCommunicationTools.length === 0 &&
+                    latestFeedbackCommunicationTools.length === 0 && 
                     <div className="none-communication-tool">
                         <div>There is no communication info available</div>
-                        <span>{`To add the communication tool for this account, simply click on `}</span>
-                        <Link to='/PicOfHeadline' onClick={() => {
-                            if (latestFeedbackCommunicationTools.length === 0) {
-                                window.assignPIC = {
-                                    username: this.props.customerInfo.username
-                                };
-                            }
-                        }} className="add-communication-tool">Assign PIC</Link>
+                        {
+                            this.state.picAssignmentPolicy === Policy.Host &&
+                            <>
+                                <span>{`To add the communication tool for this account, simply click on `}</span>
+                                <Link to='/PicOfHeadline' onClick={() => {
+                                    if (latestFeedbackCommunicationTools.length === 0) {
+                                        window.assignPIC = {
+                                            username: this.props.customerInfo.username
+                                        };
+                                    }
+                                }} className="add-communication-tool">Assign PIC</Link>
+                            </>
+                        }
                     </div>
                 }
                 {
@@ -224,7 +233,7 @@ export default class CustomerInfo extends PureComponent {
     }
 
     renderNoneHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
-        const { touched, errors, customerInfo, feedback } = this.props;
+        const { touched, errors, customerInfo, feedback, hasCreateFeedbackPermission } = this.props;
         const picInfo = {
             custID: customerInfo.custId,
             feedbackID: feedback.feedbackId,
@@ -238,12 +247,17 @@ export default class CustomerInfo extends PureComponent {
                 </Button>
                 <Form.Group as={Row} className="pt-2">
                     {
-                        latestFeedbackCommunicationTools.length === 0 &&
+                        latestFeedbackCommunicationTools.length === 0 && 
                         <div>
                             <div className="none-normal-communication-tool">
                                 <div>There is no communication info available</div>
-                                <span>To add the communication tool for this account, simply click on</span>
-                                <span className="add-communication-tool" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>{` Add Communication Tool`}</span>
+                                    {
+                                        hasCreateFeedbackPermission && 
+                                        <>
+                                            <span>To add the communication tool for this account, simply click on</span>
+                                            <span className="add-communication-tool" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>{` Add Communication Tool`}</span>
+                                        </>
+                                    }
                             </div>
                         </div>
                     }

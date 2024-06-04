@@ -1027,7 +1027,7 @@ export class AppContainer extends Component {
                         settingCommunicationTool={settingCommunicationTool}
                         customerType={feedback.custType}
                         customerInfo={customerInfo}
-                        feedback={feedback}
+                        feedback={feedback} hasCreateFeedbackPermission={hasCreateFeedbackPermission }
                         touched={touched} errors={errors}
                     />
                     <FeedbackInfo collapse={collapse} values={values} touched={touched} errors={errors} settings={settings}

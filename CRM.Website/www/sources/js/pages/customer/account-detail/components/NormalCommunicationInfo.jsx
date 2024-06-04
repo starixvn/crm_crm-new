@@ -327,14 +327,16 @@ export class NormalCommunicationInfo extends Component {
                             }
                         </div>
                         {
-                            values.otherAccountCommunication?.length === 0 &&
-                            // <div className="group-content">
-                            //     <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
-                            // </div>
+                            values.otherAccountCommunication?.length === 0 && 
                             <div className="none-normal-communication-tool">
                                 <div>There is no communication info available</div>
-                                <span>To add the communication tool for this account, simply click on</span>
-                                <span className="add-communication-tool">{` Add Communication Tool`}</span>
+                                {
+                                    values.isHostOnCurrentCustomer &&
+                                    <>
+                                        <span>To add the communication tool for this account, simply click on</span>
+                                        <span className="add-communication-tool">{` Add Communication Tool`}</span>
+                                    </>
+                                }
                             </div>
                         }
                     </div>
