@@ -36,8 +36,7 @@
         [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> GetResultAdmNotification([FromBody] GetResultAdmNotification param)
         {
-            var sitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            var (sitePermission, licenseeType) = await GetDataPermission();
             param.SitePermission = sitePermission;
             param.LicenseeType = licenseeType;
 
@@ -48,7 +47,8 @@
         [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> GetResultAdmNotificationById(int id)
         {
-            var (notificationDetails, sites) = await messageNotificationCenterService.GetResultAdmNotificationByIdAsync(id);
+            var (sitePermission, licenseeType) = await GetDataPermission();
+            var (notificationDetails, sites) = await messageNotificationCenterService.GetResultAdmNotificationByIdAsync(id, sitePermission, licenseeType);
             return Json(new { notificationDetails, sites });
         }
 
@@ -68,20 +68,31 @@
             return Json(commandResult);
         }
 
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> GetSiteTicketsById(int id)
         {
-            var siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(id);
+            var (sitePermission, licenseeType) = await GetDataPermission();
+            var siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(id, sitePermission, licenseeType);
             return Json(siteTickets);
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> ExportExcel([FromBody] ExcelSiteTicket param)
         {
-            IEnumerable<AdmSiteTicket> siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId);
+            var (sitePermission, licenseeType) = await GetDataPermission();
+            IEnumerable<AdmSiteTicket> siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId, sitePermission, licenseeType);
             var eventDate = param.EventDate.ToShortDateFormatDash();
             var bytes = excelService.ExportSiteTicket(siteTickets, eventDate, param.EventName);
             string reportName = string.Format(ViewResources.MncAffectedTicketFileName, eventDate);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
+
+        private async Task<(string sitePermission, short licenseeType)> GetDataPermission()
+        {
+            var sitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            return (sitePermission, licenseeType);
         }
     }
 }

@@ -13,13 +13,13 @@
     {
         Task<(IEnumerable<ResultAdmNotification> notifications, IEnumerable<ResultAdmSite> allSite)> GetResultAdmNotificationAsync(GetResultAdmNotification param);
 
-        Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResultAdmNotificationByIdAsync(int notiId);
+        Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResultAdmNotificationByIdAsync(int notiId, string sitePermission, short licenseeType);
 
         Task<CommandResult> EditResultAdmNotificationAsync(EditResultAdmNotification param);
 
         Task<CommandResult> EditResultAdmStatusAsync(EditResultAdmNotiStatus param);
 
-        Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId);
+        Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId, string sitePermission, short licenseeType);
     }
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
@@ -61,11 +61,13 @@
             return (notifications, allSite);
         }
 
-        public async Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResultAdmNotificationByIdAsync(int notiId)
+        public async Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResultAdmNotificationByIdAsync(int notiId, string sitePermission, short licenseeType)
         {
             var criteria = new GetResultAdmNotiByIdCriteria
             {
-                NotiID = notiId
+                NotiID = notiId,
+                SitePermission = sitePermission,
+                LicenseeType = licenseeType
             };
             var (notificationDetails, sites) = await baseService.FetchMultipleAsync<ResultAdmNotificationDetail, ResultAdmSite>(criteria);
             return (notificationDetails, sites);
@@ -96,11 +98,13 @@
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
-        public async Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId)
+        public async Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId, string sitePermission, short licenseeType)
         {
             var criteria = new GetSiteTicketByIdCriteria
             {
-                NotiID = notiId
+                NotiID = notiId,
+                SitePermission = sitePermission,
+                LicenseeType = licenseeType
             };
             return await baseService.GetDataAsync<AdmSiteTicket>(criteria);
         }

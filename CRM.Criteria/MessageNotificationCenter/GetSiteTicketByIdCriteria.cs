@@ -1,8 +1,6 @@
 ﻿namespace CRM.Criteria.MessageNotificationCenter
 {
-    using Fanex.Data.Repository;
-
-    public class GetSiteTicketByIdCriteria : CriteriaBase
+    public class GetSiteTicketByIdCriteria : BaseSitePermisionCriteria
     {
         public int NotiID { get; set; }
 
