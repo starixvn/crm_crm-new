@@ -199,7 +199,7 @@
         <Setting Key="Acc_CRM_FeedbackDoubleCheck" SpName="Acc_CRM_FeedbackDoubleCheck" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Age_SelBalanceUpDay" SpName="Age_SelBalanceUpDay" DbName="DBAGE.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Guest" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Guest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Guest" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Guest_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew" SpName="Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_NewManualFeedback_FeedbackUpd" SpName="Acc_CRM_NewManualFeedback_FeedbackUpd_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_NewManualFeedback_FeedbackSelByID" SpName="Acc_CRM_NewManualFeedback_FeedbackSelByID" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -285,7 +285,7 @@
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="CRM_MultipleLogs_VerifyRelatedCustomer" SpName="CRM_MultipleLogs_VerifyRelatedCustomer" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_GuestFeedbackCheck_Multiple" SpName="Acc_CRM_GuestFeedbackCheck_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CommunicationLogSel" SpName="Acc_CRM_CommunicationLogSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_GuestFeedbackUpd_Multiple" SpName="Acc_CRM_GuestFeedbackUpd_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>

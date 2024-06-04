@@ -25,7 +25,7 @@ export class DataGrid extends Component {
     buildBody = () => {
         const { activityLogs } = this.props;
 
-        if ( activityLogs.data.length > 0) {
+        if (activityLogs.data.length > 0) {
             return activityLogs.data.map((item, index) => this.renderRow(item, index));
         }
         return [
@@ -38,7 +38,7 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index) => {
-        const color = index%2 === 0 ? 'grid-blue' : 'grid-white';
+        const color = index % 2 === 0 ? 'grid-blue' : 'grid-white';
         const rowSpan = item.fieldNames.length > 0 ? item.fieldNames.length : null;
         return (
             <Fragment>
@@ -47,16 +47,16 @@ export class DataGrid extends Component {
                     <Cell className={color} rowSpan={rowSpan}>{item.username}</Cell>
                     <Cell className={color} rowSpan={rowSpan}>{item.actionName}</Cell>
                     <Cell className={color}>{item.fieldNames[0]}</Cell>
-                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.replaceText(item.oldValuesList[0]) }}></Cell>
-                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.replaceText(item.newValuesList[0]) }}></Cell>
+                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0], item.oldValuesList[0]) }}></Cell>
+                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0], item.newValuesList[0]) }}></Cell>
                 </Row>
                 {
                     item.fieldNames.length > 1 &&
                     item.fieldNames.slice(1).map((element, key) => (
                         <Row key={key}>
-                            <Cell className={color}>{item.fieldNames[key+1]}</Cell>
-                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.replaceText(item.oldValuesList[key + 1])  }}></Cell>
-                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.replaceText(item.newValuesList[key+1]) }}></Cell>
+                            <Cell className={color}>{item.fieldNames[key + 1]}</Cell>
+                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key + 1], item.oldValuesList[key + 1]) }}></Cell>
+                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key + 1], item.newValuesList[key + 1]) }}></Cell>
                         </Row>
                     ))
                 }
@@ -64,7 +64,32 @@ export class DataGrid extends Component {
         );
     };
 
+    isEncode = fieldName => {
+        return fieldName !== 'Remark' &&
+            fieldName !== 'Solution' &&
+            fieldName !== 'Review' &&
+            fieldName !== 'SpecialRemark';
+    };
+
     replaceText = text => text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';
+
+    encodeHtml = value => {
+        const item = value.replaceAll("&amp;", "&")
+            .replaceAll("&lt;", "<")
+            .replaceAll("&gt;", ">")
+            .replaceAll("&quot;", '"')
+            .replaceAll("&#39;", "'");
+        return item;
+    };
+
+    renderValue = (fieldName, value) => {
+        value = this.replaceText(value);
+        if (!this.isEncode(fieldName)) {
+            value = this.encodeHtml(value);
+        }
+        return value;
+    };
+
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
@@ -76,7 +101,7 @@ export class DataGrid extends Component {
 
     render() {
         const { activityLogs } = this.props;
-        if(!activityLogs || !activityLogs.data){
+        if (!activityLogs || !activityLogs.data) {
             return null;
         }
 
