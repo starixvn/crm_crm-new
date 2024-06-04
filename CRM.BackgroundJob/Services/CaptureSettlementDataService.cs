@@ -31,7 +31,7 @@
             {
                 Environment = environment
             };
-            return await baseService.GetSiteDbConfigAsync(criteria);
+            return await baseService.GetDataAsync<SiteDbConfig>(criteria);
         }
 
         public async Task<IEnumerable<SettlResultHistory>> GetSessionByDateAsync(SiteDbConfig siteDbConfig)
