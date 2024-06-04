@@ -22,6 +22,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { ParamsSubmit, ValidateHeadlineCommunicationInfo, getHeadlineCommunicationInfo } from '../common.functions';
+import { Link } from 'react-router-dom';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
@@ -46,24 +47,24 @@ export class HeadlineCommunicationInfo extends Component {
         if (nextProps.customerInfo?.custId !== this.props.customerInfo?.custId) {
             await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
             const headlineCommunicationInfo = getHeadlineCommunicationInfo(this.props.customerInfo);
-            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo});
+            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
         }
 
         if (this.props.activeTab != null) {
-            const { activeTab, customerInfo } = this.props;            
+            const { activeTab, customerInfo } = this.props;
             const initialValues = getHeadlineCommunicationInfo(customerInfo);
             if (!this.state.headlineCommunicationInfo || !initialValues) {
                 return null;
             }
-            this.handleComfirmChangeTab(activeTab, initialValues);            
-        }     
+            this.handleComfirmChangeTab(activeTab, initialValues);
+        }
 
         if (window.picID !== undefined) {
             this.handleAutoScroll();
         }
 
         if (document.querySelector("#tab-headline-communication-info") != null) {
-            this.handleCustomDropdownTable();            
+            this.handleCustomDropdownTable();
         }
     }
 
@@ -94,7 +95,7 @@ export class HeadlineCommunicationInfo extends Component {
             }
         }
     }
-    
+
     async componentDidMount() {
         await this.props.getHeadlinePicRoles(HeadlinePicID);
         await this.props.getAccountingPicRoles(AccountingPicID);
@@ -172,7 +173,7 @@ export class HeadlineCommunicationInfo extends Component {
 
     handleSubmit = async () => {
         const errors = this.validateCommunicationInfo();
-        this.setState({isValidate: true});
+        this.setState({ isValidate: true });
         if (errors === null) {
             let validResult = await this.validateEditPic();
             if (validResult.length === 0) {
@@ -281,7 +282,7 @@ export class HeadlineCommunicationInfo extends Component {
         return validResult;
     }
 
-    validateCommunicationInfo = () => {   
+    validateCommunicationInfo = () => {
         let { errors, headlineCommunicationInfo } = ValidateHeadlineCommunicationInfo(this.state.headlineCommunicationInfo);
         this.setState({
             headlineCommunicationInfo: headlineCommunicationInfo
@@ -325,7 +326,7 @@ export class HeadlineCommunicationInfo extends Component {
         }
     }
 
-    renderInfo = (pic, indexPic) => {        
+    renderInfo = (pic, indexPic) => {
         let { allSettings, headlinePicRoles, accountingPicRoles, settingCommunicationTool } = this.props;
         const languageSelected = this.props.allSettings.languages.map(item => {
             return {
@@ -340,7 +341,7 @@ export class HeadlineCommunicationInfo extends Component {
                     <Form.Label className="required">
                         {LangHelper.getResource('Name')}
                     </Form.Label>
-                    <Form.Control className={pic.isNameError && 'invalid' } type="text" name="name" value={pic.picName} autoComplete="off" onChange={event => {
+                    <Form.Control className={pic.isNameError && 'invalid'} type="text" name="name" value={pic.picName} autoComplete="off" onChange={event => {
                         this.handleChangeValue('picName', event.target.value, indexPic);
                     }} />
                 </Form.Group>
@@ -354,7 +355,7 @@ export class HeadlineCommunicationInfo extends Component {
                             onChange={event => {
                                 this.handleChangeValue('role', parseInt(event.target.value, 10), indexPic);
                             }}>
-                            {headlinePicRoles.map(item => this.renderOptions(item.settingValue, item.settingId))} 
+                            {headlinePicRoles.map(item => this.renderOptions(item.settingValue, item.settingId))}
                         </Form.Control>
                     }
                     {
@@ -362,7 +363,7 @@ export class HeadlineCommunicationInfo extends Component {
                         <Form.Control as="select" size="sm" className={pic.isRoleError ? 'invalid shadow-none' : 'shadow-none'} value={pic.role} name="picRoleID" id="picRoleID"
                             onChange={(currentItem, selectedItemsKey) => {
                                 this.handleChangeValue('country', selectedItemsKey, indexPic);
-                        }}>
+                            }}>
                             {accountingPicRoles.map(item => this.renderOptions(item.settingValue, item.settingId))}
                         </Form.Control>
                     }
@@ -371,16 +372,16 @@ export class HeadlineCommunicationInfo extends Component {
                     <Form.Label >
                         {LangHelper.getResource('Languages')}
                     </Form.Label>
-                        <MultipleSelect
-                            dataSource={languageSelected}
-                            keyField='languageId'
-                            valueField='name'
-                            isAllTextShown
-                            isNAOption
-                            onChange={(currentItem, selectedItemsKey) => {
-                                this.handleChangeValue('language', selectedItemsKey, indexPic);
-                            }}
-                        />
+                    <MultipleSelect
+                        dataSource={languageSelected}
+                        keyField='languageId'
+                        valueField='name'
+                        isAllTextShown
+                        isNAOption
+                        onChange={(currentItem, selectedItemsKey) => {
+                            this.handleChangeValue('language', selectedItemsKey, indexPic);
+                        }}
+                    />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>
@@ -403,8 +404,9 @@ export class HeadlineCommunicationInfo extends Component {
                             <Form.Group>
                                 <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool"
                                     style={{
-                                        width: `${picCommunicationTool.type !== '' ? this.getWidth(picCommunicationTool, settingCommunicationTool) : 115}px` }}
-                                        value={picCommunicationTool.type} onChange={event => {
+                                        width: `${picCommunicationTool.type !== '' ? this.getWidth(picCommunicationTool, settingCommunicationTool) : 115}px`
+                                    }}
+                                    value={picCommunicationTool.type} onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
                                     }}>
                                     <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
@@ -414,17 +416,17 @@ export class HeadlineCommunicationInfo extends Component {
                                     <textarea type="text" className={`textarea-communication-tool ${picCommunicationTool.isError && 'invalid'}`}
                                         placeholder={LangHelper.getResource('SeparatedByComma')}
                                         value={picCommunicationTool.value} autoComplete="off" onChange={event => {
-                                        this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
-                                    }} />
+                                            this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
+                                        }} />
                                     {
                                         this.state.headlineInfoPolicy === Policy.Host && pic.picCommunicationTools.length > 1 &&
                                         <div title='Delete communication tool'
-                                                onClick={() => { this.handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPic); }}
+                                            onClick={() => { this.handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPic); }}
                                             className='icon icon-delete'>
                                         </div>
                                     }
                                     {
-                                        this.state.headlineInfoPolicy === Policy.Host && indexPicCommunicationTool === ( pic.picCommunicationTools.length - 1) &&
+                                        this.state.headlineInfoPolicy === Policy.Host && indexPicCommunicationTool === (pic.picCommunicationTools.length - 1) &&
                                         <div title='Add communication tool' onClick={() => { this.addNewCommunicationTool(indexPic); }}
                                             className='icon icon-plus'>
                                         </div>
@@ -485,7 +487,7 @@ export class HeadlineCommunicationInfo extends Component {
                 {indexPic !== 0 && <span>{', '}</span>}
                 <span className="bold">{comPic.communicationValue}</span>
                 <span>{` (${comPic.communicationTool})`}</span>
-            </>);            
+            </>);
         })
         return chatTypeMapping;
     }
@@ -511,8 +513,19 @@ export class HeadlineCommunicationInfo extends Component {
                 }
                 {
                     headlineCommunicationInfo.length === 0 &&
-                    <div className='group-content group-data'>
-                        <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                    // <div className='group-content group-data'>
+                    //     <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                    // </div>
+                    <div className="none-communication-tool">
+                        <div>There is no communication info available</div>
+                        <span>{`To add the communication tool for this account, simply click on `}</span>
+                        <Link to='/PicOfHeadline' onClick={()=> {
+                            if(headlineCommunicationInfo.length === 0){
+                                window.assignPIC = {
+                                    username: customerInfo.username
+                                };
+                            }
+                        }} className="add-communication-tool">Assign PIC</Link>
                     </div>
                 }
                 {

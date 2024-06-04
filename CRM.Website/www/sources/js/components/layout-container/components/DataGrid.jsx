@@ -346,11 +346,6 @@ export default class DataGrid extends PureComponent {
     }
 
     renderAccountHeadlineInfo = values => {
-        if (values.headlineStaffInfoPics.length === 0) {
-            window.assignPIC = {
-                username: this.props.customerInfo.username
-            };
-        }
         return (
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
@@ -363,7 +358,13 @@ export default class DataGrid extends PureComponent {
                         <div className="none-communication-tool">
                             <div>There is no communication info available</div>
                             <span>{`To add the communication tool for this account, simply click on `}</span>
-                            <Link to='/PicOfHeadline' className="add-communication-tool">Assign PIC</Link>
+                            <Link to='/PicOfHeadline' onClick={()=>{
+                                if (values.headlineStaffInfoPics.length === 0) {
+                                    window.assignPIC = {
+                                        username: this.props.customerInfo.username
+                                    };
+                                }
+                            }} className="add-communication-tool">Assign PIC</Link>
                         </div>
                     </div>
                 }

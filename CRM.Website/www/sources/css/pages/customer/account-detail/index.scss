@@ -23,6 +23,15 @@
         color: #FFFFFF;
     }
 
+    .none-communication-tool, .none-normal-communication-tool {
+        margin-left: 25%;
+        .add-communication-tool{
+            font-weight: bold;
+            color: blue;
+            cursor: pointer;
+        }
+    }
+
     .other-communication-tool-grid {
         display: grid !important;
         grid-template-columns: repeat(5, 200px);

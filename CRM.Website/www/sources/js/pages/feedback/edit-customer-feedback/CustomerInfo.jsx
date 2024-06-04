@@ -143,12 +143,7 @@ export default class CustomerInfo extends PureComponent {
 
     renderHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
         const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
-        const { touched, errors } = this.props;
-        if (latestFeedbackCommunicationTools.length === 0) {
-            window.assignPIC = {
-                username: this.props.customerInfo.username
-            };
-        }
+        const { touched, errors } = this.props;        
         return <>
             <div className="tab-account-info">
                 {
@@ -156,7 +151,13 @@ export default class CustomerInfo extends PureComponent {
                     <div className="none-communication-tool">
                         <div>There is no communication info available</div>
                         <span>{`To add the communication tool for this account, simply click on `}</span>
-                        <Link to='/PicOfHeadline' className="add-communication-tool">Assign PIC</Link>
+                        <Link to='/PicOfHeadline' onClick={() => {
+                            if (latestFeedbackCommunicationTools.length === 0) {
+                                window.assignPIC = {
+                                    username: this.props.customerInfo.username
+                                };
+                            }
+                        }} className="add-communication-tool">Assign PIC</Link>
                     </div>
                 }
                 {

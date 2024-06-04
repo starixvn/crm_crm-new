@@ -115,19 +115,20 @@ export class CustomerInfo extends PureComponent {
 
     renderHeadlineAccountCommunication = headlineStaffInfoCommunications => {
         const { touched, errors } = this.props;
-        const headlineCommunicationInfo = getHeadlineCommunicationInfoPIC(headlineStaffInfoCommunications, this.props.customerInfo.headlineStaffInfoPics);
-        if (headlineStaffInfoCommunications.length === 0) {
-            window.assignPIC = {
-                username: this.props.customerDetail.username
-            };
-        }
+        const headlineCommunicationInfo = getHeadlineCommunicationInfoPIC(headlineStaffInfoCommunications, this.props.customerInfo.headlineStaffInfoPics);        
         return <>
             {
                 headlineStaffInfoCommunications.length === 0 &&
                 <div className="none-communication-tool">
                     <div>There is no communication info available</div>
                     <span>{`To add the communication tool for this account, simply click on `}</span>
-                    <Link to='/PicOfHeadline' className="add-communication-tool">Assign PIC</Link>
+                    <Link to='/PicOfHeadline' onClick={() => {
+                        if (headlineStaffInfoCommunications.length === 0) {
+                            window.assignPIC = {
+                                username: this.props.customerDetail.username
+                            };
+                        }
+                    }} className="add-communication-tool">Assign PIC</Link>
                 </div>
             }
             {

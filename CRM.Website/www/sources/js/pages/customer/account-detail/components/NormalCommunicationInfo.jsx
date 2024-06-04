@@ -208,7 +208,7 @@ export class NormalCommunicationInfo extends Component {
         return picCommunicationTools;
     }
 
-    editOtherAccountCommunicationInfo = async () => {        
+    editOtherAccountCommunicationInfo = async () => {
         const params = {
             custID: this.props.customerInfo.custId,
             otherCommunicationTools: this.getPicCommunicationTools()
@@ -328,8 +328,13 @@ export class NormalCommunicationInfo extends Component {
                         </div>
                         {
                             values.otherAccountCommunication?.length === 0 &&
-                            <div className="group-content">
-                                <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                            // <div className="group-content">
+                            //     <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                            // </div>
+                            <div className="none-normal-communication-tool">
+                                <div>There is no communication info available</div>
+                                <span>To add the communication tool for this account, simply click on</span>
+                                <span className="add-communication-tool">{` Add Communication Tool`}</span>
                             </div>
                         }
                     </div>
@@ -355,7 +360,7 @@ export class NormalCommunicationInfo extends Component {
                 }
             </>
         );
-    }    
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
