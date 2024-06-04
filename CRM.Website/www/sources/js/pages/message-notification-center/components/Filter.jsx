@@ -125,17 +125,22 @@ export class Filter extends Component {
         const errMsg = [];
         let isValid = true;
         const { filter, isCompareIdEqual } = this.state;
+        const { fromDate, toDate } = filter;
 
         if (!isCompareIdEqual) {
             if (isEitherExitsFromToId(filter)) {
                 isValid = false;
-                errMsg.push(LangHelper.getResource('Please input the both From and To of Notification ID'));
+                errMsg.push(LangHelper.getResource('BothFromToNotificationId'));
             }
 
             if (isFromIdOverToId(filter)) {
                 isValid = false;
-                errMsg.push(LangHelper.getResource('The To value cannot be greater than From value'));
+                errMsg.push(LangHelper.getResource('ToCannotGreaterFromValue'));
             }
+        }
+        if(!fromDate || !toDate){
+            isValid = false;
+            errMsg.push(LangHelper.getResource('InvalidRangeDateFilter'));
         }
 
         return { isValid, errMsg };

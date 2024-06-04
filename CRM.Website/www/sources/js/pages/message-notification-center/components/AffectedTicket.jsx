@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, HeaderRow, HeaderCell, Row, Cell, Tabs, Tab } from '@jsroot/components/react-grid/index';
+import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';

@@ -14,6 +14,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { filterAndSortSites } from '../common.functions';
 import Site from '@jsroot/common/site';
 import { toast } from 'react-toastify';
+import DetailNotification from './DetailNotification';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -23,7 +24,8 @@ export class DataGrid extends Component {
             expandPanels: false,
             cancelPopup: { show: false, notificationId: null },
             resendFailPopup: { show: false, notificationId: null },
-            deactivatePopup: { show: false, notificationId: null }
+            deactivatePopup: { show: false, notificationId: null },
+            detailNotificationPopup: { show: false, notificationId: null }
         };
         this.panels = [];
     }
@@ -83,10 +85,10 @@ export class DataGrid extends Component {
         this.props.getGridData({ ...params });
     };
 
-    handleAction = (notificationId, isOstUser) => {
+    handleAction = (notificationId) => {
         const actionParam = {
             notificationId: notificationId,
-            isOstUser: isOstUser,
+            isOstUser: this.props.gridParams.isOstUser,
             redirectParams: this.props.gridParams
         };
         this.props.navigate(Site.resolveClientUrl('NotificationCenter/Action'), {state: actionParam});
@@ -96,7 +98,8 @@ export class DataGrid extends Component {
         this.setState({
             cancelPopup: { show: false, notificationId: null },
             resendFailPopup: { show: false, notificationId: null },
-            deactivatePopup: { show: false, notificationId: null }
+            deactivatePopup: { show: false, notificationId: null },
+            detailNotificationPopup: { show: false, notificationId: null }
         });
     };
 
@@ -144,6 +147,10 @@ export class DataGrid extends Component {
         await this.handleUpdateStatus(params);
     };
 
+    handleDetailNotification = notificationId => {
+        this.setState({ detailNotificationPopup: { show: true, notificationId: notificationId } });
+    };
+
     copyGroupIdToClipboard = conversationId => {
         const input = document.createElement('input');
         input.value = conversationId;
@@ -174,7 +181,7 @@ export class DataGrid extends Component {
             case 'New':
                 return (
                     <>
-                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId)}>{LangHelper.getResource('Review')}</div>
                         <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
                     </>
                 );
@@ -183,12 +190,12 @@ export class DataGrid extends Component {
             case 'Draft':
                 return (
                     <>
-                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId)}>{LangHelper.getResource('Edit')}</div>
                         <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
                     </>
                 );
             case 'Cancelled':
-                return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
+                return <div className='review-button' onClick={() => this.handleAction(notificationId)}>{LangHelper.getResource('Edit')}</div>;
             default:
                 return null;
         }
@@ -197,11 +204,11 @@ export class DataGrid extends Component {
     renderActionButtonCSD = (status, notificationId) => {
         switch (status) {
             case 'New':
-                return <div className='review-button' onClick={() => this.handleAction(notificationId, false)}>{LangHelper.getResource('Activate')}</div>;
+                return <div className='review-button' onClick={() => this.handleAction(notificationId)}>{LangHelper.getResource('Activate')}</div>;
             case 'Active':
                 return <div className='review-button' onClick={() => this.handleDeactivate(notificationId)}>{LangHelper.getResource('Deactivate')}</div>;
             case 'Inactive':
-                return <div className='review-button' onClick={() => this.handleAction(notificationId, false)}>{LangHelper.getResource('Activate')}</div>;
+                return <div className='review-button' onClick={() => this.handleAction(notificationId)}>{LangHelper.getResource('Activate')}</div>;
             default:
                 return null;
         }
@@ -313,7 +320,7 @@ export class DataGrid extends Component {
             <Row key={item.notificationID+'-'+index}>
                 <Cell className='text-center icon-info'>
                     <div className='text-session'>
-                        {item.notificationID}
+                        <span onClick={() => this.handleDetailNotification(item.notificationID)}>{item.notificationID}</span>
                         {
                             item.sessionID &&
                             (
@@ -378,7 +385,7 @@ export class DataGrid extends Component {
         const { totalItems } = this.props.gridData;
         const { pageIndex, pageSize } = this.props.gridParams;
         const { isHost } = this.props;
-        const { cancelPopup, resendFailPopup, deactivatePopup } = this.state;
+        const { cancelPopup, resendFailPopup, deactivatePopup, detailNotificationPopup } = this.state;
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
@@ -406,6 +413,9 @@ export class DataGrid extends Component {
                 {
                     (cancelPopup.show || resendFailPopup.show || deactivatePopup.show) &&
                     this.renderConfirmPopup()
+                }
+                {
+                    detailNotificationPopup.show && <DetailNotification onClose={this.handleClosePopup} actionParam={detailNotificationPopup}/>
                 }
             </>
         );
