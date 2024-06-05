@@ -282,6 +282,7 @@ export default class CustomerInfo extends PureComponent {
                                         <Col sm="8" md="8">
                                             <div className='field-icon comm-tool'>
                                                 <textarea type="text" size="sm" value={item.communicationValue} autoComplete="off"
+                                                    placeholder={LangHelper.getResource('SeparatedByComma')}
                                                     className={`textarea-communication-tool shadow-none 
                                                                     ${item.isError && touched.latestFeedbackCommunicationTools && errors.latestFeedbackCommunicationTools && 'invalid'}`}
                                                     onChange={event => {

@@ -516,22 +516,23 @@ export class HeadlineCommunicationInfo extends Component {
                     </div>
                 }
                 {
-                    headlineCommunicationInfo.length === 0 && 
+                    headlineCommunicationInfo.length === 0 && picAssignmentPolicy &&
                     <div className="none-communication-tool">
                         <div>There is no communication info available</div>
-                        {
-                            picAssignmentPolicy &&
-                            <>
-                                <span>{`To add the communication tool for this account, simply click on `}</span>
-                                <Link to='/PicOfHeadline' onClick={() => {
-                                    if (headlineCommunicationInfo.length === 0) {
-                                        window.assignPIC = {
-                                            username: customerInfo.username
-                                        };
-                                    }
-                                }} className="add-communication-tool">Assign PIC</Link>
-                            </>
-                        }
+                        <span>{`To add the communication tool for this account, simply click on `}</span>
+                        <Link to='/PicOfHeadline' onClick={() => {
+                            if (headlineCommunicationInfo.length === 0) {
+                                window.assignPIC = {
+                                    username: customerInfo.username
+                                };
+                            }
+                        }} className="add-communication-tool">Assign PIC</Link>
+                    </div>
+                }
+                {
+                    headlineCommunicationInfo.length === 0 && !picAssignmentPolicy &&
+                    <div className="group-content">
+                        <div className='no-data'>There is no communication info available</div>
                     </div>
                 }
                 {

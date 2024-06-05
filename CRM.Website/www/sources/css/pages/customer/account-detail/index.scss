@@ -25,11 +25,19 @@
 
     .none-communication-tool, .none-normal-communication-tool {
         margin-left: 25%;
-        .add-communication-tool{
+
+        .add-communication-tool {
             font-weight: bold;
             color: blue;
             cursor: pointer;
         }
+    }
+
+    .no-data {
+        border-radius: 3px;
+        border: 1px #b7b7b7 solid;
+        padding: 9px 48px;
+        margin: auto;
     }
 
     .other-communication-tool-grid {
@@ -187,13 +195,6 @@
 
             .btn-add {
                 margin: 12px 12px 0 12px;
-            }
-
-            .no-data {
-                border-radius: 3px;
-                border: 1px #b7b7b7 solid;
-                padding: 9px 48px;
-                margin: auto;
             }
         }
     }

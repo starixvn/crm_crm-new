@@ -290,6 +290,7 @@ export class CustomerInfo extends PureComponent {
                                     <Col sm="8" md="8">
                                         <div className='field-icon comm-tool'>
                                             <textarea type="text" size="sm" value={item.communicationValue} autoComplete="off"
+                                                placeholder={LangHelper.getResource('SeparatedByComma')}
                                                 className={`textarea-communication-tool shadow-none 
                                                     ${item.isError && touched.otherAccountCommunicationInfos && errors.otherAccountCommunicationInfos && 'invalid'}`}
                                                 onChange={event => {
@@ -388,6 +389,7 @@ export class CustomerInfo extends PureComponent {
                                                 </div>
                                                 <Col sm="8" md="8" className="guest-communication-value">
                                                     <textarea type="text" size="sm" value={picCommunicationTool.communicationValue} autoComplete="off"
+                                                        placeholder={LangHelper.getResource('SeparatedByComma')}
                                                         className={`textarea-communication-tool shadow-none 
                                                             ${picCommunicationTool.isError && touched.guestCommunicationInfos && errors.guestCommunicationInfos && 'invalid'}`}
                                                         onChange={event => {
