@@ -173,6 +173,7 @@ export class CustomerInfo extends PureComponent {
                                                         <textarea type="text" size="sm" value={itemCom.picCommunicationValue} autoComplete="off"
                                                             className={`textarea-communication-tool shadow-none 
                                                                 ${itemCom.isError && touched.headlineStaffInfoCommunications && errors.headlineStaffInfoCommunications && 'invalid'}`}
+                                                            placeholder={LangHelper.getResource('SeparatedByComma')}
                                                             onChange={event => {
                                                                 this.handleChangeHeadlineStaffInfoCommunications('picCommunicationValue', event.target.value, itemCom.index);
                                                             }} />
