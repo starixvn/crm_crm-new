@@ -6,7 +6,7 @@
     {
         public int NotificationID { get; set; }
 
-        public int MessageID { get; set; }
+        public int? MessageID { get; set; }
 
         public DateTime? EventDate { get; set; }
 

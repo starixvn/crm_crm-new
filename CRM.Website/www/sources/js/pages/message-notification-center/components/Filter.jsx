@@ -178,18 +178,18 @@ export class Filter extends Component {
         const { isOstUser } = this.state;
         const hasPermission = isOstUser ? isHavePermissionOnSite() : isHaveLicenseePermissionOnSite();
     
-        if (!hasPermission) return;
-    
-        const validation = this.isValidParams();
-        if (!validation.isValid) {
-            validation.errMsg.forEach(item => {
-                toast.error(item);
-                this.setState({ isValidNotification: true });
-            });
-        } else {
-            const params = this.getParams();
-            this.props.setGridParams(params);
-            this.props.getGridData(params);
+        if (hasPermission) {
+            const validation = this.isValidParams();
+            if (!validation.isValid) {
+                validation.errMsg.forEach(item => {
+                    toast.error(item);
+                    this.setState({ isValidNotification: true });
+                });
+            } else {
+                const params = this.getParams();
+                this.props.setGridParams(params);
+                this.props.getGridData(params);
+            }
         }
     };
 
