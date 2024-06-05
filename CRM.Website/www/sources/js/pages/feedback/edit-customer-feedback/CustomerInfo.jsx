@@ -3,7 +3,7 @@ import { Col, Form, Row, Collapse, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import { changeSiteSetting, getPermission, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, getPermission, checkHostPermissionOnCurrentCustomer, checkHostPermissionPicAssign } from '@jsroot/common/shareScripts';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { Link } from 'react-router-dom';
@@ -32,7 +32,7 @@ export default class CustomerInfo extends PureComponent {
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({ isHostOnCurrentCustomer: response });
         });
-        getPermission(FunctionKey.PICAssignment).then(response => {
+        checkHostPermissionPicAssign().then(response => {
             this.setState({ picAssignmentPolicy: response });
         });
     }
@@ -155,7 +155,7 @@ export default class CustomerInfo extends PureComponent {
                     <div className="none-communication-tool">
                         <div>There is no communication info available</div>
                         {
-                            this.state.picAssignmentPolicy === Policy.Host &&
+                            this.state.picAssignmentPolicy &&
                             <>
                                 <span>{`To add the communication tool for this account, simply click on `}</span>
                                 <Link to='/PicOfHeadline' onClick={() => {

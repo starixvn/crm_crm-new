@@ -4,6 +4,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
 
 export const getPermission = async (functionKey, isNoRedirectAccessDeniedPage) => {
     const url = Site.resolveClientUrl('Common/GetPermission');
@@ -17,6 +18,13 @@ export const getPermission = async (functionKey, isNoRedirectAccessDeniedPage) =
         } else {
             return response.data;
         }
+    }).catch(Site.handleAxiosError);
+};
+
+export const checkHostPermissionPicAssign = async () => {
+    const url = Site.resolveClientUrl('Common/GetPermission');
+    return await DataService.postDataAsync(url, { functionKey: FunctionKey.PICAssignment }).then(response => {
+        return response?.data === Policy.Host;
     }).catch(Site.handleAxiosError);
 };
 

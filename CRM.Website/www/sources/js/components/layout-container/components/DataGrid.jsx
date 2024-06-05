@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission, checkHostPermissionPicAssign } from '@jsroot/common/shareScripts';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import Site from '@jsroot/common/site';
@@ -30,7 +30,8 @@ export default class DataGrid extends PureComponent {
             isHostOnCurrentCustomer: false,
             headlineInfoPolicy: null,
             isShowAccInfo: true,
-            isShowCommInfo: true
+            isShowCommInfo: true,
+            picAssignmentPolicy: null
         };
     }
 
@@ -50,6 +51,10 @@ export default class DataGrid extends PureComponent {
 
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
+        });
+
+        checkHostPermissionPicAssign().then(response => {
+            this.setState({ picAssignmentPolicy: response });
         });
     }
 
@@ -357,14 +362,19 @@ export default class DataGrid extends PureComponent {
                     <div className='custom-scrollbar group-content'>
                         <div className="none-communication-tool">
                             <div>There is no communication info available</div>
-                            <span>{`To add the communication tool for this account, simply click on `}</span>
-                            <Link to='/PicOfHeadline' onClick={()=>{
-                                if (values.headlineStaffInfoPics.length === 0) {
-                                    window.assignPIC = {
-                                        username: this.props.customerInfo.username
-                                    };
-                                }
-                            }} className="add-communication-tool">Assign PIC</Link>
+                            {
+                                this.state.picAssignmentPolicy &&
+                                <>
+                                    <span>{`To add the communication tool for this account, simply click on `}</span>
+                                    <Link to='/PicOfHeadline' onClick={() => {
+                                        if (values.headlineStaffInfoPics.length === 0) {
+                                            window.assignPIC = {
+                                                username: this.props.customerInfo.username
+                                            };
+                                        }
+                                    }} className="add-communication-tool">Assign PIC</Link>
+                                </>
+                            }
                         </div>
                     </div>
                 }

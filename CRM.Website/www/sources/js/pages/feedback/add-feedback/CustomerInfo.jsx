@@ -4,7 +4,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission, checkHostPermissionPicAssign } from '@jsroot/common/shareScripts';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { getHeadlineStaffInfoCommunications, getOtherAccountCommunicationInfos, getHeadlineCommunicationInfoPIC } from './common.functions';
@@ -32,7 +32,7 @@ export class CustomerInfo extends PureComponent {
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
         });
-        getPermission(FunctionKey.PICAssignment).then(response => {
+        checkHostPermissionPicAssign().then(response => {
             this.setState({ picAssignmentPolicy: response });
         });
         checkHostPermissionOnCurrentCustomer().then(response => {
@@ -126,7 +126,7 @@ export class CustomerInfo extends PureComponent {
                 <div className="none-communication-tool">
                     <div>There is no communication info available</div>
                     {
-                        this.state.picAssignmentPolicy === Policy.Host &&
+                        this.state.picAssignmentPolicy &&
                         <>
                             <span>{`To add the communication tool for this account, simply click on `}</span>
                             <Link to='/PicOfHeadline' onClick={() => {

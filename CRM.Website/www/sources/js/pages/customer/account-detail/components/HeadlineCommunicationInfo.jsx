@@ -20,7 +20,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
-import { getPermission } from '@jsroot/common/shareScripts';
+import { getPermission, checkHostPermissionPicAssign } from '@jsroot/common/shareScripts';
 import { ParamsSubmit, ValidateHeadlineCommunicationInfo, getHeadlineCommunicationInfo } from '../common.functions';
 import { Link } from 'react-router-dom';
 
@@ -106,7 +106,7 @@ export class HeadlineCommunicationInfo extends Component {
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
         });
-        getPermission(FunctionKey.PICAssignment).then(response => {
+        checkHostPermissionPicAssign().then(response => {
             this.setState({ picAssignmentPolicy: response });
         });
         window.addEventListener("autoScroll", this.handleAutoScroll);
@@ -520,7 +520,7 @@ export class HeadlineCommunicationInfo extends Component {
                     <div className="none-communication-tool">
                         <div>There is no communication info available</div>
                         {
-                            picAssignmentPolicy === Policy.Host &&
+                            picAssignmentPolicy &&
                             <>
                                 <span>{`To add the communication tool for this account, simply click on `}</span>
                                 <Link to='/PicOfHeadline' onClick={() => {
