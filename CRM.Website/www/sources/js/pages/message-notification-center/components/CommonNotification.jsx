@@ -285,16 +285,17 @@ export class CommonNotification extends Component {
     };
 
     render = () => {
-        const { data, content, affectedTicketPopup, pushPopup, savePopup, activatePopup, messageSuccessful } = this.state;
+        const { data, content, affectedTicketPopup, messageSuccessful } = this.state;
+        const { editAdmNotificationResult, isEdit, actionParam } = this.props;
         if(!data) {
             return null;
         }
         return (
             <>
                 {
-                    this.props.editAdmNotificationResult &&
-                    <ResponseMessage isSuccessful={this.props.editAdmNotificationResult.isSuccessful}
-                        messages={this.renderMessage(this.props.editAdmNotificationResult, messageSuccessful)}
+                    editAdmNotificationResult &&
+                    <ResponseMessage isSuccessful={editAdmNotificationResult.isSuccessful}
+                        messages={this.renderMessage(editAdmNotificationResult, messageSuccessful)}
                     />
                 }
                 <div className="action-notification">
@@ -358,9 +359,9 @@ export class CommonNotification extends Component {
                                                         name={language.name}
                                                         data={content[language.mapLabel]}
                                                         username={window.currentUsername}
-                                                        onChange={value => this.props.isEdit ? this.handleChangeContent(language.mapLabel, value) : null}     
+                                                        onChange={value => isEdit ? this.handleChangeContent(language.mapLabel, value) : null}     
                                                         isRemoveToolbarForChatbot
-                                                        isRemoveAllToolbar={true}
+                                                        isRemoveAllToolbar={actionParam.isOstUser || !isEdit}
                                                     />
                                                 </Tab>)
                                             )
@@ -370,7 +371,7 @@ export class CommonNotification extends Component {
                             </div>
                         </div>
                         {
-                            this.props.isEdit && (
+                            isEdit && (
                                 <div className="group-btn">
                                     <Button className="btn-cancel" variant="primary" size="sm" onClick={() => this.handleClose()}>{LangHelper.getResource('Cancel')}</Button>
                                     {
