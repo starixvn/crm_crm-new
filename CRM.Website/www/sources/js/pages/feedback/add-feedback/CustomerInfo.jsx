@@ -124,11 +124,11 @@ export class CustomerInfo extends PureComponent {
             {
                 headlineStaffInfoCommunications.length === 0 && 
                 <div className="none-communication-tool">
-                    <div>There is no communication info available</div>
+                    <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
                     {
                         this.state.picAssignmentPolicy &&
                         <>
-                            <span>{`To add the communication tool for this account, simply click on `}</span>
+                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
                             <Link to='/PicOfHeadline' onClick={() => {
                                 if (headlineStaffInfoCommunications.length === 0) {
                                     window.assignPIC = {
@@ -264,9 +264,9 @@ export class CustomerInfo extends PureComponent {
                     otherAccountCommunicationInfos.length === 0 &&
                     <div>
                         <div className="none-normal-communication-tool">
-                            <div>There is no communication info available</div>
-                            <span>To add the communication tool for this account, simply click on</span>
-                            <span className="add-communication-tool" onClick={this.addNewOtherCommunicationTool}>{` Add Communication Tool`}</span>
+                            <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                            <span className="add-communication-tool" onClick={this.addNewOtherCommunicationTool}>{`Add Communication Tool`}</span>
                         </div>
                     </div>
                 }
@@ -359,8 +359,8 @@ export class CustomerInfo extends PureComponent {
                     <Form.Group as={Row}>
                         <div>
                             <div className="none-normal-communication-tool">
-                                <div>There is no communication info available</div>
-                                <span>To add the communication tool for this account, simply click on</span>
+                                <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                                <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
                                 <span className="add-communication-tool" onClick={this.addNewGuestCommunicationTool}>{` Add Communication Tool`}</span>
                             </div>
                         </div>

@@ -153,11 +153,11 @@ export default class CustomerInfo extends PureComponent {
                 {
                     latestFeedbackCommunicationTools.length === 0 && 
                     <div className="none-communication-tool">
-                        <div>There is no communication info available</div>
+                        <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
                         {
                             this.state.picAssignmentPolicy &&
                             <>
-                                <span>{`To add the communication tool for this account, simply click on `}</span>
+                                <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
                                 <Link to='/PicOfHeadline' onClick={() => {
                                     if (latestFeedbackCommunicationTools.length === 0) {
                                         window.assignPIC = {
@@ -251,12 +251,12 @@ export default class CustomerInfo extends PureComponent {
                         latestFeedbackCommunicationTools.length === 0 && 
                         <div>
                             <div className="none-normal-communication-tool">
-                                <div>There is no communication info available</div>
+                                <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
                                     {
                                         hasCreateFeedbackPermission && 
                                         <>
-                                            <span>To add the communication tool for this account, simply click on</span>
-                                            <span className="add-communication-tool" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>{` Add Communication Tool`}</span>
+                                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                                            <span className="add-communication-tool" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>{`Add Communication Tool`}</span>
                                         </>
                                     }
                             </div>

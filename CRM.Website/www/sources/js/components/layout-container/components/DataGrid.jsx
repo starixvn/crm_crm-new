@@ -309,9 +309,9 @@ export default class DataGrid extends PureComponent {
                     (values === undefined || values.length === 0) && this.state.isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         <div className="none-communication-tool">
-                            <div>There is no communication info available</div>
-                            <span>To add the communication tool for this account, simply click on</span>
-                            <span className="add-communication-tool" onClick={() => { this.props.handleNavigate('AccountDetail'); }}>{` Add Communication Tool`}</span>
+                            <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                            <span className="add-communication-tool" onClick={() => { this.props.handleNavigate('AccountDetail'); }}>{`Add Communication Tool`}</span>
                         </div>
                     </div>
                 }
@@ -361,11 +361,11 @@ export default class DataGrid extends PureComponent {
                     values.headlineStaffInfoPics.length === 0 && this.state.isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         <div className="none-communication-tool">
-                            <div>There is no communication info available</div>
+                            <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
                             {
                                 this.state.picAssignmentPolicy &&
                                 <>
-                                    <span>{`To add the communication tool for this account, simply click on `}</span>
+                                    <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
                                     <Link to='/PicOfHeadline' onClick={() => {
                                         if (values.headlineStaffInfoPics.length === 0) {
                                             window.assignPIC = {

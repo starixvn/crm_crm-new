@@ -698,7 +698,7 @@ export class CreateForm extends Component {
         data.map((comPic, indexPic) => {
             chatTypeMapping.push(<>
                 {indexPic !== 0 && <span>{', '}</span>}
-                <span className="bold">{comPic.communicationValue}</span>
+                <strong>{comPic.communicationValue}</strong>
                 <span>{` (${comPic.communicationTool})`}</span>
             </>);
         })
