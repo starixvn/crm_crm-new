@@ -5,8 +5,8 @@
     public class GetNewRemarkCriteria : BaseSitePermisionCriteria
     {
         public string Username { get; set; }
-        public DateTime Fromdate { get; set; }
-        public DateTime Todate { get; set; }
+        public DateTime? Fromdate { get; set; }
+        public DateTime? Todate { get; set; }
         public string Remark { get; set; }
         public string RemarkTitle { get; set; }
         public bool IsGuest { get; set; }

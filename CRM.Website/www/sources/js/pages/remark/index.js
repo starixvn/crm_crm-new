@@ -30,6 +30,7 @@ class index extends React.Component {
                         customerName={data.username}
                         custId={data.custId}
                         isGuestSearch={data.isGuest}
+                        isSearchAll={true}
                     />
                 </div>
             </Provider>

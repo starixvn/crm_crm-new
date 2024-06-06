@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.Remark
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
@@ -77,17 +78,25 @@
 
         public async Task<IActionResult> GetNewRemarks([FromBody] GetNewRemarkCriteria criteria)
         {
-            criteria.Fromdate = commonService.ConvertClientFromTimeToServerTime(criteria.Fromdate);
-            criteria.Todate = commonService.ConvertClientToTimeToServerTime(criteria.Todate);
+            if (criteria.Fromdate is not null && criteria.Todate is not null)
+            {
+                criteria.Fromdate = commonService.ConvertClientFromTimeToServerTime(Convert.ToDateTime(criteria.Fromdate));
+                criteria.Todate = commonService.ConvertClientToTimeToServerTime(Convert.ToDateTime(criteria.Todate));
+            }
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-            var newRemarks = await remarkService.GetNewRemarkAsync(criteria);
-            foreach (var remark in newRemarks)
+            var (newRemarksData, newRemarksFilter) = await remarkService.GetNewRemarkAsync(criteria);
+            foreach (var remark in newRemarksData)
             {
                 remark.CreatedDate = commonService.ConvertToClientDateTime(remark.CreatedDate);
                 remark.LastUpdate = commonService.ConvertToClientDateTime(remark.LastUpdate);
             }
-            return Json(new { data = newRemarks, totalItems = criteria.TotalRows });
+            foreach (var remarkFilter in newRemarksFilter)
+            {
+                remarkFilter.FromDate = commonService.ConvertToClientDateTime(remarkFilter.FromDate);
+                remarkFilter.ToDate = commonService.ConvertToClientDateTime(remarkFilter.ToDate);
+            }
+            return Json(new { data = newRemarksData, dataFilter = newRemarksFilter, totalItems = criteria.TotalRows });
         }
 
         [HttpPost]

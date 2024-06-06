@@ -1,5 +1,6 @@
 ﻿namespace CRM.Services.Remark
 {
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
@@ -19,7 +20,7 @@
 
         Task<CommandResult> EditRemarkAsync(EditRemarkCommand command);
 
-        Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria);
+        Task<ValueTuple<IEnumerable<RemarkNewInfo>, IEnumerable<RemarkDateFilter>>> GetNewRemarkAsync(GetNewRemarkCriteria criteria);
 
         Task<IEnumerable<PicInfo>> GetRelatedPicByCustIdAsync(GetRelatedPicsCriteria criteria);
 
@@ -86,9 +87,9 @@
             }
         }
 
-        public async Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria)
+        public async Task<ValueTuple<IEnumerable<RemarkNewInfo>, IEnumerable<RemarkDateFilter>>> GetNewRemarkAsync(GetNewRemarkCriteria criteria)
         {
-            var newRemarks = await baseService.GetDataAsync<RemarkNewInfo>(criteria);
+            var newRemarks = await baseService.FetchMultipleAsync<RemarkNewInfo, RemarkDateFilter>(criteria);
             return newRemarks;
         }
 

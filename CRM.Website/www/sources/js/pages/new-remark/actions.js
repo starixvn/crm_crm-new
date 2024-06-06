@@ -5,6 +5,7 @@ import {
     setAllSettings,
     setGridParams,
     setRemarks,
+    setRemarkFilter,
     setOpenCreatePopup,
     setOpenEditPopup,
     setEditResult,
@@ -46,6 +47,7 @@ const getNewRemarks = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/GetNewRemarks');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRemarks(response.data));
+        dispatch(setRemarkFilter(response.data.dataFilter));
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
@@ -90,6 +92,7 @@ export const ActionCreators = {
     setGridParams,
     getNewRemarks,
     setRemarks,
+    setRemarkFilter,
     getRelatedPics,
     setOpenCreatePopup,
     setOpenEditPopup,

@@ -4,6 +4,7 @@ const initialState = {
     allSettings: null,
     gridParams: { pageIndex: 1, pageSize: 100, username: '', isGuest: false},
     gridData: null,
+    gridDataFilter: null,
     popupAdd: { show: false },
     editResult: null,
     popupEdit: { show: false, data: null, isViewHistory: false },
@@ -31,6 +32,9 @@ const newRemarkSlice = createSlice({
         },
         setRemarks: (state, action) => {
             state.gridData = action.payload;
+        },
+        setRemarkFilter: (state, action) => {
+            state.gridDataFilter = action.payload;
         },
         setOpenCreatePopup: (state, action) => {
             state.popupAdd = action.payload;
@@ -69,6 +73,7 @@ export const {
     setAllSettings,
     setGridParams,
     setRemarks,
+    setRemarkFilter,
     setOpenCreatePopup,
     setOpenEditPopup,
     setEditResult,

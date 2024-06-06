@@ -317,7 +317,7 @@
         <Setting Key="Acc_CRM_CustomerRemarkUpd" SpName="Acc_CRM_CustomerRemarkUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="NewRemark">
-        <Setting Key="Acc_CRM_CustomerRemarkNewSearch" SpName="Acc_CRM_CustomerRemarkNewSearch" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewSearch" SpName="Acc_CRM_CustomerRemarkNewSearch_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerRemarkNewCheck" SpName=" Acc_CRM_CustomerRemarkNewCheck" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerRemarkNewDel" SpName="Acc_CRM_CustomerRemarkNewDel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerRemarkNewIns" SpName="Acc_CRM_CustomerRemarkNewIns" DbName="DBCRM.bodb_CRM.wsv_nap" />

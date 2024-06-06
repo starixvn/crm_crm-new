@@ -19,6 +19,7 @@ class index extends React.Component {
                             customerName=''
                             custId={0}
                             isGuestSearch={false}
+                            isSearchAll={false}
                         />
                     }
                 </div>

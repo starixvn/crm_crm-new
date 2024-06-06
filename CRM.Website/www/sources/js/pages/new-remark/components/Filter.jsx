@@ -24,16 +24,17 @@ export class Filter extends Component {
         this.maxToDate = currentDate;
         this.minFromDate = new Date(1900, 1, 1);
         this.minToDate = new Date(1900, 1, 1);
-        const { customerName, isGuestSearch } = this.props;
+        const { customerName, isGuestSearch, isSearchAll } = this.props;
         const isCustomerNotEmpty = customerName !== '';
         this.state = {
             remarkContent: '',
+            isSearchAll: isSearchAll,
             userName: customerName,
             isGuestFiler: isCustomerNotEmpty ? isGuestSearch : false,
             isShowHeadline: isCustomerNotEmpty ? true : false,
             relatedToPICs: '',
-            fromDate: isCustomerNotEmpty ? new Date(DateTimeService.firstDayOfYear(currentDate)) : this.firstDateOfMonth,
-            toDate: currentDate,
+            fromDate: !isSearchAll ? (isCustomerNotEmpty ? new Date(DateTimeService.firstDayOfYear(currentDate)) : this.firstDateOfMonth) : null,
+            toDate: !isSearchAll ? currentDate : null,
             remarkTitleOptions: [],
             remarkTitleIds: '',
             dateTypeSelect: isCustomerNotEmpty ? 7 : 4
@@ -55,6 +56,17 @@ export class Filter extends Component {
                 this.handleSubmit();
             }
         });
+    }
+
+    componentDidUpdate() {
+        const { gridDataFilter } = this.props;
+        if (gridDataFilter?.length > 0 && this.state.isSearchAll) {
+            this.setState({
+                fromDate: Date.parse(gridDataFilter[0].fromDate),
+                toDate: Date.parse(gridDataFilter[0].toDate),
+                isSearchAll: false
+            });
+        }
     }
 
     handleKeyDownFunc = event => {
@@ -187,8 +199,8 @@ export class Filter extends Component {
         const { remarkContent,userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds } = this.state;
         const params = {
             username: userName,
-            fromDate: DateTimeService.toShortDateFormat(fromDate),
-            toDate: DateTimeService.toShortDateFormat(toDate),
+            fromDate: fromDate ? DateTimeService.toShortDateFormat(fromDate) : fromDate,
+            toDate: toDate ? DateTimeService.toShortDateFormat(toDate) : toDate,
             remark: remarkContent,
             remarkTitle: remarkTitleIds,
             isGuest: isGuestFiler,
@@ -336,8 +348,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { remarkTitles, gridParams } = state;
-    return { remarkTitles, gridParams };
+    const { remarkTitles, gridParams, gridDataFilter } = state;
+    return { remarkTitles, gridParams, gridDataFilter };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

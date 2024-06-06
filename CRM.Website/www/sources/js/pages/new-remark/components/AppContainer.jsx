@@ -66,7 +66,7 @@ export class AppContainer extends Component {
         this.props.setEditResult(null);
     };
     render() {
-        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch} = this.props;
+        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isSearchAll } = this.props;
         const {remarksPolicy}= this.state;
         if(remarkTitles === null || !remarkTitles || !remarksPolicy){
             return null;
@@ -76,7 +76,7 @@ export class AppContainer extends Component {
 
         return (
             <Fragment>
-                <Filter isHost={isHost} customerName={customerName} isGuestSearch={isGuestSearch}/>
+                <Filter isHost={isHost} customerName={customerName} isGuestSearch={isGuestSearch} isSearchAll={isSearchAll} />
                 {
                     showHistory.show ?
                     <History/> :
