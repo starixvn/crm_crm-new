@@ -157,7 +157,7 @@ export default class CustomerInfo extends PureComponent {
                         {
                             this.state.picAssignmentPolicy &&
                             <>
-                                <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                                <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
                                 <Link to='/PicOfHeadline' onClick={() => {
                                     if (latestFeedbackCommunicationTools.length === 0) {
                                         window.assignPIC = {
@@ -246,62 +246,65 @@ export default class CustomerInfo extends PureComponent {
                 <Button className='btn-add' variant="primary" size="sm" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>
                     {LangHelper.getResource('AddCommunicationTool')}
                 </Button>
-                <Form.Group as={Row} className="pt-2">
-                    {
-                        latestFeedbackCommunicationTools.length === 0 && 
-                        <div>
-                            <div className="none-normal-communication-tool">
-                                <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                                    {
-                                        hasCreateFeedbackPermission && 
-                                        <>
-                                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
-                                            <span className="add-communication-tool" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>{`Add Communication Tool`}</span>
-                                        </>
-                                    }
-                            </div>
+                {
+                    latestFeedbackCommunicationTools.length === 0 &&
+                    <div>
+                        <div className="none-normal-communication-tool">
+                            <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                            {
+                                hasCreateFeedbackPermission &&
+                                <>
+                                    <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                                    <span className="add-communication-tool" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>{`Add Communication Tool`}</span>
+                                </>
+                            }
                         </div>
-                    }
-                    {
-                        latestFeedbackCommunicationTools.map((item, index) => {
-                            return <>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <div className="custom-label-communicationTool">
-                                            <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
-                                                style={{
-                                                    width: `${item.communicationID !== '' ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
-                                                }}
-                                                value={item.communicationID} onChange={event => {
-                                                    this.handleChangeCommunicationTools('communicationID', parseInt(event.target.value, 10), index);
-                                                }}>
-                                                <option value="0" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                                {this.props.settingCommunicationTool.map(setting => this.renderOptions(setting.settingValue, setting.settingId))}
-                                            </Form.Control>
-                                        </div>
-                                        <Col sm="8" md="8">
-                                            <div className='field-icon comm-tool'>
-                                                <textarea type="text" size="sm" value={item.communicationValue} autoComplete="off"
-                                                    placeholder={LangHelper.getResource('SeparatedByComma')}
-                                                    className={`textarea-communication-tool shadow-none 
-                                                                    ${item.isError && touched.latestFeedbackCommunicationTools && errors.latestFeedbackCommunicationTools && 'invalid'}`}
-                                                    onChange={event => {
-                                                        this.handleChangeCommunicationTools('communicationValue', event.target.value, index);
-                                                    }} />
-                                                {
-                                                    this.state.isHostOnCurrentCustomer &&
-                                                    <div title='Delete communication tool'
-                                                        className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(index); }}>
-                                                    </div>
-                                                }
+                    </div>
+                }
+                {
+                    latestFeedbackCommunicationTools.length > 0 &&
+                    <Form.Group as={Row} className="pt-2">
+                        {
+                            latestFeedbackCommunicationTools.map((item, index) => {
+                                return <>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <div className="custom-label-communicationTool">
+                                                <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
+                                                    style={{
+                                                        width: `${item.communicationID !== '' ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
+                                                    }}
+                                                    value={item.communicationID} onChange={event => {
+                                                        this.handleChangeCommunicationTools('communicationID', parseInt(event.target.value, 10), index);
+                                                    }}>
+                                                    <option value="0" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                    {this.props.settingCommunicationTool.map(setting => this.renderOptions(setting.settingValue, setting.settingId))}
+                                                </Form.Control>
                                             </div>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </>
-                        })
-                    }
-                </Form.Group>
+                                            <Col sm="8" md="8">
+                                                <div className='field-icon comm-tool'>
+                                                    <textarea type="text" size="sm" value={item.communicationValue} autoComplete="off"
+                                                        placeholder={LangHelper.getResource('SeparatedByComma')}
+                                                        className={`textarea-communication-tool shadow-none 
+                                                                    ${item.isError && touched.latestFeedbackCommunicationTools && errors.latestFeedbackCommunicationTools && 'invalid'}`}
+                                                        onChange={event => {
+                                                            this.handleChangeCommunicationTools('communicationValue', event.target.value, index);
+                                                        }} />
+                                                    {
+                                                        this.state.isHostOnCurrentCustomer &&
+                                                        <div title='Delete communication tool'
+                                                            className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(index); }}>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                </>
+                            })
+                        }
+                    </Form.Group>
+                }
             </div>
         </>
     }

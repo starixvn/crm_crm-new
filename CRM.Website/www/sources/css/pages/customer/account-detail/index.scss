@@ -17,20 +17,18 @@
   }
 }
 
-.customer-info-detail {
+.customer-info-detail { 
     .table > thead > tr > th {
         background: #2B4E80;
         color: #FFFFFF;
     }
 
-    .none-communication-tool, .none-normal-communication-tool {
-        margin-left: 25%;
+    .none-communication-tool {
+        width: 480px;
+    }
 
-        .add-communication-tool {
-            font-weight: bold;
-            color: blue;
-            cursor: pointer;
-        }
+    .none-normal-communication-tool {
+        width: 600px;
     }
 
     .no-data {
@@ -262,7 +260,7 @@
 
             .option-label {
                 font-weight: unset;
-                font-family: Tahoma, Helvetica, Arial, sans-serif;
+                font-family: 'Open Sans', sans-serif;
             }
 
             .custom-select-communicationTool {

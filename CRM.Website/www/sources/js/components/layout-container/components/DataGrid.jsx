@@ -365,7 +365,7 @@ export default class DataGrid extends PureComponent {
                             {
                                 this.state.picAssignmentPolicy &&
                                 <>
-                                    <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                                    <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
                                     <Link to='/PicOfHeadline' onClick={() => {
                                         if (values.headlineStaffInfoPics.length === 0) {
                                             window.assignPIC = {

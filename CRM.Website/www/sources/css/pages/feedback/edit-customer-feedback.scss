@@ -33,23 +33,21 @@
         border-color: #80bdff;
     }
 
-    .none-normal-communication-tool{
-        margin-left: 50% !important;
+    .none-communication-tool {
+        width: 480px;
     }
 
-    .none-communication-tool, .none-normal-communication-tool {
-        margin-left: 25%;
-        width: max-content;
-        margin-top: 10px;
-        
-        .add-communication-tool{
-            font-weight: bold;
-            color: blue;
-            cursor: pointer;
-        }
+    .none-normal-communication-tool {
+        width: 600px;
     }
 
     .headline-account-communication, .normal-account-communication {
+        .btn-add{
+            width: 184px;
+            height: 26px;
+            margin-bottom: 8px;
+        }
+
         .comm-tool {
             width: 85% !important;
         }

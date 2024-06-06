@@ -11,6 +11,7 @@
     AddRelatedCustomers: 'Add Related Customers',
     AddNewCaseSuccessfully: 'Add New Case Successfully!',
     AddCommunicationToolNoneData: 'To add the communication tool for this account, simply click on ',
+    AddHeadlineCommunicationToolNoneData: 'To add the headline communication info, simply click ',
     All: 'All',
     AllLanguages: 'All Languages',
     Amount: 'Amount',

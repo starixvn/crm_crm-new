@@ -519,7 +519,7 @@ export class HeadlineCommunicationInfo extends Component {
                     headlineCommunicationInfo.length === 0 && picAssignmentPolicy &&
                     <div className="none-communication-tool">
                         <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                        <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                        <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
                         <Link to='/PicOfHeadline' onClick={() => {
                             if (headlineCommunicationInfo.length === 0) {
                                 window.assignPIC = {

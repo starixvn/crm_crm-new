@@ -4,22 +4,67 @@
 }
 
 .add-feedback {
-    .none-communication-tool, .none-normal-communication-tool {
-        margin-left: 25%;
-        width: max-content;
-        margin-top: 10px;   
+    .tab-account-info {
+        margin: 8px 0 8px 0;
+        border-radius: 5px;
+        border: 1px solid #CCC;
+        border-top: none;
 
-        .add-communication-tool{
-            font-weight: bold;
-            color: blue;
-            cursor: pointer;
+        .group-title {
+            padding: 6px 6px 6px 12px;
+            color: #333333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FFF;
+            font-weight: 700;
+            border-radius: 5px;
+            border-top: 1px solid #CCC;
+            border-bottom: 1px solid #CCC;
+
+            .icon-dropdown {
+                transform: rotate(-90deg);
+                transition: 0.2s;
+                margin-right: 6px;
+                cursor: pointer;
+            }
+
+            .group-title-tab {
+                width: 90%;
+                display: flex;
+                text-transform: capitalize;
+            }
+        }
+
+        .group-content {
+            padding: 12px;
+
+            .form-check {
+                padding-left: 0;
+                display: flex;
+                align-items: center;
+
+                input[type="checkbox"] {
+                    width: 18px;
+                    height: 18px;
+                    margin: 3px 7px 3px 3px;
+                    cursor: pointer;
+                }
+
+                .form-check-input {
+                    margin: 0;
+                    position: relative;
+                }
+            }
         }
     }
 
-    .tab-account-info {
-        padding: 8px;
-        border: 1px solid #BBBBBB;
-        margin-bottom: 10px;
+    .none-communication-tool {
+        width: 480px;
+    }
+
+    .none-normal-communication-tool {
+        width: 600px;
     }
 
     .bold {
@@ -54,22 +99,15 @@
         border-color: #80bdff;
     }
 
-    .normal-account-communication, .add-comm-tool{
-        .none-normal-communication-tool{
-            padding: 0.5rem 0 6px;
-            margin-left: 70% ;
-        }
-        .btn-add{
-            margin: 0.5rem 0 1rem 0;
-        }
+    .normal-account-communication, .add-comm-tool {
         .comm-tool {
             width: 90% !important;
         }
     }
 
-    .headline-account-communication, .normal-account-communication {      
-        .btn-add{
-            margin: 0.5rem 0 0.5rem 0;
+    .headline-account-communication, .normal-account-communication {
+        .btn-add {
+            margin-bottom: 8px;
         }
 
         .comm-tool {

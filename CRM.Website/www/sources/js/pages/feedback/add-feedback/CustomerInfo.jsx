@@ -128,7 +128,7 @@ export class CustomerInfo extends PureComponent {
                     {
                         this.state.picAssignmentPolicy &&
                         <>
-                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                            <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
                             <Link to='/PicOfHeadline' onClick={() => {
                                 if (headlineStaffInfoCommunications.length === 0) {
                                     window.assignPIC = {
@@ -258,18 +258,18 @@ export class CustomerInfo extends PureComponent {
         return <div className="normal-account-communication">
             <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewOtherCommunicationTool}>
                     {LangHelper.getResource('AddCommunicationTool')}
-                </Button>
-            <Form.Group as={Row} className="pt-2">
-                {
-                    otherAccountCommunicationInfos.length === 0 &&
-                    <div>
-                        <div className="none-normal-communication-tool">
-                            <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
-                            <span className="add-communication-tool" onClick={this.addNewOtherCommunicationTool}>{`Add Communication Tool`}</span>
-                        </div>
+            </Button>
+            {
+                otherAccountCommunicationInfos.length === 0 &&
+                <div>
+                    <div className="none-normal-communication-tool">
+                        <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                        <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                        <span className="add-communication-tool" onClick={this.addNewOtherCommunicationTool}>{`Add Communication Tool`}</span>
                     </div>
-                }
+                </div>
+            }
+            <Form.Group as={Row} className="pt-2">
                 {
                     otherAccountCommunicationInfos.map((item, index) => {
                         return <>
@@ -436,86 +436,114 @@ export class CustomerInfo extends PureComponent {
         const isAddGuestFb = customerInfo.siteId === undefined;
         return (
             <div>
-                <span>{LangHelper.getResource('AccountInfo')}</span>
                 <div className="tab-account-info">
-                    <Form.Group as={Row} className="pt-2" >
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="title">
-                                    {LangHelper.getResource('Title')}
-                                </Form.Label>
-                                <Col sm="8" md="8">
-                                    <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="title" id="title" value={customerInfo.title} onChange={handleChange}
-                                    >
-                                        <option value="Mr" hidden disabled />
-                                        {settings.titles.map(value => renderOptions(value.value, value.id))}
-                                    </Form.Control>
-                                </Col>
-                            </Form.Group>
-                        </Col>
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="firstName">
-                                    {LangHelper.getResource('FirstName')}
-                                </Form.Label>
-                                <Col sm="8" md="8">
-                                    <Form.Control type="text" size="sm" value={customerInfo.firstName}
-                                        name="firstName" id="firstName" className="shadow-none" autoComplete="off"
-                                        onChange={handleChange}
-                                    />
-                                </Col>
-                            </Form.Group>
-                        </Col>
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="lastName">
-                                    {LangHelper.getResource('LastName')}
-                                </Form.Label>
-                                <Col sm="8" md="8">
-                                    <Form.Control type="text" size="sm" value={customerInfo.lastName}
-                                        name="lastName" id="lastName" className="shadow-none" autoComplete="off"
-                                        onChange={handleChange}
-                                    />
-                                </Col>
-                            </Form.Group>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="birthday">
-                                    {LangHelper.getResource('Birthday')}
-                                </Form.Label>
-                                <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
-                                    <DatePicker
-                                        dropdownMode="select"
-                                        showMonthDropdown
-                                        showYearDropdown
-                                        useShortMonthInDropdown
-                                        selected={customerInfo.birthday}
-                                        maxDate={maxDate}
-                                        onChange={value => handleChangeValueInfo('birthday', value)}
-                                    />
-                                </Col>
-                            </Form.Group>
-                        </Col>
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="passportNo">
-                                    {LangHelper.getResource('PassportNo')}
-                                </Form.Label>
-                                <Col sm="8" md="8">
-                                    <Form.Control type="text" size="sm" value={customerInfo.passportNo}
-                                        name="passportNo" id="passportNo" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </Col>
-                            </Form.Group>
-                        </Col>
+                    <div className='group-title group-tab'>
+                        <div className="group-title-tab" >
+                            <span className='icon-dropdown' />
+                            {LangHelper.getResource('AccountInfo')}
+                        </div>
+                    </div>
+                    <div className='group-content'>
+                        <Form.Group as={Row} className="pt-2" >
+                            <Col sm="4" md="4">
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="4" md="4" htmlFor="title">
+                                        {LangHelper.getResource('Title')}
+                                    </Form.Label>
+                                    <Col sm="8" md="8">
+                                        <Form.Control as="select" size="sm" className="shadow-none"
+                                            name="title" id="title" value={customerInfo.title} onChange={handleChange}
+                                        >
+                                            <option value="Mr" hidden disabled />
+                                            {settings.titles.map(value => renderOptions(value.value, value.id))}
+                                        </Form.Control>
+                                    </Col>
+                                </Form.Group>
+                            </Col>
+                            <Col sm="4" md="4">
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="4" md="4" htmlFor="firstName">
+                                        {LangHelper.getResource('FirstName')}
+                                    </Form.Label>
+                                    <Col sm="8" md="8">
+                                        <Form.Control type="text" size="sm" value={customerInfo.firstName}
+                                            name="firstName" id="firstName" className="shadow-none" autoComplete="off"
+                                            onChange={handleChange}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Col>
+                            <Col sm="4" md="4">
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="4" md="4" htmlFor="lastName">
+                                        {LangHelper.getResource('LastName')}
+                                    </Form.Label>
+                                    <Col sm="8" md="8">
+                                        <Form.Control type="text" size="sm" value={customerInfo.lastName}
+                                            name="lastName" id="lastName" className="shadow-none" autoComplete="off"
+                                            onChange={handleChange}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                            <Col sm="4" md="4">
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="4" md="4" htmlFor="birthday">
+                                        {LangHelper.getResource('Birthday')}
+                                    </Form.Label>
+                                    <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
+                                        <DatePicker
+                                            dropdownMode="select"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            useShortMonthInDropdown
+                                            selected={customerInfo.birthday}
+                                            maxDate={maxDate}
+                                            onChange={value => handleChangeValueInfo('birthday', value)}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Col>
+                            <Col sm="4" md="4">
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="4" md="4" htmlFor="passportNo">
+                                        {LangHelper.getResource('PassportNo')}
+                                    </Form.Label>
+                                    <Col sm="8" md="8">
+                                        <Form.Control type="text" size="sm" value={customerInfo.passportNo}
+                                            name="passportNo" id="passportNo" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Col>
+                            {
+                                customerDetail === null ?
+                                    this.renderLicenseeType(customerInfo, handleChange)
+                                    :
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="site">
+                                                {LangHelper.getResource('Site')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <SelectWithSearch
+                                                    className='basic-single'
+                                                    options={siteOptions}
+                                                    value={customerInfo.siteId}
+                                                    name={customerInfo.siteName}
+                                                    OnChangeValue={item => handleChangeValueInfo('siteId', item.id)}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                            }
+                        </Form.Group>
                         {
-                            customerDetail === null ?
-                                this.renderLicenseeType(customerInfo, handleChange)
-                                :
+                            customerDetail === null &&
+                            <Form.Group as={Row}>
+                                <Col sm="8" md="8" />
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
                                         <Form.Label column sm="4" md="4" htmlFor="site">
@@ -525,85 +553,71 @@ export class CustomerInfo extends PureComponent {
                                             <SelectWithSearch
                                                 className='basic-single'
                                                 options={siteOptions}
-                                                value={customerInfo.siteId}
-                                                name={customerInfo.siteName}
+                                                value={!isAddGuestFb ? customerInfo.siteId : 0}
+                                                name={!isAddGuestFb ? customerInfo.siteName : ''}
+                                                isSelectOption={!isAddGuestFb}
+                                                isHideNA={!isAddGuestFb}
                                                 OnChangeValue={item => handleChangeValueInfo('siteId', item.id)}
                                             />
                                         </Col>
                                     </Form.Group>
                                 </Col>
+                            </Form.Group>
                         }
-                    </Form.Group>
-                    {
-                        customerDetail === null &&
-                        <Form.Group as={Row}>
-                            <Col sm="8" md="8" />
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="site">
-                                        {LangHelper.getResource('Site')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <SelectWithSearch
-                                            className='basic-single'
-                                            options={siteOptions}
-                                            value={!isAddGuestFb ? customerInfo.siteId : 0}
-                                            name={!isAddGuestFb ? customerInfo.siteName : ''}
-                                            isSelectOption={!isAddGuestFb}
-                                            isHideNA={!isAddGuestFb}
-                                            OnChangeValue={item => handleChangeValueInfo('siteId', item.id)}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-                    }
-                    {
-                        customerDetail !== null &&
-                        <Form.Group as={Row}>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="birthday">
-                                        {LangHelper.getResource('RefCodes')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" value={customerInfo.refCodes}
-                                            name="refCodes" id="refCodes" className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="secretCode">
-                                        {LangHelper.getResource('SecretCode')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" value={customerInfo.secretCode}
-                                            name="secretCode" id="secretCode" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            {this.renderLicenseeType(customerInfo, handleChange)}
-                        </Form.Group>
-                    }
+                        {
+                            customerDetail !== null &&
+                            <Form.Group as={Row}>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="birthday">
+                                            {LangHelper.getResource('RefCodes')}
+                                        </Form.Label>
+                                        <Col sm="8" md="8">
+                                            <Form.Control type="text" size="sm" value={customerInfo.refCodes}
+                                                name="refCodes" id="refCodes" className="shadow-none" autoComplete="off"
+                                                onChange={handleChange}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="secretCode">
+                                            {LangHelper.getResource('SecretCode')}
+                                        </Form.Label>
+                                        <Col sm="8" md="8">
+                                            <Form.Control type="text" size="sm" value={customerInfo.secretCode}
+                                                name="secretCode" id="secretCode" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                {this.renderLicenseeType(customerInfo, handleChange)}
+                            </Form.Group>
+                        }
+                    </div>
                 </div>
-                <span>{LangHelper.getResource('CommunicationInfo')}</span>
                 <div className="tab-account-info">
-                    {
-                        !isGuest && customerDetail.isGroupHeadLine && headlineInfoPolicy >= Policy.Read &&
-                        this.renderHeadlineAccountCommunication(headlineStaffInfoCommunications)
-                    }
-                    {
-                        !isGuest && !customerDetail.isGroupHeadLine &&
-                        this.renderOtherAccountCommunication(otherAccountCommunicationInfos)
-                    }
-                    {
-                        isGuest &&
-                        this.renderGuestCommunication()
-                    }
+                    <div className='group-title group-tab'>
+                        <div className="group-title-tab" >
+                            <span className='icon-dropdown' />
+                            {LangHelper.getResource('CommunicationInfo')}
+                        </div>
+                    </div>
+                    <div className='group-content'>
+                        {
+                            !isGuest && customerDetail.isGroupHeadLine && headlineInfoPolicy >= Policy.Read &&
+                            this.renderHeadlineAccountCommunication(headlineStaffInfoCommunications)
+                        }
+                        {
+                            !isGuest && !customerDetail.isGroupHeadLine &&
+                            this.renderOtherAccountCommunication(otherAccountCommunicationInfos)
+                        }
+                        {
+                            isGuest &&
+                            this.renderGuestCommunication()
+                        }
+                    </div>
                 </div>
                 {
                     customerDetail !== null && isHostOnCurrentCustomer &&
