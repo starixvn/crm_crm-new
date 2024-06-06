@@ -13,6 +13,31 @@ export const statusOptionCSD = [
     {id: 'Inactive', name: 'Inactive', checked: true}
 ];
 
+export const languageOptions = isOstUser => {
+    const commonOptions = [
+        {
+            name: "English",
+            mapLabel: "content_en"
+        },
+        {
+            name: "Simplified Chinese",
+            mapLabel: "content_cs"
+        }
+    ];
+
+    if (isOstUser) {
+        return [
+            ...commonOptions,
+            {
+                name: "Traditional Chinese",
+                mapLabel: "content_ch"
+            }
+        ];
+    } else {
+        return commonOptions;
+    }
+};
+
 export const isEitherExitsFromToId = filter => {
     const { fromNotificationId, toNotificationId } = filter;
     return (fromNotificationId && !toNotificationId) || (!fromNotificationId && toNotificationId);

@@ -153,11 +153,21 @@
 
             .info-notice {
                 display: flex;
-                padding: 6px 16px;
+                padding: 6px 21px;
                 align-items: center;
+                width: 50%;
 
                 label {
                     font-weight: 700;
+                    margin-bottom: 0px !important;
+                }
+
+                .status-button {
+                    margin: 0 !important;
+                }
+
+                .infoId {
+                    margin-right: 35px;
                 }
             }
 
@@ -181,12 +191,22 @@
                 }
 
                 .group-content {
+                    display: flex;
                     padding: 8px 25px;
 
-                    .content-item {
+                    .info-event {
                         display: flex;
+                        width: 50% !important;
+
+                        label {
+                            margin-right: 40px;
+                        }
+
+                        .event-name {
+                            margin-left: 21px;
+                        }
                     }
-    
+                    
                     .content {
                         .content-child {
                             padding: 0 15px;
@@ -198,8 +218,27 @@
                     }
                 }
 
+                .info-subject {
+                    display: flex;
+                    padding: 15px 25px 0px 25px;
+                    align-items: center;
+
+                    label {
+                        margin-right: 35px;
+                    }
+                    input {
+                        width: 90%;
+                    }
+                }
+
+                .required:after {
+                    content: "*";
+                    color: #ff0101;
+                    margin-left: 0.25rem;
+                }
+
                 .group-language {
-                    padding: 20px 10px;
+                    padding: 15px 10px 20px 10px;
 
                     .nav-tabs {
                         border: 0;
@@ -241,13 +280,6 @@
                     }
                 }
 
-                .form-group {
-                    width: 300px;
-                    margin: 0 0 8px 0;
-                    margin-right: 24px;
-                    flex-direction: column;
-                }
-
                 .text-bold {
                     font-weight: bold;
                 }
@@ -255,11 +287,9 @@
                 .link-ticket {
                     cursor: pointer;
                     color: $link-color;
+                    font-size: 14px;
+                    font-weight: bold;
                 }
-            }
-
-            .infoId {
-                width: 200px;
             }
 
             .group-btn {
@@ -306,11 +336,11 @@
 
 .affected-ticket-modal {
     .modal-content {
-        width: 766px;
+        width: 784px;
     }
 
     .affected {
-        width: 740px;
+        width: 756px;
     }
 
     .affected-filter {
