@@ -3,13 +3,13 @@ import LangHelper from '@jsroot/common/langHelper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Col, Form, Row, Tabs, Tab, Button } from 'react-bootstrap';
+import { Col, Form, Tabs, Tab, Button } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
-import { filterAndSortSites } from '../common.functions';
+import { filterAndSortSites, languageOptions } from '../common.functions';
 import AffectedTicket from './AffectedTicket';
 
 export class CommonNotification extends Component {
@@ -21,33 +21,16 @@ export class CommonNotification extends Component {
             data: null,
             sites: null,
             confirmActionDialog: { show: false, params: null, content: null },
-            content: {
-                content_en: null,
-                content_cs: null,
-                content_ch: null
-            },
             affectedTicketPopup: { show: false, isCredit: true, siteTickets: null },
             isSubmitting: false,
             pushPopup: { show: false },
             savePopup: { show: false },
             activatePopup: { show: false },
-            messageSuccessful: null
+            messageSuccessful: null,
+            errorMessages: { isSuccessful: true, messages: [] }
         }
 
-        this.languages = [
-            {
-                name: "English",
-                mapLabel: "content_en"
-            },
-            {
-                name: "Simplified Chinese",
-                mapLabel: "content_cs"
-            },
-            {
-                name: "Traditional Chinese",
-                mapLabel: "content_ch"
-            }
-        ]
+        this.languages = languageOptions(this.props.actionParam.isOstUser);
     }
 
     componentDidMount() {
@@ -61,27 +44,19 @@ export class CommonNotification extends Component {
         await this.props.getAdmNotificationById(notificationId).then(response => {
             const { notificationDetails, sites } = response.data;
             const notificationDetail = notificationDetails[0];
-            this.getContentByLanguage(notificationDetail);
             this.setState({data: notificationDetail, sites});
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
 
-    getContentByLanguage = notification => {
-        const content = {...this.state.content};
-        content.content_en = notification.content_en;
-        content.content_cs = notification.content_cs;
-        content.content_ch = notification.content_ch;
-        this.setState({content});
-    };
-
     getParams = status => {
-        const { content_en, content_cs, content_ch } = this.state.content;
+        const { content_en, content_cs, content_ch, subject } = this.state.data;
         const params = {
             notificationId: this.props.actionParam.notificationId,
             newStatus: status,
             newContentEN: content_en,
             newContentCS: content_cs,
-            newContentCH: content_ch
+            newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
+            subject: subject
         };
         return params;
     };
@@ -199,13 +174,10 @@ export class CommonNotification extends Component {
         );
     };
 
-    handleChangeContent = (mapLabel, value) => {
-        this.setState(prevState => ({
-            content: {
-                ...prevState.content,
-                [mapLabel]: value
-            }
-        }));
+    handleChange = (name, value) => {
+        this.setState({
+            data: {...this.state.data, [name]: value}
+        });
     };
 
     handleClosePopup = () => {
@@ -218,7 +190,47 @@ export class CommonNotification extends Component {
     };
 
     handleActive = popup => {
-        this.setState({ [popup]: { show: true }});
+        const isSuccessful = this.validateForm();
+        if (isSuccessful) {
+            this.setState({[popup]: { show: true }});
+        }
+    };
+
+    validateForm = () => {
+        const { subject, content_en, content_cs, content_ch } = this.state.data;
+        const { isOstUser } = this.props.actionParam;
+
+        const errors = [];
+        let isSuccessful = true;
+
+        if (!subject) {
+            errors.push(LangHelper.getResource('SubjectRequired'));
+            isSuccessful = false;
+        }
+
+        if (!content_en) {
+            errors.push(LangHelper.getResource('EnglishContentRequired'));
+            isSuccessful = false;
+        }
+
+        if (!content_cs) {
+            errors.push(LangHelper.getResource('SimplifiedChineseContentRequired'));
+            isSuccessful = false;
+        }
+
+        if (isOstUser && !content_ch) {
+            errors.push(LangHelper.getResource('TraditionalChineseContentRequired'));
+            isSuccessful = false;
+        }
+
+        this.setState({
+            errorMessages: {
+                isSuccessful,
+                messages: errors
+            }
+        });
+    
+        return isSuccessful;
     };
 
     isRenderPopupAction = () => {
@@ -285,13 +297,22 @@ export class CommonNotification extends Component {
     };
 
     render = () => {
-        const { data, content, affectedTicketPopup, messageSuccessful } = this.state;
+        const { data, affectedTicketPopup, messageSuccessful, errorMessages } = this.state;
         const { editAdmNotificationResult, isEdit, actionParam } = this.props;
+        const { isOstUser } = actionParam;
+        console.log('isOstUser', isOstUser);
+        const headerClass = (isOstUser && !isEdit) ? 'group-header required' : 'group-header';
+        const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
+
         if(!data) {
             return null;
         }
         return (
             <>
+                {
+                    !errorMessages.isSuccessful &&
+                    <ResponseMessage isSuccessful={errorMessages.isSuccessful} messages={errorMessages.messages}/>
+                }
                 {
                     editAdmNotificationResult &&
                     <ResponseMessage isSuccessful={editAdmNotificationResult.isSuccessful}
@@ -306,8 +327,6 @@ export class CommonNotification extends Component {
                                 <div>{data.notificationID}</div>
                                 { data.messageID && <span className='pl-2'>{`(Msg: ${data.messageID})`}</span> }
                             </Form.Group>
-                        </Form.Row>
-                        <Form.Row bsPrefix='form-row'>
                             <Form.Group className='info-notice'>
                                 <Form.Label className='infoId'>{LangHelper.getResource('Status')}</Form.Label>
                                 <div className={`status-button status-${data.status}`}>{data.status}</div>
@@ -316,20 +335,18 @@ export class CommonNotification extends Component {
                         <div className="group-item">
                             <div className="group-header">{LangHelper.getResource('EventInfo')}</div>
                             <div className="group-content">
-                                <div className="content-item">
-                                    <Form.Group as={Row}>
-                                        <Form.Label className='text-bold' htmlFor="eventDate">
-                                            {LangHelper.getResource('EventDateGMT4')}
-                                        </Form.Label>
-                                        <div>{data.eventDate ? DateTimeService.toShortDateFormat(data.eventDate) : null}</div>
-                                    </Form.Group>
-                                    <Form.Group as={Row}>
-                                        <Form.Label className='text-bold' htmlFor="eventName">
-                                            {LangHelper.getResource('EventName')}
-                                        </Form.Label>
-                                        <div>{data.eventName}</div>
-                                    </Form.Group>
-                                </div>
+                                <Form.Group className='info-event'>
+                                    <Form.Label className='text-bold' htmlFor="eventDate">
+                                        {LangHelper.getResource('EventDateGMT4')}
+                                    </Form.Label>
+                                    <div>{data.eventDate ? DateTimeService.toShortDateFormat(data.eventDate) : null}</div>
+                                </Form.Group>
+                                <Form.Group className='info-event'>
+                                    <Form.Label className='text-bold event-name' htmlFor="eventName">
+                                        {LangHelper.getResource('EventName')}
+                                    </Form.Label>
+                                    <div>{data.eventName}</div>
+                                </Form.Group>
                             </div>
                         </div>
                         <div className="group-item">
@@ -343,9 +360,31 @@ export class CommonNotification extends Component {
                             </div>
                         </div>
                         <div className="group-item">
-                            <div className="group-header">{LangHelper.getResource('Content')}</div>
+                            <div className={headerClass}>{LangHelper.getResource(resourceKey)}</div>
+                            {
+                                !isOstUser &&
+                                (
+                                    <Form.Group className='info-subject'>
+                                        <Form.Label className='text-bold required' htmlFor="subject">
+                                            {LangHelper.getResource('Subject')}
+                                        </Form.Label>
+                                        <Form.Control className='shadow-none' type="text" id="subject"
+                                            autoComplete="off" name="subject" value={data.subject}
+                                            onChange={event => this.handleChange('subject', event.target.value)}
+                                        />
+                                    </Form.Group>
+                                )
+                            }
                             <div className="group-language">
                                 <Col sm={12} md={12}>
+                                    {
+                                        !isOstUser &&
+                                        (
+                                            <Form.Label className='text-bold required' htmlFor="content">
+                                                {LangHelper.getResource('Content')}
+                                            </Form.Label>
+                                        )
+                                    }
                                     <Tabs
                                         className='languages-text'
                                         id="controlled-tab"
@@ -357,9 +396,9 @@ export class CommonNotification extends Component {
                                                 (<Tab key={key} eventKey={language.name} title={language.name}>
                                                     <CkEditor
                                                         name={language.name}
-                                                        data={content[language.mapLabel]}
+                                                        data={data[language.mapLabel]}
                                                         username={window.currentUsername}
-                                                        onChange={value => isEdit ? this.handleChangeContent(language.mapLabel, value) : null}     
+                                                        onChange={value => isEdit ? this.handleChange(language.mapLabel, value) : null}     
                                                         isRemoveToolbarForChatbot
                                                         isRemoveAllToolbar={actionParam.isOstUser || !isEdit}
                                                     />

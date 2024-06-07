@@ -288,7 +288,7 @@ export class DataGrid extends Component {
 
     contentBlock = (index, title, content) => (
         <div key={index}>
-            {this.horizontalLine()}
+            <div className='linear-gradient'></div>
             <div className='text-bold'>{title}</div>
             <div className='text-padding-bottom text-line' dangerouslySetInnerHTML={{ __html: content }} />
         </div>
@@ -386,6 +386,7 @@ export class DataGrid extends Component {
         const { pageIndex, pageSize } = this.props.gridParams;
         const { isHost } = this.props;
         const { cancelPopup, resendFailPopup, deactivatePopup, detailNotificationPopup } = this.state;
+        const detailParam = { notificationId: detailNotificationPopup.notificationId, isOstUser: this.props.gridParams.isOstUser };
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
@@ -415,7 +416,7 @@ export class DataGrid extends Component {
                     this.renderConfirmPopup()
                 }
                 {
-                    detailNotificationPopup.show && <DetailNotification onClose={this.handleClosePopup} actionParam={detailNotificationPopup}/>
+                    detailNotificationPopup.show && <DetailNotification onClose={this.handleClosePopup} actionParam={detailParam}/>
                 }
             </>
         );

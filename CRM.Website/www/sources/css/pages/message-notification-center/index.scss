@@ -140,6 +140,14 @@
             width: 100%;
         }
     }
+
+    .linear-gradient {
+        margin: 5px 0 5px 0;
+        height: 1px;
+        background-image: linear-gradient(90deg, #B0B0B0, #B0B0B0 75%, transparent 75%, transparent 100%);
+        background-size: 10px 1px;
+        border: none;
+    }
 }
 
 .message-notification-center-action {
@@ -336,11 +344,11 @@
 
 .affected-ticket-modal {
     .modal-content {
-        width: 784px;
+        width: 800px;
     }
 
     .affected {
-        width: 756px;
+        width: 774px;
     }
 
     .affected-filter {

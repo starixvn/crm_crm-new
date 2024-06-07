@@ -156,7 +156,7 @@ export default class AffectedTicket extends Component {
                 </div>
                 <div className='site-table'>
                     <Table
-                        width={716}
+                        width={732}
                         autoWidth={false}
                         header={this.buildHeader(this.state.isCredit)}
                         body={this.buildBody()}
