@@ -356,15 +356,11 @@ export class CustomerInfo extends PureComponent {
                 </Button>
                 {
                     guestCommunicationInfos.length === 0 &&
-                    <Form.Group as={Row}>
-                        <div>
-                            <div className="none-normal-communication-tool">
-                                <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                                <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
-                                <span className="add-communication-tool" onClick={this.addNewGuestCommunicationTool}>{` Add Communication Tool`}</span>
-                            </div>
-                        </div>
-                    </Form.Group>
+                    <div className="none-normal-communication-tool">
+                        <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                        <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                        <span className="add-communication-tool" onClick={this.addNewGuestCommunicationTool}>{` Add Communication Tool`}</span>
+                    </div>
                 }
                 <div>
                     {

@@ -779,7 +779,11 @@ export class CreateForm extends Component {
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
                         content={this.renderComfirmChatTypeMapping()}
                         size='lg'
-                        onSubmit={this.createFeedback }
+                        onSubmit={() => {
+                                this.editHeadlineCommunicationPic();
+                                this.createFeedback();
+                            }
+                        }
                         onClose={() => { this.setState({ checkChattypeMappingDialog: { show: false, data: [] } }); } }
                     />
                 }
@@ -976,13 +980,14 @@ export class CreateForm extends Component {
             this.createFeedback();
         }
         else {
+            const { params } = this.props.confirmCreateGuestDialog;
             this.setState({
                 checkChattypeMappingDialog: {
                     show: true,
                     data: validResult
                 }
             });
-            this.props.setConfirmCreateGuestDialog({ show: false });
+            this.props.setConfirmCreateGuestDialog({ show: false, params: params });
         }
     }
 

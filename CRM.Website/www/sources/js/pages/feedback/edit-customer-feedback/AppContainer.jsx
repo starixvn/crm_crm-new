@@ -763,8 +763,9 @@ export class AppContainer extends Component {
             this.handleEditFeedback(params);
         }
         else {
+            const { params } = this.state.confirmEditFeedbackDialog;
             this.setState({
-                confirmEditFeedbackDialog: { show: false },
+                confirmEditFeedbackDialog: { show: false, params: params },
                 checkChattypeMappingDialog: {
                     show: true,
                     data: validResult
@@ -1153,7 +1154,10 @@ export class AppContainer extends Component {
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
                         content={this.renderComfirmChatTypeMapping()}
                         size='lg'
-                        onSubmit={() => { this.handleEditFeedback(this.state.confirmEditFeedbackDialog.params); }}
+                        onSubmit={() => {
+                            this.editHeadlineCommunicationPic();
+                            this.handleEditFeedback(this.state.confirmEditFeedbackDialog.params);
+                        }}
                         onClose={() => {
                             this.setState({ checkChattypeMappingDialog: { show: false, data: [] } });
                             this.formik.setSubmitting(false);

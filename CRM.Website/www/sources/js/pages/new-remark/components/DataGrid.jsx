@@ -17,6 +17,12 @@ export class DataGrid extends Component {
         super(props);
     }
 
+    componentDidUpdate() {
+        if (document.querySelector("#no-data-remark") != null && this.props.gridData.data.length === 0 && this.props.isSearchAll) {
+            document.querySelector("#no-data-remark").innerText = LangHelper.getResource('ThereIsNoDataRemark');
+        }
+    }
+
     buildHeader = isHost => {
         return (
             <HeaderRow>
@@ -47,7 +53,7 @@ export class DataGrid extends Component {
             return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost, isRead));
         }
 
-        return [<Row key='new-remark-body' className="no-data" ><Cell colSpan={isHost ? 16 : 15}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        return [<Row key='new-remark-body' className="no-data" ><Cell id='no-data-remark' colSpan={isHost ? 16 : 15}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     renderRow = (item, index, isHost, isRead) => {
@@ -233,12 +239,14 @@ const mapStateToProps = state => {
     const {
         gridParams,
         gridData,
-        popupDeleteConfirm
+        popupDeleteConfirm,
+        isSearchAll
     } = state;
     return {
         gridParams,
         gridData,
-        popupDeleteConfirm
+        popupDeleteConfirm,
+        isSearchAll
     };
 };
 

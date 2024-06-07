@@ -66,6 +66,7 @@ export class Filter extends Component {
                 toDate: Date.parse(gridDataFilter[0].toDate),
                 isSearchAll: false
             });
+            this.props.setIsSearchAll(false)
         }
     }
 
@@ -348,8 +349,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { remarkTitles, gridParams, gridDataFilter } = state;
-    return { remarkTitles, gridParams, gridDataFilter };
+    const { remarkTitles, gridParams, gridDataFilter, isSearchAll } = state;
+    return { remarkTitles, gridParams, gridDataFilter, isSearchAll };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

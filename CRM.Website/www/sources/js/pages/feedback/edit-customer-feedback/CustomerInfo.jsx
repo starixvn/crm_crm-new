@@ -149,87 +149,85 @@ export default class CustomerInfo extends PureComponent {
         const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
         const { touched, errors } = this.props;        
         return <>
-            <div className="tab-account-info">
-                {
-                    latestFeedbackCommunicationTools.length === 0 && 
-                    <div className="none-communication-tool">
-                        <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                        {
-                            this.state.picAssignmentPolicy &&
-                            <>
-                                <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
-                                <Link to='/PicOfHeadline' onClick={() => {
-                                    if (latestFeedbackCommunicationTools.length === 0) {
-                                        window.assignPIC = {
-                                            username: this.props.customerInfo.username
-                                        };
-                                    }
-                                }} className="add-communication-tool">Assign PIC</Link>
-                            </>
-                        }
-                    </div>
-                }
-                {
-                    communicationTools.map((item, indexCom) => {
-                        return <div key={`pic-${item.picInfo}`} className="headline-account-communication">
-                            {
-                                indexCom !== 0 &&
-                                <div className="separate">
-                                    <hr />
-                                </div>
-                            }
-                            <div className="bold">{item.picInfo}</div>
-                            <Form.Group as={Row} className="pt-2">
-                                {
-                                    item.picCommunicationTools.map((itemCom, index) => {
-                                        return <>
-                                            <Col sm="4" md="4">
-                                                <Form.Group as={Row}>
-                                                    <div className="custom-label-communicationTool">
-                                                        <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
-                                                            style={{
-                                                                width: `${itemCom.communicationID !== '' ? this.getWidth(itemCom.communicationID, this.props.settingCommunicationTool) : 115}px`
-                                                            }}
-                                                            value={itemCom.communicationID} onChange={event => {
-                                                                this.handleChangeCommunicationTools('communicationID', parseInt(event.target.value, 10), itemCom.indexCom);
-                                                            }}>
-                                                            <option value="0" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                                            {this.props.settingCommunicationTool.map(setting => this.renderOptions(setting.settingValue, setting.settingId))}
-                                                        </Form.Control>
-                                                    </div>
-                                                    <Col sm="8" md="8">
-                                                        <div className='field-icon comm-tool'>
-                                                            <textarea type="text" size="sm" value={itemCom.communicationValue} autoComplete="off"
-                                                                placeholder={LangHelper.getResource('SeparatedByComma')}
-                                                                className={`textarea-communication-tool shadow-none 
-                                                                    ${itemCom.isError && touched.latestFeedbackCommunicationTools && errors.latestFeedbackCommunicationTools && 'invalid'}`}
-                                                                onChange={event => {
-                                                                    this.handleChangeCommunicationTools('communicationValue', event.target.value, itemCom.indexCom);
-                                                                }} />
-                                                            {
-                                                                this.state.isHostOnCurrentCustomer && item.picCommunicationTools.length > 1 &&
-                                                                <div title='Delete communication tool'
-                                                                    className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(itemCom.indexCom); }}>
-                                                                </div>
-                                                            }
-                                                            {
-                                                                this.state.isHostOnCurrentCustomer && index === (item.picCommunicationTools.length - 1) &&
-                                                                <div title='Add communication tool'
-                                                                    className='icon icon-plus' onClick={() => { this.addNewHeadlineCommunicationTools(item); }} >
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    </Col>
-                                                </Form.Group>
-                                            </Col>
-                                        </>
-                                    })
+            {
+                latestFeedbackCommunicationTools.length === 0 && 
+                <div className="none-communication-tool">
+                    <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                    {
+                        this.state.picAssignmentPolicy &&
+                        <>
+                            <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
+                            <Link to='/PicOfHeadline' onClick={() => {
+                                if (latestFeedbackCommunicationTools.length === 0) {
+                                    window.assignPIC = {
+                                        username: this.props.customerInfo.username
+                                    };
                                 }
-                            </Form.Group>
-                        </div>
-                    })
-                }
-            </div>
+                            }} className="add-communication-tool">Assign PIC</Link>
+                        </>
+                    }
+                </div>
+            }
+            {
+                communicationTools.map((item, indexCom) => {
+                    return <div key={`pic-${item.picInfo}`} className="headline-account-communication">
+                        {
+                            indexCom !== 0 &&
+                            <div className="separate">
+                                <hr />
+                            </div>
+                        }
+                        <div className="bold">{item.picInfo}</div>
+                        <Form.Group as={Row} className="pt-2">
+                            {
+                                item.picCommunicationTools.map((itemCom, index) => {
+                                    return <>
+                                        <Col sm="4" md="4">
+                                            <Form.Group as={Row}>
+                                                <div className="custom-label-communicationTool">
+                                                    <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
+                                                        style={{
+                                                            width: `${itemCom.communicationID !== '' ? this.getWidth(itemCom.communicationID, this.props.settingCommunicationTool) : 115}px`
+                                                        }}
+                                                        value={itemCom.communicationID} onChange={event => {
+                                                            this.handleChangeCommunicationTools('communicationID', parseInt(event.target.value, 10), itemCom.indexCom);
+                                                        }}>
+                                                        <option value="0" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                        {this.props.settingCommunicationTool.map(setting => this.renderOptions(setting.settingValue, setting.settingId))}
+                                                    </Form.Control>
+                                                </div>
+                                                <Col sm="8" md="8">
+                                                    <div className='field-icon comm-tool'>
+                                                        <textarea type="text" size="sm" value={itemCom.communicationValue} autoComplete="off"
+                                                            placeholder={LangHelper.getResource('SeparatedByComma')}
+                                                            className={`textarea-communication-tool shadow-none 
+                                                                ${itemCom.isError && touched.latestFeedbackCommunicationTools && errors.latestFeedbackCommunicationTools && 'invalid'}`}
+                                                            onChange={event => {
+                                                                this.handleChangeCommunicationTools('communicationValue', event.target.value, itemCom.indexCom);
+                                                            }} />
+                                                        {
+                                                            this.state.isHostOnCurrentCustomer && item.picCommunicationTools.length > 1 &&
+                                                            <div title='Delete communication tool'
+                                                                className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(itemCom.indexCom); }}>
+                                                            </div>
+                                                        }
+                                                        {
+                                                            this.state.isHostOnCurrentCustomer && index === (item.picCommunicationTools.length - 1) &&
+                                                            <div title='Add communication tool'
+                                                                className='icon icon-plus' onClick={() => { this.addNewHeadlineCommunicationTools(item); }} >
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </Col>
+                                            </Form.Group>
+                                        </Col>
+                                    </>
+                                })
+                            }
+                        </Form.Group>
+                    </div>
+                })
+            }
         </>
     }
 
@@ -242,7 +240,7 @@ export default class CustomerInfo extends PureComponent {
             picInfo: ''
         };
         return <>
-            <div className="tab-account-info normal-account-communication">
+            <div className="normal-account-communication">
                 <Button className='btn-add' variant="primary" size="sm" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>
                     {LangHelper.getResource('AddCommunicationTool')}
                 </Button>
@@ -737,148 +735,165 @@ export default class CustomerInfo extends PureComponent {
                 </Form.Group>
                 <Collapse in={!collapse.customerInfo}>
                     <div id="collapse-expand-customerInfo" className="panel-content">
-                        {
-                            fieldInput.isCheckFeedbackIdIsNew &&
-                            <span>{LangHelper.getResource('AccountInfo')}</span>
-                        }
                         <div className={`${fieldInput.isCheckFeedbackIdIsNew && 'tab-account-info'}`}>
-                            <Form.Group as={Row}>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="titleId">
-                                            {LangHelper.getResource('Title')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id="titleId" name="titleId" value={fieldInput.titleId} onChange={handleChangeInput}
-                                            >
-                                                {settings.titles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="firstName">
-                                            {LangHelper.getResource('FirstName')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                name="firstName" id="firstName" value={fieldInput.firstName} onChange={handleChangeInput}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="lastName">
-                                            {LangHelper.getResource('LastName')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                name="lastName" id="lastName" value={fieldInput.lastName} onChange={handleChangeInput}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="birthday">
-                                            {LangHelper.getResource('Birthday')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <div className='react-datepicker-wrapper-container form-control-wrapper'>
-                                                <DatePicker
-                                                    selected={values.birthday} maxDate={values.maxDate}
-                                                    onChange={value => setFieldValue('birthday', value)} useShortMonthInDropdown
-                                                    peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                            {
+                                fieldInput.isCheckFeedbackIdIsNew &&
+                                <div className='group-title group-tab'>
+                                    <div className="group-title-tab" >
+                                        <span className='icon-dropdown' />
+                                        {LangHelper.getResource('AccountInfo')}
+                                    </div>
+                                </div>
+                            }
+                            <div className={`${fieldInput.isCheckFeedbackIdIsNew && 'group-content'}`}>
+                                <Form.Group as={Row}>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="titleId">
+                                                {LangHelper.getResource('Title')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control as="select" size="sm" className="shadow-none"
+                                                    id="titleId" name="titleId" value={fieldInput.titleId} onChange={handleChangeInput}
+                                                >
+                                                    {settings.titles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                                                </Form.Control>
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="firstName">
+                                                {LangHelper.getResource('FirstName')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                                    name="firstName" id="firstName" value={fieldInput.firstName} onChange={handleChangeInput}
                                                 />
-                                            </div>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="passport">
-                                            {LangHelper.getResource('PassportNo')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control type="text" size="sm"
-                                                name="passport" id="passport" className="shadow-none" autoComplete="off"
-                                                value={fieldInput.passport} onChange={handleChangeInput}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="siteId">
-                                            {LangHelper.getResource('Site')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <SelectWithSearch className='basic-single'
-                                                OnChangeValue={value => setFieldValue('siteId', value.id)}
-                                                options={siteOptions}
-                                                value={fieldInput.siteId}
-                                                name={values.siteName}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col md="4" sm="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="refCode2">{LangHelper.getResource('RefCodes')}</Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                name="refCode2" id="refCode2" value={fieldInput.refCode2} onChange={handleChangeInput}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="refCode1">
-                                            {LangHelper.getResource('SecretCode')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control type="text" size="sm"
-                                                name="refCode1" id="refCode1" className="shadow-none" autoComplete="off"
-                                                value={fieldInput.refCode1} onChange={handleChangeInput}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="licenseeTypeId">
-                                            {LangHelper.getResource('LicenseeType')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id="licenseeTypeId" name="licenseeTypeId"
-                                                value={fieldInput.licenseeTypeId} onChange={handleChangeInput}
-                                            >
-                                                {settings.licenseeTypes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="lastName">
+                                                {LangHelper.getResource('LastName')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                                    name="lastName" id="lastName" value={fieldInput.lastName} onChange={handleChangeInput}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row}>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="birthday">
+                                                {LangHelper.getResource('Birthday')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <div className='react-datepicker-wrapper-container form-control-wrapper'>
+                                                    <DatePicker
+                                                        selected={values.birthday} maxDate={values.maxDate}
+                                                        onChange={value => setFieldValue('birthday', value)} useShortMonthInDropdown
+                                                        peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                                    />
+                                                </div>
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="passport">
+                                                {LangHelper.getResource('PassportNo')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control type="text" size="sm"
+                                                    name="passport" id="passport" className="shadow-none" autoComplete="off"
+                                                    value={fieldInput.passport} onChange={handleChangeInput}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="siteId">
+                                                {LangHelper.getResource('Site')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <SelectWithSearch className='basic-single'
+                                                    OnChangeValue={value => setFieldValue('siteId', value.id)}
+                                                    options={siteOptions}
+                                                    value={fieldInput.siteId}
+                                                    name={values.siteName}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row}>
+                                    <Col md="4" sm="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="refCode2">{LangHelper.getResource('RefCodes')}</Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                                    name="refCode2" id="refCode2" value={fieldInput.refCode2} onChange={handleChangeInput}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="refCode1">
+                                                {LangHelper.getResource('SecretCode')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control type="text" size="sm"
+                                                    name="refCode1" id="refCode1" className="shadow-none" autoComplete="off"
+                                                    value={fieldInput.refCode1} onChange={handleChangeInput}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="licenseeTypeId">
+                                                {LangHelper.getResource('LicenseeType')}
+                                            </Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control as="select" size="sm" className="shadow-none"
+                                                    id="licenseeTypeId" name="licenseeTypeId"
+                                                    value={fieldInput.licenseeTypeId} onChange={handleChangeInput}
+                                                >
+                                                    {settings.licenseeTypes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                                                </Form.Control>
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                </Form.Group>
+                            </div>
                         </div>
-                        {
-                            fieldInput.isCheckFeedbackIdIsNew &&
-                            <span>{LangHelper.getResource('CommunicationInfo')}</span>
-                        }
-                        {
-                            fieldInput.isCheckFeedbackIdIsNew && this.renderNewCommunicationTool()
-                        }
-                        {
-                            !fieldInput.isCheckFeedbackIdIsNew && this.renderOldCommunicationTool()
-                        }
+
+                        <div className={`${fieldInput.isCheckFeedbackIdIsNew && "tab-account-info"}`}>
+                            {
+                                fieldInput.isCheckFeedbackIdIsNew &&
+                                <div className='group-title group-tab'>
+                                    <div className="group-title-tab" >
+                                        <span className='icon-dropdown' />
+                                        {LangHelper.getResource('CommunicationInfo')}
+                                    </div>
+                                </div>
+                            }
+                            <div className={`${fieldInput.isCheckFeedbackIdIsNew && 'group-content'}`}>
+                                {
+                                    fieldInput.isCheckFeedbackIdIsNew && this.renderNewCommunicationTool()
+                                }
+                                {
+                                    !fieldInput.isCheckFeedbackIdIsNew && this.renderOldCommunicationTool()
+                                }
+                            </div>
+                        </div>
                         {
                             this.state.isHostOnCurrentCustomer && fieldInput.isCheckFeedbackIdIsNew &&
                             <Form.Group as={Row} className="pt-1 pb-2">

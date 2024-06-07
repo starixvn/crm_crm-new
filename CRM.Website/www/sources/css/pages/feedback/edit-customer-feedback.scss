@@ -1,8 +1,56 @@
 .edit-feedback-modal-dialog {
     .tab-account-info {
-        padding: 8px;
-        border: 1px solid #BBBBBB;
-        margin-bottom: 10px;
+        margin: 8px 0 8px 0;
+        border-radius: 5px;
+        border: 1px solid #CCC;
+        border-top: none;
+
+        .group-title {
+            padding: 6px 6px 6px 12px;
+            color: #333333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FFF;
+            font-weight: 700;
+            border-radius: 5px;
+            border-top: 1px solid #CCC;
+            border-bottom: 1px solid #CCC;
+
+            .icon-dropdown {
+                transform: rotate(-90deg);
+                transition: 0.2s;
+                margin-right: 6px;
+            }
+
+            .group-title-tab {
+                width: 90%;
+                display: flex;
+                text-transform: capitalize;
+            }
+        }
+
+        .group-content {
+            padding: 12px;
+
+            .form-check {
+                padding-left: 0;
+                display: flex;
+                align-items: center;
+
+                input[type="checkbox"] {
+                    width: 18px;
+                    height: 18px;
+                    margin: 3px 7px 3px 3px;
+                    cursor: pointer;
+                }
+
+                .form-check-input {
+                    margin: 0;
+                    position: relative;
+                }
+            }
+        }
     }
 
     .textarea-communication-tool {
@@ -42,7 +90,7 @@
     }
 
     .headline-account-communication, .normal-account-communication {
-        .btn-add{
+        .btn-add {
             width: 184px;
             height: 26px;
             margin-bottom: 8px;

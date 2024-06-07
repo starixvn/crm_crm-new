@@ -4,6 +4,10 @@
 }
 
 .add-feedback {
+    .btn-add {
+        margin-bottom: 8px;
+    }
+
     .tab-account-info {
         margin: 8px 0 8px 0;
         border-radius: 5px;
@@ -26,7 +30,6 @@
                 transform: rotate(-90deg);
                 transition: 0.2s;
                 margin-right: 6px;
-                cursor: pointer;
             }
 
             .group-title-tab {
@@ -106,10 +109,6 @@
     }
 
     .headline-account-communication, .normal-account-communication {
-        .btn-add {
-            margin-bottom: 8px;
-        }
-
         .comm-tool {
             width: 85%;
         }

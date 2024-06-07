@@ -2,6 +2,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
     setRemarkTitle,
+    setIsSearchAll,
     setAllSettings,
     setGridParams,
     setRemarks,
@@ -86,6 +87,7 @@ const getNewRemarkHistory = params => async dispatch => {
 export const ActionCreators = {
     getRemarkTitles,
     setRemarkTitle,
+    setIsSearchAll,
     getAllSettings,
     setAllSettings,
     validateUsername,

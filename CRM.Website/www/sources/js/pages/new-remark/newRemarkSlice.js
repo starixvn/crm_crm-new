@@ -14,7 +14,8 @@ const initialState = {
     validateResult: null,
     remarksHistory: null,
     showHistory: {show: false},
-    historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''}
+    historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: '' },
+    isSearchAll: false
 };
 const newRemarkSlice = createSlice({
     name: 'newRemark',
@@ -23,6 +24,9 @@ const newRemarkSlice = createSlice({
         resetState: () => initialState,
         setRemarkTitle: (state, action) => {
             state.remarkTitles = action.payload;
+        },
+        setIsSearchAll: (state, action) => {
+            state.isSearchAll = action.payload;
         },
         setAllSettings: (state, action) => {
             state.allSettings = action.payload;
@@ -70,6 +74,7 @@ const { actions, reducer } = newRemarkSlice;
 
 export const {
     setRemarkTitle,
+    setIsSearchAll,
     setAllSettings,
     setGridParams,
     setRemarks,

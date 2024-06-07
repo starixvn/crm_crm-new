@@ -35,6 +35,7 @@ export class AppContainer extends Component {
 
     componentDidMount(){
         this.props.getRemarkTitles();
+        this.props.setIsSearchAll(this.props.isRemark)
         getPermission(FunctionKey.Remarks, true).then(response => {
             this.setState({ remarksPolicy: response });
         });
@@ -66,7 +67,7 @@ export class AppContainer extends Component {
         this.props.setEditResult(null);
     };
     render() {
-        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isSearchAll } = this.props;
+        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch } = this.props;
         const {remarksPolicy}= this.state;
         if(remarkTitles === null || !remarkTitles || !remarksPolicy){
             return null;
@@ -76,11 +77,11 @@ export class AppContainer extends Component {
 
         return (
             <Fragment>
-                <Filter isHost={isHost} customerName={customerName} isGuestSearch={isGuestSearch} isSearchAll={isSearchAll} />
+                <Filter isHost={isHost} customerName={customerName} isGuestSearch={isGuestSearch}  />
                 {
                     showHistory.show ?
                     <History/> :
-                    <DataGrid isHost={isHost} isRead={isRead}/>
+                    <DataGrid isHost={isHost} isRead={isRead} />
                 }
                 {
                     popupAdd.show &&
