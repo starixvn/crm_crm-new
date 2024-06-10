@@ -145,7 +145,7 @@ export default class CustomerInfo extends PureComponent {
 
     renderHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
         const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
-        const { touched, errors } = this.props;        
+        const { touched, errors, hasCreateFeedbackPermission } = this.props;        
         return <>
             {
                 latestFeedbackCommunicationTools.length === 0 && 
@@ -199,13 +199,13 @@ export default class CustomerInfo extends PureComponent {
                                                                 this.handleChangeCommunicationTools('communicationValue', event.target.value, itemCom.indexCom);
                                                             }} />
                                                         {
-                                                            item.picCommunicationTools.length > 1 &&
+                                                            hasCreateFeedbackPermission && item.picCommunicationTools.length > 1 &&
                                                             <div title='Delete communication tool'
                                                                 className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(itemCom.indexCom); }}>
                                                             </div>
                                                         }
                                                         {
-                                                            index === (item.picCommunicationTools.length - 1) &&
+                                                            hasCreateFeedbackPermission && index === (item.picCommunicationTools.length - 1) &&
                                                             <div title='Add communication tool'
                                                                 className='icon icon-plus' onClick={() => { this.addNewHeadlineCommunicationTools(item); }} >
                                                             </div>
@@ -284,9 +284,12 @@ export default class CustomerInfo extends PureComponent {
                                                         onChange={event => {
                                                             this.handleChangeCommunicationTools('communicationValue', event.target.value, index);
                                                         }} />
-                                                    <div title='Delete communication tool'
-                                                        className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(index); }}>
-                                                    </div>
+                                                    {
+                                                        hasCreateFeedbackPermission &&
+                                                        <div title='Delete communication tool'
+                                                            className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(index); }}>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </Col>
                                         </Form.Group>
