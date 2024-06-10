@@ -181,36 +181,33 @@
 
         public async Task SendNotificationCenter()
         {
-            await botService.SendSkypeAsync("29:1WxSlv-zfSGyjHtoopjlyb0jaTddi9gTN7gPKXv6k_DU",
-                "MatchID: 83535524\nEvent Date: May 24, 2024\nEvent Time: 2024-05-24 15:24:21.230\nLeague: TESTING (Betting Prohibited Area!!) - Test Test Indian *Cricket\nMatch: Kyle Roopchand -vs- Arsalan Javaid\n\nNotification ID: 2144\nStatus: **NEW**"
-            );
-            //try
-            //{
-            //    await sendNotificationCenterService.InsertNotificationAlertAsync();
-            //    var messages = await sendNotificationCenterService.GetNotificationAlertAsync();
+            try
+            {
+                await sendNotificationCenterService.InsertNotificationAlertAsync();
+                var messages = await sendNotificationCenterService.GetNotificationAlertAsync();
 
-            //    if (messages.Any())
-            //    {
-            //        foreach (var item in messages)
-            //        {
-            //            var conversationConfig = botSetting.ConversationConfigs
-            //                .Find(x => x.Channel == BotChannel.Skype && x.ConversationId == item.ChatGroupID);
+                if (messages.Any())
+                {
+                    foreach (var item in messages)
+                    {
+                        var conversationConfig = botSetting.ConversationConfigs
+                            .Find(x => x.Channel == BotChannel.Skype && x.ConversationId == item.ChatGroupID);
 
-            //            if (conversationConfig?.ConversationId != null)
-            //            {
-            //                await botService.SendSkypeAsync(conversationConfig.ConversationId, item.Content);
-            //            }
-            //            else
-            //            {
-            //                await logService.ErrorMessageAsync($"Don't exist ChatGroupID: {item.ChatGroupID} with MatchID: {item.MatchID}");
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    await logService.ErrorAsync(ex);
-            //}
+                        if (conversationConfig?.ConversationId != null)
+                        {
+                            await botService.SendSkypeAsync(conversationConfig.ConversationId, item.Content);
+                        }
+                        else
+                        {
+                            await logService.ErrorMessageAsync($"Don't exist ChatGroupID: {item.ChatGroupID} with MatchID: {item.MatchID}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
         }
     }
 }
