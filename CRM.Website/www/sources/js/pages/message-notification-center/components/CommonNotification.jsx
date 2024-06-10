@@ -204,7 +204,7 @@ export class CommonNotification extends Component {
         const errors = [];
         let isSuccessful = true;
 
-        if (!subject) {
+        if (!subject && !isOstUser) {
             errors.push(LangHelper.getResource('SubjectRequired'));
             isSuccessful = false;
         }
@@ -219,7 +219,7 @@ export class CommonNotification extends Component {
             isSuccessful = false;
         }
 
-        if (isOstUser && !content_ch) {
+        if (!content_ch && isOstUser) {
             errors.push(LangHelper.getResource('TraditionalChineseContentRequired'));
             isSuccessful = false;
         }
@@ -301,7 +301,7 @@ export class CommonNotification extends Component {
         const { data, affectedTicketPopup, messageSuccessful, errorMessages } = this.state;
         const { editAdmNotificationResult, isEdit, actionParam } = this.props;
         const { isOstUser } = actionParam;
-        const headerClass = (isOstUser && !isEdit) ? 'group-header required' : 'group-header';
+        const headerClass = isOstUser ? 'group-header required' : 'group-header';
         const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
 
         if(!data) {
