@@ -23,20 +23,14 @@ describe('common.functions', () => {
                 sendType: 'Send At',
                 sendDate: null
             };
-            const state = {
-                invalidWidthHeight: 'test',
-                isHeadlineGroup: {
-                    isSiteType: true
-                }
-            }
             const expected = {
                 //notificationTemplate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate')),
                 title: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title')),
                 sendDate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime')),
-                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'test')
+                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'test'),
                 imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError')),
                 site: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site')),
-                currency: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')),
+                currency: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'))
             };
             const state = {
                 invalidWidthHeight: ['test'],
@@ -45,7 +39,7 @@ describe('common.functions', () => {
                     invalidFileTypeDraft: [],
                     invalidFileSizeDraft: []
                 }
-            }
+            };
             // Act
             const actual = commonFunc.validateFormik(values, [], state);
 

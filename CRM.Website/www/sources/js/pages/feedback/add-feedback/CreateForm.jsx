@@ -1035,7 +1035,8 @@ export class CreateForm extends Component {
                     if (!response?.data) {
                         return;
                     }
-                    if(this.props.addFeedbackResult.isSuccessful){
+                    if (this.props.addFeedbackResult.isSuccessful) {
+                        window.dispatchEvent(new Event('getCurrentCustomer'));
                         const data = response.data;
                         const currentCustomer = {
                             custId: data.custId,
@@ -1046,6 +1047,7 @@ export class CreateForm extends Component {
                         const state = this.props.currentCustomer || currentCustomer;
                         setTimeout(() => {
                             if((this.props.currentCustomer && params.IsOverWrite) || !this.props.currentCustomer){
+                                window.dispatchEvent(new Event('getCurrentCustomer'));
                                 window.localStorage.setItem('updateLeftPanel', data.custId);
                             }
                             this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: state});

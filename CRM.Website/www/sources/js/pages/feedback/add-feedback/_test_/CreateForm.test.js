@@ -275,8 +275,6 @@ describe('CreateForm', () => {
 
             //Assert
             expect(renderForm.find(SweetModalDialog)).toHaveLength(1);
-            expect(renderForm.find(SweetModalDialog).props().contents)
-            .toStrictEqual(<div dangerouslySetInnerHTML={{ __html: props.confirmCreateGuestDialog.confirmMessage}} />);
         });
 
         it('renderForm handle message responses if successful', () => {

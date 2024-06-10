@@ -38,6 +38,7 @@ describe('announcementSlice reducer', () => {
             pageIndex: 1,
             pageSize: 100
         },
+        isAllLanguages: true,
         gridData: null,
         createAnnouncementResult: null,
         editAnnouncementResult: null,

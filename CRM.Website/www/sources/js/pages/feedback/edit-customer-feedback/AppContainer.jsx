@@ -792,6 +792,7 @@ export class AppContainer extends Component {
                 setTimeout(() => {
                     this.props.onClose(true);
                     if (params.isOverwrite) {
+                        window.dispatchEvent(new Event('getCurrentCustomer'));
                         window.localStorage.setItem('updateLeftPanel', params.custId);
                         const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
                         this.props.navigate(pathname, { state: this.props.currentCustomer });

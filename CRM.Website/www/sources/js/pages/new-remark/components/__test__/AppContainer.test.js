@@ -15,7 +15,8 @@ describe('AppContainer', () => {
                 getRemarkTitles: jest.fn(),
                 popupAdd: { show: false },
                 popupEdit: { show: false },
-                showHistory: { show: false }
+                showHistory: { show: false },
+                setIsSearchAll: jest.fn()
             };
 
             //Act
@@ -37,6 +38,7 @@ describe('AppContainer', () => {
                 setOpenCreatePopup: jest.fn(),
                 setCreateResult: jest.fn(),
                 setValidateResult: jest.fn(),
+                setIsSearchAll: jest.fn()
             };
 
             // Act
@@ -59,7 +61,8 @@ describe('AppContainer', () => {
                 showHistory: { show: false },
                 getRemarkTitles: jest.fn(),
                 getNewRemarks: jest.fn(),
-                gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false}
+                gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false},
+                setIsSearchAll: jest.fn()
             };
 
             // Act
@@ -82,7 +85,8 @@ describe('AppContainer', () => {
                 showHistory: { show: false },
                 getRemarkTitles: jest.fn(),
                 getNewRemarks: jest.fn(),
-                gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false}
+                gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false},
+                setIsSearchAll: jest.fn()
             };
 
             // Act
@@ -106,7 +110,8 @@ describe('AppContainer', () => {
                 getRemarkTitles: jest.fn(),
                 setOpenEditPopup: jest.fn(),
                 setEditResult: jest.fn(),
-                getNewRemarks: jest.fn()
+                getNewRemarks: jest.fn(),
+                setIsSearchAll: jest.fn()
             };
 
             // Act
@@ -127,7 +132,8 @@ describe('AppContainer', () => {
                 popupEdit: { show: true },
                 showHistory: { show: true },
                 getRemarkTitles: jest.fn(),
-                remarkTitles :  [{id: 0, name: null, settingId: 70000, settingName: "RemarkTitles", settingValue: "Internal Request"}]
+                remarkTitles :  [{id: 0, name: null, settingId: 70000, settingName: "RemarkTitles", settingValue: "Internal Request"}],
+                setIsSearchAll: jest.fn()
             };
 
             // Act
@@ -144,7 +150,8 @@ describe('AppContainer', () => {
                 popupEdit: { show: true },
                 showHistory: { show: true },
                 getRemarkTitles: jest.fn(),
-                remarkTitles :  null
+                remarkTitles :  null,
+                setIsSearchAll: jest.fn()
             };
 
             // Act

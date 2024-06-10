@@ -123,8 +123,6 @@
 
         public string BankState { get; set; }
 
-        public int BankCountryId { get; set; }
-
         public int LicenseeType { get; set; }
 
         public string WhatsApp { get; set; }

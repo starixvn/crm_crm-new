@@ -266,7 +266,6 @@ export const ParamsSubmit = (custId, values) => {
         bankCity: values.bankAddressCity,
         bankCode: values.bankAddressPostCode,
         bankState: values.bankAddressState,
-        bankCountryId: values.bankAddressCountryId,
         licenseeType: values.licenseeTypeId,
         whatsApp: values.whatsApp,
         line: values.line,

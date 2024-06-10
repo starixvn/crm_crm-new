@@ -10,7 +10,7 @@
     ActivePICSuccess: 'Active PIC successfully!',
     AddRelatedCustomers: 'Add Related Customers',
     AddNewCaseSuccessfully: 'Add New Case Successfully!',
-    AddCommunicationToolNoneData: 'To add the communication tool for this account, simply click on ',
+    AddCommunicationToolNoneData: 'To add the communication tools, simply click ',
     AddHeadlineCommunicationToolNoneData: 'To add the headline communication info, simply click ',
     All: 'All',
     AllLanguages: 'All Languages',

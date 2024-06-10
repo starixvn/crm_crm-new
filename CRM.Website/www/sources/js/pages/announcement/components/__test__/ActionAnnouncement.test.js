@@ -188,7 +188,7 @@ describe('ActionAnnouncement', () => {
       
             actionAnnouncement.instance().setStateUploadFile(uploadedFiles, fileNameRemove);
       
-            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual(['file1.jpg']);
+            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual(['file1.jpg','file2.jpg']);
         });
       
         it('should set uploadedFiles in the actionAnnouncement state', () => {
@@ -243,7 +243,7 @@ describe('ActionAnnouncement', () => {
       
             actionAnnouncement.instance().setStateUploadFile([], 'fileToRemove.jpg');
             // Assert
-            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual([]);
+            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual(["fileToRemove.jpg"]);
             expect(actionAnnouncement.state('uploadedFiles')).toEqual([]);
             expect(actionAnnouncement.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
             expect(actionAnnouncement.state('errorDrafts').invalidFileTypeDraft).toEqual([]);

@@ -22,6 +22,7 @@ describe('remarkSlice reducer', () => {
             allSettings: null,
             gridParams: { pageIndex: 1, pageSize: 100, username: '', isGuest: false},
             gridData: null,
+            isSearchAll: false,
             popupAdd: { show: false },
             editResult: null,
             popupEdit: { show: false, data: null, isViewHistory: false },

@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.UnitTests.Remark
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -12,6 +13,7 @@
     using CRM.Criteria.Customer;
     using CRM.Criteria.NewRemark;
     using CRM.Models.Customer;
+    using CRM.Models.Remark;
     using CRM.Models.RemarkNew;
     using CRM.Models.Setting;
     using CRM.Services;
@@ -93,7 +95,7 @@
         public async Task GetNewRemarks_WhenCalled_ReturnExpectedJsonResult()
         {
             var fixture = new Fixture();
-            var newRemarks = fixture.Create<IEnumerable<RemarkNewInfo>>();
+            var newRemarks = fixture.Create<ValueTuple<IEnumerable<RemarkNewInfo>, IEnumerable<RemarkDateFilter>>>();
             var criteria = fixture.Create<GetNewRemarkCriteria>();
 
             var controller = GetController();
@@ -107,7 +109,7 @@
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var newRemarksJson = (IEnumerable<RemarkNewInfo>)jsonResult.Value.GetType().GetProperty("data").GetValue(jsonResult.Value);
             var totalItems = (int)jsonResult.Value.GetType().GetProperty("totalItems").GetValue(jsonResult.Value);
-            Assert.Equal(newRemarks, newRemarksJson);
+            Assert.Equal(newRemarks.Item1, newRemarksJson);
             Assert.Equal(criteria.TotalRows, totalItems);
         }
 

@@ -324,7 +324,7 @@ export const getParams = (values, customerDetail, settings, state) =>{
         FirstName: customerInfo.firstName,
         lastName: customerInfo.lastName,
         TitleId: parseInt(customerInfo.title, 10),
-        Birthday: customerInfo.birthday === '' ? null : DateTimeService.toShortDateTimeFormat(new Date(customerInfo.birthday)),
+        Birthday: (customerInfo.birthday === '' || customerInfo.birthday === null) ? null : DateTimeService.toShortDateTimeFormat(new Date(customerInfo.birthday)),
         LanguageId: parseInt(values.languageId, 10),
         RefCode: customerInfo?.refCodes,
         SecretCode: customerInfo?.secretCode,
