@@ -53,6 +53,7 @@ export class CommonNotification extends Component {
         const params = {
             notificationId: this.props.actionParam.notificationId,
             newStatus: status,
+            newSubject: subject,
             newContentEN: content_en,
             newContentCS: content_cs,
             newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
@@ -300,7 +301,6 @@ export class CommonNotification extends Component {
         const { data, affectedTicketPopup, messageSuccessful, errorMessages } = this.state;
         const { editAdmNotificationResult, isEdit, actionParam } = this.props;
         const { isOstUser } = actionParam;
-        console.log('isOstUser', isOstUser);
         const headerClass = (isOstUser && !isEdit) ? 'group-header required' : 'group-header';
         const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
 

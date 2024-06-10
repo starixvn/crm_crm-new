@@ -6,6 +6,8 @@
 
         public string NewStatus { get; set; }
 
+        public string NewSubject { get; set; }
+
         public string NewContentEN { get; set; }
 
         public string NewContentCH { get; set; }

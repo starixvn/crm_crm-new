@@ -16,7 +16,7 @@ export default class DetailNotification extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     {
-                        <CommonNotification 
+                        <CommonNotification
                             actionParam={this.props.actionParam}
                             isEdit={false}
                             navigate={null}

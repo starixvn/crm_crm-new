@@ -80,6 +80,7 @@
                 UpdaterID = napSession.UserId,
                 NotiID = param.NotificationId,
                 NewStatus = param.NewStatus,
+                NewSubject = param.NewSubject,
                 NewContentEN = param.NewContentEN,
                 NewContentCH = param.NewContentCH,
                 NewContentCS = param.NewContentCS

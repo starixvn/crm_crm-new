@@ -6,13 +6,11 @@ import CommonNotification from './CommonNotification';
 export class ActionNotification extends Component {
     render() {
         return (
-            <Form noValidate>
-                <CommonNotification 
-                    actionParam={this.props.actionParam}
-                    isEdit={true}
-                    navigate={this.props.navigate}
-                />
-            </Form>
+            <CommonNotification
+                actionParam={this.props.actionParam}
+                isEdit={true}
+                navigate={this.props.navigate}
+            />
         );
     }
 };
