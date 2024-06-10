@@ -362,19 +362,14 @@ export default class DataGrid extends PureComponent {
                     <div className='custom-scrollbar group-content'>
                         <div className="none-communication-tool">
                             <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                            {
-                                this.state.picAssignmentPolicy &&
-                                <>
-                                    <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
-                                    <Link to='/PicOfHeadline' onClick={() => {
-                                        if (values.headlineStaffInfoPics.length === 0) {
-                                            window.assignPIC = {
-                                                username: this.props.customerInfo.username
-                                            };
-                                        }
-                                    }} className="add-communication-tool">Assign PIC</Link>
-                                </>
-                            }
+                            <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
+                            <Link to='/PicOfHeadline' onClick={() => {
+                                if (values.headlineStaffInfoPics.length === 0) {
+                                    window.assignPIC = {
+                                        username: this.props.customerInfo.username
+                                    };
+                                }
+                            }} className="add-communication-tool">Assign PIC</Link>
                         </div>
                     </div>
                 }

@@ -333,14 +333,14 @@ export class NormalCommunicationInfo extends Component {
                                     <span className="add-communication-tool" onClick={this.addNewCommunicationTool}>{` Add Communication Tool`}</span>
                                 </div>
                             }
-                            {
-                                values.otherAccountCommunication?.length === 0 && !values.isHostOnCurrentCustomer &&
-                                <div className="group-content">
-                                    <div className='no-data'>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                                </div>
-                            }
                         </div>
                     </div>
+                    {
+                        values.otherAccountCommunication?.length === 0 && !values.isHostOnCurrentCustomer &&
+                        <div className="group-content">
+                            <div className='no-data'>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                        </div>
+                    }
                 </Form>
                 {
                     values.confirmDelete.show &&

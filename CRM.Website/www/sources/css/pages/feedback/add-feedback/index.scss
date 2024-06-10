@@ -62,12 +62,8 @@
         }
     }
 
-    .none-communication-tool {
-        width: 480px;
-    }
-
-    .none-normal-communication-tool {
-        width: 600px;
+    .none-communication-tool, .none-normal-communication-tool {
+        width: max-content;
     }
 
     .bold {

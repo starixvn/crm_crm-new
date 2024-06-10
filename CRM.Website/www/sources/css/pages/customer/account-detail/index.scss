@@ -17,18 +17,14 @@
   }
 }
 
-.customer-info-detail { 
+.customer-info-detail {
     .table > thead > tr > th {
         background: #2B4E80;
         color: #FFFFFF;
     }
 
-    .none-communication-tool {
-        width: 480px;
-    }
-
-    .none-normal-communication-tool {
-        width: 600px;
+    .none-communication-tool, .none-normal-communication-tool {
+        width: max-content;
     }
 
     .no-data {

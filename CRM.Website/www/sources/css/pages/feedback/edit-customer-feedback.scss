@@ -81,12 +81,8 @@
         border-color: #80bdff;
     }
 
-    .none-communication-tool {
-        width: 480px;
-    }
-
-    .none-normal-communication-tool {
-        width: 600px;
+    .none-communication-tool, .none-normal-communication-tool {
+        width: max-content;
     }
 
     .headline-account-communication, .normal-account-communication {

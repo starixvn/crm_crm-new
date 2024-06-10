@@ -143,8 +143,6 @@ export default class CustomerInfo extends PureComponent {
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
-
-
     renderHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
         const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
         const { touched, errors } = this.props;        
@@ -153,19 +151,14 @@ export default class CustomerInfo extends PureComponent {
                 latestFeedbackCommunicationTools.length === 0 && 
                 <div className="none-communication-tool">
                     <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                    {
-                        this.state.picAssignmentPolicy &&
-                        <>
-                            <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
-                            <Link to='/PicOfHeadline' onClick={() => {
-                                if (latestFeedbackCommunicationTools.length === 0) {
-                                    window.assignPIC = {
-                                        username: this.props.customerInfo.username
-                                    };
-                                }
-                            }} className="add-communication-tool">Assign PIC</Link>
-                        </>
-                    }
+                    <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
+                    <Link to='/PicOfHeadline' onClick={() => {
+                        if (latestFeedbackCommunicationTools.length === 0) {
+                            window.assignPIC = {
+                                username: this.props.customerInfo.username
+                            };
+                        }
+                    }} className="add-communication-tool">Assign PIC</Link>
                 </div>
             }
             {
@@ -206,13 +199,13 @@ export default class CustomerInfo extends PureComponent {
                                                                 this.handleChangeCommunicationTools('communicationValue', event.target.value, itemCom.indexCom);
                                                             }} />
                                                         {
-                                                            this.state.isHostOnCurrentCustomer && item.picCommunicationTools.length > 1 &&
+                                                            item.picCommunicationTools.length > 1 &&
                                                             <div title='Delete communication tool'
                                                                 className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(itemCom.indexCom); }}>
                                                             </div>
                                                         }
                                                         {
-                                                            this.state.isHostOnCurrentCustomer && index === (item.picCommunicationTools.length - 1) &&
+                                                            index === (item.picCommunicationTools.length - 1) &&
                                                             <div title='Add communication tool'
                                                                 className='icon icon-plus' onClick={() => { this.addNewHeadlineCommunicationTools(item); }} >
                                                             </div>
@@ -241,9 +234,12 @@ export default class CustomerInfo extends PureComponent {
         };
         return <>
             <div className="normal-account-communication">
-                <Button className='btn-add' variant="primary" size="sm" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>
-                    {LangHelper.getResource('AddCommunicationTool')}
-                </Button>
+                {
+                    hasCreateFeedbackPermission &&
+                    <Button className='btn-add' variant="primary" size="sm" onClick={() => { this.addNewHeadlineCommunicationTools(picInfo); }}>
+                        {LangHelper.getResource('AddCommunicationTool')}
+                    </Button>
+                }
                 {
                     latestFeedbackCommunicationTools.length === 0 &&
                     <div>
@@ -288,12 +284,9 @@ export default class CustomerInfo extends PureComponent {
                                                         onChange={event => {
                                                             this.handleChangeCommunicationTools('communicationValue', event.target.value, index);
                                                         }} />
-                                                    {
-                                                        this.state.isHostOnCurrentCustomer &&
-                                                        <div title='Delete communication tool'
-                                                            className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(index); }}>
-                                                        </div>
-                                                    }
+                                                    <div title='Delete communication tool'
+                                                        className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(index); }}>
+                                                    </div>
                                                 </div>
                                             </Col>
                                         </Form.Group>

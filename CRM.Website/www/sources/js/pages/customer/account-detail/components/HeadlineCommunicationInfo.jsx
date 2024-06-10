@@ -516,7 +516,7 @@ export class HeadlineCommunicationInfo extends Component {
                     </div>
                 }
                 {
-                    headlineCommunicationInfo.length === 0 && picAssignmentPolicy &&
+                    headlineCommunicationInfo.length === 0 && 
                     <div className="none-communication-tool">
                         <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
                         <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
@@ -527,12 +527,6 @@ export class HeadlineCommunicationInfo extends Component {
                                 };
                             }
                         }} className="add-communication-tool">Assign PIC</Link>
-                    </div>
-                }
-                {
-                    headlineCommunicationInfo.length === 0 && !picAssignmentPolicy &&
-                    <div className="group-content">
-                        <div className='no-data'>{LangHelper.getResource('NoCommunicationInfo')}</div>
                     </div>
                 }
                 {

@@ -125,19 +125,14 @@ export class CustomerInfo extends PureComponent {
                 headlineStaffInfoCommunications.length === 0 && 
                 <div className="none-communication-tool">
                     <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                    {
-                        this.state.picAssignmentPolicy &&
-                        <>
-                            <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
-                            <Link to='/PicOfHeadline' onClick={() => {
-                                if (headlineStaffInfoCommunications.length === 0) {
-                                    window.assignPIC = {
-                                        username: this.props.customerDetail.username
-                                    };
-                                }
-                            }} className="add-communication-tool">Assign PIC</Link>
-                        </>
-                    }
+                    <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
+                    <Link to='/PicOfHeadline' onClick={() => {
+                        if (headlineStaffInfoCommunications.length === 0) {
+                            window.assignPIC = {
+                                username: this.props.customerDetail.username
+                            };
+                        }
+                    }} className="add-communication-tool">Assign PIC</Link>
                 </div>
             }
             {
@@ -178,13 +173,13 @@ export class CustomerInfo extends PureComponent {
                                                                 this.handleChangeHeadlineStaffInfoCommunications('picCommunicationValue', event.target.value, itemCom.index);
                                                             }} />
                                                         {
-                                                            this.state.isHostOnCurrentCustomer && item.picCommunicationTools.length > 1 &&
+                                                            item.picCommunicationTools.length > 1 &&
                                                             <div title='Delete communication tool'
                                                                 className='icon icon-delete' onClick={() => { this.confirmDeleteHeadlineCommunicationTool(itemCom.index); }}>
                                                             </div>
                                                         }
                                                         {
-                                                            this.state.isHostOnCurrentCustomer && indexCom === (item.picCommunicationTools.length - 1) &&
+                                                            indexCom === (item.picCommunicationTools.length - 1) &&
                                                             <div title='Add communication tool'
                                                                 className='icon icon-plus' onClick={() => { this.addNewHeadlineCommunicationTool(itemCom.index); }}>
                                                             </div>
@@ -297,7 +292,6 @@ export class CustomerInfo extends PureComponent {
                                                     this.handleChangeOtherAccountCommunicationInfos('communicationValue', event.target.value, index);
                                                 }} />
                                             {
-                                                this.state.isHostOnCurrentCustomer &&
                                                 <div title='Delete communication tool'
                                                     className='icon icon-delete' onClick={() => { this.confirmOtherHeadlineCommunicationTool(index); }}>
                                                 </div>
@@ -330,11 +324,12 @@ export class CustomerInfo extends PureComponent {
         let { guestCommunicationInfos } = this.state;
         guestCommunicationInfos.push({
             communicationID: '',
-            value: '',
+            communicationValue: '',
             isError: false
         });
         this.setState({ guestCommunicationInfos: guestCommunicationInfos });
         this.props.handleChangeValueInfo('guestCommunicationInfos', guestCommunicationInfos);
+        this.props.setFieldValue('guestCommunicationInfos', guestCommunicationInfos);
     }
 
     deleteGuestCommunicationTool = (value, type) => {
