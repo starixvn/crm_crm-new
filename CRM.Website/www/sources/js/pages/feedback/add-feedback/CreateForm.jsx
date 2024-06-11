@@ -740,9 +740,9 @@ export class CreateForm extends Component {
                                     this.state.customerInfo.isOverwriteInfo &&
                                     <div>
                                         <strong>{`Attention: `}</strong>
-                                        <span>You have checked to overwrite the current</span>
-                                        <strong>{` Account Details! `}</strong>
-                                        <span >Account and communication information will be updated accordingly.</span>
+                                        <span >You have checked to</span>
+                                        <strong>{` Overwrite `}</strong>
+                                        <span >the current account details! Account and communication information will be updated accordingly.</span>
                                     </div>
                                 }
                             </>

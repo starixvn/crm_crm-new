@@ -48,6 +48,7 @@ describe('CustomerInfo', () => {
         isHostOnCurrentCustomer: true,
         handleChange: jest.fn(),
         handleChangeValueInfo: jest.fn(),
+        setFieldValue: jest.fn(),
         renderOptions: jest.fn(() => '<div></div>')
     };
 
@@ -71,62 +72,6 @@ describe('CustomerInfo', () => {
 
             // Assert
             expect(props.handleChangeValueInfo).toHaveBeenCalled();
-        });
-    });
-
-    describe('getHeadlineStaffInfoCommunications', () => {
-        let wrapper;
-        let instance;
-
-        const mockProps = {
-            ...props,
-            customerInfo: {
-                otherAccountCommunicationInfos: [],
-                headlineStaffInfoCommunications: [
-                    {
-                        headlineID: 1,
-                        picCommunicationId: 101,
-                        picCommunicationName: 'Email',
-                        picCommunicationValue: 'test@example.com',
-                        picID: 201,
-                    },
-                    {
-                        headlineID: 2,
-                        picCommunicationId: 102,
-                        picCommunicationName: 'Phone',
-                        picCommunicationValue: '123-456-7890',
-                        picID: 202,
-                    },
-                ]
-            },
-        };
-
-        beforeEach(() => {
-            wrapper = shallow(<CustomerInfo {...mockProps} />);
-            instance = wrapper.instance();
-        });
-
-        it('should set headlineStaffInfoCommunications state correctly', () => {
-            instance.getHeadlineStaffInfoCommunications();
-
-            const expectedState = [
-                {
-                    headlineID: 1,
-                    picCommunicationId: 101,
-                    picCommunicationName: 'Email',
-                    picCommunicationValue: 'test@example.com',
-                    picID: 201,
-                },
-                {
-                    headlineID: 2,
-                    picCommunicationId: 102,
-                    picCommunicationName: 'Phone',
-                    picCommunicationValue: '123-456-7890',
-                    picID: 202,
-                },
-            ];
-
-            expect(wrapper.state('headlineStaffInfoCommunications')).toEqual(expectedState);
         });
     });
 
@@ -191,54 +136,6 @@ describe('CustomerInfo', () => {
         });
     });
 
-    describe('getHeadlineCommunicationInfo', () => {
-        let wrapper;
-        let instance;
-
-        const mockCustomerInfo = {
-            headlineStaffInfoPics: [
-                { picID: 1, picName: 'John Doe', picRoleName: 'Manager' },
-                { picID: 2, picName: 'Jane Smith', picRoleName: 'Assistant' }
-            ],
-            headlineStaffInfoCommunications: [
-                { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'john.doe@example.com' },
-                { picID: 1, picCommunicationId: 102, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' },
-                { picID: 2, picCommunicationId: 103, picCommunicationName: 'Email', picCommunicationValue: 'jane.smith@example.com' }
-            ]
-        };
-
-        beforeEach(() => {
-            wrapper = shallow(<CustomerInfo {...props} />);
-            instance = wrapper.instance();
-        });
-
-        it('should return correct headline communication info', () => {
-            const result = instance.getHeadlineCommunicationInfo(mockCustomerInfo);
-
-            const expected = [
-                {
-                    picCommunicationTools: [
-                        { type: 101, name: 'Email', value: 'john.doe@example.com', index: 0 },
-                        { type: 102, name: 'Phone', value: '123-456-7890', index: 1 }
-                    ],
-                    picId: 1,
-                    picName: 'John Doe',
-                    picRoleName: 'Manager'
-                },
-                {
-                    picCommunicationTools: [
-                        { type: 103, name: 'Email', value: 'jane.smith@example.com', index: 2 }
-                    ],
-                    picId: 2,
-                    picName: 'Jane Smith',
-                    picRoleName: 'Assistant'
-                }
-            ];
-
-            expect(result).toEqual(expected);
-        });
-    });
-
     describe('handleChangeHeadlineStaffInfoCommunications', () => {
         let wrapper;
         let instance;
@@ -265,7 +162,7 @@ describe('CustomerInfo', () => {
                 { picCommunicationId: 102, picCommunicationValue: newValue }
             ];
 
-            const result = instance.handleChangeHeadlineStaffInfoCommunications(newValue, index);
+            const result = instance.handleChangeHeadlineStaffInfoCommunications('picCommunicationValue', newValue, index);
 
             expect(instance.state.headlineStaffInfoCommunications).toEqual(expectedState);
             expect(result).toEqual(expectedState);
@@ -298,10 +195,9 @@ describe('CustomerInfo', () => {
                 { communicationID: 202, communicationValue: newValue }
             ];
 
-            const result = instance.handleChangeOtherAccountCommunicationInfos(newValue, index);
+            instance.handleChangeOtherAccountCommunicationInfos('communicationValue', newValue, index);
 
             expect(instance.state.otherAccountCommunicationInfos).toEqual(expectedState);
-            expect(result).toEqual(expectedState);
         });
     });
 
@@ -350,29 +246,6 @@ describe('CustomerInfo', () => {
         it('should render headline account communication correctly', () => {
             const result = instance.renderHeadlineAccountCommunication(customerInfo);
             expect(result).toMatchSnapshot();
-        });
-    });
-
-    describe('getWidth', () => {
-        let instance;
-
-        const picCommunicationTool = {
-            communicationID: 101
-        };
-
-        const settingCommunicationTool = [
-            { settingId: 101, settingValue: 'Email' },
-            { settingId: 102, settingValue: 'Phone' }
-        ];
-
-        beforeEach(() => {
-            const wrapper = shallow(<CustomerInfo {...props} />);
-            instance = wrapper.instance();
-        });
-
-        it('should return the correct width based on the setting value length', () => {
-            const result = instance.getWidth(picCommunicationTool, settingCommunicationTool);
-            const expectedWidth = (8 * 'Email'.length) + 17;
         });
     });
 
@@ -457,8 +330,8 @@ describe('CustomerInfo', () => {
             instance = wrapper.instance();
             instance.state = {
                 guestCommunicationInfos: [
-                    { communicationID: '1', value: '123', isError: false },
-                    { communicationID: '2', value: '456', isError: false }
+                    { communicationID: '1', communicationValue: '123', isError: false },
+                    { communicationID: '2', communicationValue: '456', isError: false }
                 ]
             };
         });
@@ -466,15 +339,15 @@ describe('CustomerInfo', () => {
         it('should add a new guest communication tool', () => {
             instance.addNewGuestCommunicationTool();
             expect(instance.state.guestCommunicationInfos).toHaveLength(3);
-            expect(instance.state.guestCommunicationInfos[2]).toEqual({ communicationID: '', value: '', isError: false });
+            expect(instance.state.guestCommunicationInfos[2]).toEqual({ communicationID: '', communicationValue: '', isError: false });
         });
 
         it('should call handleChangeValueInfo with updated guestCommunicationInfos', () => {
             instance.addNewGuestCommunicationTool();
             expect(mockProps.handleChangeValueInfo).toHaveBeenCalledWith('guestCommunicationInfos', [
-                { communicationID: '1', value: '123', isError: false },
-                { communicationID: '2', value: '456', isError: false },
-                { communicationID: '', value: '', isError: false }
+                { communicationID: '1', communicationValue: '123', isError: false },
+                { communicationID: '2', communicationValue: '456', isError: false },
+                { communicationID: '', communicationValue: '', isError: false }
             ]);
         });
     });

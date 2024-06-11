@@ -20,6 +20,7 @@ describe('remarkSlice reducer', () => {
         expect(newRemark(undefined, {})).toEqual({
             remarkTitles: null,
             allSettings: null,
+            gridDataFilter: null,
             gridParams: { pageIndex: 1, pageSize: 100, username: '', isGuest: false},
             gridData: null,
             isSearchAll: false,

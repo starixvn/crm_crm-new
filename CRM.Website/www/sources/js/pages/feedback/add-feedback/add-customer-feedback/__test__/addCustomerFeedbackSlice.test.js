@@ -13,6 +13,7 @@ describe('addCustomerFeedback reducer', () => {
         expect(addCustomerFeedback(undefined, {})).toEqual({
             settings: null,
             balanceUpday: null,
+            settingCommunicationTool: null,
             customerDetail: null,
             addFeedbackResult: null,
             feedbackSubjectTemplates: [],
@@ -165,6 +166,7 @@ describe('addCustomerFeedback reducer', () => {
             customerDetail: null,
             addFeedbackResult: null,
             feedbackSubjectTemplates: [],
+            settingCommunicationTool: null,
             confirmCreateGuestDialog: { show: false }
         });
     });

@@ -231,7 +231,11 @@ describe('common functions', () => {
                 zalo: '',
                 isOverwriteInfo: false,
                 siteId: '',
-                siteName: ''
+                siteName: '',
+                headlineStaffInfoCommunications: [],
+                headlineStaffInfoLanguages: undefined,
+                headlineStaffInfoPics: undefined,
+                otherAccountCommunicationInfos: []
             };
 
             const customerDetail = { ...values };

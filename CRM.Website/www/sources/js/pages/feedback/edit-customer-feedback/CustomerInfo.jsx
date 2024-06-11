@@ -151,14 +151,19 @@ export default class CustomerInfo extends PureComponent {
                 latestFeedbackCommunicationTools.length === 0 && 
                 <div className="none-communication-tool">
                     <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                    <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
-                    <Link to='/PicOfHeadline' onClick={() => {
-                        if (latestFeedbackCommunicationTools.length === 0) {
-                            window.assignPIC = {
-                                username: this.props.customerInfo.username
-                            };
-                        }
-                    }} className="add-communication-tool">Assign PIC</Link>
+                    {
+                        this.state.picAssignmentPolicy && 
+                        <>
+                            <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
+                            <Link to='/PicOfHeadline' onClick={() => {
+                                if (latestFeedbackCommunicationTools.length === 0) {
+                                    window.assignPIC = {
+                                        username: this.props.customerInfo.username
+                                    };
+                                }
+                            }} className="add-communication-tool">Assign PIC</Link>
+                        </>
+                    }
                 </div>
             }
             {

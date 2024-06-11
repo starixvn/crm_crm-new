@@ -115,7 +115,18 @@ export class NormalCommunicationInfo extends Component {
                 }
             })
         });
+
+        if (window.addTool != undefined) {
+            this.addNewCommunicationTool();
+            window.addTool = undefined;
+        }
+
         document.title = LangHelper.getResource('CRMSystem');
+        window.addEventListener("addNewCommunicationTool", this.addNewCommunicationTool);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("addNewCommunicationTool", this.addNewCommunicationTool);
     }
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
@@ -326,21 +337,20 @@ export class NormalCommunicationInfo extends Component {
                                 })
                             }
                             {
-                                values.otherAccountCommunication?.length === 0 && values.isHostOnCurrentCustomer &&
+                                values.otherAccountCommunication?.length === 0 && 
                                 <div className="none-normal-communication-tool">
                                     <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                                    <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
-                                    <span className="add-communication-tool" onClick={this.addNewCommunicationTool}>{` Add Communication Tool`}</span>
+                                    {
+                                        values.isHostOnCurrentCustomer &&
+                                        <>
+                                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                                            <span className="add-communication-tool" onClick={this.addNewCommunicationTool}>{` Add Communication Tool`}</span>
+                                        </>
+                                    }
                                 </div>
                             }
                         </div>
                     </div>
-                    {
-                        values.otherAccountCommunication?.length === 0 && !values.isHostOnCurrentCustomer &&
-                        <div className="group-content">
-                            <div className='no-data'>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                        </div>
-                    }
                 </Form>
                 {
                     values.confirmDelete.show &&

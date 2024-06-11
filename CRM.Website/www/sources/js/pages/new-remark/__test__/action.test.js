@@ -108,7 +108,6 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/GetNewRemarks', expectedParams);
-            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 

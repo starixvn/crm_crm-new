@@ -363,7 +363,8 @@ describe('DataGrid', () => {
                     isShowDetail: true,
                     languages: [],
                     remarksPolicy: null,
-                    siteId: 1
+                    siteId: 1,
+                    picAssignmentPolicy: null
                 };
                 const props = {
                     getSettings: jest.fn(),

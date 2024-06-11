@@ -67,7 +67,7 @@ describe('DataGrid', () => {
                 popupDeleteConfirm: { show: false }
             };
 
-            const expectedBody = [<Row key='new-remark-body' className='no-data' ><Cell colSpan={15}>ThereIsNoData</Cell></Row>];
+            const expectedBody = [<Row key='new-remark-body' className='no-data' ><Cell colSpan={15} id="no-data-remark">ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act

@@ -519,14 +519,19 @@ export class HeadlineCommunicationInfo extends Component {
                     headlineCommunicationInfo.length === 0 && 
                     <div className="none-communication-tool">
                         <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                        <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
-                        <Link to='/PicOfHeadline' onClick={() => {
-                            if (headlineCommunicationInfo.length === 0) {
-                                window.assignPIC = {
-                                    username: customerInfo.username
-                                };
-                            }
-                        }} className="add-communication-tool">Assign PIC</Link>
+                        {
+                            picAssignmentPolicy &&
+                            <>
+                                <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
+                                <Link to='/PicOfHeadline' onClick={() => {
+                                    if (headlineCommunicationInfo.length === 0) {
+                                        window.assignPIC = {
+                                            username: customerInfo.username
+                                        };
+                                    }
+                                }} className="add-communication-tool">Assign PIC</Link>
+                            </>
+                        }
                     </div>
                 }
                 {

@@ -299,6 +299,7 @@ export default class DataGrid extends PureComponent {
     }
 
     renderOtherAccountInfo = values => {
+        const { isShowCommInfo, isHostOnCurrentCustomer } = this.state;
         return (
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
@@ -306,17 +307,26 @@ export default class DataGrid extends PureComponent {
                     <span className='icon-dropdown' />
                 </div>
                 {
-                    (values === undefined || values.length === 0) && this.state.isShowCommInfo &&
+                    (values === undefined || values.length === 0) && isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         <div className="none-communication-tool">
                             <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                            <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
-                            <span className="add-communication-tool" onClick={() => { this.props.handleNavigate('AccountDetail'); }}>{`Add Communication Tool`}</span>
+                            {
+                                isHostOnCurrentCustomer && 
+                                <>
+                                    <span>{LangHelper.getResource('AddCommunicationToolNoneData')}</span>
+                                        <span className="add-communication-tool" onClick={() => {
+                                            window.addTool = true;
+                                            this.props.handleNavigate('AccountDetail');
+                                            window.dispatchEvent(new Event('addNewCommunicationTool'));
+                                        }}>{`Add Communication Tool`}</span>
+                                </>
+                            }
                         </div>
                     </div>
                 }
                 {
-                    values !== undefined && values.length > 0 && this.state.isShowCommInfo &&
+                    values !== undefined && values.length > 0 && isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         <div className='account-item'>
                             {
@@ -351,6 +361,7 @@ export default class DataGrid extends PureComponent {
     }
 
     renderAccountHeadlineInfo = values => {
+        const { isShowCommInfo, picAssignmentPolicy } = this.state;
         return (
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
@@ -358,23 +369,28 @@ export default class DataGrid extends PureComponent {
                     <span className='icon-dropdown' />
                 </div>
                 {
-                    values.headlineStaffInfoPics.length === 0 && this.state.isShowCommInfo &&
+                    values.headlineStaffInfoPics.length === 0 && isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         <div className="none-communication-tool">
                             <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
-                            <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
-                            <Link to='/PicOfHeadline' onClick={() => {
-                                if (values.headlineStaffInfoPics.length === 0) {
-                                    window.assignPIC = {
-                                        username: this.props.customerInfo.username
-                                    };
-                                }
-                            }} className="add-communication-tool">Assign PIC</Link>
+                            {
+                                picAssignmentPolicy && 
+                                <>
+                                    <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
+                                    <Link to='/PicOfHeadline' onClick={() => {
+                                        if (values.headlineStaffInfoPics.length === 0) {
+                                            window.assignPIC = {
+                                                username: this.props.customerInfo.username
+                                            };
+                                        }
+                                    }} className="add-communication-tool">Assign PIC</Link>
+                                </>
+                            }
                         </div>
                     </div>
                 }
                 {
-                    values.headlineStaffInfoPics.length > 0 && this.state.isShowCommInfo &&
+                    values.headlineStaffInfoPics.length > 0 && isShowCommInfo &&
                     <div className='custom-scrollbar group-content'>
                         {
                             values.headlineStaffInfoPics.map(pic => {
