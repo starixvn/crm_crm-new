@@ -199,7 +199,7 @@
                         }
                         else
                         {
-                            await logService.ErrorMessageAsync($"Don't exist ChatGroupID: {item.ChatGroupID} with MatchID: {item.MatchID}");
+                            await logService.ErrorMessageAsync($"Doesn't exist ChatGroupID: {item.ChatGroupID} with MatchID: {item.MatchID}");
                         }
                     }
                 }
