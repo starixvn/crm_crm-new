@@ -46,6 +46,7 @@
         private IRefundSettledTicketService refundSettledTicketService;
         private IVoidingBetIDService voidingBetIDService;
         private IAbnormalBetService abnormalBetService;
+        private IAutoFbResultAmendmentService autoFbResultAmendmentService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -1303,6 +1304,7 @@
             refundSettledTicketService = Substitute.For<IRefundSettledTicketService>();
             voidingBetIDService = Substitute.For<IVoidingBetIDService>();
             abnormalBetService = Substitute.For<IAbnormalBetService>();
+            autoFbResultAmendmentService = Substitute.For<IAutoFbResultAmendmentService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -1320,6 +1322,7 @@
                 refundSettledTicketService,
                 voidingBetIDService,
                 abnormalBetService,
+                autoFbResultAmendmentService,
                 configuration);
         }
 
