@@ -314,7 +314,7 @@ export class CustomerInfo extends PureComponent {
     }
 
     getWidth = (type, settingCommunicationTool) =>
-        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 20;
+        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 24;
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
@@ -436,7 +436,6 @@ export class CustomerInfo extends PureComponent {
                 <div className="tab-account-info">
                     <div className='group-title group-tab'>
                         <div className="group-title-tab" >
-                            <span className='icon-dropdown' />
                             {LangHelper.getResource('AccountInfo')}
                         </div>
                     </div>
@@ -594,28 +593,30 @@ export class CustomerInfo extends PureComponent {
                         }
                     </div>
                 </div>
-                <div className="tab-account-info">
-                    <div className='group-title group-tab'>
-                        <div className="group-title-tab" >
-                            <span className='icon-dropdown' />
-                            {LangHelper.getResource('CommunicationInfo')}
+                {
+                    ((customerDetail.isGroupHeadLine && headlineInfoPolicy >= Policy.Read) || !customerDetail.isGroupHeadLine || isGuest) &&
+                    <div className="tab-account-info">
+                        <div className='group-title group-tab'>
+                            <div className="group-title-tab" >
+                                {LangHelper.getResource('CommunicationInfo')}
+                            </div>
+                        </div>
+                        <div className='group-content'>
+                            {
+                                !isGuest && customerDetail.isGroupHeadLine && headlineInfoPolicy >= Policy.Read &&
+                                this.renderHeadlineAccountCommunication(headlineStaffInfoCommunications)
+                            }
+                            {
+                                !isGuest && !customerDetail.isGroupHeadLine &&
+                                this.renderOtherAccountCommunication(otherAccountCommunicationInfos)
+                            }
+                            {
+                                isGuest &&
+                                this.renderGuestCommunication()
+                            }
                         </div>
                     </div>
-                    <div className='group-content'>
-                        {
-                            !isGuest && customerDetail.isGroupHeadLine && headlineInfoPolicy >= Policy.Read &&
-                            this.renderHeadlineAccountCommunication(headlineStaffInfoCommunications)
-                        }
-                        {
-                            !isGuest && !customerDetail.isGroupHeadLine &&
-                            this.renderOtherAccountCommunication(otherAccountCommunicationInfos)
-                        }
-                        {
-                            isGuest &&
-                            this.renderGuestCommunication()
-                        }
-                    </div>
-                </div>
+                }
                 {
                     customerDetail !== null && isHostOnCurrentCustomer &&
                     <Form.Group as={Row} className="pt-1 pb-2">

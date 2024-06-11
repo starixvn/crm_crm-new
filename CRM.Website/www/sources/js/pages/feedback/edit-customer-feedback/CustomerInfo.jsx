@@ -139,18 +139,18 @@ export default class CustomerInfo extends PureComponent {
     }
 
     getWidth = (type, settingCommunicationTool) =>
-        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 20;
+        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 24;
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     renderHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
         const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
-        const { touched, errors, hasCreateFeedbackPermission } = this.props;        
+        const { touched, errors, hasCreateFeedbackPermission } = this.props;
         return <>
             {
                 latestFeedbackCommunicationTools.length === 0 && 
                 <div className="none-communication-tool">
-                    <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
+                    <div>{LangHelper.getResource('NoiCommunicatonInfo')}</div>
                     {
                         this.state.picAssignmentPolicy && 
                         <>
@@ -723,7 +723,7 @@ export default class CustomerInfo extends PureComponent {
     }
 
     render() {
-        const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue } = this.props;
+        const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue, customerInfo } = this.props;
 
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         return (
@@ -741,7 +741,6 @@ export default class CustomerInfo extends PureComponent {
                                 fieldInput.isCheckFeedbackIdIsNew &&
                                 <div className='group-title group-tab'>
                                     <div className="group-title-tab" >
-                                        <span className='icon-dropdown' />
                                         {LangHelper.getResource('AccountInfo')}
                                     </div>
                                 </div>
@@ -876,17 +875,19 @@ export default class CustomerInfo extends PureComponent {
                             </div>
                         </div>
 
-                        <div className={`${fieldInput.isCheckFeedbackIdIsNew && "tab-account-info"}`}>
+                        <div className={`${fieldInput.isCheckFeedbackIdIsNew &&
+                            ((customerInfo?.isGroupHeadLine && this.state.headlineInfoPolicy >= Policy.Read) || !customerInfo?.isGroupHeadLine) && "tab-account-info"}`}>
                             {
                                 fieldInput.isCheckFeedbackIdIsNew &&
+                                ((customerInfo?.isGroupHeadLine && this.state.headlineInfoPolicy >= Policy.Read) || !customerInfo?.isGroupHeadLine) &&
                                 <div className='group-title group-tab'>
                                     <div className="group-title-tab" >
-                                        <span className='icon-dropdown' />
                                         {LangHelper.getResource('CommunicationInfo')}
                                     </div>
                                 </div>
                             }
-                            <div className={`${fieldInput.isCheckFeedbackIdIsNew && 'group-content'}`}>
+                            <div className={`${fieldInput.isCheckFeedbackIdIsNew
+                                && ((customerInfo?.isGroupHeadLine && this.state.headlineInfoPolicy >= Policy.Read) || !customerInfo?.isGroupHeadLine) && 'group-content'}`}>
                                 {
                                     fieldInput.isCheckFeedbackIdIsNew && this.renderNewCommunicationTool()
                                 }
