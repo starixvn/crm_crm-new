@@ -30,6 +30,7 @@
         Task RefundSettledTicketJobAsync();
         Task VoidingBetIDExecuteJobAsync();
         Task AbnormalBetsExecuteJobAsync();
+        Task ResultAmendmentExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -50,6 +51,7 @@
         private readonly IRefundSettledTicketService refundSettledTicketService;
         private readonly IVoidingBetIDService voidingBetIDService;
         private readonly IAbnormalBetService abnormalBetService;
+        private readonly IAutoFbResultAmendmentService autoFbResultAmendmentService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -73,6 +75,7 @@
             IRefundSettledTicketService refundSettledTicketService,
             IVoidingBetIDService voidingBetIDService,
             IAbnormalBetService abnormalBetService,
+            IAutoFbResultAmendmentService autoFbResultAmendmentService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -92,6 +95,7 @@
             this.refundSettledTicketService = refundSettledTicketService;
             this.voidingBetIDService = voidingBetIDService;
             this.abnormalBetService = abnormalBetService;
+            this.autoFbResultAmendmentService = autoFbResultAmendmentService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -597,6 +601,35 @@
                     await abnormalBetService.GetVoidedInfoAsync(systemSettingInfo.LastVoidingHistoryCollectionId, systemSettingInfo.BatchSize);
                 var messages = await abnormalBetService.GetMessageAbnormalBetAsync(messageAbnormals);
                 var (commandResult, command) = await abnormalBetService.ImportAbnormalBetsAsync(messages, voidedCollectionInfo, Environment, maxVoidingHistoryCollectionId);
+                if (commandResult.IsSuccessful)
+                {
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                    await logService.ErrorAsync(commandResult, command);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task ResultAmendmentExecuteJobAsync()
+        {
+            try
+            {
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoResultAmendment, Environment);
+                if (!systemSettingInfo.ServiceFlag)
+                {
+                    logService.LogInformation("Service ResultAmendment is shutdown.");
+                    return;
+                }
+                var message = await autoFbResultAmendmentService.GetMsgInfoResultAmendmentAsync(systemSettingInfo.LastMsgTargetId, systemSettingInfo.BatchSize);
+                var (commandResult, command) = await autoFbResultAmendmentService.ImportResultAmendmentAsync(message, Environment);
                 if (commandResult.IsSuccessful)
                 {
                     await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
