@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
@@ -12,7 +12,7 @@
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
 
-    public class ResultAmendmentServiceTestable : ResultAmendmentService
+    public class ResultAmendmentServiceTestable : AmendmentNotiFbService
     {
         public ResultAmendmentServiceTestable(IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
@@ -34,7 +34,7 @@
 
         public async Task Public_ResultAmendmentUpdateSystemSetting(
             bool isUAT,
-            ResultAmendmentSetting resultAmendmentSetting,
+            AmendmentNotiFbSetting resultAmendmentSetting,
             IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications,
             string JobStatusNameEnv
             )

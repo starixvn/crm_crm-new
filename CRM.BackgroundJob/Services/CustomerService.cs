@@ -8,11 +8,11 @@
     using Fanex.CRM.BackgroundJob.Repositories;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using global::CRM.BackgroundJob.Criteria.ResultAmendment;
+    using global::CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
-    using global::CRM.BackgroundJob.Models.ResultAmendment;
+    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.TurnoverControll;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Services;
@@ -30,7 +30,7 @@
 
         Task<IEnumerable<TONotification>> GetListSMANotificationAsync(WinLossSystemSetting turnOverSetting);
 
-        Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(ResultAmendmentSetting resultAmendmentSetting);
+        Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(AmendmentNotiFbSetting resultAmendmentSetting);
 
         Task<IEnumerable<CustOutStanding>> GetListCustOutStandingAsync(IEnumerable<TONotification> custNotifications);
 
@@ -113,7 +113,7 @@
             return await baseService.GetDataAsync<TONotification>(criteria);
         }
 
-        public async Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(ResultAmendmentSetting resultAmendmentSetting)
+        public async Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(AmendmentNotiFbSetting resultAmendmentSetting)
         {
             var LastSeqEnv = Environment == DefaultEnvironment ? resultAmendmentSetting.LastSeq : resultAmendmentSetting.LastSeqUAT;
             var LastSubmitDateEnv = Environment == DefaultEnvironment ? resultAmendmentSetting.LastSubmitDate : resultAmendmentSetting.LastSubmitDateUAT;

@@ -7,7 +7,7 @@
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Extensions.XML;
@@ -42,7 +42,7 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var voidingSettledTicketSetting = fixture.Create<ResultAmendmentSetting>();
+            var voidingSettledTicketSetting = fixture.Create<AmendmentNotiFbSetting>();
             var expected = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var service = GetVoidingSettledService();
             baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<GetAutoVoidingMessageCriteria>()).Returns(expected);
@@ -59,7 +59,7 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var voidingSettledTicketSetting = fixture.Create<ResultAmendmentSetting>();
+            var voidingSettledTicketSetting = fixture.Create<AmendmentNotiFbSetting>();
             var voidSettleds = fixture.Create<List<MessageVoidSettled>>();
             var expected = fixture.Create<ValueTuple<IEnumerable<VoidingTicketEventInfo>, IEnumerable<MsgTarget>>>();
             var service = GetVoidingSettledService();

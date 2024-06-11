@@ -1,9 +1,9 @@
-﻿namespace CRM.BackgroundJob.Models.ResultAmendment
+﻿namespace CRM.BackgroundJob.Models.AmendmentNotiFB
 {
     using CRM.BackgroundJob.Models.WinLossLimit;
     using System;
 
-    public class ResultAmendmentSetting : WinLossSystemSetting
+    public class AmendmentNotiFbSetting : WinLossSystemSetting
     {
         public int BatchSizeTicket { get; set; }
         public int LastSeq { get; set; }

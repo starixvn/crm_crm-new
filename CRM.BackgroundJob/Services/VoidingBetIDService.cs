@@ -4,18 +4,18 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.VoidingBetID;
-    using CRM.BackgroundJob.Models.VoidingBetID;
+    using CRM.BackgroundJob.Models;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Core.Services;
 
     public interface IVoidingBetIDService
     {
-        Task<IEnumerable<MessageVoidBetID>> GetMessageVoidBetIDAsync(int lastMsgTargetId, int batchSize);
+        Task<IEnumerable<MessageInfoID>> GetMessageVoidBetIDAsync(int lastMsgTargetId, int batchSize);
 
-        Task<ValueTuple<IEnumerable<MessageVoidBetID>, int>> CleanMessageVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages);
+        Task<ValueTuple<IEnumerable<MessageInfoID>, int>> CleanMessageVoidBetIDAsync(IEnumerable<MessageInfoID> messages);
 
-        Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages, string environment, int maxMsgTargetId);
+        Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageInfoID> messages, string environment, int maxMsgTargetId);
     }
 
     public class VoidingBetIDService : IVoidingBetIDService
@@ -27,27 +27,27 @@
             this.baseService = baseService;
         }
 
-        public async Task<IEnumerable<MessageVoidBetID>> GetMessageVoidBetIDAsync(int lastMsgTargetId, int batchSize)
+        public async Task<IEnumerable<MessageInfoID>> GetMessageVoidBetIDAsync(int lastMsgTargetId, int batchSize)
         {
             var criteria = new GetMessageVoidByBetIDCriteria
             {
                 LastMsgTargetId = lastMsgTargetId,
                 BatchSize = batchSize
             };
-            return await baseService.GetDataAsync<MessageVoidBetID>(criteria);
+            return await baseService.GetDataAsync<MessageInfoID>(criteria);
         }
 
-        public async Task<ValueTuple<IEnumerable<MessageVoidBetID>, int>> CleanMessageVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages)
+        public async Task<ValueTuple<IEnumerable<MessageInfoID>, int>> CleanMessageVoidBetIDAsync(IEnumerable<MessageInfoID> messages)
         {
             var criteria = new CleanMessageVoidByBetIDCriteria
             {
                 Messages = messages.ToXML("root").ToString()
             };
-            var cleanMessage = await baseService.GetDataAsync<MessageVoidBetID>(criteria);
-            return new ValueTuple<IEnumerable<MessageVoidBetID>, int>(cleanMessage, criteria.MAXMsgTargetId);
+            var cleanMessage = await baseService.GetDataAsync<MessageInfoID>(criteria);
+            return new ValueTuple<IEnumerable<MessageInfoID>, int>(cleanMessage, criteria.MAXMsgTargetId);
         }
 
-        public async Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages, string environment, int maxMsgTargetId)
+        public async Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageInfoID> messages, string environment, int maxMsgTargetId)
         {
             var command = new ImportVoidBetIDCommand
             {

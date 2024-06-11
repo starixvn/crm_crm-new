@@ -15,13 +15,14 @@
         public const string CreateFeedbackForWinLossLimit = "CreateFeedbackForWinLossLimit";
         public const string CreateFeedbackForTurnoverControl = "CreateFeedbackForTurnoverControl";
         public const string CreateFeedbackForProblemsAccount = "CreateFeedbackForProblemsAccount";
-        public const string CreateFeedbackForResultAmendment = "CreateFeedbackForResultAmendment";
+        public const string CreateFeedbackAmendmentNotiFB = "CreateFeedbackAmendmentNotiFB";
         public const string SynchronizeNewLicenseeOICToSiteSetting = "SynchronizeNewLicenseeOICToSiteSetting";
         public const string CreateFeedbackForVoidingSettledTickets = "CreateFeedbackForVoidingSettledTickets";
         public const string CreateFeedbackForArchivingDA = "CreateFeedbackForArchivingDA";
         public const string CreateFeedbackForRefundSettledTicket = "CreateFeedbackForRefundSettledTicket";
         public const string CreateFeedbackForVoidBetID = "CreateFeedbackForVoidBetID";
         public const string CreateFeedbackForAbnormalBets = "CreateFeedbackForAbnormalBets";
+        public const string CreateAutoFeedbackForResultAmendment = "CreateAutoFeedbackForResultAmendment";
         public const string CaptureSettlementData = "CaptureSettlementData";
         public const string GenerateResultAmendment = "GenerateResultAmendment";
         public const string PushNotificationResultAmendment = "PushNotificationResultAmendment";

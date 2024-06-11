@@ -33,11 +33,12 @@
         public const string ServiceName_WinLimitFB = "WinLimitFB";
         public const string ServiceName_TOControlFB = "TOControlFB";
         public const string ServiceName_ProblemsAccount = "ProblemAccountFB";
-        public const string ServiceName_ResultAmendment = "AmendmentNotiFB";
+        public const string ServiceName_AmendmentNotiFB = "AmendmentNotiFB";
         public const string ServiceName_AutoVoidFB = "AutoVoidFB";
         public const string ServiceName_ArchivingDA = "ArchivedAccountFB";
         public const string ServiceName_RefundSettledTickets = "AutoFB - Refund Settled tickets";
         public const string ServiceName_AutoVoidBetID = "AutoFB - Void by BetID";
         public const string ServiceName_AutoAbnormalBets = "AutoFB - AbnormalBets";
+        public const string ServiceName_AutoResultAmendment = "AutoFB - ResultAmendment";
     }
 }

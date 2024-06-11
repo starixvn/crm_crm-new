@@ -37,7 +37,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             {
                 new JobSetting
                 {
-                   JobName = "CreateFeedbackForResultAmendment",
+                   JobName = "CreateFeedbackAmendmentNotiFB",
                    IsEnabled = true,
                    HasCheckUM = false,
                    TimeInterval = 60

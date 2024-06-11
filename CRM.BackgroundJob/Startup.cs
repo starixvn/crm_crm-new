@@ -170,7 +170,7 @@
             services.AddSingleton<IChatBotCTOService, ChatBotCTOService>();
             services.AddSingleton<IChatBotArchivingDAService, ChatBotArchivingDAService>();
             services.AddSingleton<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
-            services.AddSingleton<IResultAmendmentService, ResultAmendmentService>();
+            services.AddSingleton<IAmendmentNotiFbService, AmendmentNotiFbService>();
             services.AddSingleton<IChatBotProblemAccountService, ChatBotProblemAccountService>();
             services.AddSingleton<IChatBotResultAmendmentService, ChatBotResultAmendmentService>();
             services.AddSingleton<ISynchronizeLicenseeService, SynchronizeLicenseeService>();
@@ -191,7 +191,7 @@
 
         private static void AddWorker(IServiceCollection services)
         {
-            services.AddHostedService<AutoFbResultAmendmentWoker>();
+            services.AddHostedService<AutoFbAmendmentNotiFbWoker>();
             services.AddHostedService<AutoFbProblemAccountWoker>();
             services.AddHostedService<AutoFbVoidingAbnormalBetWorker>();
             services.AddHostedService<AutoFbWinLossLimitWorker>();

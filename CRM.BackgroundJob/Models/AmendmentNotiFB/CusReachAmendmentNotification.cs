@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CRM.BackgroundJob.Models.ResultAmendment
+namespace CRM.BackgroundJob.Models.AmendmentNotiFB
 {
     public class CusReachAmendmentNotification
     {

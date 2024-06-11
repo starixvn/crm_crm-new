@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
@@ -14,14 +14,14 @@
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
 
-    public interface IResultAmendmentService
+    public interface IAmendmentNotiFbService
     {
-        Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting, bool isUAT,
+        Task CreateFeedbackForAmendmentNotiFbAsync(AmendmentNotiFbSetting resultAmendmentSetting, bool isUAT,
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment);
     }
 
-    public class ResultAmendmentService : IResultAmendmentService
+    public class AmendmentNotiFbService : IAmendmentNotiFbService
     {
         private readonly AppJobSettings appSettings;
         private readonly IBaseService baseService;
@@ -39,7 +39,7 @@
         private readonly int EventType2 = 2;
         private readonly int EventType9 = 9;
 
-        public ResultAmendmentService(
+        public AmendmentNotiFbService(
            IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
@@ -58,11 +58,11 @@
             this.transactionService = transactionService;
         }
 
-        public async Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting, bool isUAT,
+        public async Task CreateFeedbackForAmendmentNotiFbAsync(AmendmentNotiFbSetting resultAmendmentSetting, bool isUAT,
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment)
         {
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ResultAmendment);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AmendmentNotiFB);
 
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -73,7 +73,7 @@
             if (isAnyNotCompeleteStatus)
             {
                 logService.LogInformation("Data has some status not completed");
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
                 return;
             }
             if (custAmendmentNotifications.Any())
@@ -102,7 +102,7 @@
             {
                 logService.LogInformation(string.Format("Import Amendment Auto Feedback Infor doesn't have any data with custId: {0} TicketId: {1}!",
                     string.Join(",", custAmendmentNotifications.Select(x => x.CustId)), string.Join(",", custAmendmentNotifications.Select(x => x.TicketId))));
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
                 return;
             }
 
@@ -117,13 +117,13 @@
                         isNoResultTemplate);
             }
 
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
             logService.LogInformation("end service result amendment serivce!");
         }
 
         protected internal virtual async Task ResultAmendmentUpdateSystemSetting(
             bool isUAT,
-            ResultAmendmentSetting resultAmendmentSetting,
+            AmendmentNotiFbSetting resultAmendmentSetting,
             IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications,
             string JobStatusNameEnv
             )
@@ -139,7 +139,7 @@
                 maxSeq,
                 lastSubmitTimeEnvName,
                 maxLastSubmitTime.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
-                Constants.ServiceName_ResultAmendment
+                Constants.ServiceName_AmendmentNotiFB
            );
         }
 

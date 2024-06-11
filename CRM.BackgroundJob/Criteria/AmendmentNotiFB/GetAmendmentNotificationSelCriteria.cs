@@ -1,4 +1,4 @@
-﻿namespace CRM.BackgroundJob.Criteria.ResultAmendment
+﻿namespace CRM.BackgroundJob.Criteria.AmendmentNotiFB
 {
     using Fanex.Data.Repository;
     using System;

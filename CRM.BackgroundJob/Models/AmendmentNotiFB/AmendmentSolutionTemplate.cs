@@ -1,4 +1,4 @@
-﻿namespace CRM.BackgroundJob.Models.ResultAmendment
+﻿namespace CRM.BackgroundJob.Models.AmendmentNotiFB
 {
     using System.Xml.Serialization;
 

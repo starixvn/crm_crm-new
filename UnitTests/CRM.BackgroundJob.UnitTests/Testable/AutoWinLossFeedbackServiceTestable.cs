@@ -3,7 +3,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
 {
     using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.ProblemsAccount;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Models;
@@ -21,7 +21,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             IWinLossFeedbackService winLossService,
             ICRMLogService logService,
             ITOControlFeedbackService turnoverService,
-            IResultAmendmentService resultAmendmentService,
+            IAmendmentNotiFbService amendmentNotiFbService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
             IFeedbackService feedbackService,
             ISynchronizeLicenseeService licenseeService,
@@ -39,7 +39,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 winLossService,
                 logService,
                 turnoverService,
-                resultAmendmentService,
+                amendmentNotiFbService,
                 problemsAccountFeedbackService,
                 feedbackService,
                 licenseeService,
@@ -62,14 +62,14 @@ namespace CRM.BackgroundJob.UnitTests.Testable
         }
 
         public async Task Public_ResultAmendmentRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
-            bool isRunningLive, ResultAmendmentSetting resultAmendmentSetting, string Environment)
+            bool isRunningLive, AmendmentNotiFbSetting resultAmendmentSetting, string Environment)
         {
             await base.ResultAmendmentRunJobByEnviromentAsync(isUAT, isRunningUAT,
                 isRunningLive, resultAmendmentSetting, Environment);
         }
 
         public async Task Public_VoidingSettledTicketsRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
-            bool isRunningLive, ResultAmendmentSetting resultAmendmentSetting, string Environment)
+            bool isRunningLive, AmendmentNotiFbSetting resultAmendmentSetting, string Environment)
         {
             await base.VoidingSettledTicketsRunJobByEnviromentAsync(isUAT, isRunningUAT,
                 isRunningLive, resultAmendmentSetting, Environment);

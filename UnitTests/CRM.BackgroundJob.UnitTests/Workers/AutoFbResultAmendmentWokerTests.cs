@@ -29,15 +29,15 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             await service.ExecuteJobAsync();
 
             // Assert
-            await autoFeedbackService.Received().ResultAmendmentExecuteJobAsync();
+            await autoFeedbackService.Received().AmendmentNotiFbExecuteJobAsync();
         }
-        private AutoFbResultAmendmentWoker GetService()
+        private AutoFbAmendmentNotiFbWoker GetService()
         {
             appSettings = new List<JobSetting>
             {
                 new JobSetting
                 {
-                   JobName = "CreateFeedbackForResultAmendment",
+                   JobName = "CreateFeedbackAmendmentNotiFB",
                    IsEnabled = true,
                    HasCheckUM = false,
                    TimeInterval = 60
@@ -49,7 +49,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             maintenanceService = Substitute.For<IMaintenanceService>();
             logService = Substitute.For<ICRMLogService>();
 
-            return new AutoFbResultAmendmentWoker(autoFeedbackService, maintenanceService, appJobSettings, logService);
+            return new AutoFbAmendmentNotiFbWoker(autoFeedbackService, maintenanceService, appJobSettings, logService);
         }
     }
 }
