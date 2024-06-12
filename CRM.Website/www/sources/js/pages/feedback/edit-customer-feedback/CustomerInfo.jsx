@@ -150,7 +150,7 @@ export default class CustomerInfo extends PureComponent {
             {
                 latestFeedbackCommunicationTools.length === 0 && 
                 <div className="none-communication-tool">
-                    <div>{LangHelper.getResource('NoiCommunicatonInfo')}</div>
+                    <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
                     {
                         this.state.picAssignmentPolicy && 
                         <>
