@@ -186,7 +186,7 @@ export class DataGrid extends Component {
                     </>
                 );
             case 'Failed':
-                return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
+                return <div className='review-button' onClick={() => this.handleResendFail(notificationId)}>{LangHelper.getResource('ResendFail')}</div>;
             case 'Draft':
                 return (
                     <>
