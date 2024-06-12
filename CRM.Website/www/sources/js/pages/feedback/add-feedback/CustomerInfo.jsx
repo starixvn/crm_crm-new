@@ -619,6 +619,7 @@ export class CustomerInfo extends PureComponent {
                 }
                 {
                     customerDetail !== null && isHostOnCurrentCustomer &&
+                    ((customerDetail.isGroupHeadLine && headlineInfoPolicy === Policy.Host) || !customerDetail.isGroupHeadLine) &&
                     <Form.Group as={Row} className="pt-1 pb-2">
                         <Col sm="3" md="3">
                             <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentAccountDetails')}

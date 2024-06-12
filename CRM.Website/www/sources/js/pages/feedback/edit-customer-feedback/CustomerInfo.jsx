@@ -145,14 +145,14 @@ export default class CustomerInfo extends PureComponent {
 
     renderHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
         const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
-        const { touched, errors, hasCreateFeedbackPermission } = this.props;
+        const { touched, errors, hasCreateFeedbackPermission, customerInfo } = this.props;
         return <>
             {
                 latestFeedbackCommunicationTools.length === 0 && 
                 <div className="none-communication-tool">
                     <div>{LangHelper.getResource('NoCommunicationInfo')}</div>
                     {
-                        this.state.picAssignmentPolicy && 
+                        this.state.picAssignmentPolicy && customerInfo.headlineStaffInfoCommunications.length ===0 &&
                         <>
                             <span>{LangHelper.getResource('AddHeadlineCommunicationToolNoneData')}</span>
                             <Link to='/PicOfHeadline' onClick={() => {
@@ -898,6 +898,7 @@ export default class CustomerInfo extends PureComponent {
                         </div>
                         {
                             this.state.isHostOnCurrentCustomer && fieldInput.isCheckFeedbackIdIsNew &&
+                            ((customerInfo?.isGroupHeadLine && this.state.headlineInfoPolicy === Policy.Host) || !customerInfo?.isGroupHeadLine ) &&
                             <Form.Group as={Row} className="pt-1 pb-2">
                                 <Col sm="3" md="3">
                                     <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentAccountDetails')}
