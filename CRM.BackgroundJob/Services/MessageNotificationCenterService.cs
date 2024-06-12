@@ -195,7 +195,11 @@
 
                         if (conversationConfig?.ConversationId != null)
                         {
-                            await botService.SendSkypeAsync(conversationConfig.ConversationId, item.Content);
+                            if (conversationConfig.DisplayName == BotName.NotificationAlertIT)
+                            {
+                                await logService.ErrorMessageAsync(item.Content);
+                            }
+                            else await botService.SendSkypeAsync(conversationConfig.ConversationId, item.Content);
                         }
                         else
                         {

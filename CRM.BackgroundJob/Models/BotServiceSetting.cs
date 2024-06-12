@@ -13,7 +13,7 @@
     public class ConversationConfig
     {
         public BotChannel Channel {  get; set; }
-        public string BotName { get; set; }
+        public string DisplayName { get; set; }
         public string ConversationId { get; set; }
     }
 }

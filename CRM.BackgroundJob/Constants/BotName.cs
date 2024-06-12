@@ -2,7 +2,6 @@
 {
     public static class BotName
     {
-        public const string NotificationAlert = "Notification Alert";
-        public const string NotificationAlert777 = "Notification Alert 777";
+        public const string NotificationAlertIT = "Notification Alert IT";
     }
 }
