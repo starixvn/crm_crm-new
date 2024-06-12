@@ -185,7 +185,7 @@ export default class CustomerInfo extends PureComponent {
                                                 <div className="custom-label-communicationTool">
                                                     <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
                                                         style={{
-                                                            width: `${itemCom.communicationID !== '' ? this.getWidth(itemCom.communicationID, this.props.settingCommunicationTool) : 115}px`
+                                                            width: `${itemCom.communicationID !== 0 ? this.getWidth(itemCom.communicationID, this.props.settingCommunicationTool) : 115}px`
                                                         }}
                                                         value={itemCom.communicationID} onChange={event => {
                                                             this.handleChangeCommunicationTools('communicationID', parseInt(event.target.value, 10), itemCom.indexCom);
@@ -271,7 +271,7 @@ export default class CustomerInfo extends PureComponent {
                                             <div className="custom-label-communicationTool">
                                                 <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
                                                     style={{
-                                                        width: `${item.communicationID !== '' ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
+                                                        width: `${item.communicationID !== 0 ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
                                                     }}
                                                     value={item.communicationID} onChange={event => {
                                                         this.handleChangeCommunicationTools('communicationID', parseInt(event.target.value, 10), index);

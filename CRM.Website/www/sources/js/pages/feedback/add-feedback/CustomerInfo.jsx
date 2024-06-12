@@ -160,7 +160,7 @@ export class CustomerInfo extends PureComponent {
                                                 <div className="custom-label-communicationTool">
                                                     <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
                                                         style={{
-                                                            width: `${itemCom.picCommunicationId !== '' ? this.getWidth(itemCom.picCommunicationId, this.props.settingCommunicationTool) : 115}px`
+                                                            width: `${itemCom.picCommunicationId !== 0 ? this.getWidth(itemCom.picCommunicationId, this.props.settingCommunicationTool) : 115}px`
                                                         }}
                                                         value={itemCom.picCommunicationId} onChange={event => {
                                                             this.handleChangeHeadlineStaffInfoCommunications('picCommunicationId', parseInt(event.target.value, 10), itemCom.index);
@@ -279,7 +279,7 @@ export class CustomerInfo extends PureComponent {
                                     <div className="custom-label-communicationTool">
                                         <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="type" id="type"
                                             style={{
-                                                width: `${item.communicationID !== '' ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
+                                                width: `${item.communicationID !== 0 ? this.getWidth(item.communicationID, this.props.settingCommunicationTool) : 115}px`
                                             }}
                                             value={item.communicationID} onChange={event => {
                                                 this.handleChangeOtherAccountCommunicationInfos('communicationID', parseInt(event.target.value, 10), index);
