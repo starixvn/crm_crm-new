@@ -10,7 +10,7 @@
 
         public string IP { get; set; } = string.Empty;
 
-        public override string GetSettingKey() => "Acc_CRM_AutoFB_VoidByBetID_Import";
+        public override string GetSettingKey() => "Acc_CRM_AutoFB_ResultAmendment_Import";
 
         public override bool IsValid() => true;
     }
