@@ -1,7 +1,7 @@
 ﻿namespace CRM.BotService.Endpoint
 {
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Threading;
     using CRM.BotService.Core.Extensions;
@@ -9,11 +9,10 @@
     using CRM.BotService.Core.Services;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Middlewares;
-    using CRM.Core.Models;
     using CRM.Core.Repositories;
     using CRM.Core.Services;
     using Fanex.Caching;
-    using Fanex.Data;
+    using Fanex.Caching.Redis;
     using Fanex.Data.Repository;
     using Fanex.Data.SqlServer;
     using Fanex.Logging;
@@ -32,17 +31,23 @@
     using Sentry;
     using StackExchange.Redis;
 
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private readonly ConnectionMultiplexer Redis;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Redis = ConnectionMultiplexer.Connect(Configuration.GetSection("Fanex.Caching.Redis:ConnectionString").Value);
         }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddFanexSql(Configuration);
+
             LogManager
             .SetDefaultLogCategory(Configuration.GetSection("LogCategory").Value)
             .Use(new List<ILogEngine>
@@ -53,29 +58,34 @@
                 })
             });
 
-            var connections = Configuration.GetSection("ConnectionStrings")
-                     .GetChildren()
-                     .AsEnumerable()
-                     .Where(x => !string.IsNullOrWhiteSpace(x.GetValue<string>("Name")))
-                     .ToDictionary(x => x.GetValue<string>("Name"),
-                         y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName")));
-
-            DbSettingProviderManager
-               .StartNewSession()
-               .Use(connections)
-               .WithSqlServer()
-               .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
-               .Run();
-
             ExceptionHandler
                 .UseConfig(new LoggingConfiguration())
                 .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddHttpClient();
 
-            var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
-            ConfigDataProtection(services, redisConfig);
-            ConfigRedisCache(services, redisConfig);
+            ConfigDataProtection(services);
+            ConfigRedisCache(services);
+            RegisterJwtConfiguration(services, Configuration);
 
-            var appSettingsSection = Configuration.GetSection("WebSettings");
+            RegisterServices(services);
+            services.RegisterBotServices(Configuration);
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddSingleton<IDynamicRepository, DynamicRepository>();
+            services.AddSingleton<IBaseRepository, BaseRepository>();
+            services.AddSingleton<IBaseService, BaseService>();
+            services.AddSingleton<ICacheService, CacheService>();
+            services.AddSingleton<ILogger, Logger>();
+            services.AddSingleton<ICRMLogService, CRMLogService>();
+            services.AddSingleton<ILetstalkSendMultipleReceiverService, LetstalkSendMultipleReceiverService>();
+        }
+
+        private static void RegisterJwtConfiguration(IServiceCollection services, IConfiguration configuration)
+        {
+            var appSettingsSection = configuration.GetSection("WebSettings");
             services.Configure<WebSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<WebSettings>();
             services.AddSingleton(appSettings);
@@ -94,22 +104,23 @@
                     ValidateAudience = false
                 };
             });
-
-            services.AddControllers().AddNewtonsoftJson();
-            services.AddHttpClient();
-            RegisterServices(services);
-            services.ResolveWebhookServices(Configuration);
         }
 
-        private static void RegisterServices(IServiceCollection services)
+        private void ConfigDataProtection(IServiceCollection services)
         {
-            services.AddSingleton<IDynamicRepository, DynamicRepository>();
-            services.AddSingleton<IBaseRepository, BaseRepository>();
-            services.AddSingleton<IBaseService, BaseService>();
-            services.AddSingleton<ICacheService, CacheService>();
-            services.AddSingleton<ILogger, Logger>();
-            services.AddSingleton<ICRMLogService, CRMLogService>();
-            services.AddSingleton<ILetstalkSendMultipleReceiverService, LetstalkSendMultipleReceiverService>();
+            string aplicationName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value;
+            services.AddDataProtection()
+                .SetApplicationName(aplicationName)
+                .PersistKeysToStackExchangeRedis(Redis, $"CRM.BotServiceEndpoint:DataProtection:Keys");
+        }
+
+        private void ConfigRedisCache(IServiceCollection services)
+        {
+            services.AddRedisCache(Configuration.GetSection("Fanex.Caching.Redis"));
+
+            const short WorkerThreads = 300;
+            const short CompletionPortThreads = 300;
+            _ = ThreadPool.SetMinThreads(WorkerThreads, CompletionPortThreads);
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -137,45 +148,6 @@
                     name: "default",
                     pattern: "{controller=Auth}/{action=Index}/{id?}");
             });
-        }
-
-        private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
-        {
-            var configRedix = new ConfigurationOptions
-            {
-                EndPoints =
-                {
-                    { redisConfig.Server, redisConfig.Port }
-                },
-                Password = redisConfig.Password,
-                DefaultDatabase = redisConfig.DefaultDatabase,
-                ConnectRetry = redisConfig.ConnectRetry
-            };
-            var redis = ConnectionMultiplexer.Connect(configRedix);
-            services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
-                .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
-        }
-
-        private static void ConfigRedisCache(IServiceCollection services, RedisConfig redisConfig)
-        {
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.ConfigurationOptions = new ConfigurationOptions
-                {
-                    EndPoints =
-                    {
-                        { redisConfig.Server, redisConfig.Port }
-                    },
-                    Password = redisConfig.Password,
-                    DefaultDatabase = redisConfig.DefaultDatabase
-                };
-                options.InstanceName = redisConfig.ApplicationName + ":Session:";
-            });
-
-            const short WorkerThreads = 300;
-            const short CompletionPortThreads = 300;
-            _ = ThreadPool.SetMinThreads(WorkerThreads, CompletionPortThreads);
         }
     }
 }

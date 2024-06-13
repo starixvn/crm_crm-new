@@ -56,10 +56,10 @@
                     var responseString = await response.Content.ReadAsStringAsync();
                     var data = JObject.Parse(responseString);
                     token = data["accessToken"].Value<string>();
-                    DateTime expired = (data["expriedDate"].Value<DateTime>());
+                    DateTime expired = data["expriedDate"].Value<DateTime>();
                     await cacheService.SetAsync(JwtTokenCacheKey, token, new CacheItemOptions
                     {
-                        AbsoluteExpiration = expired
+                        AbsoluteExpiration = expired.AddMinutes(-5)
                     });
                 }
             }

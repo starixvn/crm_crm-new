@@ -2,23 +2,22 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.HealthCheck;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.Workers;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.BotService.Client.AspNetCore;
     using Fanex.BotService.Client.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.Caching;
+    using Fanex.Caching.Redis;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
     using Fanex.CRM.BackgroundJob.Services;
-    using Fanex.Data;
     using Fanex.Data.SqlServer;
     using Fanex.Logging;
     using Fanex.Logging.Extensions;
@@ -41,17 +40,23 @@
     using Sentry;
     using StackExchange.Redis;
 
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private readonly ConnectionMultiplexer Redis;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Redis = ConnectionMultiplexer.Connect(Configuration.GetSection("Fanex.Caching.Redis:ConnectionString").Value);
         }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddFanexSql(Configuration);
+
             LogManager
                .SetDefaultLogCategory(Configuration.GetSection("Fanex.Logging:LogCategory").Value)
                .Use(new List<ILogEngine>
@@ -62,36 +67,21 @@
                     })
                });
 
-            var connections = Configuration.GetSection("ConnectionStrings")
-                .GetChildren()
-                .AsEnumerable()
-                .Where(x => !string.IsNullOrWhiteSpace(x.GetValue<string>("Name")))
-                .ToDictionary(x => x.GetValue<string>("Name"),
-                    y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName")));
-
-            DbSettingProviderManager
-              .StartNewSession()
-               .Use(connections)
-               .WithSqlServer()
-               .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
-               .Run();
+            ExceptionHandler
+               .UseConfig(new LoggingConfiguration())
+               .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
             RefDataTypeContainer
             .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
             .FromApplication("CRM.BackgroundJob");
-
-            ExceptionHandler
-               .UseConfig(new LoggingConfiguration())
-               .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
             services.AddSingleton(Configuration);
             services.AddControllers();
             services.ResolveCoreConfiguration(Configuration);
             services.RegisterBotClient(Configuration);
 
-            var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
-            ConfigDataProtection(services, redisConfig);
-            ConfigRedisCache(services, redisConfig);
+            ConfigDataProtection(services);
+            ConfigRedisCache(services);
             services.ResolveCoreDI();
             AddConfiguration(services, Configuration);
             AddDependencyInjection(services, Configuration);
@@ -222,39 +212,17 @@
             services.AddHostedService<MncSendNotificationCenterWorker>();
         }
 
-        private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
+        private void ConfigDataProtection(IServiceCollection services)
         {
-            var configRedix = new ConfigurationOptions
-            {
-                EndPoints =
-                {
-                    { redisConfig.Server, redisConfig.Port }
-                },
-                Password = redisConfig.Password,
-                DefaultDatabase = redisConfig.DefaultDatabase,
-                ConnectRetry = redisConfig.ConnectRetry
-            };
-            var redis = ConnectionMultiplexer.Connect(configRedix);
+            string aplicationName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value;
             services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
-                .SetApplicationName(redisConfig.ApplicationName);
+                .SetApplicationName(aplicationName)
+                .PersistKeysToStackExchangeRedis(Redis, $"CRM.BackgroundJob:DataProtection:Keys");
         }
 
-        private static void ConfigRedisCache(IServiceCollection services, RedisConfig redisConfig)
+        private void ConfigRedisCache(IServiceCollection services)
         {
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.ConfigurationOptions = new ConfigurationOptions
-                {
-                    EndPoints =
-                    {
-                        { redisConfig.Server, redisConfig.Port }
-                    },
-                    Password = redisConfig.Password,
-                    DefaultDatabase = redisConfig.DefaultDatabase
-                };
-                options.InstanceName = redisConfig.ApplicationName + ":Session:";
-            });
+            services.AddRedisCache(Configuration.GetSection("Fanex.Caching.Redis"));
         }
 
         private static void ConfigBotService(IServiceCollection services, IConfiguration configuration)
