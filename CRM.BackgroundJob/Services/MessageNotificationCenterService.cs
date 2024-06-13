@@ -195,7 +195,7 @@
 
                         if (conversationConfig?.ConversationId != null)
                         {
-                            if (conversationConfig.DisplayName == BotName.NotificationAlertIT)
+                            if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
                             {
                                 await logService.ErrorMessageAsync(item.Content);
                             }
