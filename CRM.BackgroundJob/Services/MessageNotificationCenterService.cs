@@ -3,15 +3,13 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Fanex.CRM.BackgroundJob.Constants;
-    using CRM.Core.Services;
-    using Microsoft.Extensions.Configuration;
     using CRM.BackgroundJob.Criteria.PushResultAmendment;
-    using Fanex.BotService.Client.Core.Services.Interfaces;
     using CRM.BackgroundJob.Models;
     using CRM.Core.Enumerables;
-    using CRM.BackgroundJob.Constants;
-    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using Fanex.BotService.Client.Core.Services.Interfaces;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using Microsoft.Extensions.Configuration;
 
     public interface IMessageNotificationCenterService
     {
