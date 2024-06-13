@@ -168,10 +168,10 @@ export class Edit extends Component {
         handleSubmit,
         isSubmitting
     }) => {
-        const jobStatusOptions = [
-            LangHelper.getResource('Completed'),
+        const jobStatusOptions = values.serviceName === 'Notification Center' ? [
+            LangHelper.getResource('Done'),
             LangHelper.getResource('Running')
-        ];
+        ] : [LangHelper.getResource('Completed'), LangHelper.getResource('Running')];
 
         const isRenderComboBox = jobStatusOptions.filter(x=> x === values.value).length > 0;
         return (
