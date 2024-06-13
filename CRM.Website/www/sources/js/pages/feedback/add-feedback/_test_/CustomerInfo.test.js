@@ -509,4 +509,66 @@ describe('CustomerInfo', () => {
             expect(mockHandleChangeValueInfo).toHaveBeenCalledWith('headlineStaffInfoCommunications', wrapper.state('headlineStaffInfoCommunications'));
         });
     });
+
+    describe('confirmDeleteHeadlineCommunicationTool', () => {
+        let wrapper;
+        let instance;
+    
+        const mockDeleteHeadlineCommunicationTool = jest.fn();
+    
+        beforeEach(() => {
+            mockDeleteHeadlineCommunicationTool.mockClear();
+    
+            const mockProps = {
+                ...props,
+                customerInfo: {
+                    headlineStaffInfoCommunications: [
+                        { picCommunicationId: 1 },
+                        { picCommunicationId: 2 }
+                    ]
+                },
+                handleChangeValueInfo: jest.fn()
+            };
+    
+            const initialState = {
+                headlineStaffInfoCommunications: [
+                    { isNew: true, picCommunicationId: 1 },
+                    { isNew: false, picCommunicationId: 2 }
+                ],
+                confirmDeleteCommunicationTool: {
+                    show: false,
+                    picCommunicationTool: null,
+                    indexCom: -1
+                }
+            };
+    
+            wrapper = shallow(<CustomerInfo {...mockProps} />);
+            wrapper.setState(initialState);
+            instance = wrapper.instance();
+    
+            instance.deleteHeadlineCommunicationTool = mockDeleteHeadlineCommunicationTool;
+        });
+    
+        it('should delete the communication tool immediately if it is new', () => {
+            const indexToDelete = 0;
+    
+            instance.confirmDeleteHeadlineCommunicationTool(indexToDelete);
+    
+            expect(mockDeleteHeadlineCommunicationTool).toHaveBeenCalledWith(indexToDelete);
+        });
+    
+        it('should set state to show confirmation dialog if the communication tool is not new', () => {
+            const indexToDelete = 1;
+    
+            instance.confirmDeleteHeadlineCommunicationTool(indexToDelete);
+    
+            expect(wrapper.state('confirmDeleteCommunicationTool')).toEqual({
+                show: true,
+                picCommunicationTool: 2,
+                indexCom: indexToDelete
+            });
+    
+            expect(mockDeleteHeadlineCommunicationTool).not.toHaveBeenCalled();
+        });
+    });
 });

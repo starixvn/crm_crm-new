@@ -314,7 +314,7 @@ export class CustomerInfo extends PureComponent {
     }
 
     getWidth = (type, settingCommunicationTool) =>
-        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 24;
+        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 20;
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
@@ -594,7 +594,7 @@ export class CustomerInfo extends PureComponent {
                     </div>
                 </div>
                 {
-                    ((customerDetail.isGroupHeadLine && headlineInfoPolicy >= Policy.Read) || !customerDetail.isGroupHeadLine || isGuest) &&
+                    ((customerDetail?.isGroupHeadLine && headlineInfoPolicy >= Policy.Read) || !customerDetail?.isGroupHeadLine || isGuest) &&
                     <div className="tab-account-info">
                         <div className='group-title group-tab'>
                             <div className="group-title-tab" >
