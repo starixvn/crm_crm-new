@@ -381,4 +381,132 @@ describe('CustomerInfo', () => {
             expect(wrapper.state('guestCommunicationInfos')).toHaveLength(1); 
         });
     });
+
+    describe('addNewHeadlineCommunicationTool', () => {
+        let wrapper;
+        let instance;
+    
+        const mockSetFieldValue = jest.fn();
+        const mockHandleChangeValueInfo = jest.fn();
+    
+        beforeEach(() => {
+            mockSetFieldValue.mockClear();
+            mockHandleChangeValueInfo.mockClear();
+    
+            const mockProps = {
+                ...props,
+                setFieldValue: mockSetFieldValue,
+                handleChangeValueInfo: mockHandleChangeValueInfo
+            };
+    
+            const initialState = {
+                headlineStaffInfoCommunications: [
+                    {
+                        headlineID: 1,
+                        picCommunicationId: 1,
+                        picCommunicationName: 'Name1',
+                        picCommunicationValue: 'Value1',
+                        picID: 1,
+                        isNew: false
+                    },
+                    {
+                        headlineID: 2,
+                        picCommunicationId: 2,
+                        picCommunicationName: 'Name2',
+                        picCommunicationValue: 'Value2',
+                        picID: 2,
+                        isNew: false
+                    }
+                ]
+            };
+    
+            wrapper = shallow(<CustomerInfo {...mockProps} />);
+            wrapper.setState(initialState);
+            instance = wrapper.instance();
+        });
+    
+        it('should add a new headline communication tool', () => {
+            const indexToAdd = 1;
+    
+            instance.addNewHeadlineCommunicationTool(indexToAdd);
+    
+            expect(wrapper.state('headlineStaffInfoCommunications')).toHaveLength(3);
+            expect(wrapper.state('headlineStaffInfoCommunications')[2]).toEqual({
+                headlineID: 2,
+                picCommunicationId: 0,
+                picCommunicationName: '',
+                picCommunicationValue: '',
+                picID: 2,
+                isNew: true
+            });
+    
+            expect(mockSetFieldValue).toHaveBeenCalledWith('headlineStaffInfoCommunications', wrapper.state('headlineStaffInfoCommunications'));
+            expect(mockHandleChangeValueInfo).toHaveBeenCalledWith('headlineStaffInfoCommunications', wrapper.state('headlineStaffInfoCommunications'));
+        });
+    });
+
+    describe('deleteHeadlineCommunicationTool ', () => {
+        let wrapper;
+        let instance;
+    
+        const mockHandleChangeValueInfo = jest.fn();
+    
+        beforeEach(() => {
+            mockHandleChangeValueInfo.mockClear();
+    
+            const mockProps = {
+                ...props,
+                handleChangeValueInfo: mockHandleChangeValueInfo
+            };
+    
+            const initialState = {
+                headlineStaffInfoCommunications: [
+                    {
+                        headlineID: 1,
+                        picCommunicationId: 1,
+                        picCommunicationName: 'Name1',
+                        picCommunicationValue: 'Value1',
+                        picID: 1,
+                        isNew: false
+                    },
+                    {
+                        headlineID: 2,
+                        picCommunicationId: 2,
+                        picCommunicationName: 'Name2',
+                        picCommunicationValue: 'Value2',
+                        picID: 2,
+                        isNew: false
+                    }
+                ]
+            };
+    
+            wrapper = shallow(<CustomerInfo {...mockProps} />);
+            wrapper.setState(initialState);
+            instance = wrapper.instance();
+        });
+    
+        it('should delete a headline communication tool', () => {
+            const indexToDelete = 1;
+    
+            instance.deleteHeadlineCommunicationTool(indexToDelete);
+    
+            expect(wrapper.state('headlineStaffInfoCommunications')).toHaveLength(1);
+            expect(wrapper.state('headlineStaffInfoCommunications')[0]).toEqual({
+                headlineID: 1,
+                picCommunicationId: 1,
+                picCommunicationName: 'Name1',
+                picCommunicationValue: 'Value1',
+                picID: 1,
+                isNew: false
+            });
+    
+            expect(wrapper.state('confirmDeleteCommunicationTool')).toEqual({
+                show: false,
+                picCommunicationTool: null,
+                indexCom: -1 
+            });
+    
+            expect(mockHandleChangeValueInfo).toHaveBeenCalledWith('headlineStaffInfoCommunications', wrapper.state('headlineStaffInfoCommunications'));
+        });
+    });
 });

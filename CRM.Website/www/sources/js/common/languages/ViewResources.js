@@ -568,7 +568,7 @@
     ThereAreUnassignedDirectAccounts: 'There are {0} unassigned direct accounts',
     TheRecipientOfNotificationIdHasBeenInactive: '{0}The Personal/Group of following selected Notification{1} have been deactivated: {2}',
     ThereIsNoData: 'There is no data',
-    ThereIsNoDataRemark: 'There are no remarks created for this account. Click the Insert button to create a new remark.',
+    ThereIsNoDataRemark: 'There are no remarks created for this account.',
     TheseAccountsAreNotDirectAccounts: 'These accounts are not direct accounts: {0}',
     TheseDirectAccountsDoNotBelongToGroupHeadline: 'These direct accounts do not belong to group headline: {0}',
     TheSelectedNoficationsAreAbleToResend: '2. The selected nofications are able to resend: <notificationIds>',
