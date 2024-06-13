@@ -314,7 +314,7 @@ export class CustomerInfo extends PureComponent {
     }
 
     getWidth = (type, settingCommunicationTool) =>
-        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 20;
+        (8 * settingCommunicationTool.find(x => x.settingId === type)?.settingValue.length) + 24;
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
