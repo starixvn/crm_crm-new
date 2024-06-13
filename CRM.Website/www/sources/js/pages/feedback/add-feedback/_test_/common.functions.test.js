@@ -148,6 +148,11 @@ describe('common functions', () => {
 
         it('initValuesAddCustomerFb correctly', () => {
             // Arrange
+            const customerInfo = {
+                headlineStaffInfoCommunications : [],
+                otherAccountCommunicationInfos : []
+            };
+
             const expected = { ...values };
             expected.country = undefined;
             expected.languageId = 1200;
@@ -156,6 +161,8 @@ describe('common functions', () => {
             expected.role = '';
             expected.siteName = '';
             expected.solution = ''
+            expected.headlineStaffInfoCommunications = [];
+            expected.otherAccountCommunicationInfos = [];
             const customerDetail = { ...values };
             customerDetail.yahoo = '';
             customerDetail.pic1 = '';
@@ -178,9 +185,9 @@ describe('common functions', () => {
             customerDetail.country = { id: '' };
             customerDetail.siteSetting = { name: '' };
             customerDetail.languages = [1200];
-            customerDetail.faxInfo = { countryCode: '', faxNumber: '', areaCode: '' };
+            customerDetail.faxInfo = { countryCode: '', faxNumber: '', areaCode: '' };            
             // Act
-            const initialValues = commonFuncs.initValuesAddCustomerFb(props.settings, customerDetail);
+            const initialValues = commonFuncs.initValuesAddCustomerFb(props.settings, customerDetail, customerInfo);
 
             // Assert
             expect(initialValues).toEqual(expected);

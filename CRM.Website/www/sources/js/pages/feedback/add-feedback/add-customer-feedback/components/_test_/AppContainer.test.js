@@ -13,7 +13,8 @@ describe('AppContainer', () => {
         it('should do reset store', () => {
             const props = {
                 resetState: jest.fn(),
-                currentCustomer: {custId: 1}
+                currentCustomer: {custId: 1},
+                getSettingPicCommunicationTools: jest.fn()
             };
 
             const container = shallow(<AppContainer {...props} />);
@@ -32,7 +33,8 @@ describe('AppContainer', () => {
             const props = { 
                 settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}],
                 balanceUpdate: new Date(),
-                currentCustomer: {custId: 1, custName: 'customer'}
+                currentCustomer: {custId: 1, custName: 'customer'},
+                getSettingPicCommunicationTools: jest.fn()
             };
 
             // Act            
@@ -45,7 +47,8 @@ describe('AppContainer', () => {
             // Arrange
             const props = {
                 settings : [1],
-                currentCustomer: {custId: 1, custName: 'customer'}
+                currentCustomer: {custId: 1, custName: 'customer'},
+                getSettingPicCommunicationTools: jest.fn()
             };
 
             // Act
@@ -59,7 +62,8 @@ describe('AppContainer', () => {
             // Arrange
             const props = {
                 settings : null,
-                currentCustomer: {custId: 1, custName: 'customer'}
+                currentCustomer: {custId: 1, custName: 'customer'},
+                getSettingPicCommunicationTools: jest.fn()
             };
 
             // Act

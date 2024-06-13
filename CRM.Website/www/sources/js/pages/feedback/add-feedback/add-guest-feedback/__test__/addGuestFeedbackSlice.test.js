@@ -1,9 +1,11 @@
 import addGuestFeedback, {
+    resetState,
     setAllSettings,
     setFeedbackSubjectTemplates,
     setBalanceUpday,
     setAddFeedback,
-    setConfirmCreateGuestDialog
+    setConfirmCreateGuestDialog,
+    setSettingCommunicationTool
 } from '../addGuestFeedbackSlice';
 
 describe('addGuestFeedback reducer', () => {
@@ -132,6 +134,36 @@ describe('addGuestFeedback reducer', () => {
                 show: true, 
                     message : ''
             }
+        });
+    });
+
+    it('should handle setSettingCommunicationTool', () => {
+        expect(
+            addGuestFeedback({}, {
+                type: setSettingCommunicationTool.type,
+                payload: {
+                    settingId: 1
+                }
+            })
+        ).toEqual({
+            settingCommunicationTool : {
+                settingId: 1
+            }
+        });
+    });
+
+    it('should handle resetState', () => {
+        expect(
+            addGuestFeedback({}, {
+                type: resetState.type                
+            })
+        ).toEqual({
+            settings: null,
+            balanceUpday: null,
+            addFeedbackResult: null,
+            feedbackSubjectTemplates: [],
+            settingCommunicationTool: null,
+            confirmCreateGuestDialog: { show: false }
         });
     });
 });

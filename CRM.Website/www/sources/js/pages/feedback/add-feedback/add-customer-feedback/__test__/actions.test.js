@@ -202,4 +202,24 @@ describe('actionCreators', () => {
             expect(actual).toEqual(response.data);
         });
     });
+
+    describe('getSettingPicCommunicationTools ', () => {
+        it('should handle response when request has been done', async () => {
+            // Arrange
+            const store = mockStore({});
+            const response = {
+                data: [{
+                    description : 'description'
+                }]
+            };
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+
+            // Act
+            const actual = await store.dispatch(ActionCreators.getSettingPicCommunicationTools());
+
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('AccountDetail/GetSettingPicCommunicationTools');
+        });
+    });
 });

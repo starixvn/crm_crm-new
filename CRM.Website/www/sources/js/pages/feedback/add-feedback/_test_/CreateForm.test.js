@@ -11,6 +11,7 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { shallow } from 'enzyme';
+import { toast } from 'react-toastify';
 
 describe('CreateForm', () => {
     beforeEach(() => {
@@ -35,19 +36,20 @@ describe('CreateForm', () => {
 
     const props = {
         settings: {
-            titles: [{id: 1, value: 'titles'}],
-            licenseeTypes: [{id: 1, name: 'licenseeTypes'}],
-            statuses: [{statusId: 1, name: 'statuses'}],
-            responses: [{id: 1, value: 'responses'}],
-            languages: [{languageId: 1, name: 'languages'}],
-            communicationTools: [{id: 1, name: 'communicationTools'}, {id: 2, name: 'N/A'}],
-            mainCategories: [{mainCategoryID: 1, name: 'category'}],
-            products: [{id: 1, value: 'products'}],
-            countries: [{id: 1, value: 'countries'}],
-            extensions: [{id: 1, value: 'extensions'}]
-         },
-         customerDetail : null,
-         confirmCreateGuestDialog: {show: false}
+            titles: [{ id: 1, value: 'titles' }],
+            licenseeTypes: [{ id: 1, name: 'licenseeTypes' }],
+            statuses: [{ statusId: 1, name: 'statuses' }],
+            responses: [{ id: 1, value: 'responses' }],
+            languages: [{ languageId: 1, name: 'languages' }],
+            communicationTools: [{ id: 1, name: 'communicationTools' }, { id: 2, name: 'N/A' }],
+            mainCategories: [{ mainCategoryID: 1, name: 'category' }],
+            products: [{ id: 1, value: 'products' }],
+            countries: [{ id: 1, value: 'countries' }],
+            extensions: [{ id: 1, value: 'extensions' }]
+        },
+        customerDetail: null,
+        confirmCreateGuestDialog: { show: false },
+        getSettingPicCommunicationTools: jest.fn()
     };
 
     LangHelper.formatString = jest.fn(value => value);
@@ -101,7 +103,7 @@ describe('CreateForm', () => {
             const event = { key: 'e', ctrlKey: true, preventDefault: jest.fn() };
             document.removeEventListener = jest.fn();
             const state = {
-                collapse:{
+                collapse: {
                     isVerifyCustomer: true
                 },
                 content: {
@@ -193,7 +195,7 @@ describe('CreateForm', () => {
                 }
             };
             const values = {};
-            const createForm = shallow(<CreateForm {...newProps}/>, { disableLifecycleMethods: true });
+            const createForm = shallow(<CreateForm {...newProps} />, { disableLifecycleMethods: true });
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -252,7 +254,7 @@ describe('CreateForm', () => {
             createForm.instance().renderDetails = jest.fn();
 
             //Act
-            shallow(createForm.instance().renderForm({... params}));
+            shallow(createForm.instance().renderForm({ ...params }));
 
             //Assert
             expect(createForm.instance().renderIdentityInformation).toHaveBeenCalled();
@@ -261,7 +263,7 @@ describe('CreateForm', () => {
 
         it('renderForm show SweetModalDialog', () => {
             //Arrange
-            props.confirmCreateGuestDialog = {show: true, confirmMessage: 'confirmMessage'};
+            props.confirmCreateGuestDialog = { show: true, confirmMessage: 'confirmMessage' };
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true });
             createForm.setState(newState);
             createForm.formik = {
@@ -271,7 +273,7 @@ describe('CreateForm', () => {
             createForm.instance().renderDescriptionsAndSolution = jest.fn();
 
             //Act
-            const renderForm = shallow(createForm.instance().renderForm({... params}));
+            const renderForm = shallow(createForm.instance().renderForm({ ...params }));
 
             //Assert
             expect(renderForm.find(SweetModalDialog)).toHaveLength(1);
@@ -279,7 +281,7 @@ describe('CreateForm', () => {
 
         it('renderForm handle message responses if successful', () => {
             //Arrange
-            props.addFeedbackResult = {isSuccessful: true, message: 'AddFeedbackSuccessfully' };
+            props.addFeedbackResult = { isSuccessful: true, message: 'AddFeedbackSuccessfully' };
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true });
             createForm.setState(newState);
             createForm.formik = {
@@ -289,7 +291,7 @@ describe('CreateForm', () => {
             createForm.instance().renderDescriptionsAndSolution = jest.fn();
 
             //Act
-            const renderForm = shallow(createForm.instance().renderForm({... params}));
+            const renderForm = shallow(createForm.instance().renderForm({ ...params }));
 
             //Assert
             expect(renderForm.find(ResponseMessage).props().isSuccessful).toBe(true);
@@ -298,7 +300,7 @@ describe('CreateForm', () => {
 
         it('renderForm handle message is null if successful', () => {
             //Arrange
-            props.addFeedbackResult = {isSuccessful: true, message: '' };
+            props.addFeedbackResult = { isSuccessful: true, message: '' };
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true });
             createForm.setState(newState);
             createForm.formik = {
@@ -308,7 +310,7 @@ describe('CreateForm', () => {
             createForm.instance().renderDescriptionsAndSolution = jest.fn();
 
             //Act
-            const renderForm = shallow(createForm.instance().renderForm({... params}));
+            const renderForm = shallow(createForm.instance().renderForm({ ...params }));
 
             //Assert
             expect(renderForm.find(ResponseMessage).props().isSuccessful).toBe(true);
@@ -331,7 +333,7 @@ describe('CreateForm', () => {
 
         it('onClick call exact function', () => {
             // Arrange
-            const {values, errors, touched, handleChange, setFieldValue} = params;
+            const { values, errors, touched, handleChange, setFieldValue } = params;
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true });
             createForm.instance().setState(newState);
             createForm.formik = {
@@ -350,7 +352,7 @@ describe('CreateForm', () => {
         it('invalid identityInformation correctly', () => {
             // Arrange
 
-            const {values, handleChange, setFieldValue} = params;
+            const { values, handleChange, setFieldValue } = params;
             const errors = {
                 identityInformation: 'errors'
             };
@@ -374,7 +376,7 @@ describe('CreateForm', () => {
 
         it('render form group correctly', () => {
             // Arrange
-            const {values, errors, touched, handleChange, setFieldValue} = params;
+            const { values, errors, touched, handleChange, setFieldValue } = params;
 
             // Action
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true });
@@ -392,7 +394,7 @@ describe('CreateForm', () => {
 
     describe('renderDetails ', () => {
         const params = {
-            values: {subject:'subject'},
+            values: { subject: 'subject' },
             errors: {
                 identityInformation: ''
             },
@@ -405,16 +407,16 @@ describe('CreateForm', () => {
 
         const state = {
             autoGeneratedInit: 'autoGeneratedInit',
-            subCategoriesOptions: [{subCategoryId: 1, name: 'subCategoryId'}],
-            subProductOptions:[{id: 1, value: 'id'}],
-            betTypeOptions:[{id: 1, value: 'id'}],
+            subCategoriesOptions: [{ subCategoryId: 1, name: 'subCategoryId' }],
+            subProductOptions: [{ id: 1, value: 'id' }],
+            betTypeOptions: [{ id: 1, value: 'id' }],
             description: '',
             solution: ''
         };
 
         it('onClick call exact function', () => {
             // Arrange
-            const {values, errors, touched, handleChange, setFieldValue} = params;
+            const { values, errors, touched, handleChange, setFieldValue } = params;
             const createForm = shallow(<CreateForm  {...newProps} />, { disableLifecycleMethods: true });
             createForm.instance().setState(state);
             createForm.formik = {
@@ -434,7 +436,7 @@ describe('CreateForm', () => {
         it('handleChange check box correctly', () => {
             // Arrange
             const value = 'value';
-            const {values, errors, touched, handleChange, setFieldValue} = params;
+            const { values, errors, touched, handleChange, setFieldValue } = params;
             const createForm = shallow(<CreateForm  {...newProps} />, { disableLifecycleMethods: true });
             createForm.instance().setState(state);
             createForm.formik = {
@@ -452,7 +454,7 @@ describe('CreateForm', () => {
 
         it('onPaste verify customer call exact function', () => {
             // Arrange
-            const {values, handleChange, setFieldValue} = params;
+            const { values, handleChange, setFieldValue } = params;
             const createForm = shallow(<CreateForm  {...newProps} />, { disableLifecycleMethods: true });
             createForm.instance().setState(state);
             createForm.formik = {
@@ -471,8 +473,8 @@ describe('CreateForm', () => {
 
         it('onClick verify customer call exact function', () => {
             // Arrange
-            const {errors, touched, handleChange, setFieldValue} = params;
-            const values = {customerNameInput: 'customerNameInput'};
+            const { errors, touched, handleChange, setFieldValue } = params;
+            const values = { customerNameInput: 'customerNameInput' };
             const createForm = shallow(<CreateForm  {...newProps} />, { disableLifecycleMethods: true });
             createForm.instance().setState(state);
             createForm.formik = {
@@ -491,8 +493,8 @@ describe('CreateForm', () => {
 
         it('subject autoComplete change correctly', () => {
             // Arrange
-            const {values, errors, touched, handleChange, setFieldValue} = params;
-            const value = {subject: 'subject'};
+            const { values, errors, touched, handleChange, setFieldValue } = params;
+            const value = { subject: 'subject' };
             const createForm = shallow(<CreateForm  {...newProps} />, { disableLifecycleMethods: true });
             createForm.instance().setState(state);
             createForm.formik = {
@@ -511,7 +513,7 @@ describe('CreateForm', () => {
         it('invalid subject correctly', () => {
             // Arrange
 
-            const {values, handleChange, setFieldValue} = params;
+            const { values, handleChange, setFieldValue } = params;
             const errors = {
                 subject: 'errors'
             };
@@ -534,7 +536,7 @@ describe('CreateForm', () => {
 
         it('onInputChange call exact function', () => {
             // Arrange
-            const {values, handleChange, errors, touched, setFieldValue} = params;
+            const { values, handleChange, errors, touched, setFieldValue } = params;
             const createForm = shallow(<CreateForm  {...newProps} />, { disableLifecycleMethods: true });
             createForm.instance().setState(state);
             createForm.formik = {
@@ -544,7 +546,7 @@ describe('CreateForm', () => {
             const formRender = shallow(createForm.instance().renderDetails(values, errors, touched, handleChange, setFieldValue));
 
             // Action
-            formRender.find(AutoComplete).first().props().onChange({subject: 'test'});
+            formRender.find(AutoComplete).first().props().onChange({ subject: 'test' });
             formRender.find(AutoComplete).first().props().onInputChange();
 
             //Assert
@@ -561,18 +563,18 @@ describe('CreateForm', () => {
                 ...newState
             };
             const autoText = `Date Time & Tool: {0}/{1}\nprefix`;
-    
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
             commonFunction.generateTimeAndToolPrefix = jest.fn();
-            createForm.generateCustomerPrefix = jest.fn(()=> 'prefix');
+            createForm.generateCustomerPrefix = jest.fn(() => 'prefix');
             const form = createForm.renderAutoGeneratedText();
             expect(form).toEqual(autoText);
         });
-    
+
         it('should do as expected when communication has val return', () => {
             const state = {
                 communicationToolVal: 'communication',
@@ -580,14 +582,14 @@ describe('CreateForm', () => {
                 ...newState
             };
             const autoText = `Date Time & Tool: {0}/{1}\nprefix`;
-    
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
             commonFunction.generateTimeAndToolPrefix = jest.fn();
-            createForm.generateCustomerPrefix = jest.fn(()=> 'prefix');
+            createForm.generateCustomerPrefix = jest.fn(() => 'prefix');
             const form = createForm.renderAutoGeneratedText();
             expect(form).toEqual(autoText);
         });
@@ -596,17 +598,17 @@ describe('CreateForm', () => {
     describe('renderAutoGeneratedText', () => {
         it('should do as expected when call', () => {
             const state = {
-                listOfCustomerValid: [{val: 1}],
+                listOfCustomerValid: [{ val: 1 }],
                 ...newState
             };
             const customerText = 'System ID: 1';
 
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            const form = createForm.generateCustomerPrefix ();
+            const form = createForm.generateCustomerPrefix();
             expect(form).toEqual(customerText);
         });
     });
@@ -614,7 +616,7 @@ describe('CreateForm', () => {
     describe('handleCloseConfirmCreateGuestDialog', () => {
         it('should call exact function', () => {
             props.setConfirmCreateGuestDialog = jest.fn();
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -622,8 +624,8 @@ describe('CreateForm', () => {
             createForm.handleCloseConfirmCreateGuestDialog();
             expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith({ show: false });
         });
-    }); 
-    
+    });
+
     describe('handleGetFeedbackSubjectTemplates', () => {
         it('should do as expected when search text is valid', () => {
             //Arrange
@@ -634,11 +636,11 @@ describe('CreateForm', () => {
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            
+
             //Act
             createForm.instance().handleGetFeedbackSubjectTemplates(searchText);
             jest.runAllTimers();
-    
+
             //Assert
             expect(props.getFeedbackSubjectTemplates).toHaveBeenCalledWith(searchText);
         });
@@ -660,7 +662,7 @@ describe('CreateForm', () => {
             //Assert
             expect(props.setFeedbackSubjectTemplates).toHaveBeenCalledWith([]);
         });
-    }); 
+    });
 
     describe('handleVerify', () => {
         it('should calls setState when click', async () => {
@@ -670,7 +672,7 @@ describe('CreateForm', () => {
             }];
             const promise = Promise.resolve(response);
             props.verifyUserName = jest.fn(() => promise),
-            props.setAddFeedback = jest.fn();
+                props.setAddFeedback = jest.fn();
             const setFieldValue = jest.fn();
             const event = {
                 preventDefault: jest.fn()
@@ -686,7 +688,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleVerify(event, setFieldValue, 'test');
             await promise;
-            
+
 
             // Assert
             expect(event.preventDefault).toHaveBeenCalled();
@@ -705,7 +707,7 @@ describe('CreateForm', () => {
             }];
             const promise = Promise.resolve(response);
             props.verifyUserName = jest.fn(() => promise),
-            props.setAddFeedback = jest.fn();
+                props.setAddFeedback = jest.fn();
             const setFieldValue = jest.fn();
             const event = {
                 preventDefault: jest.fn()
@@ -761,7 +763,7 @@ describe('CreateForm', () => {
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('test') } };
 
             // Act
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.onPasteCustomerHandler(event, 'test', setFieldValue);
             createForm.setState(newState);
             createForm.formik = {
@@ -780,7 +782,7 @@ describe('CreateForm', () => {
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('') } };
 
             // Act
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -798,8 +800,8 @@ describe('CreateForm', () => {
         it('should correctly setState', () => {
             // Arrange
             props.settings = {
-                titles: [{id: 1, value: 'titles'}],
-                licenseeTypes: [{id: 1, name: 'licenseeTypes'}]
+                titles: [{ id: 1, value: 'titles' }],
+                licenseeTypes: [{ id: 1, name: 'licenseeTypes' }]
             };
             const state = {
                 listOfCustomer: [{ custId: '1' }, { custId: '2' }, { custId: '3' }],
@@ -844,12 +846,12 @@ describe('CreateForm', () => {
             // Arrange
             props.settings.subProducts = [1];
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm  {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            shareScripts.getSubProducts = jest.fn(()=> [1]);
+            shareScripts.getSubProducts = jest.fn(() => [1]);
 
             // Act
             createForm.productHandleChange('currentItem', '1,2', setFieldValue, '1,2');
@@ -863,14 +865,14 @@ describe('CreateForm', () => {
         it('should do as expected when selectedItemsKey is empty', () => {
             // Arrange
             props.settings.subProducts = [1];
-            const values = {subProduct: '1,2', betType: '1,2'};
+            const values = { subProduct: '1,2', betType: '1,2' };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm  {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            shareScripts.getSubProducts = jest.fn(()=> [1]);
+            shareScripts.getSubProducts = jest.fn(() => [1]);
 
             // Act
             createForm.productHandleChange('currentItem', '', setFieldValue, values);
@@ -885,81 +887,81 @@ describe('CreateForm', () => {
     });
 
     describe('subProductHandleChange ', () => {
-            it('should do as expected when selectedItemsKey has value', () => {
-                // Arrange
-                props.settings.bettypes = [1];
-                const setFieldValue = jest.fn();
-                shareScripts.getBetTypes = jest.fn(()=> [1]);
-                const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
-                createForm.setState(newState);
-                createForm.formik = {
-                    setSubmitting: jest.fn()
-                };
+        it('should do as expected when selectedItemsKey has value', () => {
+            // Arrange
+            props.settings.bettypes = [1];
+            const setFieldValue = jest.fn();
+            shareScripts.getBetTypes = jest.fn(() => [1]);
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
+            createForm.setState(newState);
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
 
-                // Act
-                createForm.subProductHandleChange('currentItem', '1,2', setFieldValue, '1,2');
-                
+            // Act
+            createForm.subProductHandleChange('currentItem', '1,2', setFieldValue, '1,2');
 
-                // Assert
-                expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
-                expect(createForm.state.betTypeOptions).toEqual([1]);
-            });
 
-            it('should do as expected when selectedItemsKey is empty', () => {
-                // Arrange
-                props.settings.bettypes = [1];
-                const setFieldValue = jest.fn();
-                shareScripts.getBetTypes = jest.fn(()=> [1]);
-                const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
-                createForm.setState(newState);
-                createForm.formik = {
-                    setSubmitting: jest.fn()
-                };
-                // Act
-                createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
-                
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
+            expect(createForm.state.betTypeOptions).toEqual([1]);
+        });
 
-                // Assert
-                expect(createForm.state.betTypeOptions).toEqual([]);
-                expect(setFieldValue).toHaveBeenCalledWith('betType', '');
-            });
+        it('should do as expected when selectedItemsKey is empty', () => {
+            // Arrange
+            props.settings.bettypes = [1];
+            const setFieldValue = jest.fn();
+            shareScripts.getBetTypes = jest.fn(() => [1]);
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
+            createForm.setState(newState);
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
+            // Act
+            createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
 
-            it('should do as expected when betType Selected length < 0', () => {
-                // Arrange
-                props.settings.bettypes = [1];
-                const setFieldValue = jest.fn();
-                shareScripts.getBetTypes = jest.fn(()=> [1]);
-                const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
-                createForm.setState(newState);
-                createForm.formik = {
-                    setSubmitting: jest.fn()
-                };
 
-                // Act
-                createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
-                
+            // Assert
+            expect(createForm.state.betTypeOptions).toEqual([]);
+            expect(setFieldValue).toHaveBeenCalledWith('betType', '');
+        });
 
-                // Assert
-                expect(createForm.state.betTypeOptions).toEqual([]);
-            });
+        it('should do as expected when betType Selected length < 0', () => {
+            // Arrange
+            props.settings.bettypes = [1];
+            const setFieldValue = jest.fn();
+            shareScripts.getBetTypes = jest.fn(() => [1]);
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
+            createForm.setState(newState);
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
+
+            // Act
+            createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
+
+
+            // Assert
+            expect(createForm.state.betTypeOptions).toEqual([]);
+        });
     });
 
     describe('mainCategoriesHandleChange', () => {
         it('should do as expected when selectedItemsKey has value', () => {
             // Arrange
             props.settings.mainCategories = [1];
-            const values = {subject: 'subject', subCategory: '1,2'};
+            const values = { subject: 'subject', subCategory: '1,2' };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm  {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
-            shareScripts.getSubCategories = jest.fn(()=> [1]);
+            shareScripts.getSubjectOnChangeCategories = jest.fn(() => 'tempSubject');
+            shareScripts.getSubCategories = jest.fn(() => [1]);
             // Act
             createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, values);
-            
+
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
@@ -970,17 +972,17 @@ describe('CreateForm', () => {
         it('should do as expected when selectedItemsKey has value and subCategoriesSelected length > 0', () => {
             // Arrange
             props.settings.mainCategories = [1];
-            const values = {subject: 'subject', subCategory: '1,2'};
+            const values = { subject: 'subject', subCategory: '1,2' };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm  {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
-            shareScripts.getSubCategories = jest.fn(()=> [1]);
+            shareScripts.getSubjectOnChangeCategories = jest.fn(() => 'tempSubject');
+            shareScripts.getSubCategories = jest.fn(() => [1]);
             // Act
             createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, values);
-            
+
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
@@ -991,15 +993,15 @@ describe('CreateForm', () => {
         it('should do as expected when selectedItemsKey is empty', () => {
             // Arrange
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
             createForm.setState(newState);
 
             // Act
-            createForm.mainCategoriesHandleChange ('currentItem', '', setFieldValue);
-            
+            createForm.mainCategoriesHandleChange('currentItem', '', setFieldValue);
+
 
             // Assert
             expect(createForm.state.subCategoriesOptions).toEqual([]);
@@ -1016,7 +1018,7 @@ describe('CreateForm', () => {
                 },
                 ...newState
             };
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(prevState);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1040,16 +1042,16 @@ describe('CreateForm', () => {
             const event = {
                 stopPropagation: jest.fn()
             };
-    
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(prevState);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-    
+
             // Act
             createForm.handleEditBlock(event, 'isEditDescription');
-    
+
             // Assert
             expect(createForm.state.editBlock.isEditDescription).toEqual(false);
             expect(event.stopPropagation).toHaveBeenCalled();
@@ -1059,13 +1061,13 @@ describe('CreateForm', () => {
     describe('handleCommunicationChange', () => {
         it('should do as expected when selectedItemsKey has value equal length communication get first name', () => {
             // Arrange
-            props.settings.communicationTools = [{id: 1, name: '1'}, {id: 2, name: '1'}];
+            props.settings.communicationTools = [{ id: 1, name: '1' }, { id: 2, name: '1' }];
             const state = {
                 communicationToolVal: '',
                 ...newState
             };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm  {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1083,7 +1085,7 @@ describe('CreateForm', () => {
 
         it('should do as expected when current communication tool checked', () => {
             // Arrange
-            props.settings.communicationTools = [{id: 1, name: '1'}];
+            props.settings.communicationTools = [{ id: 1, name: '1' }];
             const state = {
                 communicationToolVal: '',
                 ...newState
@@ -1093,7 +1095,7 @@ describe('CreateForm', () => {
                 name: '3'
             };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm  {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1107,15 +1109,15 @@ describe('CreateForm', () => {
             expect(createForm.state.communicationToolVal).toEqual('3');
         });
 
-        it('should do as expected when multiple select',  () => {
+        it('should do as expected when multiple select', () => {
             // Arrange
-            props.settings.communicationTools = [{id: 1, name: '1'}];
+            props.settings.communicationTools = [{ id: 1, name: '1' }];
             const state = {
                 communicationToolVal: '',
                 ...newState
             };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm  {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1124,7 +1126,7 @@ describe('CreateForm', () => {
 
             // Act
             createForm.handleCommunicationChange('currentItem', '1,2', setFieldValue);
-            
+
 
             // Assert
             expect(createForm.state.communicationToolVal).toEqual('1');
@@ -1134,7 +1136,7 @@ describe('CreateForm', () => {
     describe('handleChangeResolutionTime', () => {
         it('should call twice setFieldValue if feedback date greater than solution date', () => {
             // Arrange
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setFieldValue: jest.fn(),
@@ -1152,7 +1154,7 @@ describe('CreateForm', () => {
 
         it('should call 1 setFieldValue if feedback date smaller than solution date', () => {
             // Arrange
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setFieldValue: jest.fn(),
@@ -1161,10 +1163,10 @@ describe('CreateForm', () => {
                 },
                 setSubmitting: jest.fn()
             };
-    
+
             // Act
             createForm.handleChangeResolutionTime('2021-01-02');
-    
+
             // Assert
             expect(createForm.formik.setFieldValue).toHaveBeenCalledTimes(1);
         });
@@ -1173,7 +1175,7 @@ describe('CreateForm', () => {
     describe('handleChangeFeedbackTime', () => {
         it('should call twice setFieldValue if feedback date greater than solution date', () => {
             // Arrange
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setFieldValue: jest.fn(),
@@ -1183,17 +1185,17 @@ describe('CreateForm', () => {
                 setSubmitting: jest.fn()
             };
             // Act
-            createForm.handleChangeFeedbackTime ('2021-01-02');
-            createForm.renderAutoGeneratedText = jest.fn(() =>'test');
+            createForm.handleChangeFeedbackTime('2021-01-02');
+            createForm.renderAutoGeneratedText = jest.fn(() => 'test');
 
             // Assert
             expect(createForm.formik.setFieldValue).toHaveBeenCalledTimes(1);
         });
-    
+
         it('should call 1 setFieldValue if feedback date smaller than solution date', () => {
             // Arrange
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setFieldValue: jest.fn(),
@@ -1202,12 +1204,12 @@ describe('CreateForm', () => {
                 },
                 setSubmitting: jest.fn()
             };
-            createForm.renderAutoGeneratedText = jest.fn(() =>'test');
+            createForm.renderAutoGeneratedText = jest.fn(() => 'test');
             createForm.handleChangeContent = jest.fn();
 
             // Act
             createForm.handleChangeFeedbackTime('2021-01-01');
-    
+
             // Assert
             expect(createForm.formik.setFieldValue).toHaveBeenCalledTimes(1);
         });
@@ -1217,10 +1219,10 @@ describe('CreateForm', () => {
         it('should call exact function', () => {
             // Arrange
             const state = {
-                listOfCustomerValid: [{val: 1}]
+                listOfCustomerValid: [{ val: 1 }]
             };
             const values = ["test"];
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.handleReVerifyInactiveAndConfirm = jest.fn();
             createForm.setState(state);
@@ -1240,18 +1242,18 @@ describe('CreateForm', () => {
                 listOfCustomerValid: []
             };
             const values = ["test"];
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.handleConfirm = jest.fn();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-    
+
             // Act
             createForm.handleSubmit(values);
-    
-    
+
+
             // Assert
             expect(createForm.handleConfirm).toHaveBeenCalled();
         });
@@ -1275,7 +1277,7 @@ describe('CreateForm', () => {
             props.setAddFeedback = jest.fn();
             const values = ["test"];
             const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1287,7 +1289,7 @@ describe('CreateForm', () => {
 
             // Assert
             promise.then(() => {
-                expect(props.setAddFeedback).toHaveBeenCalledWith({isSuccessful: false, message});
+                expect(props.setAddFeedback).toHaveBeenCalledWith({ isSuccessful: false, message });
                 expect(createForm.state.listOfCustomer).toEqual(response);
             });
         });
@@ -1295,80 +1297,56 @@ describe('CreateForm', () => {
 
     describe('handleReVerifyInactiveAndConfirm', () => {
         it('should call exact function if do not have any inactive site member', async () => {
-        // Arrange
-        const response = [{
-            id: 1,
-            val: 'test',
-            isSiteActive: true,
-            isLicensee: true
-        }];
-        const promise = Promise.resolve(response);
-        props.verifyUserName = jest.fn(() => promise);
-        props.setAddFeedback = jest.fn();
-        const values = ["test"];
-        const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
-        createForm.setState(newState);
-        createForm.formik = {
-            setSubmitting: jest.fn()
-        };
-        createForm.handleConfirm = jest.fn();
+            // Arrange
+            const response = [{
+                id: 1,
+                val: 'test',
+                isSiteActive: true,
+                isLicensee: true
+            }];
+            const promise = Promise.resolve(response);
+            props.verifyUserName = jest.fn(() => promise);
+            props.setAddFeedback = jest.fn();
+            const values = ["test"];
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
+            createForm.setState(newState);
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
+            createForm.handleConfirm = jest.fn();
 
-        // Act
-        createForm.handleReVerifyInactiveAndConfirm(values, 'userNames');
-        await promise;
-        
+            // Act
+            createForm.handleReVerifyInactiveAndConfirm(values, 'userNames');
+            await promise;
 
-        // Assert
-        expect(props.setAddFeedback).toHaveBeenCalledWith(null);
-        expect(createForm.handleConfirm).toHaveBeenCalled();
+
+            // Assert
+            expect(props.setAddFeedback).toHaveBeenCalledWith(null);
+            expect(createForm.handleConfirm).toHaveBeenCalled();
         });
     });
 
     describe('handleCloseCheckDuplicateDialog', () => {
         it('should call exact function ', () => {
             // Arrange
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
             // Act
             createForm.handleCloseCheckDuplicateDialog();
-            
+
             // Assert
-            expect(createForm.state.checkDuplicateDialog).toEqual({show: false});
-            expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith({show: false});
+            expect(createForm.state.checkDuplicateDialog).toEqual({ show: false });
+            expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith({ show: false });
         });
     });
 
     describe('handleConfirm', () => {
         it('should remove special characters', () => {
-        // Arrange
-        const params= {UserName: 'test#'};
-        props.setConfirmCreateGuestDialog = jest.fn();
-        commonFunction.getParams = jest.fn(() => params);
-        const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
-        createForm.setState(newState);
-        createForm.formik = {
-            setSubmitting: jest.fn()
-        };
-        createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
-        createForm.formik = {
-            setSubmitting: jest.fn()
-        };
-
-        // Act
-        createForm.handleConfirm([{username: 'test'}]);
-
-
-        // Assert
-        expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
-            LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
-        });
-
-        it('should  call exact function when do not have special characters', () => {
             // Arrange
-            const params= {UserName: 'test'};
+            const params = { UserName: 'test#' };
             props.setConfirmCreateGuestDialog = jest.fn();
             commonFunction.getParams = jest.fn(() => params);
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1376,10 +1354,34 @@ describe('CreateForm', () => {
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
+            createForm.confirmCreateAddGuestFeedback = jest.fn(() => 'test');
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
 
             // Act
-            createForm.handleConfirm([{userName: 'test'}]);
+            createForm.handleConfirm([{ username: 'test' }]);
+
+
+            // Assert
+            expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
+                LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
+        });
+
+        it('should  call exact function when do not have special characters', () => {
+            // Arrange
+            const params = { UserName: 'test' };
+            props.setConfirmCreateGuestDialog = jest.fn();
+            commonFunction.getParams = jest.fn(() => params);
+            const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
+            createForm.setState(newState);
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
+            createForm.confirmCreateAddGuestFeedback = jest.fn(() => 'test');
+
+            // Act
+            createForm.handleConfirm([{ userName: 'test' }]);
 
             // Assert
             expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
@@ -1391,15 +1393,15 @@ describe('CreateForm', () => {
         it('should call exact function', async () => {
             // Arrange
             props.setConfirmCreateGuestDialog = jest.fn();
-            const expected = {show: true, params:'params', confirmMessage:'confirmMessage'};
+            const expected = { show: true, params: 'params', confirmMessage: 'confirmMessage' };
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
             // Act
-            createForm.confirmCreateAddGuestFeedback ('params', 'confirmMessage');
-            
+            createForm.confirmCreateAddGuestFeedback('params', 'confirmMessage');
+
             // Assert
             expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith(expected);
         });
@@ -1409,13 +1411,13 @@ describe('CreateForm', () => {
         it('should call exact function when isSuccessful is true', async () => {
             // Arrange
             const promise = Promise.resolve();
-            const promisePost = Promise.resolve({data: {username: 'test'}});
-            props.confirmCreateGuestDialog = {params: {UserName: 'test'}},
-            props.addFeedback = jest.fn(() => promise),
-            props.addFeedbackResult = {isSuccessful: true};
+            const promisePost = Promise.resolve({ data: { username: 'test' } });
+            props.confirmCreateGuestDialog = { params: { UserName: 'test' } },
+                props.addFeedback = jest.fn(() => promise),
+                props.addFeedbackResult = { isSuccessful: true };
             DataService.postDataAsync = jest.fn(() => promisePost),
 
-            Site.resolveClientUrl = jest.fn(url => url);
+                Site.resolveClientUrl = jest.fn(url => url);
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
@@ -1428,7 +1430,7 @@ describe('CreateForm', () => {
             // Act
             createForm.createFeedback();
             await promise;
-            
+
 
             // Assert
             expect(Site.resolveClientUrl).toHaveBeenCalledWith('CustomerInfo/GetCustomerInfo');
@@ -1437,9 +1439,9 @@ describe('CreateForm', () => {
         it('should do nothing when isSuccessful is false', async () => {
             // Arrange
             const promise = Promise.resolve();
-            props.confirmCreateGuestDialog = {param: 'params'},
-            props.addFeedback = jest.fn(() => promise),
-            props.addFeedbackResult = {isSuccessful: false};
+            props.confirmCreateGuestDialog = { param: 'params' },
+                props.addFeedback = jest.fn(() => promise),
+                props.addFeedbackResult = { isSuccessful: false };
 
             Site.resolveClientUrl = jest.fn(url => url);
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1454,7 +1456,7 @@ describe('CreateForm', () => {
             // Act
             createForm.createFeedback();
             await promise;
-            
+
 
             // Assert
             expect(Site.resolveClientUrl).not.toHaveBeenCalledWith('CustomerInfo/GetCustomerInfo');
@@ -1464,10 +1466,10 @@ describe('CreateForm', () => {
     describe('handleCreateFeedback ', () => {
         it('should call exact function when customerDetail has data', async () => {
             // Arrange
-            props.confirmCreateGuestDialog = {param: 'params'},
-            props.customerDetail = {custId: 1};
-            commonFunction.initValuesAddCustomerFb = jest.fn(() => {custId: 1});
-            commonFunction.initCustomerInfo = jest.fn(() => {custId: 1});
+            props.confirmCreateGuestDialog = { param: 'params' },
+                props.customerDetail = { custId: 1 };
+            commonFunction.initValuesAddCustomerFb = jest.fn(() => { custId: 1 });
+            commonFunction.initCustomerInfo = jest.fn(() => { custId: 1 });
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
@@ -1484,7 +1486,7 @@ describe('CreateForm', () => {
 
         it('should call exact function when customerDetail is empty', async () => {
             // Arrange
-            props.confirmCreateGuestDialog = {param: 'params'};
+            props.confirmCreateGuestDialog = { param: 'params' };
             props.customerDetail = null;
 
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1492,20 +1494,20 @@ describe('CreateForm', () => {
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            createForm.createFeedback = jest.fn();
+            createForm.checkChattypeMapping = jest.fn();
 
             // Act
             createForm.handleCreateFeedback();
 
             // Assert
-            expect(createForm.createFeedback).toHaveBeenCalled();
+            expect(createForm.checkChattypeMapping).toHaveBeenCalled();
         });
     });
 
     describe('handleCheckDuplicateFeedback ', () => {
         it('should call exact function when not duplicate', async () => {
             // Arrange
-            const promise = Promise.resolve({data: 0});
+            const promise = Promise.resolve({ data: 0 });
             Site.resolveClientUrl = jest.fn(url => url);
             DataService.postDataAsync = jest.fn(() => promise);
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1518,7 +1520,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleCheckDuplicateFeedback({});
             await promise;
-            
+
 
             // Assert
             expect(createForm.checkCustomerExistsOnCRM).toHaveBeenCalled();
@@ -1526,7 +1528,7 @@ describe('CreateForm', () => {
 
         it('should call exact function when duplicate', async () => {
             // Arrange
-            const promise = Promise.resolve({data: 1});
+            const promise = Promise.resolve({ data: 1 });
             Site.resolveClientUrl = jest.fn(url => url);
             DataService.postDataAsync = jest.fn(() => promise);
             const createForm = shallow(<CreateForm  {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1539,10 +1541,10 @@ describe('CreateForm', () => {
             // Act
             createForm.handleCheckDuplicateFeedback({});
             await promise;
-            
+
 
             // Assert
-            expect(createForm.state.checkDuplicateDialog).toEqual({show: true});
+            expect(createForm.state.checkDuplicateDialog).toEqual({ show: true });
             expect(createForm.state.duplicateFeedbackId).toEqual(1);
         });
     });
@@ -1551,10 +1553,10 @@ describe('CreateForm', () => {
         it('should call exact function when value greater than 15 characters', () => {
             // Arrange
             const event = {
-                target: {value : 'testtttttttttttt'}
-            };    
-            const setFieldValue = jest.fn();       
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+                target: { value: 'testtttttttttttt' }
+            };
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1570,10 +1572,10 @@ describe('CreateForm', () => {
         it('should call exact function when value smaller than 15 characters', () => {
             // Arrange
             const event = {
-                target: {value : 'test'}
-            };    
-            const setFieldValue = jest.fn();       
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+                target: { value: 'test' }
+            };
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1591,14 +1593,14 @@ describe('CreateForm', () => {
         it('should do as expected if copy string', () => {
             // Arrange
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') }, preventDefault: jest.fn() };
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
 
             // Act
-            createForm.onPasteRefTicketHandler (event);
+            createForm.onPasteRefTicketHandler(event);
             // Assert
             expect(event.preventDefault).toHaveBeenCalled();
         });
@@ -1607,8 +1609,8 @@ describe('CreateForm', () => {
     describe('handleChangeCustomerInfo', () => {
         it('should call setState', () => {
             // Arrange
-            const event = { target: {name: 'firstName', value: 'test' }};
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const event = { target: { name: 'firstName', value: 'test' } };
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1624,7 +1626,7 @@ describe('CreateForm', () => {
     describe('handleChangeValueInfo', () => {
         it('should call setState', () => {
             // Arrange
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(newState);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1641,7 +1643,7 @@ describe('CreateForm', () => {
         it('should do as expected if response errorCode !== 0', async () => {
             // Arrange
             const response = {
-                errorCode : '001', description: 'no information'
+                errorCode: '001', description: 'no information'
             };
             const promise = Promise.resolve(response);
             const state = {
@@ -1650,9 +1652,9 @@ describe('CreateForm', () => {
             };
             props.getTicketInfoByRef = jest.fn(() => promise);
             props.setAddFeedback = jest.fn();
-            const values = {ticketRefInput: '123'};
+            const values = { ticketRefInput: '123' };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1660,17 +1662,17 @@ describe('CreateForm', () => {
             // Act
             createForm.handleClickFillEvent(values, setFieldValue);
             await promise;
-            
+
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
-            expect(props.setAddFeedback).toHaveBeenCalledWith({isSuccessful: false, message: response.description});
+            expect(props.setAddFeedback).toHaveBeenCalledWith({ isSuccessful: false, message: response.description });
         });
 
         it('should do as expected if response errorCode === 0 and first request data and already has data', async () => {
             // Arrange
             const response = {
-                errorCode : '0', description: 'test'
+                errorCode: '0', description: 'test'
             };
             const state = {
                 countClickRefTicket: 0,
@@ -1682,9 +1684,9 @@ describe('CreateForm', () => {
             const promise = Promise.resolve(response);
             props.getTicketInfoByRef = jest.fn(() => promise);
             props.setAddFeedback = jest.fn();
-            const values = {ticketRefInput: '123' };
+            const values = { ticketRefInput: '123' };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1694,7 +1696,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleClickFillEvent(values, setFieldValue);
             await promise;
-            
+
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
@@ -1704,7 +1706,7 @@ describe('CreateForm', () => {
         it('should do as expected if response errorCode === 0 and first request data', async () => {
             // Arrange
             const response = {
-                errorCode : '0', description: 'test'
+                errorCode: '0', description: 'test'
             };
             const state = {
                 countClickRefTicket: 0,
@@ -1716,9 +1718,9 @@ describe('CreateForm', () => {
             const promise = Promise.resolve(response);
             props.getTicketInfoByRef = jest.fn(() => promise);
             props.setAddFeedback = jest.fn();
-            const values = {ticketRefInput: '123'};
+            const values = { ticketRefInput: '123' };
             const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            const createForm = shallow(<CreateForm {...props} />, { disableLifecycleMethods: true }).instance();
             createForm.setState(state);
             createForm.formik = {
                 setSubmitting: jest.fn()
@@ -1726,10 +1728,448 @@ describe('CreateForm', () => {
             // Act
             createForm.handleClickFillEvent(values, setFieldValue);
             await promise;
-            
+
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
+        });
+    });
+
+    describe('renderOptions', () => {
+        it('should call return exactly expected', () => {
+            // Arrange
+            // Act
+            const createForm = shallow(<CreateForm {...props} />).instance();
+            const actual = createForm.renderOptions('test', 1, 1);
+
+            // Assert
+            expect(actual).toEqual(<option key={1} value={1}>{'test'}</option>);
+        });
+    });
+
+    describe('validateChattypeMappingPic', () => {
+        it('should return null if headlineInfo permission is not host', async () => {
+            const wrapper = shallow(<CreateForm {...props} />);
+            const instance = wrapper.instance();
+            instance.setState({
+                customerInfo: {
+                    isOverwriteInfo: true,
+                    headlineStaffInfoCommunications: [],
+                    headlineStaffInfoPics: []
+                },
+                headlineInfoPolicy: 1
+            });
+            instance.props = {
+                customerDetail: {
+                    isGroupHeadLine: true
+                }
+            };
+
+            const result = await instance.validateChattypeMappingPic();
+
+            expect(result).toEqual(null);
+        });
+
+        it('should call editHeadlineCommunicationPic if validation passes', async () => {
+            const wrapper = shallow(<CreateForm {...props} />);
+            const instance = wrapper.instance();
+            instance.setState({
+                customerInfo: {
+                    isOverwriteInfo: true,
+                    headlineStaffInfoCommunications: [
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'john@example.com' },
+                        { picID: 1, picCommunicationId: 102, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' }
+                    ],
+                    headlineStaffInfoPics: [{ picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{ picID: 1 }] }]
+                },
+                headlineInfoPolicy: 2
+            });
+            instance.props = {
+                customerDetail: {
+                    isGroupHeadLine: true
+                }
+            };
+
+            const mockResponse = [];
+            DataService.postDataAsync.mockResolvedValue({ data: mockResponse });
+            instance.editHeadlineCommunicationPic = jest.fn();
+
+            const result = await instance.validateChattypeMappingPic();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(instance.editHeadlineCommunicationPic).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+            expect(result).toEqual(mockResponse);
+        });
+    });
+
+    describe('getPicChangeInformation', () => {
+        it('should return changes if headline communication info has changed', () => {
+            const mockState = {
+                customerInfo: {
+                    headlineStaffInfoCommunications: [
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'john@example.com' },
+                        { picID: 1, picCommunicationId: 102, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' }
+                    ],
+                    headlineStaffInfoPics: [{ picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{ picID: 1 }] }],
+                    headlineStaffInfoLanguages: []
+                }
+            };
+            const initProps = {
+                ...props,
+                customerDetail: {
+                    headlineStaffInfoCommunications: [
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'johntest@example.com' },
+                        { picID: 1, picCommunicationId: 102, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' }
+                    ],
+                    headlineStaffInfoPics: [{ picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{ picID: 1 }] }],
+                    headlineStaffInfoLanguages: []
+                }
+            }
+            const wrapper = shallow(<CreateForm {...initProps} />);
+            const instance = wrapper.instance();
+            instance.setState(mockState);
+
+            const result = instance.getPicChangeInformation();
+
+            expect(result.length).toEqual(1);
+        });
+
+        it('should return empty if headline communication info has not changed', () => {
+            const mockState = {
+                customerInfo: {
+                    headlineStaffInfoCommunications: [
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'john@example.com' },
+                        { picID: 1, picCommunicationId: 102, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' }
+                    ],
+                    headlineStaffInfoPics: [{ picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{ picID: 1 }] }],
+                    headlineStaffInfoLanguages: []
+                }
+            };
+            const initProps = {
+                ...props,
+                customerDetail: {
+                    headlineStaffInfoCommunications: [
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'john@example.com' },
+                        { picID: 1, picCommunicationId: 102, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' }
+                    ],
+                    headlineStaffInfoPics: [{ picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{ picID: 1 }] }],
+                    headlineStaffInfoLanguages: []
+                }
+            }
+            const wrapper = shallow(<CreateForm {...initProps} />);
+            const instance = wrapper.instance();
+            instance.setState(mockState);
+
+            const result = instance.getPicChangeInformation();
+
+            expect(result.length).toEqual(0);
+        });
+    });
+
+    describe('getParamEdit', () => {
+        it('should return the correct params from getParamEdit', () => {
+            const initProps = {
+                ...props,
+                customerDetail: {
+                    headlineStaffInfoCommunications: [
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'john@example.com' },
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' }
+                    ],
+                    headlineStaffInfoPics: [{ picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{ picID: 1 }] }],
+                    headlineStaffInfoLanguages: []
+                }
+            };
+            const mockState = {
+                customerInfo: {
+                    headlineStaffInfoCommunications: [
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'johntest@example.com' },
+                        { picID: 1, picCommunicationId: 101, picCommunicationName: 'Phone', picCommunicationValue: '123-456-7890' }
+                    ],
+                    headlineStaffInfoPics: [{ picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{ picID: 1 }] }],
+                    headlineStaffInfoLanguages: []
+                }
+            };
+            const expectedParams = [
+                {
+                    country: undefined,
+                    language: '',
+                    picId: 1,
+                    picName: 'John Doe',
+                    picType: undefined,
+                    role: undefined,
+                    picCommunicationTools: [
+                        { type: 101, value: 'johntest@example.com, 123-456-7890', isError: false, isNew: false }
+                    ],
+                    remark: ''
+                }
+            ];
+
+            const wrapper = shallow(<CreateForm {...initProps} />);
+            const instance = wrapper.instance();
+            instance.setState(mockState);
+
+            const result = instance.getParamEdit();
+            expect(result).toEqual(expectedParams);
+        });
+    });
+
+    describe('editHeadlineCommunicationPic', () => {
+        let wrapper;
+        let instance;
+
+        const mockParams = [
+            {
+                country: 'Country1',
+                language: 'Language1',
+                picId: '1',
+                picName: 'Name1',
+                picType: 'Type1',
+                role: 'Role1',
+                picCommunicationTools: [
+                    { type: 'Type1', value: 'Value1, Value3' },
+                    { type: 'Type2', value: 'Value2' }
+                ],
+                remark: ''
+            }
+        ];
+
+        beforeEach(() => {
+            wrapper = shallow(<CreateForm {...props} />);
+            instance = wrapper.instance();
+
+            jest.spyOn(instance, 'getParamEdit').mockReturnValue(mockParams);
+
+            Site.resolveClientUrl.mockReturnValue('mock-url');
+            DataService.postDataAsync.mockResolvedValue({ data: [{ isSuccessful: true }] });
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('should call Site.blockUI and Site.unblockUI', async () => {
+            await instance.editHeadlineCommunicationPic();
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+
+        it('should call DataService.postDataAsync with correct params', async () => {
+            await instance.editHeadlineCommunicationPic();
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('mock-url', mockParams);
+        });
+    });
+
+    describe('getPicCommunicationTools', () => {
+        let wrapper;
+        let instance;
+
+        beforeEach(() => {
+            wrapper = shallow(<CreateForm {...props} />);
+            instance = wrapper.instance();
+        });
+
+        it('should handle empty otherAccountCommunicationInfos', () => {
+            instance.setState({ customerInfo: { otherAccountCommunicationInfos: [] } });
+
+            const result = instance.getPicCommunicationTools();
+            expect(result).toEqual([]);
+        });
+
+        it('should handle non-duplicate communicationID entries correctly', () => {
+            instance.setState({
+                customerInfo: {
+                    otherAccountCommunicationInfos: [
+                        { communicationID: 3, communicationValue: 'Value4' },
+                        { communicationID: 3, communicationValue: 'Value5' }
+                    ]
+                }
+            });
+
+            const expectedOutput = [
+                { communicationID: 3, communicationValue: 'Value4, Value5' }
+            ];
+
+            const result = instance.getPicCommunicationTools();
+            expect(result).toEqual(expectedOutput);
+        });
+    });
+
+    describe('editOtherAccountCommunicationInfo', () => {
+        it('should call DataService.postDataAsync correct and handle successful response', async () => {
+            const mockState = {
+                customerInfo: {
+                    otherAccountCommunicationInfos: []
+                }
+            };
+
+            const initProps = {
+                ...props,
+                customerDetail: { custId: 123 }
+            }
+            const wrapper = shallow(<CreateForm {...initProps} />);
+            const instance = wrapper.instance();
+            instance.setState(mockState);
+
+            const mockResponse = { data: { isSuccessful: true } };
+            DataService.postDataAsync.mockResolvedValueOnce(mockResponse);
+
+            await instance.editOtherAccountCommunicationInfo();
+
+            expect(DataService.postDataAsync).toHaveBeenCalled();
+        });
+    });
+
+    describe('checkChattypeMapping', () => {
+        let wrapper;
+        let instance;
+        const mockConfirmCreateGuestDialog = { params: { someParam: 'value' } };
+        const setConfirmCreateGuestDialog = jest.fn();
+
+        const initProps = {
+            ...props,
+            confirmCreateGuestDialog: mockConfirmCreateGuestDialog,
+            setConfirmCreateGuestDialog: setConfirmCreateGuestDialog
+        }
+
+        beforeEach(() => {
+            wrapper = shallow(<CreateForm {...initProps} />);
+            instance = wrapper.instance();
+        });
+
+        it('should call createFeedback when validResult is empty', async () => {
+            instance.validateChattypeMappingPic = jest.fn().mockResolvedValue([]);
+            instance.createFeedback = jest.fn();
+
+            await instance.checkChattypeMapping();
+
+            expect(instance.validateChattypeMappingPic).toHaveBeenCalled();
+            expect(instance.createFeedback).toHaveBeenCalled();
+            expect(wrapper.state('checkChattypeMappingDialog').show).toBe(false);
+        });
+
+        it('should set state and call setConfirmCreateGuestDialog when validResult is not empty', async () => {
+            const validResult = [{ id: 1, value: 'Test' }];
+            instance.validateChattypeMappingPic = jest.fn().mockResolvedValue(validResult);
+
+            await instance.checkChattypeMapping();
+
+            expect(instance.validateChattypeMappingPic).toHaveBeenCalled();
+            expect(wrapper.state('checkChattypeMappingDialog')).toEqual({
+                show: true,
+                data: validResult
+            });
+            expect(setConfirmCreateGuestDialog).toHaveBeenCalledWith({
+                show: false,
+                params: mockConfirmCreateGuestDialog.params
+            });
+        });
+    });
+
+    describe('checkCustomerExistsOnCRM', () => {
+        let wrapper;
+        let instance;
+
+        const mockCustomerDetail = { custId: 12345 };
+
+        const initProps = {
+            ...props,
+            customerDetail: mockCustomerDetail,
+        }
+
+        beforeEach(() => {
+            wrapper = shallow(<CreateForm {...initProps} />);
+            instance = wrapper.instance();
+        });
+
+        it('should call checkChattypeMapping when response data is 1', async () => {
+            DataService.postDataAsync.mockResolvedValue({ data: 1 });
+            instance.checkChattypeMapping = jest.fn();
+            instance.updateNewCrmCustomer = jest.fn();
+
+            await instance.checkCustomerExistsOnCRM();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(DataService.postDataAsync).toHaveBeenCalledWith(Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM'), { customerId: mockCustomerDetail.custId });
+            expect(instance.checkChattypeMapping).toHaveBeenCalled();
+            expect(instance.updateNewCrmCustomer).not.toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+
+        it('should call updateNewCrmCustomer when response data is not 1', async () => {
+            DataService.postDataAsync.mockResolvedValue({ data: 0 });
+            instance.checkChattypeMapping = jest.fn();
+            instance.updateNewCrmCustomer = jest.fn();
+
+            await instance.checkCustomerExistsOnCRM();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(DataService.postDataAsync).toHaveBeenCalledWith(Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM'), { customerId: mockCustomerDetail.custId });
+            expect(instance.checkChattypeMapping).not.toHaveBeenCalled();
+            expect(instance.updateNewCrmCustomer).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+
+        it('should handle errors gracefully', async () => {
+            DataService.postDataAsync.mockRejectedValue(new Error('Network Error'));
+            instance.checkChattypeMapping = jest.fn();
+            instance.updateNewCrmCustomer = jest.fn();
+
+            await instance.checkCustomerExistsOnCRM();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(DataService.postDataAsync).toHaveBeenCalledWith(Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM'), { customerId: mockCustomerDetail.custId });
+            expect(instance.checkChattypeMapping).not.toHaveBeenCalled();
+            expect(instance.updateNewCrmCustomer).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('updateNewCrmCustomer', () => {
+        let wrapper;
+        let instance;
+
+        const mockCustomerDetail = { custId: 12345, username: 'testuser', languages: '' };
+
+        const initProps = {
+            ...props,
+            customerDetail: mockCustomerDetail,
+        }
+
+        beforeEach(() => {
+            wrapper = shallow(<CreateForm {...initProps} />);
+            instance = wrapper.instance();
+        });
+
+        it('should call checkChattypeMapping when response is successful', async () => {
+            DataService.postDataAsync.mockResolvedValue({ data: { isSuccessful: true } });
+            instance.checkChattypeMapping = jest.fn();
+
+            await instance.updateNewCrmCustomer();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(instance.checkChattypeMapping).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+
+        it('should not call checkChattypeMapping when response is not successful', async () => {
+            DataService.postDataAsync.mockResolvedValue({ data: { isSuccessful: false } });
+            instance.checkChattypeMapping = jest.fn();
+
+            await instance.updateNewCrmCustomer();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(instance.checkChattypeMapping).not.toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+
+        it('should handle errors gracefully', async () => {
+            DataService.postDataAsync.mockRejectedValue(new Error('Network Error'));
+            instance.checkChattypeMapping = jest.fn();
+
+            await instance.updateNewCrmCustomer();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(instance.checkChattypeMapping).not.toHaveBeenCalled();
         });
     });
 });

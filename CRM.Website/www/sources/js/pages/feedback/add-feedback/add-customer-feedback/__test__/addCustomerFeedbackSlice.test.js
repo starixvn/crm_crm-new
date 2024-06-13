@@ -1,4 +1,5 @@
 import addCustomerFeedback, {
+    setSettingCommunicationTool,
     setAllSettings,
     setBalanceUpday,
     setCustomerDetail,
@@ -168,6 +169,21 @@ describe('addCustomerFeedback reducer', () => {
             feedbackSubjectTemplates: [],
             settingCommunicationTool: null,
             confirmCreateGuestDialog: { show: false }
+        });
+    });
+
+    it('should handle setSettingCommunicationTool', () => {
+        expect(
+            addCustomerFeedback({}, {
+                type: setSettingCommunicationTool.type,
+                payload: {
+                    settingId: 1
+                }
+            })
+        ).toEqual({
+            settingCommunicationTool : {
+                settingId: 1
+            }
         });
     });
 });

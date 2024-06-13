@@ -48,6 +48,12 @@ describe('CustomerInfo', () => {
         isHostOnCurrentCustomer: true,
         handleChange: jest.fn(),
         handleChangeValueInfo: jest.fn(),
+        settingCommunicationTool:[
+            {
+                settingId: 1,
+                settingValue: ''
+            }
+        ],
         setFieldValue: jest.fn(),
         renderOptions: jest.fn(() => '<div></div>')
     };
@@ -72,67 +78,6 @@ describe('CustomerInfo', () => {
 
             // Assert
             expect(props.handleChangeValueInfo).toHaveBeenCalled();
-        });
-    });
-
-    describe('getOtherAccountCommunicationInfos', () => {
-        it('should set otherAccountCommunicationInfos state correctly', () => {
-            const mockProps = {
-                ...props,
-                customerInfo: {
-                    otherAccountCommunicationInfos: [
-                        {
-                            communicationName: 'Email',
-                            communicationID: 101,
-                            communicationValue: 'test@example.com',
-                            custId: 201,
-                        },
-                        {
-                            communicationName: 'Phone',
-                            communicationID: 102,
-                            communicationValue: '123-456-7890',
-                            custId: 202,
-                        },
-                    ],
-                    headlineStaffInfoCommunications: [
-                        {
-                            headlineID: 1,
-                            picCommunicationId: 101,
-                            picCommunicationName: 'Email',
-                            picCommunicationValue: 'test@example.com',
-                            picID: 201,
-                        },
-                        {
-                            headlineID: 2,
-                            picCommunicationId: 102,
-                            picCommunicationName: 'Phone',
-                            picCommunicationValue: '123-456-7890',
-                            picID: 202,
-                        },
-                    ]
-                },
-            };
-
-            const wrapper = shallow(<CustomerInfo {...mockProps} />);
-            const instance = wrapper.instance();
-            instance.getOtherAccountCommunicationInfos();
-
-            const expectedState = [
-                {
-                    communicationName: 'Email',
-                    communicationID: 101,
-                    communicationValue: 'test@example.com',
-                    custId: 201
-                },
-                {
-                    communicationName: 'Phone',
-                    communicationID: 102,
-                    communicationValue: '123-456-7890',
-                    custId: 202
-                },
-            ];
-
-            expect(wrapper.state('otherAccountCommunicationInfos')).toEqual(expectedState);
         });
     });
 
@@ -165,7 +110,6 @@ describe('CustomerInfo', () => {
             const result = instance.handleChangeHeadlineStaffInfoCommunications('picCommunicationValue', newValue, index);
 
             expect(instance.state.headlineStaffInfoCommunications).toEqual(expectedState);
-            expect(result).toEqual(expectedState);
         });
     });
 
@@ -206,9 +150,16 @@ describe('CustomerInfo', () => {
         let instance;
         const mockHandleChangeValueInfo = jest.fn();
 
+        const initialState = {
+            headlineStaffInfoCommunications: [
+                { picCommunicationId: 101, picCommunicationValue: 'oldValue1' },
+                { picCommunicationId: 102, picCommunicationValue: 'oldValue2' }
+            ]
+        };
+
         const customerInfo = {
             headlineStaffInfoPics: [
-                { picID: 1, picName: 'John Doe', picRoleName: 'Manager' }
+                { picID: 1, picName: 'John Doe', picRoleName: 'Manager', communications: [{picID: 1}] }
             ],
             headlineStaffInfoCommunications: [
                 { picID: 1, picCommunicationId: 101, picCommunicationName: 'Email', picCommunicationValue: 'john@example.com' },
@@ -216,20 +167,9 @@ describe('CustomerInfo', () => {
             ]
         };
 
-        const expectedHeadlineCommunicationInfo = [
-            {
-                picId: 1,
-                picName: 'John Doe',
-                picRoleName: 'Manager',
-                picCommunicationTools: [
-                    { type: 101, name: 'Email', value: 'john@example.com', index: 0 },
-                    { type: 102, name: 'Phone', value: '123-456-7890', index: 1 }
-                ]
-            }
-        ];
-
         const mockProps = {
             ...props,
+            isGuest: false,
             customerInfo: customerInfo,
             handleChangeValueInfo: mockHandleChangeValueInfo,
             customerDetail: { customerType: 0, isGroupHeadLine: true }
@@ -241,10 +181,11 @@ describe('CustomerInfo', () => {
                 headlineInfoPolicy: 2
             })
             instance = wrapper.instance();
+            instance.setState(initialState);
         });
 
         it('should render headline account communication correctly', () => {
-            const result = instance.renderHeadlineAccountCommunication(customerInfo);
+            const result = instance.renderHeadlineAccountCommunication(initialState.headlineStaffInfoCommunications);
             expect(result).toMatchSnapshot();
         });
     });
@@ -359,6 +300,7 @@ describe('CustomerInfo', () => {
         beforeEach(() => {
             mockProps = {
                 ...props,
+                isGuest: true,
                 handleChangeValueInfo: jest.fn(),
                 setFieldValue: jest.fn()
             };
@@ -369,7 +311,10 @@ describe('CustomerInfo', () => {
                     { communicationID: '1', value: '123', isError: false },
                     { communicationID: '2', value: '456', isError: false },
                     { communicationID: '3', value: '789', isError: false }
-                ]
+                ],
+                confirmDeleteCommunicationTool:{
+                    show: false
+                }
             };
         });
 
