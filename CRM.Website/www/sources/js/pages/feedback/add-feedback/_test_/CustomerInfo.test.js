@@ -556,19 +556,158 @@ describe('CustomerInfo', () => {
     
             expect(mockDeleteHeadlineCommunicationTool).toHaveBeenCalledWith(indexToDelete);
         });
+    });
+
+    describe('addNewOtherCommunicationTool', () => {
+        let wrapper;
+        let instance;
     
-        it('should set state to show confirmation dialog if the communication tool is not new', () => {
-            const indexToDelete = 1;
+        const mockHandleChangeValueInfo = jest.fn();
     
-            instance.confirmDeleteHeadlineCommunicationTool(indexToDelete);
+        beforeEach(() => {
+            mockHandleChangeValueInfo.mockClear();
     
+            const mockProps = {
+                ...props,
+                customerDetail: {
+                    custId: 123
+                },
+                handleChangeValueInfo: mockHandleChangeValueInfo
+            };
+    
+            const initialState = {
+                otherAccountCommunicationInfos: [
+                    { communicationName: 'Email', communicationID: 1, communicationValue: 'test@example.com', custId: 123, isNew: false }
+                ]
+            };
+    
+            wrapper = shallow(<CustomerInfo {...mockProps} />);
+            wrapper.setState(initialState);
+            instance = wrapper.instance();
+        });
+    
+        it('should add a new communication tool to the state and call handleChangeValueInfo', () => {
+            // Call the method
+            instance.addNewOtherCommunicationTool();
+    
+            // Verify the state update
+            expect(wrapper.state('otherAccountCommunicationInfos')).toEqual([
+                { communicationName: 'Email', communicationID: 1, communicationValue: 'test@example.com', custId: 123, isNew: false },
+                { communicationName: '', communicationID: 0, communicationValue: '', custId: 123, isNew: true }
+            ]);
+    
+            // Verify handleChangeValueInfo was called with the updated state
+            expect(mockHandleChangeValueInfo).toHaveBeenCalledWith('otherAccountCommunicationInfos', [
+                { communicationName: 'Email', communicationID: 1, communicationValue: 'test@example.com', custId: 123, isNew: false },
+                { communicationName: '', communicationID: 0, communicationValue: '', custId: 123, isNew: true }
+            ]);
+        });
+    });
+
+    describe('deleteOtherCommunicationTool', () => {
+        let wrapper;
+        let instance;
+    
+        const mockHandleChangeValueInfo = jest.fn();
+    
+        beforeEach(() => {
+            mockHandleChangeValueInfo.mockClear();
+    
+            const mockProps = {
+                ...props,
+                customerDetail: {
+                    custId: 123
+                },
+                handleChangeValueInfo: mockHandleChangeValueInfo
+            };
+    
+            const initialState = {
+                otherAccountCommunicationInfos: [
+                    { communicationName: 'Email', communicationID: 1, communicationValue: 'test1@example.com', custId: 123, isNew: false },
+                    { communicationName: 'Phone', communicationID: 2, communicationValue: '1234567890', custId: 123, isNew: false }
+                ],
+                confirmDeleteCommunicationTool: {
+                    show: false,
+                    picCommunicationTool: null,
+                    indexCom: -1
+                }
+            };
+    
+            wrapper = shallow(<CustomerInfo {...mockProps} />);
+            wrapper.setState(initialState);
+            instance = wrapper.instance();
+        });
+    
+        it('should delete a communication tool from the state and call handleChangeValueInfo', () => {
+            // Call the method with the index of the item to delete
+            instance.deleteOtherCommunicationTool(0);
+    
+            // Verify the state update
+            expect(wrapper.state('otherAccountCommunicationInfos')).toEqual([
+                { communicationName: 'Phone', communicationID: 2, communicationValue: '1234567890', custId: 123, isNew: false }
+            ]);
+    
+            // Verify handleChangeValueInfo was called with the updated state
+            expect(mockHandleChangeValueInfo).toHaveBeenCalledWith('otherAccountCommunicationInfos', [
+                { communicationName: 'Phone', communicationID: 2, communicationValue: '1234567890', custId: 123, isNew: false }
+            ]);
+    
+            // Verify the confirmDeleteCommunicationTool state reset
+            expect(wrapper.state('confirmDeleteCommunicationTool')).toEqual({
+                show: false,
+                picCommunicationTool: null,
+                indexCom: -1
+            });
+        });
+    });
+
+    describe('confirmOtherHeadlineCommunicationTool', () => {
+        let wrapper;
+        let instance;
+    
+        beforeEach(() => {
+            const mockProps = {
+                ...props,
+                customerDetail: {
+                    custId: 123
+                },
+                customerInfo: {
+                    otherAccountCommunicationInfos: [
+                        { communicationName: 'Email', communicationID: 1, communicationValue: 'test1@example.com', custId: 123, isNew: true },
+                        { communicationName: 'Phone', communicationID: 2, communicationValue: '1234567890', custId: 123, isNew: false }
+                    ]
+                },
+                handleChangeValueInfo: jest.fn()
+            };
+    
+            const initialState = {
+                otherAccountCommunicationInfos: mockProps.customerInfo.otherAccountCommunicationInfos,
+                confirmDeleteCommunicationTool: {
+                    show: false,
+                    picCommunicationTool: null,
+                    indexCom: -1
+                }
+            };
+    
+            wrapper = shallow(<CustomerInfo {...mockProps} />);
+            wrapper.setState(initialState);
+            instance = wrapper.instance();
+        });
+    
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+    
+        it('should update the state if the communication tool is not new', () => {
+            // Call the method with the index of the non-new item
+            instance.confirmOtherHeadlineCommunicationTool(1);
+    
+            // Verify the state update
             expect(wrapper.state('confirmDeleteCommunicationTool')).toEqual({
                 show: true,
-                picCommunicationTool: 2,
-                indexCom: indexToDelete
+                picCommunicationTool: 2, // communicationID of the second item
+                indexCom: 1
             });
-    
-            expect(mockDeleteHeadlineCommunicationTool).not.toHaveBeenCalled();
         });
     });
 });

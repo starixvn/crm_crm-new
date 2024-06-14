@@ -62,6 +62,7 @@ export const CustomerType = {
 
 export const FunctionKey = {
     NotificationList: 'NotificationList',
+    CustomerInfo: 'CustomerInfo',
     ChatTypeMapping: 'ChatTypeMapping',
     NotificationTemplate: 'NotificationTemplate',
     NotificationType: 'NotificationType',

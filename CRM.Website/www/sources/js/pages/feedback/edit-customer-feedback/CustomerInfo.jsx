@@ -3,7 +3,7 @@ import { Col, Form, Row, Collapse, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import { changeSiteSetting, getPermission, checkHostPermissionOnCurrentCustomer, checkHostPermissionPicAssign } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, getPermission, checkHostPermissionPicAssign } from '@jsroot/common/shareScripts';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ export default class CustomerInfo extends PureComponent {
         this.state = {
             picAssignmentPolicy: null,
             latestFeedbackCommunicationTools: [],
-            isHostOnCurrentCustomer: false,
+            isHostOnCurrentCustomer: null,
             headlineInfoPolicy: null,
             confirmDeleteCommunicationTool: {
                 show: false,
@@ -29,9 +29,11 @@ export default class CustomerInfo extends PureComponent {
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
         });
-        checkHostPermissionOnCurrentCustomer().then(response => {
+
+        getPermission(FunctionKey.CustomerInfo, true).then(response => {
             this.setState({ isHostOnCurrentCustomer: response });
         });
+        
         checkHostPermissionPicAssign().then(response => {
             this.setState({ picAssignmentPolicy: response });
         });
@@ -897,7 +899,7 @@ export default class CustomerInfo extends PureComponent {
                             </div>
                         </div>
                         {
-                            this.state.isHostOnCurrentCustomer && fieldInput.isCheckFeedbackIdIsNew &&
+                            this.state.isHostOnCurrentCustomer === Policy.Host && fieldInput.isCheckFeedbackIdIsNew &&
                             ((customerInfo?.isGroupHeadLine && this.state.headlineInfoPolicy === Policy.Host) || !customerInfo?.isGroupHeadLine ) &&
                             <Form.Group as={Row} className="pt-1 pb-2">
                                 <Col sm="3" md="3">

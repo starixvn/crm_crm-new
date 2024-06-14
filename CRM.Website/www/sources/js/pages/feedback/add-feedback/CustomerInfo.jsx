@@ -412,7 +412,7 @@ export class CustomerInfo extends PureComponent {
         const { settingCommunicationTool } = this.props;
         const communicationToolIndex = settingCommunicationTool.findIndex(x => x.settingId === this.state.confirmDeleteCommunicationTool.picCommunicationTool);
         return <>
-            <div className="confirm-headline">Are you going to delete the <strong>{settingCommunicationTool[communicationToolIndex].settingValue}</strong> communication tool?</div>
+            <div className="confirm-headline">Are you going to delete the <strong>{settingCommunicationTool[communicationToolIndex]?.settingValue}</strong> communication tool?</div>
         </>
     }
 
