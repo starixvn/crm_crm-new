@@ -191,13 +191,19 @@
                         var conversationConfig = botSetting.ConversationConfigs
                             .Find(x => x.Channel == BotChannel.Skype && x.ConversationId == item.ChatGroupID);
 
-                        if (conversationConfig?.ConversationId != null && !string.IsNullOrWhiteSpace(item.Content))
+                        if (conversationConfig?.ConversationId != null)
                         {
-                            if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
+                            if (!string.IsNullOrWhiteSpace(item.Content))
                             {
-                                await logService.ErrorMessageAsync(item.Content);
+                                if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
+                                {
+                                    await logService.ErrorMessageAsync(item.Content);
+                                }
+                                else
+                                {
+                                    await botService.SendSkypeAsync(conversationConfig.ConversationId, item.Content);
+                                }
                             }
-                            else await botService.SendSkypeAsync(conversationConfig.ConversationId, item.Content);
                         }
                         else
                         {
