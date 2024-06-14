@@ -191,7 +191,7 @@
                         var conversationConfig = botSetting.ConversationConfigs
                             .Find(x => x.Channel == BotChannel.Skype && x.ConversationId == item.ChatGroupID);
 
-                        if (conversationConfig?.ConversationId != null)
+                        if (conversationConfig?.ConversationId != null && !string.IsNullOrWhiteSpace(item.Content))
                         {
                             if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
                             {
