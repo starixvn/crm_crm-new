@@ -104,7 +104,7 @@ export default class CustomerInfo extends PureComponent {
         });
     }
 
-    deleteHeadlineCommunicationTool = indexCom => {
+    deleteHeadlineCommunicationTool = async indexCom => {
         const data = [...this.state.latestFeedbackCommunicationTools];
         data.splice(indexCom, 1);
         this.setState({
@@ -115,6 +115,14 @@ export default class CustomerInfo extends PureComponent {
                 indexCom: -1
             }
         });
+        if (data.length === 0) {
+            await this.props.handleChangeInput({
+                target: {
+                    name: 'isOverwrite',
+                    value: !this.props.fieldInput.isOverwrite
+                }
+            });
+        }
         this.props.setFieldValue('latestFeedbackCommunicationTools', data);
         this.props.handleChangeInput({
             target: {
@@ -124,10 +132,10 @@ export default class CustomerInfo extends PureComponent {
         });
     }
 
-    confirmDeleteHeadlineCommunicationTool = index => {
+    confirmDeleteHeadlineCommunicationTool = async index => {
         const { latestFeedbackCommunicationTools } = this.state;
         if (latestFeedbackCommunicationTools[index].isNew) {
-            this.deleteHeadlineCommunicationTool(index);
+            await this.deleteHeadlineCommunicationTool(index);
         }
         else {
             this.setState({
@@ -904,7 +912,7 @@ export default class CustomerInfo extends PureComponent {
                             <Form.Group as={Row} className="pt-1 pb-2">
                                 <Col sm="3" md="3">
                                     <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentAccountDetails')}
-                                        htmlFor="check-box-overwrite" checked={fieldInput.isOverwrite}
+                                        htmlFor="check-box-overwrite" checked={fieldInput.isOverwrite} disabled={this.state.latestFeedbackCommunicationTools.length === 0}
                                         onChange={() => handleChangeInput({
                                             target: {
                                                 name: 'isOverwrite',

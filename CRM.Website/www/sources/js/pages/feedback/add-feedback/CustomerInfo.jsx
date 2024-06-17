@@ -88,7 +88,7 @@ export class CustomerInfo extends PureComponent {
         this.props.handleChangeValueInfo('headlineStaffInfoCommunications', headlineStaffInfoCommunications);
     }
 
-    deleteHeadlineCommunicationTool = indexCom => {
+    deleteHeadlineCommunicationTool = async indexCom => {
         const data = [...this.state.headlineStaffInfoCommunications];
         data.splice(indexCom, 1);
         this.setState({
@@ -99,12 +99,15 @@ export class CustomerInfo extends PureComponent {
                 indexCom: -1
             }
         });
+        if (data.length === 0) {
+            await this.props.handleChangeValueInfo('isOverwriteInfo', !this.props.customerInfo.isOverwriteInfo);
+        }
         this.props.handleChangeValueInfo('headlineStaffInfoCommunications', data);
     }
 
-    confirmDeleteHeadlineCommunicationTool = index => {
+    confirmDeleteHeadlineCommunicationTool = async index => {
         if (this.state.headlineStaffInfoCommunications[index].isNew) {
-            this.deleteHeadlineCommunicationTool(index);
+            await this.deleteHeadlineCommunicationTool(index);
         }
         else {
             this.setState({
@@ -225,7 +228,7 @@ export class CustomerInfo extends PureComponent {
         this.props.handleChangeValueInfo('otherAccountCommunicationInfos', otherAccountCommunicationInfos);
     }
 
-    deleteOtherCommunicationTool = indexCom => {
+    deleteOtherCommunicationTool = async indexCom => {
         const data = [...this.state.otherAccountCommunicationInfos];
         data.splice(indexCom, 1);
         this.setState({
@@ -236,12 +239,15 @@ export class CustomerInfo extends PureComponent {
                 indexCom: -1
             }
         });
+        if (data.length === 0) {
+            await this.props.handleChangeValueInfo('isOverwriteInfo', !this.props.customerInfo.isOverwriteInfo);
+        }
         this.props.handleChangeValueInfo('otherAccountCommunicationInfos', data);
     }
 
-    confirmOtherHeadlineCommunicationTool = index => {
+    confirmOtherHeadlineCommunicationTool = async index => {
         if (this.state.otherAccountCommunicationInfos[index].isNew) {
-            this.deleteOtherCommunicationTool(index);
+            await this.deleteOtherCommunicationTool(index);
         }
         else {
             this.setState({
@@ -431,6 +437,7 @@ export class CustomerInfo extends PureComponent {
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         const isAddGuestFb = customerInfo.siteId === undefined;
+        const isDisabledOverwrite = headlineStaffInfoCommunications?.length > 0 || otherAccountCommunicationInfos?.length > 0;
         return (
             <div>
                 <div className="tab-account-info">
@@ -621,10 +628,10 @@ export class CustomerInfo extends PureComponent {
                     customerDetail !== null && isHostOnCurrentCustomer &&
                     ((customerDetail.isGroupHeadLine && headlineInfoPolicy === Policy.Host) || !customerDetail.isGroupHeadLine) &&
                     <Form.Group as={Row} className="pt-1 pb-2">
-                        <Col sm="3" md="3">
-                            <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentAccountDetails')}
-                                htmlFor="check-box-overwrite" checked={customerInfo.isOverwriteInfo}
-                                onChange={() => handleChangeValueInfo('isOverwriteInfo', !customerInfo.isOverwriteInfo)}
+                            <Col sm="3" md="3">
+                                <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentAccountDetails')}
+                                    htmlFor="check-box-overwrite" checked={customerInfo.isOverwriteInfo} disabled={!isDisabledOverwrite} 
+                                    onChange={() => handleChangeValueInfo('isOverwriteInfo', !customerInfo.isOverwriteInfo)}
                             />
                         </Col>
                     </Form.Group>
