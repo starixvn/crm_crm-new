@@ -810,4 +810,700 @@ describe('AppContainer', () => {
             expect(container.state.relatedCustomers).toEqual([{ "custId": 2, "val": "test2" }, { "custId": 1, "val": "test1" }]);
         });
     });
+
+    describe('handleGetFeedbackSubjectTemplates', () => {
+        let wrapper;
+        let instance;
+        const mockSetState = jest.fn();
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+            jest.spyOn(instance, 'setState').mockImplementation(mockSetState);
+            jest.spyOn(Site, 'debounce').mockImplementation(fn => fn);
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('should clear feedbackSubjectTemplates state when searchText length is < 2', async () => {
+            await instance.handleGetFeedbackSubjectTemplates('T');
+
+            expect(instance.state.feedbackSubjectTemplates).toEqual([]);
+        });
+
+        it('should handle API call errors gracefully', async () => {
+            const mockError = new Error('API Error');
+            DataService.getDataAsync.mockRejectedValue(mockError);
+            Site.handleAxiosError = jest.fn();
+            await instance.handleGetFeedbackSubjectTemplates('Te');
+
+            expect(Site.handleAxiosError).toHaveBeenCalled();
+        });
+    });
+
+    describe('validateFormikCommunicationTools', () => {
+        let wrapper;
+        let instance;
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+            jest.spyOn(instance, 'getLengthCommunicationValue').mockImplementation((comTool) => comTool.communicationValue.length);
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('should return errors when communicationID or communicationValue is missing', () => {
+            const values = { latestFeedbackCommunicationTools: [{ communicationID: null, communicationValue: '', isError: false }] };
+            const errors = {};
+
+            LangHelper.getResource.mockReturnValue('Communication is required');
+
+            const result = instance.validateFormikCommunicationTools(values, errors);
+
+            expect(result.latestFeedbackCommunicationTools).toBe('Communication is required');
+            expect(values.latestFeedbackCommunicationTools[0].isError).toBe(true);
+        });
+
+        it('should return errors when communicationValue exceeds max length', () => {
+            const values = { latestFeedbackCommunicationTools: [{ communicationID: 1, communicationValue: 'a'.repeat(201), isError: false }] };
+            const errors = {};
+
+            LangHelper.getResource.mockReturnValue('Communication exceeds max length');
+
+            const result = instance.validateFormikCommunicationTools(values, errors);
+
+            expect(result.latestFeedbackCommunicationTools).toBe('Communication exceeds max length');
+            expect(values.latestFeedbackCommunicationTools[0].isError).toBe(true);
+        });
+
+        it('should not return errors when communicationID and communicationValue are valid', () => {
+            const values = { latestFeedbackCommunicationTools: [{ communicationID: 1, communicationValue: 'valid communication', isError: false }] };
+            const errors = {};
+
+            const result = instance.validateFormikCommunicationTools(values, errors);
+
+            expect(result.latestFeedbackCommunicationTools).toBeUndefined();
+            expect(values.latestFeedbackCommunicationTools[0].isError).toBe(false);
+        });
+    });
+
+    describe('getLengthCommunicationValue', () => {
+        let wrapper;
+        let instance;
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+        });
+
+        it('should correctly calculate the length of communication values', () => {
+            const compic = {
+                communicationID: 1,
+                communicationValue: '12345',
+                picInfo: 'John Doe'
+            };
+
+            const indexCompic = 0;
+
+            const communicationTools = [
+                {
+                    communicationID: 1,
+                    communicationValue: '12345',
+                    picInfo: 'John Doe'
+                },
+                {
+                    communicationID: 1,
+                    communicationValue: '67890',
+                    picInfo: 'John Doe'
+                },
+                {
+                    communicationID: 2,
+                    communicationValue: 'abcdef',
+                    picInfo: 'Jane Smith'
+                },
+                {
+                    communicationID: 1,
+                    communicationValue: '11111',
+                    picInfo: 'John Doe'
+                }
+            ];
+
+            const expectedLength = '12345,67890,11111'.length;
+
+            const result = instance.getLengthCommunicationValue(compic, indexCompic, communicationTools);
+            expect(result).toEqual(expectedLength);
+        });
+    });
+
+    describe('getHeadlineCommunicationInfoPIC', () => {
+        let wrapper;
+        let instance;
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+        });
+
+        it('should correctly map communications to headlineStaffInfoPics', () => {
+            const communications = [
+                {
+                    communicationID: 1,
+                    communicationName: 'Email',
+                    communicationValue: 'example@example.com',
+                    picInfo: 'John Doe (Manager)'
+                },
+                {
+                    communicationID: 2,
+                    communicationName: 'Phone',
+                    communicationValue: '123-456-7890',
+                    picInfo: 'John Doe (Manager)'
+                },
+                {
+                    communicationID: 3,
+                    communicationName: 'Email',
+                    communicationValue: 'jane@example.com',
+                    picInfo: 'Jane Smith (Assistant)'
+                }
+            ];
+
+            const headlineStaffInfoPics = [
+                {
+                    picID: 101,
+                    picName: 'John Doe',
+                    picRoleName: 'Manager'
+                },
+                {
+                    picID: 102,
+                    picName: 'Jane Smith',
+                    picRoleName: 'Assistant'
+                }
+            ];
+
+            const expectedOutput = [
+                {
+                    picCommunicationTools: [
+                        {
+                            picCommunicationId: 1,
+                            picCommunicationName: 'Email',
+                            picCommunicationValue: 'example@example.com'
+                        },
+                        {
+                            picCommunicationId: 2,
+                            picCommunicationName: 'Phone',
+                            picCommunicationValue: '123-456-7890'
+                        }
+                    ],
+                    picId: 101,
+                    picName: 'John Doe',
+                    picRoleName: 'Manager'
+                },
+                {
+                    picCommunicationTools: [
+                        {
+                            picCommunicationId: 3,
+                            picCommunicationName: 'Email',
+                            picCommunicationValue: 'jane@example.com'
+                        }
+                    ],
+                    picId: 102,
+                    picName: 'Jane Smith',
+                    picRoleName: 'Assistant'
+                }
+            ];
+
+            const result = instance.getHeadlineCommunicationInfoPIC(communications, headlineStaffInfoPics);
+            expect(result).toEqual(expectedOutput);
+        });
+    });
+
+    describe('validateChattypeMappingPic', () => {
+        let instance;
+        let wrapper;
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+
+            const state = {
+                customerInfo: {
+                    isGroupHeadLine: true,
+                    headlineStaffInfoPics: [
+                        {
+                            picID: 101,
+                            picName: 'John Doe',
+                            picRoleName: 'Manager'
+                        },
+                        {
+                            picID: 102,
+                            picName: 'Jane Smith',
+                            picRoleName: 'Assistant'
+                        }
+                    ],
+                },
+                headlineInfoPolicy: 2,
+                fieldInput: {
+                    latestFeedbackCommunicationTools: [
+                        {
+                            communicationID: 1,
+                            communicationName: 'Email',
+                            communicationValue: 'example@example.com',
+                            picInfo: 'John Doe (Manager)'
+                        },
+                        {
+                            communicationID: 2,
+                            communicationName: 'Phone',
+                            communicationValue: '123-456-7890',
+                            picInfo: 'John Doe (Manager)'
+                        },
+                        {
+                            communicationID: 3,
+                            communicationName: 'Email',
+                            communicationValue: 'jane@example.com',
+                            picInfo: 'Jane Smith (Assistant)'
+                        }
+                    ],
+                },
+            };
+
+            instance.setState(state);
+
+            Site.blockUI.mockClear();
+            Site.unblockUI.mockClear();
+            DataService.postDataAsync.mockClear();
+        });
+
+        it('should validate and edit headline communication pic if conditions are met', async () => {
+            DataService.postDataAsync.mockResolvedValue({ data: [] });
+
+            const result = await instance.validateChattypeMappingPic({ isOverwrite: true });
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+            expect(result).toEqual([]);
+        });
+
+        it('should not validate or edit headline communication pic if conditions are not met', async () => {
+            instance.state.customerInfo.isGroupHeadLine = false;
+
+            const result = await instance.validateChattypeMappingPic({ isOverwrite: true });
+
+            expect(Site.blockUI).not.toHaveBeenCalled();
+            expect(DataService.postDataAsync).not.toHaveBeenCalled();
+            expect(Site.unblockUI).not.toHaveBeenCalled();
+            expect(result).toBeNull();
+        });
+
+        it('should handle validation errors', async () => {
+            const error = new Error('Validation error');
+            DataService.postDataAsync.mockRejectedValue(error);
+
+            const result = await instance.validateChattypeMappingPic({ isOverwrite: true });
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(DataService.postDataAsync).toHaveBeenCalled();
+            expect(result).toBeNull();
+        });
+    });
+
+    describe('getHeadlineCommunicationInfo', () => {
+        let instance;
+        let wrapper;
+        const mockCommunications = [
+            { picInfo: 'Test Pic (Role)', communicationID: 1, communicationValue: 'Value' }
+        ];
+
+        const mockState = {
+            customerInfo: {
+                headlineStaffInfoPics: [
+                    {
+                        picID: 1,
+                        picName: 'Test Pic',
+                        picRoleName: 'Role',
+                        picCountryID: 'Country',
+                        picTypeID: 'TypeID',
+                        picRoleID: 'RoleID'
+                    }
+                ],
+                headlineStaffInfoLanguages: [
+                    { picID: 1, picLanguageID: 'LanguageID' }
+                ]
+            }
+        };
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+            instance.setState(mockState);
+        });
+
+        it('should return correct headline communication info', () => {
+            const result = instance.getHeadlineCommunicationInfo(mockCommunications);
+
+            expect(result).toHaveLength(1);
+            expect(result[0]).toEqual({
+                country: 'Country',
+                language: 'LanguageID',
+                picCommunicationTools: [
+                    {
+                        type: 1,
+                        value: 'Value',
+                        isError: false,
+                        isNew: false
+                    }
+                ],
+                picId: 1,
+                picName: 'Test Pic',
+                picType: 'TypeID',
+                role: 'RoleID',
+                roleName: 'Role',
+                isNameError: false,
+                isRoleError: false
+            });
+        });
+    });
+
+    describe('getPicChangeInformation', () => {
+        it('should return changed headline communication info', () => {
+            // Mock necessary data
+            const mockLatestFeedbackCommunicationTools = [
+                { communicationID: 1, communicationValue: 'Value1' },
+                { communicationID: 2, communicationValue: 'Value2' }
+            ];
+
+            const mockCustomerInfo = {
+                headlineStaffInfoPics: [
+                    { picId: 1, picName: 'Pic1', picRoleName: 'Role1' },
+                    { picId: 2, picName: 'Pic2', picRoleName: 'Role2' }
+                ],
+                headlineStaffInfoLanguages: [
+                    { picID: 1, picLanguageID: 'Lang1' },
+                    { picID: 2, picLanguageID: 'Lang2' }
+                ],
+                headlineStaffInfoCommunications: [
+                    { communicationID: 1, communicationValue: 'Value1' },
+                    { communicationID: 2, communicationValue: 'Value3' }
+                ]
+            };
+
+            const mockState = {
+                fieldInput: {
+                    latestFeedbackCommunicationTools: mockLatestFeedbackCommunicationTools
+                },
+                customerInfo: mockCustomerInfo,
+                getHeadlineCommunicationInfo: jest.fn().mockImplementation(() => [
+                    {
+                        picId: 1,
+                        picName: 'Pic1',
+                        picRoleName: 'Role1',
+                        picCommunicationTools: [
+                            { type: 1, value: 'Value1' }
+                        ]
+                    },
+                    {
+                        picId: 2,
+                        picName: 'Pic2',
+                        picRoleName: 'Role2',
+                        picCommunicationTools: [
+                            { type: 2, value: 'Value2' }
+                        ]
+                    }
+                ])
+            }
+
+            const wrapper = shallow(<AppContainer />);
+            const instance = wrapper.instance();
+            instance.setState(mockState);
+
+            const result = instance.getPicChangeInformation();
+
+            expect(result).toHaveLength(2);
+        });
+
+        it('should handle no changes', () => {
+            const mockState = {
+                fieldInput: {
+                    latestFeedbackCommunicationTools: []
+                },
+                customerInfo: {
+                    headlineStaffInfoPics: [],
+                    headlineStaffInfoLanguages: []
+                },
+                getHeadlineCommunicationInfo: jest.fn().mockImplementation(() => [])
+            }
+
+            const wrapper = shallow(<AppContainer />);
+            const instance = wrapper.instance();
+            instance.setState(mockState);
+
+            const result = instance.getPicChangeInformation();
+            expect(result).toEqual([]);
+        });
+    });
+
+    describe('getParamEdit', () => {
+        it('should consolidate communication tools correctly', () => {
+            const mockLatestFeedbackCommunicationTools = [
+                { communicationID: 1, communicationValue: 'Value1' },
+                { communicationID: 2, communicationValue: 'Value2' }
+            ];
+
+            const mockCustomerInfo = {
+                headlineStaffInfoPics: [
+                    { picId: 1, picName: 'Pic1', picRoleName: 'Role1' },
+                    { picId: 2, picName: 'Pic2', picRoleName: 'Role2' }
+                ],
+                headlineStaffInfoLanguages: [
+                    { picID: 1, picLanguageID: 'Lang1' },
+                    { picID: 2, picLanguageID: 'Lang2' }
+                ],
+                headlineStaffInfoCommunications: [
+                    { communicationID: 1, communicationValue: 'Value1' },
+                    { communicationID: 2, communicationValue: 'Value3' }
+                ]
+            };
+
+            const mockState = {
+                fieldInput: {
+                    latestFeedbackCommunicationTools: mockLatestFeedbackCommunicationTools
+                },
+                customerInfo: mockCustomerInfo,
+                getHeadlineCommunicationInfo: jest.fn().mockImplementation(() => [
+                    {
+                        picId: 1,
+                        picName: 'Pic1',
+                        picRoleName: 'Role1',
+                        picCommunicationTools: [
+                            { type: 1, value: 'Value1' }
+                        ]
+                    },
+                    {
+                        picId: 2,
+                        picName: 'Pic2',
+                        picRoleName: 'Role2',
+                        picCommunicationTools: [
+                            { type: 2, value: 'Value2' }
+                        ]
+                    }
+                ])
+            };
+
+            const wrapper = shallow(<AppContainer />);
+            const instance = wrapper.instance();
+            instance.setState(mockState);
+
+            const result = instance.getParamEdit();
+
+            expect(result).toHaveLength(2);
+        });
+    });
+
+    describe('editHeadlineCommunicationPic', () => {
+        let wrapper;
+        let instance;
+
+        const mockLatestFeedbackCommunicationTools = [
+            { communicationID: 1, communicationValue: 'Value1' },
+            { communicationID: 2, communicationValue: 'Value2' }
+        ];
+
+        const mockCustomerInfo = {
+            headlineStaffInfoPics: [
+                { picId: 1, picName: 'Pic1', picRoleName: 'Role1' },
+                { picId: 2, picName: 'Pic2', picRoleName: 'Role2' }
+            ],
+            headlineStaffInfoLanguages: [
+                { picID: 1, picLanguageID: 'Lang1' },
+                { picID: 2, picLanguageID: 'Lang2' }
+            ],
+            headlineStaffInfoCommunications: [
+                { communicationID: 1, communicationValue: 'Value1' },
+                { communicationID: 2, communicationValue: 'Value3' }
+            ]
+        };
+
+        const mockState = {
+            fieldInput: {
+                latestFeedbackCommunicationTools: mockLatestFeedbackCommunicationTools
+            },
+            customerInfo: mockCustomerInfo,
+            getHeadlineCommunicationInfo: jest.fn().mockImplementation(() => [
+                {
+                    picId: 1,
+                    picName: 'Pic1',
+                    picRoleName: 'Role1',
+                    picCommunicationTools: [
+                        { type: 1, value: 'Value1' }
+                    ]
+                },
+                {
+                    picId: 2,
+                    picName: 'Pic2',
+                    picRoleName: 'Role2',
+                    picCommunicationTools: [
+                        { type: 2, value: 'Value2' }
+                    ]
+                }
+            ])
+        };
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+            instance.setState(mockState);
+        });
+
+        it('should edit headline communication pic successfully', async () => {
+            const mockResponse = { data: [{ isSuccessful: true }] };
+
+            DataService.postDataAsync.mockResolvedValue(mockResponse);
+
+            await instance.editHeadlineCommunicationPic();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+
+        it('should handle unsuccessful edit with error message', async () => {
+            const mockResponse = { data: [{ isSuccessful: false, message: 'Edit failed' }] };
+
+            DataService.postDataAsync.mockResolvedValue(mockResponse);
+
+            await instance.editHeadlineCommunicationPic();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+
+        it('should handle error during API call', async () => {
+
+            const mockError = new Error('Network error');
+            DataService.postDataAsync.mockRejectedValue(mockError);
+
+            await instance.editHeadlineCommunicationPic();
+
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+        });
+    });
+
+    describe('getNormalCommunicationInfos', () => {
+        let wrapper;
+        let instance;
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+        });
+
+        it('should aggregate communication tools correctly', () => {
+            const latestFeedbackCommunicationTools = [
+                { isHeadline: true, picInfo: 'Pic1', communicationID: 1, communicationValue: 'Value1' },
+                { isHeadline: false, picInfo: 'Pic2', communicationID: 2, communicationValue: 'Value2' },
+                { isHeadline: true, picInfo: 'Pic1', communicationID: 1, communicationValue: 'Value3' }
+            ];
+
+            const result = instance.getNormalCommunicationInfos(latestFeedbackCommunicationTools);
+
+            expect(result).toHaveLength(2);
+            expect(result[0].communicationValue).toBe('Value1, Value3');
+            expect(result[1].communicationValue).toBe('Value2');
+        });
+
+        it('should handle empty input', () => {
+            const latestFeedbackCommunicationTools = [];
+
+            const result = instance.getNormalCommunicationInfos(latestFeedbackCommunicationTools);
+
+            expect(result).toHaveLength(0);
+        });
+
+        it('should handle single item input', () => {
+            const latestFeedbackCommunicationTools = [
+                { isHeadline: true, picInfo: 'Pic1', communicationID: 1, communicationValue: 'Value1' }
+            ];
+
+            const result = instance.getNormalCommunicationInfos(latestFeedbackCommunicationTools);
+
+            expect(result).toHaveLength(1);
+            expect(result[0].communicationValue).toBe('Value1');
+        });
+    });
+
+    describe('getHeadlineCommunicationInfos', () => {
+        let wrapper;
+        let instance;
+
+        beforeEach(() => {
+            wrapper = shallow(<AppContainer />);
+            instance = wrapper.instance();
+        });
+
+        it('should aggregate communication tools correctly', () => {
+            const latestFeedbackCommunicationTools = [
+                { isHeadline: true, picInfo: 'Pic1', communicationID: 1, communicationValue: 'Value1' },
+                { isHeadline: false, picInfo: 'Pic2', communicationID: 2, communicationValue: 'Value2' },
+                { isHeadline: true, picInfo: 'Pic1', communicationID: 1, communicationValue: 'Value3' }
+            ];
+
+            const result = instance.getHeadlineCommunicationInfos(latestFeedbackCommunicationTools);
+
+            expect(result).toHaveLength(2);
+            expect(result[0].communicationValue).toBe('Value1, Value3');
+            expect(result[1].communicationValue).toBe('Value2');
+        });
+
+        it('should handle empty input', () => {
+            const latestFeedbackCommunicationTools = [];
+
+            const result = instance.getHeadlineCommunicationInfos(latestFeedbackCommunicationTools);
+
+            expect(result).toHaveLength(0);
+        });
+
+        it('should handle single item input', () => {
+            const latestFeedbackCommunicationTools = [
+                { isHeadline: true, picInfo: 'Pic1', communicationID: 1, communicationValue: 'Value1' }
+            ];
+
+            const result = instance.getHeadlineCommunicationInfos(latestFeedbackCommunicationTools);
+
+            expect(result).toHaveLength(1);
+            expect(result[0].communicationValue).toBe('Value1');
+        });
+    });
+
+    describe('ExampleComponent', () => {
+        it('renders confirm chat type mapping correctly', () => {
+            const state = {
+                checkChattypeMappingDialog: {
+                    data: []
+                }
+            }
+
+            const wrapper = shallow(<AppContainer />);
+            const instance = wrapper.instance();
+            instance.setState(state);
+
+            const result = instance.renderComfirmChatTypeMapping();
+
+            expect(result).not.toBeNull();
+        });
+    });
+
+    describe('ExampleComponent', () => {
+        it('renders confirm chat type mapping correctly', () => {
+            const wrapper = shallow(<AppContainer />);
+            const instance = wrapper.instance();
+
+            const result = instance.renderValueChatTypeMapping([{ picInfo: 'PicInfo1', value: 'Value1' }, { picInfo: 'PicInfo2', value: 'Value2' }]);
+
+            // Check if the confirm headline is rendered correctly
+            expect(result).toHaveLength(2);
+        });
+    });
 });
