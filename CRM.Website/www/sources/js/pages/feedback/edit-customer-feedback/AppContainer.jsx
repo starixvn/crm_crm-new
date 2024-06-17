@@ -648,7 +648,7 @@ export class AppContainer extends Component {
 
     validateChattypeMappingPic = async value => {
         let validResult = null;
-        if (this.state.customerInfo.isGroupHeadLine && this.state.headlineInfoPolicy === Policy.Host && value.isOverwrite) {
+        if (this.state.customerInfo?.isGroupHeadLine && this.state.headlineInfoPolicy === Policy.Host && value.isOverwrite) {
             const { headlineStaffInfoPics } = this.state.customerInfo;
             const communications = this.getHeadlineCommunicationInfoPIC(this.state.fieldInput.latestFeedbackCommunicationTools, headlineStaffInfoPics);
             const params = communications.map(pic => {
@@ -777,7 +777,7 @@ export class AppContainer extends Component {
     getPicCommunicationTools() {
         let { latestFeedbackCommunicationTools } = this.state.fieldInput;
         let picCommunicationTools = [];
-        latestFeedbackCommunicationTools.map((picCom, indexCom) => {
+        latestFeedbackCommunicationTools?.map((picCom, indexCom) => {
             const index = picCommunicationTools.findIndex(item => item.communicationID === picCom.communicationID);
             if (index >= 0 && index !== indexCom) {
                 const newValue = picCommunicationTools[index].communicationValue.concat(', ', picCom.communicationValue);
@@ -796,7 +796,7 @@ export class AppContainer extends Component {
 
     editOtherAccountCommunicationInfo = async () => {
         const params = {
-            custID: this.state.customerInfo.custId,
+            custID: this.state.customerInfo?.custId,
             otherCommunicationTools: this.getPicCommunicationTools()
         };
 

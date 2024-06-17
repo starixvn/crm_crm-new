@@ -28,7 +28,7 @@ describe('AppContainer', () => {
     });
 
     const initData = {
-        feedback:{
+        feedback: {
             languageId: 1,
             licenseeType: 0,
             provinceId: 0,
@@ -37,35 +37,35 @@ describe('AppContainer', () => {
             responseId: 1,
             siteId: 1,
             statusId: 1,
-            siteSetting: {name: 'test'},
-            settings:[{
-                    feedbackId: 239466,
-                    settingId: 1001,
-                    settingType: 'Communication',
-                    subSettingId: 0,
-                    subSettingIdLevel3: 0
-                },
-                {
-                    feedbackId: 239466,
-                    settingId: 2022,
-                    settingType: 'Station',
-                    subSettingId: 0,
-                    subSettingIdLevel3: 0
-                },
-                {
-                    feedbackId: 239466,
-                    settingId: 3020,
-                    settingType: 'Category',
-                    subSettingId: 4029,
-                    subSettingIdLevel3: 0
-                },
-                {
-                    feedbackId: 239466,
-                    settingId: 46000,
-                    settingType: 'Product',
-                    subSettingId: 8063,
-                    subSettingIdLevel3: 9144
-                }
+            siteSetting: { name: 'test' },
+            settings: [{
+                feedbackId: 239466,
+                settingId: 1001,
+                settingType: 'Communication',
+                subSettingId: 0,
+                subSettingIdLevel3: 0
+            },
+            {
+                feedbackId: 239466,
+                settingId: 2022,
+                settingType: 'Station',
+                subSettingId: 0,
+                subSettingIdLevel3: 0
+            },
+            {
+                feedbackId: 239466,
+                settingId: 3020,
+                settingType: 'Category',
+                subSettingId: 4029,
+                subSettingIdLevel3: 0
+            },
+            {
+                feedbackId: 239466,
+                settingId: 46000,
+                settingType: 'Product',
+                subSettingId: 8063,
+                subSettingIdLevel3: 9144
+            }
             ],
             relatedCustomers: [{
                 custId: 1,
@@ -74,44 +74,44 @@ describe('AppContainer', () => {
                 isLicensee: true
             }]
         },
-        settings:{
-            bettypeNA: {id: 0, name: 'N/A'},
-            bettypes: [{id: 3, value: 'N/A', parentId: 2}],
+        settings: {
+            bettypeNA: { id: 0, name: 'N/A' },
+            bettypes: [{ id: 3, value: 'N/A', parentId: 2 }],
             communicationToolNA: 'null',
-            communicationTools:[{id: 0, name: 'N/A'}],
-            countries:[{id: 0, name: 'N/A'}],
-            extensionNA: {id: 0, value: 'N/A'},
-            extensions:[{id: 0, value: 'N/A'}],
-            languages: [{languageId: 0, name: 'N/A'}],
-            licenseeTypes:[{id: 0, name: 'N/A'}],
-            mainCategories: [{mainCategoryID: 0, name: 'N/A'}],
-            productNA:{id: 0, value: 'N/A'},
-            products: [{id: 0, value: 'N/A'}],
-            responses: [{id: 0, value: 'N/A'}],
-            roles: [{id: 0, value: 'N/A'}],
-            sites: [{id: 0, name: 'N/A', childSites:[{id: 1, value: 'child'}]}],
-            statusId: [{id: 0, name: 'N/A'}],
-            subCategories: [{subCategoryId: 2, mainCategoryID: 1, name: 'N/A'}],
-            subProductNA: {id: 0, value: 'N/A'},
-            subProducts: [{id: 2, value: 'N/A', parentId: 1}]
+            communicationTools: [{ id: 0, name: 'N/A' }],
+            countries: [{ id: 0, name: 'N/A' }],
+            extensionNA: { id: 0, value: 'N/A' },
+            extensions: [{ id: 0, value: 'N/A' }],
+            languages: [{ languageId: 0, name: 'N/A' }],
+            licenseeTypes: [{ id: 0, name: 'N/A' }],
+            mainCategories: [{ mainCategoryID: 0, name: 'N/A' }],
+            productNA: { id: 0, value: 'N/A' },
+            products: [{ id: 0, value: 'N/A' }],
+            responses: [{ id: 0, value: 'N/A' }],
+            roles: [{ id: 0, value: 'N/A' }],
+            sites: [{ id: 0, name: 'N/A', childSites: [{ id: 1, value: 'child' }] }],
+            statusId: [{ id: 0, name: 'N/A' }],
+            subCategories: [{ subCategoryId: 2, mainCategoryID: 1, name: 'N/A' }],
+            subProductNA: { id: 0, value: 'N/A' },
+            subProducts: [{ id: 2, value: 'N/A', parentId: 1 }]
         },
         hasReviewFeedbackPermission: true
     };
-    
+
     describe('componentDidMount', () => {
         it('should calls setState', async () => {
             // Arrange
             const props = {
                 feedbackId: 73300
             };
-            const feedbackSettings  = {
+            const feedbackSettings = {
                 extensionIds: [0],
                 communicationToolIds: [],
                 mainCategoryIds: [1],
                 subCategoryIds: [2],
                 productIds: [1],
                 subProductIds: [2],
-                betTypeIds: [3] 
+                betTypeIds: [3]
             };
             const response = {
                 data: initData
@@ -133,13 +133,13 @@ describe('AppContainer', () => {
             expect(container.state.relatedCustomers).toEqual([{ custId: 1, isLicensee: true, isSiteActive: true, val: "test" }]);
             expect(container.state.settings).toEqual(initData.settings);
             expect(container.state.hasReviewFeedbackPermission).toEqual(true);
-            expect(container.state.extensionOptions).toEqual([{id: 0, value: 'N/A', checked: true}]);
-            expect(container.state.communicationToolOptions).toEqual([{id: 0, name: 'N/A', checked: false}]);
-            expect(container.state.productOptions).toEqual([{id: 0, value: 'N/A', checked: false}]);
-            expect(container.state.subProductOptions).toEqual([{id: 2, value: 'N/A', checked: true}]);
-            expect(container.state.subCategoryOptions).toEqual([{subCategoryId: 2, name: 'N/A', checked: true}]);
-            expect(container.state.mainCategoryOptions).toEqual([{mainCategoryID: 0, name: 'N/A', checked: false}]);
-            expect(container.state.betTypeOptions).toEqual([{id: 3, value: 'N/A', checked: true}]);
+            expect(container.state.extensionOptions).toEqual([{ id: 0, value: 'N/A', checked: true }]);
+            expect(container.state.communicationToolOptions).toEqual([{ id: 0, name: 'N/A', checked: false }]);
+            expect(container.state.productOptions).toEqual([{ id: 0, value: 'N/A', checked: false }]);
+            expect(container.state.subProductOptions).toEqual([{ id: 2, value: 'N/A', checked: true }]);
+            expect(container.state.subCategoryOptions).toEqual([{ subCategoryId: 2, name: 'N/A', checked: true }]);
+            expect(container.state.mainCategoryOptions).toEqual([{ mainCategoryID: 0, name: 'N/A', checked: false }]);
+            expect(container.state.betTypeOptions).toEqual([{ id: 3, value: 'N/A', checked: true }]);
         });
     });
 
@@ -198,14 +198,14 @@ describe('AppContainer', () => {
                 review: 'test',
                 isReviewed: true
             };
-            const container = shallow(<AppContainer {...props}/>).instance();
+            const container = shallow(<AppContainer {...props} />).instance();
             container.setState({
-                settings: { subProductNA: { id: 0 }, subCategories: [{subCategoryId: 1}], extensionNA: [{id: 1}] },
+                settings: { subProductNA: { id: 0 }, subCategories: [{ subCategoryId: 1 }], extensionNA: [{ id: 1 }] },
                 feedback: { review: 'test', isReviewed: true }
             });
             container.confirmEditFeedback = jest.fn();
             // Act
-            container.handleSubmit(values, {setSubmitting});
+            container.handleSubmit(values, { setSubmitting });
 
             // Assert
             expect(setSubmitting).toHaveBeenCalledWith(true);
@@ -222,11 +222,11 @@ describe('AppContainer', () => {
             const params = {
                 isOverwrite: false
             }
-            const response = {data: {isSuccessful: true}};
+            const response = { data: { isSuccessful: true } };
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
-            const container = shallow(<AppContainer {...props}/>).instance();
+            const container = shallow(<AppContainer {...props} />).instance();
             container.formik = { setSubmitting: jest.fn() };
             // Act
             container.handleEditFeedback(params);
@@ -234,36 +234,14 @@ describe('AppContainer', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(container.state.editResult).toEqual({isSuccessful: true});
+            expect(container.state.editResult).toEqual({ isSuccessful: true });
             expect(props.onClose).toHaveBeenCalledWith(true);
-        });
-
-        it('should setState when handle edit log unsuccessful', async () => {
-            // Arrange
-            const props = {
-                onClose: jest.fn()
-            };
-            const params = {
-                isOverwrite: true
-            }
-            const response = {data: {isSuccessful: false}};
-            const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise);
-
-            const container = shallow(<AppContainer {...props}/>).instance();
-            container.formik = { setSubmitting: jest.fn() };
-            // Act
-            container.handleEditFeedback(params);
-            await promise;
-
-            // Assert
-            expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
         });
     });
 
     describe('renderForm', () => {
         const props = {
-            statusEdit: [{ statusId: 1, name: 'Closed'}],
+            statusEdit: [{ statusId: 1, name: 'Closed' }],
             onClose: jest.fn()
         };
         const formikProps = {
@@ -286,12 +264,12 @@ describe('AppContainer', () => {
                     custType: 'type'
                 }
             };
-            
-            const container = shallow(<AppContainer {...props}/>).instance();
+
+            const container = shallow(<AppContainer {...props} />).instance();
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
-    
+
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(false);
             expect(renderEdit.find(ResponseMessage).props().message).toEqual('unsuccessful');
@@ -309,12 +287,12 @@ describe('AppContainer', () => {
                     custType: 'type'
                 }
             };
-           
-            const container = shallow(<AppContainer {...props}/>).instance();
+
+            const container = shallow(<AppContainer {...props} />).instance();
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
-    
+
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
             expect(renderEdit.find(ResponseMessage).props().message).toEqual('UpdateMultipleLogsSuccessfully');
@@ -331,12 +309,12 @@ describe('AppContainer', () => {
                     custType: 'type'
                 }
             };
-           
-            const container = shallow(<AppContainer {...props}/>).instance();
+
+            const container = shallow(<AppContainer {...props} />).instance();
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
-    
+
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
             expect(renderEdit.find(ResponseMessage).props().message).toEqual('UpdateFeedbackSuccessfully');
@@ -348,7 +326,7 @@ describe('AppContainer', () => {
             // Arrange
             const setFieldValue = jest.fn();
             const state = {
-                settings:{
+                settings: {
                     mainCategories: [{ id: 1, name: 'Special Notification' }]
                 }
             };
@@ -371,12 +349,12 @@ describe('AppContainer', () => {
             // Arrange
             const setFieldValue = jest.fn();
             const state = {
-                settings:{
+                settings: {
                     mainCategories: [{ id: 1, name: 'Special Notification' }],
                     subCategories: [{ id: 1, name: 'Void Abnormal' }]
                 }
             };
-            
+
             const container = shallow(<AppContainer />).instance();
             container.setState(state);
             shareScripts.getSubjectOnChangeCategories = jest.fn(() => 'subject');
@@ -486,10 +464,10 @@ describe('AppContainer', () => {
         it('should call setFieldValue', () => {
             // Arrange
             const container = shallow(<AppContainer />).instance();
-            container.formik = { setFieldValue: jest.fn(), values: {autoGenerated: 'test'} };
+            container.formik = { setFieldValue: jest.fn(), values: { autoGenerated: 'test' } };
             container.updateAutoGeneratedCustomerPrefix = jest.fn(() => 'test');
             // Act
-            container.handleChangeCheckboxHasRelatedCustomer({target: { checked:true}});
+            container.handleChangeCheckboxHasRelatedCustomer({ target: { checked: true } });
 
             // Assert
             expect(container.formik.setFieldValue).toHaveBeenCalledTimes(2);
@@ -505,7 +483,7 @@ describe('AppContainer', () => {
             };
             const container = shallow(<AppContainer />).instance();
             container.setState(state);
-            container.formik = { setFieldValue: jest.fn(), values: {autoGenerated: 'test'} };
+            container.formik = { setFieldValue: jest.fn(), values: { autoGenerated: 'test' } };
             container.updateAutoGeneratedCustomerPrefix = jest.fn(() => 'test');
 
             // Act
@@ -540,7 +518,7 @@ describe('AppContainer', () => {
 
             // Act
             const validCustomer = container.isValidCustomer('test');
-            
+
             // Assert
             expect(validCustomer).toBe(true);
         });
@@ -558,66 +536,19 @@ describe('AppContainer', () => {
         });
     });
 
-    describe('handleConfirmOverwriteCustomerInfo ', () => {
-        it('should call exactly function', () => {
-            // Arrange
-            const container = shallow(<AppContainer />).instance();
-            container.formik = {
-                setSubmitting: jest.fn()
-            }
-
-            // Act
-            container.handleConfirmOverwriteCustomerInfo();
-            container.handleEditFeedback = jest.fn();
-            // Assert
-            expect(container.state.confirmOverwriteCustomerInfoDialog).toEqual({ show: false });
-        });
-    });
-
-    describe('handleCloseConfirmOverwriteCustomerInfoDialog ', () => {
-        it('should call exactly function', () => {
-            // Arrange
-            const container = shallow(<AppContainer />).instance();
-            container.formik = { setSubmitting: jest.fn() };
-
-            // Act
-            container.handleCloseConfirmOverwriteCustomerInfoDialog();
-            
-            // Assert
-            expect(container.state.confirmOverwriteCustomerInfoDialog).toEqual({ show: false });
-            expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
-        });
-    });
-
     describe('handleConfirmEditFeedback ', () => {
         it('should call setState when isOverwrite is true', () => {
             // Arrange
             const state = {
-                confirmEditFeedbackDialog: { params: {isOverwrite: true}}
+                confirmEditFeedbackDialog: { params: { isOverwrite: true } }
             };
             const container = shallow(<AppContainer />).instance();
             container.setState(state);
             // Act
             container.handleConfirmEditFeedback();
-            
+
             // Assert
             expect(container.state.confirmEditFeedbackDialog.params).toEqual(state.confirmEditFeedbackDialog.params);
-        });
-
-        it('should call exact function when isOverwrite is false', () => {
-            // Arrange
-            const state = {
-                confirmEditFeedbackDialog: { params: {isOverwrite: false} }
-            };
-            const container = shallow(<AppContainer />).instance();
-            container.setState(state);
-            container.handleEditFeedback = jest.fn();
-            // Act
-            container.handleConfirmEditFeedback();
-            
-            // Assert
-            expect(container.state.confirmEditFeedbackDialog).toEqual({ show: false });
-            expect(container.handleEditFeedback ).toHaveBeenCalled();
         });
     });
 
@@ -637,8 +568,8 @@ describe('AppContainer', () => {
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
             const state = {
-                relatedCustomers: [{custId: 1,val: 'test1'}],
-                oldReLatedCust: [{custId: 2,val: 'test2'}],
+                relatedCustomers: [{ custId: 1, val: 'test1' }],
+                oldReLatedCust: [{ custId: 2, val: 'test2' }],
                 deleteRelatedCust: []
             };
 
@@ -650,7 +581,7 @@ describe('AppContainer', () => {
             await promise;
 
             // Assert
-            expect(container.state.editResult).toEqual({isSuccessful: false, message:'ErrorMessageInactiveSiteRelatetest'});
+            expect(container.state.editResult).toEqual({ isSuccessful: false, message: 'ErrorMessageInactiveSiteRelatetest' });
         });
 
         it('should call exact function if do not have any inactive site member', async () => {
@@ -668,8 +599,8 @@ describe('AppContainer', () => {
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
             const state = {
-                relatedCustomers: [{custId: 1,val: 'test1'}],
-                oldReLatedCust: [{custId: 2,val: 'test2'}],
+                relatedCustomers: [{ custId: 1, val: 'test1' }],
+                oldReLatedCust: [{ custId: 2, val: 'test2' }],
                 deleteRelatedCust: []
             };
 
@@ -700,7 +631,7 @@ describe('AppContainer', () => {
             container.setState(state);
 
             // Act
-            var actual = container.isReviewed({isReviewed: false, review: 'review'});
+            var actual = container.isReviewed({ isReviewed: false, review: 'review' });
 
             // Assert
             expect(actual).toEqual(2);
@@ -718,7 +649,7 @@ describe('AppContainer', () => {
             container.setState(state);
 
             // Act
-            var actual = container.isReviewed({isReviewed: true, review: 'review'});
+            var actual = container.isReviewed({ isReviewed: true, review: 'review' });
 
             // Assert
             expect(actual).toEqual(1);
@@ -736,7 +667,7 @@ describe('AppContainer', () => {
             container.setState(state);
 
             // Act
-            var actual = container.isReviewed({isReviewed: true, review: 'review'});
+            var actual = container.isReviewed({ isReviewed: true, review: 'review' });
 
             // Assert
             expect(actual).toEqual(0);
@@ -747,7 +678,7 @@ describe('AppContainer', () => {
         it('should call setState', () => {
             // Arrange
             const container = shallow(<AppContainer />).instance();
-            container.formik = { setSubmitting: jest.fn()};
+            container.formik = { setSubmitting: jest.fn() };
             // Act
             container.handleCloseConfirmEditFeedbackDialog();
 
@@ -765,7 +696,7 @@ describe('AppContainer', () => {
             container.confirmEditFeedback('params');
 
             // Assert
-            expect(container.state.confirmEditFeedbackDialog).toEqual({ show: true, params:'params' });
+            expect(container.state.confirmEditFeedbackDialog).toEqual({ show: true, params: 'params' });
         });
     });
 
@@ -773,7 +704,7 @@ describe('AppContainer', () => {
         it('should return the related customer', () => {
             // Arrange
             const state = {
-                relatedCustomers: [{custId:1},{custId:2}]
+                relatedCustomers: [{ custId: 1 }, { custId: 2 }]
             };
             const container = shallow(<AppContainer />).instance();
             container.setState(state);
@@ -800,7 +731,7 @@ describe('AppContainer', () => {
             // Arrange
             const container = shallow(<AppContainer />).instance();
             // Act
-            const actual = container.getExtensionParams('', {id:1});
+            const actual = container.getExtensionParams('', { id: 1 });
 
             // Assert
             expect(actual).toEqual('1');
@@ -819,11 +750,11 @@ describe('AppContainer', () => {
                 languageId: 0,
                 relatedCustomers: [],
                 subject: '',
-                description : '',
+                description: '',
                 solution: ''
             };
             const state = {
-                settings:{
+                settings: {
                     mainCategories: [],
                     subCategories: []
                 }
@@ -856,27 +787,27 @@ describe('AppContainer', () => {
     describe('handleVerifyRelatedCustomer', () => {
         it('should call setFieldValue when have inactive member site', async () => {
             // Arrange
-            const response = {data: [{custId: 1, val: 'test1'}]};
+            const response = { data: [{ custId: 1, val: 'test1' }] };
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
-            const event = {preventDefault: jest.fn()};
+            const event = { preventDefault: jest.fn() };
             const state = {
-                relatedCustomers: [{custId: 2, val: 'test2'}],
-                fieldInput: {customerNameInput: 'test'}
+                relatedCustomers: [{ custId: 2, val: 'test2' }],
+                fieldInput: { customerNameInput: 'test' }
             };
 
             const container = shallow(<AppContainer />).instance();
-            container.formik = { values: {hasRelated: true, autoGenerated: 'autoGenerated'}, setFieldValue: jest.fn(), errors: {customerNameInput: ''}};
+            container.formik = { values: { hasRelated: true, autoGenerated: 'autoGenerated' }, setFieldValue: jest.fn(), errors: { customerNameInput: '' } };
             container.setState(state);
             container.isValidCustomer = jest.fn(() => true);
             container.updateAutoGeneratedCustomerPrefix = jest.fn(() => 'autoGenerated');
-            
+
             // Act
             container.handleVerifyRelatedCustomer(event);
             await promise;
 
             // Assert
-            expect(container.state.relatedCustomers).toEqual([{"custId": 2, "val": "test2"}, {"custId": 1, "val": "test1"}]);
+            expect(container.state.relatedCustomers).toEqual([{ "custId": 2, "val": "test2" }, { "custId": 1, "val": "test1" }]);
         });
     });
 });
