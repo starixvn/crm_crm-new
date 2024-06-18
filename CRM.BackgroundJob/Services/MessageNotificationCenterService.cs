@@ -162,12 +162,6 @@
                 var settlementGenLap = await generateLapNotificationService.GetPrepareGenLapNotificationAsync();
                 if (settlementGenLap.Any())
                 {
-                    foreach (var item in settlementGenLap)
-                    {
-                        item.RefValueEN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.en_US);
-                        item.RefValueCH = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_TW);
-                        item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
-                    }
                     await generateLapNotificationService.InsertGenLapResultAmendmentAsync(settlementGenLap);
                 }
             }
