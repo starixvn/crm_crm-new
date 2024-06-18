@@ -100,7 +100,7 @@ export class CustomerInfo extends PureComponent {
             }
         });
         if (data.length === 0) {
-            await this.props.handleChangeValueInfo('isOverwriteInfo', !this.props.customerInfo.isOverwriteInfo);
+            await this.props.handleChangeValueInfo('isOverwriteInfo', false);
         }
         this.props.handleChangeValueInfo('headlineStaffInfoCommunications', data);
     }
@@ -240,7 +240,7 @@ export class CustomerInfo extends PureComponent {
             }
         });
         if (data.length === 0) {
-            await this.props.handleChangeValueInfo('isOverwriteInfo', !this.props.customerInfo.isOverwriteInfo);
+            await this.props.handleChangeValueInfo('isOverwriteInfo', false);
         }
         this.props.handleChangeValueInfo('otherAccountCommunicationInfos', data);
     }

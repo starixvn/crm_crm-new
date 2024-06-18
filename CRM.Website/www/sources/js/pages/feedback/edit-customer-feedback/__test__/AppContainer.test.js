@@ -1502,7 +1502,6 @@ describe('AppContainer', () => {
 
             const result = instance.renderValueChatTypeMapping([{ picInfo: 'PicInfo1', value: 'Value1' }, { picInfo: 'PicInfo2', value: 'Value2' }]);
 
-            // Check if the confirm headline is rendered correctly
             expect(result).toHaveLength(2);
         });
     });

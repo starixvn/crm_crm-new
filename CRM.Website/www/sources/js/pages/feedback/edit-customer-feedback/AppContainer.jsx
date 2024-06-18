@@ -15,9 +15,6 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import DataService from '@jsroot/common/dataService';
 import UnderlineButton from '@jsroot/common/underlineButton';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
-import {
-    getHeadlineCommunicationInfo
-} from '../../customer/account-detail/common.functions';
 import Site from '@jsroot/common/site';
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories, getPermission,
@@ -73,6 +70,7 @@ export class AppContainer extends Component {
             hasReviewFeedbackPermission: false,
             editResult: null,
             fieldInput: {},
+            originalLatestFeedbackCommunicationTools: [],
             customerInfo: null,
             checkChattypeMappingDialog: {
                 show: false,
@@ -153,6 +151,7 @@ export class AppContainer extends Component {
             this.setState({
                 feedback: this.initFormikData(data.feedback, data.settings),
                 fieldInput: this.initCustomerData(data.feedback, data.settings),
+                originalLatestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(data.feedback.latestFeedbackCommunicationTools),
                 oldReLatedCust: relatedCustomers,
                 settings: data.settings,
                 hasReviewFeedbackPermission: data.hasReviewFeedbackPermission,
@@ -636,12 +635,14 @@ export class AppContainer extends Component {
                     });
                 }
             });
-            headlineCommunicationInfo.push({
-                picCommunicationTools: communicationTools,
-                picId: pic.picID,
-                picName: pic.picName,
-                picRoleName: pic.picRoleName
-            });
+            if (communications.findIndex(x => x.picInfo === (`${pic.picName} (${pic.picRoleName})`)) !== -1) {
+                headlineCommunicationInfo.push({
+                    picCommunicationTools: communicationTools,
+                    picId: pic.picID,
+                    picName: pic.picName,
+                    picRoleName: pic.picRoleName
+                });
+            }
         });
         return headlineCommunicationInfo;
     }
@@ -689,25 +690,27 @@ export class AppContainer extends Component {
                     });
                 }
             });
-            headlineCommunicationInfo.push({
-                country: pic.picCountryID,
-                language: languages.join(","),
-                picCommunicationTools: communicationTools,
-                picId: pic.picID,
-                picName: pic.picName,
-                picType: pic.picTypeID,
-                role: pic.picRoleID,
-                roleName: pic.picRoleName,
-                isNameError: false,
-                isRoleError: false
-            });
+            if (communications.findIndex(x => x.picInfo === (`${pic.picName} (${pic.picRoleName})`)) !== -1) {
+                headlineCommunicationInfo.push({
+                    country: pic.picCountryID,
+                    language: languages.join(","),
+                    picCommunicationTools: communicationTools,
+                    picId: pic.picID,
+                    picName: pic.picName,
+                    picType: pic.picTypeID,
+                    role: pic.picRoleID,
+                    roleName: pic.picRoleName,
+                    isNameError: false,
+                    isRoleError: false
+                });
+            }
         });
         return headlineCommunicationInfo;
     } 
 
     getPicChangeInformation() {
         const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.state.fieldInput.latestFeedbackCommunicationTools);
-        const originalHeadlineCommunicationInfo = getHeadlineCommunicationInfo(this.state.customerInfo);
+        const originalHeadlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.state.originalLatestFeedbackCommunicationTools);
         let headlineChangeCommunicationInfo = [];
         headlineCommunicationInfo.map((item, index) => {
             if (JSON.stringify(item).toString() !== JSON.stringify(originalHeadlineCommunicationInfo[index]).toString()) {

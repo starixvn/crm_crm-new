@@ -119,7 +119,7 @@ export default class CustomerInfo extends PureComponent {
             await this.props.handleChangeInput({
                 target: {
                     name: 'isOverwrite',
-                    value: !this.props.fieldInput.isOverwrite
+                    value: false
                 }
             });
         }
