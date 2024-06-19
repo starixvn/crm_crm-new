@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Col, Form, Tabs, Tab, Button } from 'react-bootstrap';
+import { Formik } from 'formik';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import CkEditor from '@jsroot/components/ckeditor/index';
@@ -49,7 +50,7 @@ export class CommonNotification extends Component {
     };
 
     getParams = status => {
-        const { content_en, content_cs, content_ch, subject } = this.state.data;
+        const { content_en, content_cs, content_ch, subject } = this.formik.values;
         const params = {
             notificationId: this.props.actionParam.notificationId,
             newStatus: status,
@@ -76,6 +77,7 @@ export class CommonNotification extends Component {
     };
 
     handleCreateNotification = async (params, message) => {
+        this.formik.setSubmitting(true);
         await this.props.editAdmNotification(params).then(() => {
             this.handleClosePopup();
             if (this.props.editAdmNotificationResult.isSuccessful) {
@@ -85,15 +87,12 @@ export class CommonNotification extends Component {
                     this.props.navigate(Site.resolveClientUrl('NotificationCenter'), { state: this.getStateData() });
                 }, 3000);
             } else {
-                this.setState({ isSubmitting: false });
+                this.formik.setSubmitting(false);
             }
         });
     };
 
-    handleSaveDraft = async event => {
-        this.setState({ isSubmitting: true });
-        event.preventDefault();
-
+    handleSaveDraft = async () => {
         const params = this.getParams('Draft');
         const message = LangHelper.getResource('UpdateNotificationSuccessfully');
         await this.handleCreateNotification(params, message);
@@ -175,12 +174,6 @@ export class CommonNotification extends Component {
         );
     };
 
-    handleChange = (name, value) => {
-        this.setState({
-            data: {...this.state.data, [name]: value}
-        });
-    };
-
     handleClosePopup = () => {
         this.setState({
             affectedTicketPopup: { show: false, isCredit: true, siteTickets: null },
@@ -198,11 +191,10 @@ export class CommonNotification extends Component {
     };
 
     validateForm = () => {
-        const { subject, content_en, content_cs, content_ch } = this.state.data;
-        const { isOstUser } = this.props.actionParam;
-
         const errors = [];
         let isSuccessful = true;
+        const { isOstUser } = this.props.actionParam;
+        const { subject, content_en, content_cs, content_ch } = this.formik.values;
 
         if (!subject && !isOstUser) {
             errors.push(LangHelper.getResource('SubjectRequired'));
@@ -269,21 +261,21 @@ export class CommonNotification extends Component {
     };
 
 
-    renderButton = () => {
+    renderButton = isSubmitting => {
         const isOstUser = this.props.actionParam.isOstUser;
 
         if (isOstUser) {
             return(
                 <>
-                    <Button className="btn-save" variant="primary" size="md" disabled={this.state.isSubmitting} onClick={event => this.handleSaveDraft(event)}>{LangHelper.getResource('Save as Draft')}</Button>
-                    <Button className="btn-send" variant="primary" size="sm" disabled={this.state.isSubmitting} onClick={() => this.handleActive('pushPopup')}>{LangHelper.getResource('Push')}</Button>
+                    <Button className="btn-save" type="submit" variant="primary" size="md" disabled={isSubmitting}>{LangHelper.getResource('Save as Draft')}</Button>
+                    <Button className="btn-send" variant="primary" size="sm" disabled={isSubmitting} onClick={() => this.handleActive('pushPopup')}>{LangHelper.getResource('Push')}</Button>
                 </>
             )
         } else {
             return (
                 <>
-                    <Button className="btn-save" variant="primary" size="md" disabled={this.state.isSubmitting} onClick={() => this.handleActive('savePopup')}>{LangHelper.getResource('Save')}</Button>
-                    <Button className="btn-send" variant="primary" size="sm" disabled={this.state.isSubmitting} onClick={() => this.handleActive('activatePopup')}>{LangHelper.getResource('Activate')}</Button>
+                    <Button className="btn-save" variant="primary" size="md" disabled={isSubmitting} onClick={() => this.handleActive('savePopup')}>{LangHelper.getResource('Save')}</Button>
+                    <Button className="btn-send" variant="primary" size="sm" disabled={isSubmitting} onClick={() => this.handleActive('activatePopup')}>{LangHelper.getResource('Activate')}</Button>
                 </>
             )
         }
@@ -297,18 +289,20 @@ export class CommonNotification extends Component {
         }
     };
 
-    render = () => {
-        const { data, affectedTicketPopup, messageSuccessful, errorMessages } = this.state;
+    renderForm = ({
+        values,
+        setFieldValue,
+        handleSubmit,
+        isSubmitting
+    }) => {
+        const { messageSuccessful, affectedTicketPopup, errorMessages } = this.state;
         const { editAdmNotificationResult, isEdit, actionParam } = this.props;
         const { isOstUser } = actionParam;
         const headerClass = isOstUser ? 'group-header required' : 'group-header';
         const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
 
-        if(!data) {
-            return null;
-        }
         return (
-            <>
+            <Form noValidate onSubmit={handleSubmit}>
                 {
                     !errorMessages.isSuccessful &&
                     <ResponseMessage isSuccessful={errorMessages.isSuccessful} messages={errorMessages.messages}/>
@@ -324,12 +318,12 @@ export class CommonNotification extends Component {
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group className='info-notice'>
                                 <Form.Label className='infoId'>{LangHelper.getResource('NotificationID_MsgID')}</Form.Label>
-                                <div>{data.notificationID}</div>
-                                { data.messageID && <span className='pl-2'>{`(Msg: ${data.messageID})`}</span> }
+                                <div>{values.notificationID}</div>
+                                { values.messageID && <span className='pl-2'>{`(Msg: ${values.messageID})`}</span> }
                             </Form.Group>
                             <Form.Group className='info-notice'>
                                 <Form.Label className='infoId'>{LangHelper.getResource('Status')}</Form.Label>
-                                <div className={`status-button status-${data.status}`}>{data.status}</div>
+                                <div className={`status-button status-${values.status}`}>{values.status}</div>
                             </Form.Group>
                         </Form.Row>
                         <div className="group-item">
@@ -339,13 +333,13 @@ export class CommonNotification extends Component {
                                     <Form.Label className='text-bold' htmlFor="eventDate">
                                         {LangHelper.getResource('EventDateGMT4')}
                                     </Form.Label>
-                                    <div>{data.eventDate ? DateTimeService.toShortDateFormat(data.eventDate) : null}</div>
+                                    <div>{values.eventDate ? DateTimeService.toShortDateFormat(values.eventDate) : null}</div>
                                 </Form.Group>
                                 <Form.Group className='info-event'>
                                     <Form.Label className='text-bold event-name' htmlFor="eventName">
                                         {LangHelper.getResource('EventName')}
                                     </Form.Label>
-                                    <div>{data.eventName}</div>
+                                    <div>{values.eventName}</div>
                                 </Form.Group>
                             </div>
                         </div>
@@ -369,8 +363,8 @@ export class CommonNotification extends Component {
                                             {LangHelper.getResource('Subject')}
                                         </Form.Label>
                                         <Form.Control className='shadow-none' type="text" id="subject"
-                                            autoComplete="off" name="subject" value={data.subject}
-                                            onChange={event => this.handleChange('subject', event.target.value)}
+                                            autoComplete="off" name="subject" value={values.subject}
+                                            onChange={event => setFieldValue('subject', event.target.value)}
                                         />
                                     </Form.Group>
                                 )
@@ -396,9 +390,9 @@ export class CommonNotification extends Component {
                                                 (<Tab key={key} eventKey={language.name} title={language.name}>
                                                     <CkEditor
                                                         name={language.name}
-                                                        data={data[language.mapLabel]}
+                                                        data={values[language.mapLabel]}
                                                         username={window.currentUsername}
-                                                        onChange={value => isEdit ? this.handleChange(language.mapLabel, value) : null}     
+                                                        onChange={value => isEdit ? setFieldValue([language.mapLabel], value) : null}     
                                                         isRemoveToolbarForChatbot
                                                         isRemoveAllToolbar={actionParam.isOstUser || !isEdit}
                                                     />
@@ -414,7 +408,7 @@ export class CommonNotification extends Component {
                                 <div className="group-btn">
                                     <Button className="btn-cancel" variant="primary" size="sm" onClick={() => this.handleClose()}>{LangHelper.getResource('Cancel')}</Button>
                                     {
-                                        this.renderButton()
+                                        this.renderButton(isSubmitting)
                                     }
                                 </div>
                             )
@@ -424,9 +418,9 @@ export class CommonNotification extends Component {
                 {
                     affectedTicketPopup.show &&
                     <AffectedTicket
-                        notificationId={data.notificationID}
-                        eventDate={data.eventDate}
-                        eventName={data.eventName}
+                        notificationId={values.notificationID}
+                        eventDate={values.eventDate}
+                        eventName={values.eventName}
                         exportExcel={this.props.exportExcel}
                         isCredit={affectedTicketPopup.isCredit}
                         siteTickets={affectedTicketPopup.siteTickets}
@@ -437,7 +431,36 @@ export class CommonNotification extends Component {
                     this.props.isEdit && this.isRenderPopupAction() &&
                     this.renderConfirmPopup()
                 }
-            </>
+            </Form>
+        )
+    }
+
+    render = () => {
+        const { data } = this.state;
+        const { isOstUser } = this.props.actionParam;
+
+        if(!data) {
+            return null;
+        }
+        const initialValues = {
+            notificationID: data.notificationID,
+            messageID: data.messageID,
+            status: data.status,
+            eventDate: data.eventDate,
+            eventName: data.eventName,
+            subject: data.subject,
+            content_en: data.content_en,
+            content_cs: data.content_cs,
+            content_ch: isOstUser ? data.content_ch : null,
+        };
+        return (
+            <Formik
+                innerRef={p => (this.formik = p)}
+                initialValues={initialValues}
+                onSubmit={this.handleSaveDraft}
+            >
+                {this.renderForm}
+            </Formik>
         )
     };
 }
