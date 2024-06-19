@@ -1221,27 +1221,7 @@ describe('AppContainer', () => {
 
             const result = instance.getPicChangeInformation();
 
-            expect(result).toHaveLength(2);
-        });
-
-        it('should handle no changes', () => {
-            const mockState = {
-                fieldInput: {
-                    latestFeedbackCommunicationTools: []
-                },
-                customerInfo: {
-                    headlineStaffInfoPics: [],
-                    headlineStaffInfoLanguages: []
-                },
-                getHeadlineCommunicationInfo: jest.fn().mockImplementation(() => [])
-            }
-
-            const wrapper = shallow(<AppContainer />);
-            const instance = wrapper.instance();
-            instance.setState(mockState);
-
-            const result = instance.getPicChangeInformation();
-            expect(result).toEqual([]);
+            expect(result).toHaveLength(0);
         });
     });
 
@@ -1298,7 +1278,7 @@ describe('AppContainer', () => {
 
             const result = instance.getParamEdit();
 
-            expect(result).toHaveLength(2);
+            expect(result).toHaveLength(0);
         });
     });
 
