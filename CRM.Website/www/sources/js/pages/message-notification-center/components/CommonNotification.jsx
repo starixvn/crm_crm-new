@@ -153,7 +153,7 @@ export class CommonNotification extends Component {
                 </div>
                 {sites.map((item, index) => (
                     <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>
-                        {item.siteGroup}: <span className={this.state.data.status === 'Failed' ? 'failed-siteName' : ''}>{item.siteNames}</span>
+                        {item.siteGroup}: <span>{item.siteNames}</span>
                     </div>
                 ))}
             </div>

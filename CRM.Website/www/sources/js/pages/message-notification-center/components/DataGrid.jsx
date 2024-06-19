@@ -252,7 +252,7 @@ export class DataGrid extends Component {
                 <div className='text-bold'>{title}</div>
                 {sites.map(item => (
                     <div key={item.siteGroup} className='text-padding-bottom'>
-                        {item.siteGroup}: <span className={status === 'Failed' ? 'failed-siteName' : ''}>{item.siteNames}</span>
+                        {item.siteGroup}: <span>{item.siteNames}</span>
                     </div>
                 ))}
             </div>
