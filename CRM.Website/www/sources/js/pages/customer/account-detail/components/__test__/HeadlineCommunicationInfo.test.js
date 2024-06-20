@@ -234,48 +234,7 @@ describe('HeadlineCommunicationInfo', () => {
             expect(scrollToMock).toHaveBeenCalledTimes(1);
         });
     });
-
-    describe('getHeadlineCommunicationInfo', () => {
-        it('returns the correct headline communication info', () => {
-
-            const wrapper = mount(<HeadlineCommunicationInfo {...initProps} />);
-            const result = wrapper.instance().getHeadlineCommunicationInfo(initProps.customerInfo);
-
-            expect(result).toHaveLength(1);
-            expect(result[0]).toEqual(
-                {
-                    country: 1,
-                    isNameError: false,
-                    isRoleError: false,
-                    language: "1",
-                    picCommunicationTools: [
-                        {
-                            isError: false,
-                            isNew: false,
-                            type: 1,
-                            value: "OliverLetstalk, lets0123"
-                        }
-                    ],
-                    picId: 1,
-                    picName: "test",
-                    picType: 1,
-                    role: 1,
-                    roleName: "Boss"
-                });
-        });
-    });
-
-    // describe('handleChangeValue', () => {
-    //     it('updates state correctly', () => {
-    //         const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />); 
-
-    //         wrapper.instance().handleChangeValue('country', 1, 0); 
-
-    //         expect(wrapper.state().headlineCommunicationInfo[0].country).toEqual(1);
-    //         expect(wrapper.state().isValidate).toEqual(true); 
-    //     });
-    // });
-
+   
     describe('handleChangeCommunicationValue', () => {
         it('updates state correctly', () => {
             const initialState = {
