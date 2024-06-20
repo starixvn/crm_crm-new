@@ -68,7 +68,8 @@ export class DataGrid extends Component {
         return fieldName !== 'Remark' &&
             fieldName !== 'Solution' &&
             fieldName !== 'Review' &&
-            fieldName !== 'SpecialRemark';
+            fieldName !== 'SpecialRemark' &&
+            fieldName !== 'ReviewNote';
     };
 
     replaceText = text => text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';

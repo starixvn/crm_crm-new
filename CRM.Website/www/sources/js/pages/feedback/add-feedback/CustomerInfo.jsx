@@ -225,6 +225,7 @@ export class CustomerInfo extends PureComponent {
             isNew: true
         });
         this.setState({ otherAccountCommunicationInfos: otherAccountCommunicationInfos });
+        this.props.setFieldValue('otherAccountCommunicationInfos', otherAccountCommunicationInfos);
         this.props.handleChangeValueInfo('otherAccountCommunicationInfos', otherAccountCommunicationInfos);
     }
 

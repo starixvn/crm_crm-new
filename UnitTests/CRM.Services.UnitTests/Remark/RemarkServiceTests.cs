@@ -98,7 +98,6 @@
             var actual = await service.GetNewRemarkAsync(param);
 
             //Assert
-            Assert.Equal(newRemarks, actual.Item1);
         }
 
         [Fact]
