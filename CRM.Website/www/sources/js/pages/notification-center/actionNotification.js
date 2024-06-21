@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import messageNotificationCenterReducer from './messageNotificationCenterSlice';
+import notificationCenterReducer from './notificationCenterSlice';
 import ActionNotification from './components/ActionNotification';
 import WithNavigation from '@jsroot/components/WithNavigation';
-import '@cssroot/pages/message-notification-center/index.scss';
+import '@cssroot/pages/notification-center/index.scss';
 
 const store = configureStore({
-    reducer: messageNotificationCenterReducer
+    reducer: notificationCenterReducer
 });
 
 class actionNotification extends Component {
@@ -15,7 +15,7 @@ class actionNotification extends Component {
         const location = this.props.location;
         return(
             <Provider store={store}>
-                <div className='message-notification-center-action'>
+                <div className='notification-center-action'>
                     <ActionNotification actionParam={location?.state || null}/>
                 </div>
             </Provider>

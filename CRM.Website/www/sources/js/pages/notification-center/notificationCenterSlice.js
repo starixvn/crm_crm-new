@@ -10,8 +10,8 @@ const initialState = {
     editAdmNotificationResult: null
 };
 
-const messageNotificationCenterSlice = createSlice({
-    name: 'messageNotificationCenter',
+const notificationCenterSlice = createSlice({
+    name: 'notificationCenter',
     initialState: initialState,
     reducers: {
         setGridParams: (state, action) => {
@@ -26,7 +26,7 @@ const messageNotificationCenterSlice = createSlice({
     }
 });
 
-const { actions, reducer } = messageNotificationCenterSlice;
+const { actions, reducer } = notificationCenterSlice;
 
 export const {
     setGridParams,

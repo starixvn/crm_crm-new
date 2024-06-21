@@ -20,8 +20,8 @@ const NewAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announc
 const EditAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/editAnnouncement'));
 const CloneAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/editAnnouncement'));
 const SMAPersonalMessage = lazy(() => import(/* webpackChunkName: 'sma-personal-message' */ '@jsroot/pages/add-sma-personal-message/index'));
-const NotificationCenter = lazy(() => import(/* webpackChunkName: 'message-notification-center' */ '@jsroot/pages/message-notification-center/index'));
-const ActionMessageNotificationComponent = lazy(() => import(/* webpackChunkName: 'message-notification-center' */ '@jsroot/pages/message-notification-center/actionMessageNotification'));
+const NotificationCenter = lazy(() => import(/* webpackChunkName: 'notification-center' */ '@jsroot/pages/notification-center/index'));
+const ActionNotificationComponent = lazy(() => import(/* webpackChunkName: 'notification-center' */ '@jsroot/pages/notification-center/actionNotification'));
 
 const ManagementComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-management' */ '@jsroot/pages/pic-and-headline/management/index'));
 const PicAssignmentComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-pic-assignment' */ '@jsroot/pages/pic-and-headline/pic-assignment/index'));
@@ -118,7 +118,7 @@ const MenuRouteArray = [
     { url: 'Announcement/NewAnnouncement', component: NewAnnouncementComponent },
     { url: 'Announcement/EditAnnouncement', component: EditAnnouncementComponent },
     { url: 'Announcement/CloneAnnouncement', component: CloneAnnouncementComponent },
-    { url: 'NotificationCenter/Action', component: ActionMessageNotificationComponent },
+    { url: 'NotificationCenter/Action', component: ActionNotificationComponent },
 ];
 
 export default class Index extends PureComponent {

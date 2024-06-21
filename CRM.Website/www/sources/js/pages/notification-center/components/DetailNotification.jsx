@@ -7,7 +7,7 @@ import CommonNotification from './CommonNotification';
 export default class DetailNotification extends Component {
     render() {
         return (
-            <Modal show className="message-notification-center-action" dialogAs={DraggableModalDialog}
+            <Modal show className="notification-center-action" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="lg" centered
                 onHide={this.props.onClose}
             >

@@ -1,6 +1,6 @@
 @import '../../abstracts/variables';
 
-.message-notification-center {
+.notification-center {
     .form-group{
         .react-datepicker-wrapper-container, .content {
             width: calc(100% - 0.5rem - 80px) !important;
@@ -150,7 +150,7 @@
     }
 }
 
-.message-notification-center-action {
+.notification-center-action {
     .action-notification {
         max-width: 1000px;
         line-height: normal;
@@ -402,7 +402,7 @@
     }
 }
 
-.message-notification-center, .message-notification-center-action {
+.notification-center, .notification-center-action {
     .status {
         &-button {
             width: 75px;
