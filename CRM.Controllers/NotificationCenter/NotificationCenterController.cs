@@ -1,4 +1,4 @@
-﻿namespace CRM.Controllers.MessageNotificationCenter
+﻿namespace CRM.Controllers.NotificationCenter
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -7,29 +7,32 @@
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
-    using CRM.Models.MessageNotificationCenter;
+    using CRM.Models.NotificationCenter;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.MessageNotificationCenter;
+    using CRM.Services.NotificationCenter;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Read)]
-    public class MessageNotificationCenterController : BaseController
+    public class NotificationCenterController : BaseController
     {
-        private readonly IMessageNotificationCenterService messageNotificationCenterService;
+        private readonly INotificationCenterService notificationCenterService;
         private readonly IExportExcelService excelService;
         private readonly IPermissionService permissionService;
+        private readonly IPushNotificationResultAmendmentService pushNotificationService;
 
-        public MessageNotificationCenterController(
-            IMessageNotificationCenterService messageNotificationCenterService,
+        public NotificationCenterController(
+            INotificationCenterService notificationCenterService,
             IExportExcelService excelService,
-            IPermissionService permissionService
+            IPermissionService permissionService,
+            IPushNotificationResultAmendmentService pushNotificationService
         )
         {
-            this.messageNotificationCenterService = messageNotificationCenterService;
+            this.notificationCenterService = notificationCenterService;
             this.excelService = excelService;
             this.permissionService = permissionService;
+            this.pushNotificationService = pushNotificationService;
         }
 
         [HttpPost]
@@ -40,7 +43,7 @@
             param.SitePermission = sitePermission;
             param.LicenseeType = licenseeType;
 
-            var (notifications, allSite) = await messageNotificationCenterService.GetResultAdmNotificationAsync(param);
+            var (notifications, allSite) = await notificationCenterService.GetResultAdmNotificationAsync(param);
             return Json(new { totalItems = param.TotalRows, data = notifications, allSite });
         }
 
@@ -48,7 +51,7 @@
         public async Task<IActionResult> GetResultAdmNotificationById(int id)
         {
             var (sitePermission, licenseeType) = await GetDataPermission();
-            var (notificationDetails, sites) = await messageNotificationCenterService.GetResultAdmNotificationByIdAsync(id, sitePermission, licenseeType);
+            var (notificationDetails, sites) = await notificationCenterService.GetResultAdmNotificationByIdAsync(id, sitePermission, licenseeType);
             return Json(new { notificationDetails, sites });
         }
 
@@ -56,7 +59,11 @@
         [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Host)]
         public async Task<IActionResult> EditResultAdmNotification([FromBody] EditResultAdmNotification param)
         {
-            CommandResult commandResult = await messageNotificationCenterService.EditResultAdmNotificationAsync(param);
+            CommandResult commandResult = await notificationCenterService.EditResultAdmNotificationAsync(param);
+            if (commandResult.IsSuccessful)
+            {
+                await pushNotificationService.PushNotificationMessageAsync();
+            }
             return Json(commandResult);
         }
 
@@ -64,7 +71,7 @@
         [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Host)]
         public async Task<IActionResult> EditResultAdmStatus([FromBody] EditResultAdmNotiStatus param)
         {
-            CommandResult commandResult = await messageNotificationCenterService.EditResultAdmStatusAsync(param);
+            CommandResult commandResult = await notificationCenterService.EditResultAdmStatusAsync(param);
             return Json(commandResult);
         }
 
@@ -72,7 +79,7 @@
         public async Task<IActionResult> GetSiteTicketsById(int id)
         {
             var (sitePermission, licenseeType) = await GetDataPermission();
-            var siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(id, sitePermission, licenseeType);
+            var siteTickets = await notificationCenterService.GetSiteTicketsByIdAsync(id, sitePermission, licenseeType);
             return Json(siteTickets);
         }
 
@@ -81,7 +88,7 @@
         public async Task<IActionResult> ExportExcel([FromBody] ExcelSiteTicket param)
         {
             var (sitePermission, licenseeType) = await GetDataPermission();
-            IEnumerable<AdmSiteTicket> siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId, sitePermission, licenseeType);
+            IEnumerable<AdmSiteTicket> siteTickets = await notificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId, sitePermission, licenseeType);
             var eventDate = param.EventDate.ToShortDateFormatDash();
             var bytes = excelService.ExportSiteTicket(siteTickets, eventDate, param.EventName);
             string reportName = string.Format(ViewResources.MncAffectedTicketFileName, eventDate);

@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.MessageNotificationCenter
+﻿namespace CRM.Criteria.NotificationCenter
 {
     using CRM.Core.Models;
 

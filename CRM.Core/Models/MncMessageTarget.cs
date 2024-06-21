@@ -1,4 +1,4 @@
-﻿namespace CRM.BackgroundJob.Models.MessageNotificationCenter
+﻿namespace CRM.Core.Models
 {
     public class MncMessageTarget
     {

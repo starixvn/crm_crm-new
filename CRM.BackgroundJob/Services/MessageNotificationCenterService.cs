@@ -126,33 +126,7 @@
 
         public async Task PushNotificationResultAmendmentAsync()
         {
-            try
-            {
-                var mncNotifications = await pushNotificationResultAmendmentService.GetPrepareNotificationAsync();
-                if (!mncNotifications.Any())
-                {
-                    await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync();
-                }
-                else
-                {
-                    foreach (var item in mncNotifications)
-                    {
-                        var command = new GetMessageResultAmendmentCommand
-                        {
-                            NotificationID = item.NotificationID,
-                            JSNotification = item.JSNotification
-                        };
-                        await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
-                        await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, "AfterInsMsg");
-                        await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
-                    }
-                    await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                await logService.ErrorAsync(ex);
-            }
+            await pushNotificationResultAmendmentService.PushNotificationMessageAsync();
         }
 
         public async Task GenerateLapNotificationAsync()
