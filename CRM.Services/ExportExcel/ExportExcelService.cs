@@ -8,7 +8,7 @@
     using CRM.Models.ChatTypeMapping;
     using CRM.Models.Feedback;
     using CRM.Models.InformHeadline;
-    using CRM.Models.MessageNotificationCenter;
+    using CRM.Models.NotificationCenter;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report;
     using CRM.Models.Report.CategoriesSummaryReport;
