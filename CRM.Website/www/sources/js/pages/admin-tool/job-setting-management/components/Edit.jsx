@@ -22,10 +22,15 @@ export class Edit extends Component {
     }
     validateFormik = values =>{
         const errors = {};
-        if(values.dataType !== 'Boolean' &&  values.value === ''){
+        console.log('values.settingName', values.settingName);
+        if(values.dataType !== 'Boolean' &&  values.value === '' && this.isRequired(values.settingName)){
             errors.settingName = LangHelper.formatString(LangHelper.getResource('FieldRequired'), values.settingName);
         }
         return errors;
+    };
+
+    isRequired = settingName => {
+        return settingName !== 'IgnoreReviewContentBySport';
     };
 
     getParamCheckboxType = values => {
@@ -193,7 +198,7 @@ export class Edit extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="3"  sm="4" htmlFor="settingName" className="required">
+                        <Form.Label column md="3"  sm="4" htmlFor="settingName" className={this.isRequired(values.settingName) ? 'required' : ''}>
                             {values.settingName}
                         </Form.Label>
                         <Col>
