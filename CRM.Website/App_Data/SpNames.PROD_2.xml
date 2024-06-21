@@ -384,5 +384,10 @@
         <Setting Key="MNC_Notification_AdmUpdNoti" SpName="MNC_Notification_AdmUpdNoti" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmSelNotiTickets" SpName="MNC_Notification_AdmSelNotiTickets" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmUpdNotiSts" SpName="MNC_Notification_AdmUpdNotiSts" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
+        <Setting Key="MNC_PushNotification_MsgUpd" SpName="MNC_PushNotification_MsgUpd" DbName="DBMSG.bodb_Message.wsv_nap" />
+        <Setting Key="MNC_PushNotification_NotiUpd" SpName="MNC_PushNotification_NotiUpd" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_PushNotification_MsgIns" SpName="MNC_PushNotification_MsgIns" DbName="DBMSG.bodb_Message.wsv_nap" />
+        <Setting Key="MNC_PushNotification_PrepareNoti" SpName="MNC_PushNotification_PrepareNoti" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_PushNotification_Complete" SpName="MNC_PushNotification_Complete" DbName="DBCRM.MessageNotification.wsv_nap" />
     </Function>
 </Functions>
