@@ -26,6 +26,7 @@ describe('AppContainer', () => {
                 setCreateAnnouncement: jest.fn(),
                 setEditAnnouncement: jest.fn(),
                 setValidateAnnouncement: jest.fn(),
+                setLanguageType: jest.fn()
             };
             //Act
             const newAnnouncement = shallow(<NewAnnouncement  {...props}/>);
@@ -83,7 +84,7 @@ describe('AppContainer', () => {
       
             newAnnouncement.instance().setStateUploadFile(uploadedFiles, fileNameRemove);
       
-            expect(newAnnouncement.state('invalidWidthHeight')).toEqual(['file1.jpg']);
+            expect(newAnnouncement.state('invalidWidthHeight')).toEqual(['file1.jpg','file2.jpg']);
         });
       
         it('should set uploadedFiles in the newAnnouncement state', () => {

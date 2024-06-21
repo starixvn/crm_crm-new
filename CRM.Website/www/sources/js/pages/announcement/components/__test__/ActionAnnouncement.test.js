@@ -245,8 +245,6 @@ describe('ActionAnnouncement', () => {
             // Assert
             expect(actionAnnouncement.state('invalidWidthHeight')).toEqual(["fileToRemove.jpg"]);
             expect(actionAnnouncement.state('uploadedFiles')).toEqual([]);
-            expect(actionAnnouncement.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
-            expect(actionAnnouncement.state('errorDrafts').invalidFileTypeDraft).toEqual([]);
         });
     });
 

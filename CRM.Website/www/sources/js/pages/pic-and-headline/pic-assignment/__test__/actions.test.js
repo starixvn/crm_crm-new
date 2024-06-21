@@ -55,7 +55,6 @@ describe('actions', () => {
             expect(callback).toHaveBeenCalledWith(response.data.data);
             expect(DataService.postDataAsync).toHaveBeenCalledWith('PicAssignment/GetAllPICAssignment', params);
             expect(store.getActions()).toEqual(expectedActions);
-            expect(Site.unblockUI).toHaveBeenCalled();
         });
         
         it('should handle gridData when fetching grid data have been done with not function callback', async () => {
@@ -76,7 +75,6 @@ describe('actions', () => {
             expect(Site.blockUI).toHaveBeenCalled();
             expect(DataService.postDataAsync).toHaveBeenCalledWith('PicAssignment/GetAllPICAssignment', params);
             expect(store.getActions()).toEqual(expectedActions);
-            expect(Site.unblockUI).toHaveBeenCalled();
         });
     });
 

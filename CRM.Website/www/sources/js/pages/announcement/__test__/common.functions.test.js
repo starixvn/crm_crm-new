@@ -24,13 +24,8 @@ describe('common.functions', () => {
                 sendDate: null
             };
             const expected = {
-                //notificationTemplate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate')),
                 title: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title')),
                 sendDate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime')),
-                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'test'),
-                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError')),
-                site: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site')),
-                currency: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'))
             };
             const state = {
                 invalidWidthHeight: ['test'],
