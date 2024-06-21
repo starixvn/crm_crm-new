@@ -34,6 +34,9 @@ const getGridData = (params, callback) => async dispatch => {
         }
         
         dispatch(setGridData(response.data));
+        if (response.data.data.length === 0) {
+            window.assignPIC = undefined;
+        }
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 

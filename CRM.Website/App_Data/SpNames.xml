@@ -287,7 +287,7 @@
         <Setting Key="Acc_CRM_GuestFeedbackCheck_Multiple" SpName="Acc_CRM_GuestFeedbackCheck_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Multiple_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CommunicationLogSel" SpName="Acc_CRM_CommunicationLogSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_GuestFeedbackUpd_Multiple" SpName="Acc_CRM_GuestFeedbackUpd_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_GuestFeedbackUpd_Multiple" SpName="Acc_CRM_GuestFeedbackUpd_Multiple_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Inform Headlines">
         <Setting Key="Acc_CRM_InformHeadlineList" SpName="Acc_CRM_InformHeadlineList" DbName="DBCRM.bodb_CRM.wsv_nap" />
