@@ -22,7 +22,6 @@ export class Edit extends Component {
     }
     validateFormik = values =>{
         const errors = {};
-        console.log('values.settingName', values.settingName);
         if(values.dataType !== 'Boolean' &&  values.value === '' && this.isRequired(values.settingName)){
             errors.settingName = LangHelper.formatString(LangHelper.getResource('FieldRequired'), values.settingName);
         }
