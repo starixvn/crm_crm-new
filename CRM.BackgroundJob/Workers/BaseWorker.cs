@@ -55,10 +55,10 @@
             try
             {
                 var isUM = await IsUM();
-                bool isWeekend = IsWeekend(DateTime.Today);
+                bool isWeekend = IsWeekend(DateTimeOffset.Now);
 
                 if (jobSetting.IsEnabled
-                    && (!jobSetting.HasCheckUM || !isUM) && (!isWeekend || !jobSetting.IsDisableAtWeekend))
+                    && IsCheckUM(isUM) && (!isWeekend || !jobSetting.IsDisableAtWeekend))
                 {
                     logService.LogInformation($"{jobSetting.JobName} running");
                     await ExecuteJobAsync();
@@ -92,7 +92,9 @@
             return maintanceTime.IsUnderMaintenanceTime;
         }
 
-        private static bool IsWeekend(DateTime date)
+        private bool IsCheckUM(bool isUM) => !jobSetting.HasCheckUM || !isUM;
+
+        private static bool IsWeekend(DateTimeOffset date)
         {
             return date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
         }

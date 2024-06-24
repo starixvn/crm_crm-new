@@ -141,7 +141,9 @@
             return sendResult;
         }
 
+#pragma warning disable S3776
         private async Task<List<SendNotificationResult>> SendMessageToMultiplePersonalAsync(NotificationGroupContent notification)
+#pragma warning restore S3776
         {
             var sendResult = notification.ConversationIds.Select(conversationId =>
             new SendNotificationResult
@@ -167,12 +169,16 @@
 
                     if (pushResults.IsSuccess)
                     {
+#pragma warning disable S134
                         if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+#pragma warning restore S134
                         {
                             HandleFailedList(pushResults.FailList, sendResult);
                         }
 
+#pragma warning disable S134
                         if (pushResults.BlockList is not null && pushResults.BlockList.Count > 0)
+#pragma warning restore S134
                         {
                             HandlleBlockList(pushResults.BlockList, sendResult);
                         }
@@ -402,7 +408,9 @@
                         string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
                     if (pushResults.IsSuccess)
                     {
+#pragma warning disable S134
                         if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+#pragma warning restore S134
                         {
                             HandleFailedList(pushResults.FailList, sendResult);
                         }
