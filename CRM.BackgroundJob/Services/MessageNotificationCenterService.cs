@@ -1,10 +1,11 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.MessageNotificationCenter;
     using CRM.Core.Enumerables;
     using CRM.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
@@ -154,35 +155,45 @@
 
                 if (messages.Any())
                 {
-                    foreach (var item in messages)
-                    {
-                        var conversationConfig = botSetting.ConversationConfigs
-                            .Find(x => x.Channel == BotChannel.Skype && x.ConversationId == item.ChatGroupID);
-
-                        if (conversationConfig?.ConversationId != null)
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.Content))
-                            {
-                                if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
-                                {
-                                    await logService.ErrorMessageAsync(item.Content);
-                                }
-                                else
-                                {
-                                    await botService.SendSkypeAsync(conversationConfig.ConversationId, item.Content);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            await logService.ErrorMessageAsync($"Doesn't exist ChatGroupID: {item.ChatGroupID} with MatchID: {item.MatchID}");
-                        }
-                    }
+                    await ProcessNotificationItemAsync(messages);
                 }
             }
             catch (Exception ex)
             {
                 await logService.ErrorAsync(ex);
+            }
+        }
+
+        private async Task ProcessNotificationItemAsync(IEnumerable<MessageBotInfo> messages)
+        {
+            foreach (var item in messages)
+            {
+                var conversationConfig = botSetting.ConversationConfigs
+                                            .Find(x => x.Channel == BotChannel.Skype && x.ConversationId == item.ChatGroupID);
+
+                if (conversationConfig != null)
+                {
+                    await HandleNotificationContentAsync(conversationConfig, item.Content);
+                }
+                else
+                {
+                    await logService.ErrorMessageAsync($"Doesn't exist ChatGroupID: {item.ChatGroupID} with MatchID: {item.MatchID}");
+                }
+            }
+        }
+
+        private async Task HandleNotificationContentAsync(ConversationConfig conversationConfig, string content)
+        {
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
+                {
+                    await logService.ErrorMessageAsync(content);
+                }
+                else
+                {
+                    await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
+                }
             }
         }
     }
