@@ -28,11 +28,7 @@
             try
             {
                 var mncNotifications = await GetPrepareNotificationAsync();
-                if (!mncNotifications.Any())
-                {
-                    await InsertCompleteResultAmendmentAsync();
-                }
-                else
+                if (mncNotifications.Any())
                 {
                     foreach (var item in mncNotifications)
                     {
