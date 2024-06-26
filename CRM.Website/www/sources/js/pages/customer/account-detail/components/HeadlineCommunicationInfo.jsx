@@ -142,11 +142,11 @@ export class HeadlineCommunicationInfo extends Component {
         }
     }
 
-    deleteCommunicationTool = (picCommunicationTool, indexPic) => {
+    deleteCommunicationTool = async (picCommunicationTool, indexPic) => {
         const data = [...this.state.headlineCommunicationInfo];
         const index = data[indexPic].picCommunicationTools.findIndex(comTool => comTool.value === picCommunicationTool.value && comTool.type === picCommunicationTool.type);
         data[indexPic].picCommunicationTools.splice(index, 1);
-        this.setState({
+        await this.setState({
             headlineCommunicationInfo: data,
             confirmDelete: {
                 show: false,
@@ -154,6 +154,9 @@ export class HeadlineCommunicationInfo extends Component {
                 indexPic: 0
             }
         });
+        if (this.state.isValidate) {
+            this.validateCommunicationInfo();
+        }
     }
 
     async checkCustomerExistsOnCRM() {

@@ -151,11 +151,11 @@ export class NormalCommunicationInfo extends Component {
     }
 
     getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 24;
-    deleteCommunicationTool = (value, type) => {
+    deleteCommunicationTool = async (value, type) => {
         const data = [...this.state.otherAccountCommunication];
         const index = data.findIndex(comTool => comTool.communicationID === type && comTool.communicationValue === value);
         data.splice(index, 1);
-        this.setState({
+        await this.setState({
             otherAccountCommunication: data,
             confirmDelete: {
                 show: false,
@@ -163,6 +163,9 @@ export class NormalCommunicationInfo extends Component {
                 communicationID: null
             }
         });
+        if (this.state.isValidate) {
+            this.validateCommunicationInfo();
+        }
     }
 
     handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPicCommunicationTool) {
