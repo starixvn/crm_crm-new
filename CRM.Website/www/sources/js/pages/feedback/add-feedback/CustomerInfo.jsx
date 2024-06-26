@@ -243,6 +243,7 @@ export class CustomerInfo extends PureComponent {
         if (data.length === 0) {
             await this.props.handleChangeValueInfo('isOverwriteInfo', false);
         }
+        this.props.setFieldValue('otherAccountCommunicationInfos', data);
         this.props.handleChangeValueInfo('otherAccountCommunicationInfos', data);
     }
 
