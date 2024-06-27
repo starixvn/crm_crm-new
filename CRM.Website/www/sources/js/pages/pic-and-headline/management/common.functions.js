@@ -39,8 +39,6 @@ export const validateFormik = values => {
                 errors[key] = LangHelper.getResource('CommunicationMustHaveValue');
             }
             if (values[key].type && values[key].value) {
-                const demo = getTotalValueByType(values, values[key].type).length;
-                const demo2 = getTotalValueByType(values, values[key].type);
                 if (getTotalValueByType(values, values[key].type).length > 200) {
                     errors[key] = LangHelper.formatString(LangHelper.getResource('CommunicationExceed200Characters'), values[key].channelName);
                 }
