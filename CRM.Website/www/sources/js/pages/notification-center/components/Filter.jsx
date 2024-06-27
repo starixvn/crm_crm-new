@@ -220,14 +220,13 @@ export class Filter extends Component {
             <>
                 <div className='user-filter'>
                     <div
-                        className={`user ${this.state.isOstUser ? 'locked-user': ''}`}
+                        className={`user-ost ${this.state.isOstUser ? 'locked-user': ''}`}
                         onClick={() => this.handleChangeUser(0)}
                     >
                         {LangHelper.getResource('OST')}
                     </div>
                     <div
-                        className={`user ${!this.state.isOstUser ? 'locked-user': ''}`}
-                        style={{'borderLeftWidth': '0px'}}
+                        className={`user-licensee ${!this.state.isOstUser ? 'locked-user': ''}`}
                         onClick={() => this.handleChangeUser(1)}
                     >
                         {LangHelper.getResource('LicenseeCSD')}
@@ -235,8 +234,8 @@ export class Filter extends Component {
                 </div>
                 <Form className='form-filter' onSubmit={e => this.handleSubmit(e)}>
                     <Form.Row bsPrefix='form-row'>
-                        <Form.Group style={{width: '350px'}}>
-                            <Form.Label style={{width: '176px'}} htmlFor="created-date">{LangHelper.getResource('CreatedDateGM8')}</Form.Label>
+                        <Form.Group>
+                            <Form.Label htmlFor="created-date">{LangHelper.getResource('CreatedDateGM8')}</Form.Label>
                             <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                 <DatePicker
                                     dropdownMode="select"
@@ -265,9 +264,9 @@ export class Filter extends Component {
                                 onChange={e => this.handleFilterChange('matchId', e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group style={{width: '375px'}}>
+                        <Form.Group className='group-notification'>
                             <Form.Label>{LangHelper.getResource('NotificationID')}</Form.Label>
-                            <div className='form-control-wrapper d-flex align-items-center notification-id-container'>
+                            <div className='d-flex align-items-center notification-id-container'>
                                 <Form.Control as="select" size="sm" className="shadow-none notification-id-select" name='notification'
                                     value={this.state.isCompareIdEqual ? this.notificationTypes[0].id : this.notificationTypes[1].id}
                                     onChange={this.handleChangeNotificationType}
@@ -311,11 +310,8 @@ export class Filter extends Component {
                                 onChange={e => this.handleFilterChange('messageId', e.target.value)}
                             />
                         </Form.Group>
-                    </Form.Row>
-
-                    <Form.Row bsPrefix='form-row'>
-                        <Form.Group style={{width: '350px'}}>
-                            <Form.Label style={{width: '180px'}}>{LangHelper.getResource('Content')}</Form.Label>
+                        <Form.Group>
+                            <Form.Label>{LangHelper.getResource('Content')}</Form.Label>
                             <Form.Control as='input' type='text' size='sm' className='shadow-none content' name='content'
                                 value={this.state.filter.content}
                                 disabled={this.isDisabledField()}
@@ -339,7 +335,7 @@ export class Filter extends Component {
                                 />
                             </div>
                         </Form.Group>
-                        <Form.Group style={{width: '375px'}}>
+                        <Form.Group className='group-sender'>
                             <Form.Label htmlFor="sender">{LangHelper.getResource('Sender')}</Form.Label>
                             <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
                                 value={this.state.filter.sender}
@@ -348,20 +344,40 @@ export class Filter extends Component {
                                 onChange={e => this.handleFilterChange('sender', e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group style={{justifyContent: 'space-between'}}>
-                            <Form.Check type="checkbox" id="check-box-include" label={LangHelper.getResource('IncludeTestData')}
+                        <Form.Group style={{justifyContent: 'space-between', height:'100%'}}>
+                            <Form.Check className='group-include-test' type="checkbox" id="check-box-include" label={LangHelper.getResource('IncludeTestData')}
                                 htmlFor="check-box-include" checked={this.state.filter.isIncludeTestData}
                                 value={this.state.filter.isIncludeTestData}
                                 disabled={this.isDisabledField()}
                                 onChange={this.handleChangeTestData}
                             />
+                        </Form.Group>
+                        <Form.Group>
+                            <div className='btn-submit-notification'>
+                                <Button variant='primary' size='sm' type='submit'>
+                                    {LangHelper.getResource('Submit')}
+                                </Button>
+                            </div>
+                        </Form.Group>
+                    </Form.Row>
+
+                    {/* <Form.Row bsPrefix='form-row' className='row-second'>
+                        <Form.Group style={{justifyContent: 'space-between', height:'100%'}}>
+                            <Form.Check className='group-include-test' type="checkbox" id="check-box-include" label={LangHelper.getResource('IncludeTestData')}
+                                htmlFor="check-box-include" checked={this.state.filter.isIncludeTestData}
+                                value={this.state.filter.isIncludeTestData}
+                                disabled={this.isDisabledField()}
+                                onChange={this.handleChangeTestData}
+                            />
+                        </Form.Group>
+                        <Form.Group>
                             <div className='btn-submit'>
                                 <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
                             </div>
                         </Form.Group>
-                    </Form.Row>
+                    </Form.Row> */}
                 </Form>
             </>
         )
