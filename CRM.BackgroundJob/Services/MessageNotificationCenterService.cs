@@ -175,17 +175,11 @@
                 {
                     await HandleNotificationContentAsync(conversationConfig, item.Content);
                 }
-                else
-                {
-                    await logService.ErrorMessageAsync($"Doesn't exist ChatGroupID: {item.ChatGroupID} with MatchID: {item.MatchID}");
-                }
             }
         }
 
         private async Task HandleNotificationContentAsync(ConversationConfig conversationConfig, string content)
         {
-            if (!string.IsNullOrWhiteSpace(content))
-            {
                 if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
                 {
                     await logService.ErrorMessageAsync(content);
@@ -197,4 +191,3 @@
             }
         }
     }
-}
