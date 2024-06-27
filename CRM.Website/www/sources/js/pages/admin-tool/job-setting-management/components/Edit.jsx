@@ -29,7 +29,7 @@ export class Edit extends Component {
     };
 
     isRequired = settingName => {
-        return settingName !== 'IgnoreReviewContentBySport';
+        return settingName !== 'AutoSendNotificationBySport';
     };
 
     getParamCheckboxType = values => {

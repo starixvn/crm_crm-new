@@ -59,10 +59,10 @@ export class DataGrid extends Component {
     buildHeader = isHost => (
         <HeaderRow>
             <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationID')}</HeaderCell>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell>
-            <HeaderCell colWidth={20}>{LangHelper.getResource('Sites')}</HeaderCell>
-            <HeaderCell colWidth={isHost ? 80 : 57}>{LangHelper.getResource('Content')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
+            <HeaderCell colWidth={20}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell>
+            <HeaderCell colWidth={30}>{LangHelper.getResource('Sites')}</HeaderCell>
+            <HeaderCell colWidth={isHost ? 65 : 57}>{LangHelper.getResource('Content')}</HeaderCell>
+            <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
             {
                 isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Action')}</HeaderCell>
@@ -294,15 +294,6 @@ export class DataGrid extends Component {
         </div>
     );
 
-    renderDivineEventName = (eventName) => {
-        const [part1, part2] = eventName.split('-vs-');
-        return (
-            <>
-                <div>{part1.trim()}</div>
-                <div>{part2.trim()}</div>
-            </>
-        );
-    };
 
     renderMapOstContent = item => {
         const languages = [
@@ -324,29 +315,30 @@ export class DataGrid extends Component {
 
     renderRow = (item, index, isHost) => {
         const isExistContent = item.content_en || item.content_cs || item.content_ch;
+
         return (
             <Row key={item.notificationID+'-'+index}>
-                <Cell className='text-center show-sessionId'>
+                <Cell className='text-center icon-info'>
                     <div className='text-session'>
                         <span onClick={() => this.handleDetailNotification(item.notificationID)}>{item.notificationID}</span>
-                    </div>
-                    <div className='text-msg'>{item.messageID ? `(Msg: ${item.messageID})` : null}</div>
-                    {
+                        {
                             item.sessionID &&
                             (
                                 <div className='show-icon' onClick={() => this.copyGroupIdToClipboard(item.sessionID)}>
                                     {
                                         this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
-                                            <span className='icon-sessionId' />
+                                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-info.png')} />
                                         )
                                     }
                                 </div>
                             )
                         }
+                    </div>
+                    <div>{item.messageID ? `(Msg: ${item.messageID})` : null}</div>
                 </Cell>
                 <Cell className='text-left'>
                     <div className='text-padding-bottom'>{item.eventDate ? DateTimeService.toShortDateFormat(item.eventDate) : null}</div>
-                    {this.renderDivineEventName(item.eventName)}
+                    <div>{item.eventName}</div>
                 </Cell>
                 <Cell className='text-left'>
                     {this.renderMapSite(item.notificationID, item.status)}
