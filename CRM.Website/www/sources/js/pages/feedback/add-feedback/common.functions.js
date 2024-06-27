@@ -118,7 +118,7 @@ export const GetLengthHeadlineCommunicationValue = (compic, indexCompic, communi
     let value = compic.picCommunicationValue;
     communicationTools.map((item, index) => {
         if (item.picCommunicationId && item.picCommunicationValue &&
-            index !== indexCompic && compic.picCommunicationId === item.picCommunicationId) {
+            index !== indexCompic && compic.picCommunicationId === item.picCommunicationId && item.picID === compic.picID) {
             value += `,${item.picCommunicationValue}`;
         }
     })
