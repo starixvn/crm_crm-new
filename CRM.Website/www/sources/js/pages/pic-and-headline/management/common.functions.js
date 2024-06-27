@@ -13,7 +13,11 @@ const getTotalValueByType = (values, targetType) => {
     return Object.entries(values)
         .filter(([key, value]) => value && value.type && parseInt(value.type, 10) === parseInt(targetType, 10))
         .reduce((acc, [key, value]) => {
-            acc.push(value.value);
+            if (acc.length !== 0) {
+                acc.push(` ${value.value}`);
+            } else {
+                acc.push(value.value);
+            }
             return acc;
         }, []).toString();
 };
@@ -35,6 +39,8 @@ export const validateFormik = values => {
                 errors[key] = LangHelper.getResource('CommunicationMustHaveValue');
             }
             if (values[key].type && values[key].value) {
+                const demo = getTotalValueByType(values, values[key].type).length;
+                const demo2 = getTotalValueByType(values, values[key].type);
                 if (getTotalValueByType(values, values[key].type).length > 200) {
                     errors[key] = LangHelper.formatString(LangHelper.getResource('CommunicationExceed200Characters'), values[key].channelName);
                 }

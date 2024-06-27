@@ -119,7 +119,7 @@ export const GetLengthHeadlineCommunicationValue = (compic, indexCompic, communi
     communicationTools.map((item, index) => {
         if (item.picCommunicationId && item.picCommunicationValue &&
             index !== indexCompic && compic.picCommunicationId === item.picCommunicationId && item.picID === compic.picID) {
-            value += `,${item.picCommunicationValue}`;
+            value += `, ${item.picCommunicationValue}`;
         }
     })
     return value.length;
@@ -130,7 +130,7 @@ export const GetLengthNormalCommunicationValue = (compic, indexCompic, communica
     communicationTools.map((item, index) => {
         if (item.communicationID && item.communicationValue &&
             index !== indexCompic && compic.communicationID === item.communicationID) {
-            value += `,${item.communicationValue}`;
+            value += `, ${item.communicationValue}`;
         }
     })
     return value.length;

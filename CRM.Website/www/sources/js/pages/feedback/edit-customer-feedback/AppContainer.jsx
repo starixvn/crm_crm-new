@@ -565,7 +565,7 @@ export class AppContainer extends Component {
         communicationTools.map((item, index) => {
             if (item.communicationID && item.communicationValue &&
                 index !== indexCompic && compic.communicationID === item.communicationID && compic.picInfo === item.picInfo) {
-                value += `,${item.communicationValue}`;
+                value += `, ${item.communicationValue}`;
             }
         })
         return value.length;
