@@ -169,7 +169,7 @@ describe('commonFunctions', () => {
                 type: 1,
                 value: "test"
             }
-            const expected = 10;
+            const expected = 11;
     
             // Act
             const result = commonFunction.GetLengthCommunicationValue(comPic ,0, communicationTools);
@@ -194,7 +194,7 @@ describe('commonFunctions', () => {
                 communicationID: 1,
                 communicationValue: "test"
             }
-            const expected = 10;
+            const expected = 11;
     
             // Act
             const result = commonFunction.GetLengthNormalCommunicationValue(comPic ,0, communicationTools);

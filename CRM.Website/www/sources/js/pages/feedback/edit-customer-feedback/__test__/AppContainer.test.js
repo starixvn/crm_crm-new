@@ -933,7 +933,7 @@ describe('AppContainer', () => {
                 }
             ];
 
-            const expectedLength = '12345,67890,11111'.length;
+            const expectedLength = '12345, 67890, 11111'.length;
 
             const result = instance.getLengthCommunicationValue(compic, indexCompic, communicationTools);
             expect(result).toEqual(expectedLength);

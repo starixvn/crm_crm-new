@@ -306,12 +306,13 @@ describe('NewPicManagement', () => {
 
             const expected = {
                 picName: 'a',
+                picType: undefined,
                 role: 1,
                 language: '',
                 country: 10,
                 remark: '',
                 picCommunicationTools: [
-                    { type: 1, value: 'a,b' },
+                    { type: 1, value: 'a, b' },
                     { type: 2, value: '2' }
                 ]
             };
