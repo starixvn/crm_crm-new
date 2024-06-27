@@ -50,6 +50,8 @@
         Task<ArchivingDASetting> GetArchivingDASettingAsync();
 
         Task<SystemSettingInfo> GetSystemSettingAsync(string serviceName, string environment);
+
+        Task<bool> GetSystemSettingNotificationAsync(string environment);
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -150,6 +152,15 @@
                 Environment = environment
             };
             return await baseService.GetDataEntityAsync<SystemSettingInfo>(criteria);
+        }
+
+        public async Task<bool> GetSystemSettingNotificationAsync(string environment)
+        {
+            var criteria = new GetSystemSettingNotificationCriteria
+            {
+                Environment = environment
+            };
+            return await baseService.GetDataEntityAsync<bool>(criteria);
         }
     }
 }

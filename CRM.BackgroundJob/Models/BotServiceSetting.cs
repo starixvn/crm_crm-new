@@ -14,5 +14,6 @@
     {
         public string DisplayName { get; set; }
         public string ConversationId { get; set; }
+        public byte IsTest { get; set; }
     }
 }

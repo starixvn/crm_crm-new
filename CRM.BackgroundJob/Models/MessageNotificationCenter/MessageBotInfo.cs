@@ -4,9 +4,7 @@
     {
         public string ChatGroupID { get; set; }
 
-        public int MatchID { get; set; }
-
-        public string MsgType { get; set; }
+        public byte IsTest { get; set; }
 
         public string Content { get; set; }
     }

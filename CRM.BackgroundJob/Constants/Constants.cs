@@ -22,7 +22,7 @@
         public const string EndRootTag = "</ROOT>";
         public const string FormatDatetimeString = "yyyy-MM-dd hh:mm:ss.fff tt";
 
-        public const string NotificationAlertIT = "Notification Alert IT";
+        public const string NotificationAlertIT = "SYS";
 
         public const string ServiceName_AutoFB = "AutoFB";
         public const string ServiceName_ChatBot = "ChatBot - AbnormalBets";

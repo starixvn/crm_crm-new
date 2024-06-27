@@ -10,6 +10,7 @@
     using CRM.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Configuration;
 
     public interface IMessageNotificationCenterService
@@ -34,6 +35,7 @@
         private readonly IPushNotificationResultAmendmentService pushNotificationResultAmendmentService;
         private readonly IGenerateLapNotificationService generateLapNotificationService;
         private readonly ISendNotificationCenterService sendNotificationCenterService;
+        private readonly ISystemSettingService systemSettingService;
         private readonly IBotService botService;
         private readonly BotServiceSetting botSetting;
         private readonly string Environment;
@@ -49,6 +51,7 @@
             IPushNotificationResultAmendmentService pushNotificationResultAmendmentService,
             IGenerateLapNotificationService generateLapNotificationService,
             ISendNotificationCenterService sendNotificationCenterService,
+            ISystemSettingService systemSettingService,
             IBotService botService,
             BotServiceSetting botSetting
         )
@@ -60,6 +63,7 @@
             this.pushNotificationResultAmendmentService = pushNotificationResultAmendmentService;
             this.generateLapNotificationService = generateLapNotificationService;
             this.sendNotificationCenterService = sendNotificationCenterService;
+            this.systemSettingService = systemSettingService;
             this.botService = botService;
             this.botSetting = botSetting;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
@@ -69,6 +73,13 @@
         {
             try
             {
+                var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
+                if (!serviceFlag)
+                {
+                    logService.LogInformation("Service Capture Settlement is shutdown.");
+                    return;
+                }
+
                 var initSiteDbConfigs = await captureSettlementDataService.GetInitialSiteDbConfigsAsync(Environment);
                 if (initSiteDbConfigs.Any())
                 {
@@ -107,6 +118,13 @@
         {
             try
             {
+                var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
+                if (!serviceFlag)
+                {
+                    logService.LogInformation("Service Generate ResultAmendment is shutdown.");
+                    return;
+                }
+
                 var settlementGen = await generateResultAmendmentService.GetPrepareGenNotificationAsync(Environment);
                 if (settlementGen.Any())
                 {
@@ -127,6 +145,12 @@
 
         public async Task PushNotificationResultAmendmentAsync()
         {
+            var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
+            if (!serviceFlag)
+            {
+                logService.LogInformation("Service Push Notification ResultAmendment is shutdown.");
+                return;
+            }
             await pushNotificationResultAmendmentService.PushNotificationMessageAsync();
         }
 
@@ -134,6 +158,13 @@
         {
             try
             {
+                var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
+                if (!serviceFlag)
+                {
+                    logService.LogInformation("Service Generate Lap Notification is shutdown.");
+                    return;
+                }
+
                 var settlementGenLap = await generateLapNotificationService.GetPrepareGenLapNotificationAsync();
                 if (settlementGenLap.Any())
                 {
@@ -169,9 +200,9 @@
             foreach (var item in messages)
             {
                 var conversationConfig = botSetting.ConversationConfigs
-                                            .Find(x => x.Channel == BotChannel.Skype && x.ConversationId == item.ChatGroupID);
+                        .Find(config => config.DisplayName == item.ChatGroupID && config.IsTest == item.IsTest);
 
-                if (conversationConfig != null)
+                if (conversationConfig != null && !string.IsNullOrWhiteSpace(item.Content))
                 {
                     await HandleNotificationContentAsync(conversationConfig, item.Content);
                 }
@@ -180,14 +211,14 @@
 
         private async Task HandleNotificationContentAsync(ConversationConfig conversationConfig, string content)
         {
-                if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
-                {
-                    await logService.ErrorMessageAsync(content);
-                }
-                else
-                {
-                    await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
-                }
+            if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
+            {
+                await logService.ErrorMessageAsync(content);
             }
+            else
+            {
+                await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
+            }  
         }
     }
+}
