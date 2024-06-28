@@ -199,26 +199,55 @@
         {
             foreach (var item in messages)
             {
-                var conversationConfig = botSetting.ConversationConfigs
-                        .Find(config => config.DisplayName == item.ChatGroupID && config.IsTest == item.IsTest);
-
-                if (conversationConfig != null && !string.IsNullOrWhiteSpace(item.Content))
+                if (!string.IsNullOrWhiteSpace(item.Content))
                 {
-                    await HandleNotificationContentAsync(conversationConfig, item.Content);
+                    var conversationConfigs = botSetting.ConversationConfigs
+                        .FindAll(config => config.DisplayName == item.ChatGroupID).ToList();
+
+                    await ProcessMessagesAsync(conversationConfigs, item.Content, item.IsTest);
                 }
             }
         }
 
-        private async Task HandleNotificationContentAsync(ConversationConfig conversationConfig, string content)
+        private async Task ProcessMessagesAsync(List<ConversationConfig> conversationConfigs, string content, int isTest)
         {
-            if (conversationConfig.DisplayName == Constants.NotificationAlertIT)
+            if (conversationConfigs.Any())
             {
-                await logService.ErrorMessageAsync(content);
+                if (isTest == 0)
+                {
+                    await ProcessSendRealTestMessagesAsync(conversationConfigs, content);
+                }
+                else if (isTest == 1)
+                {
+                    await ProcessSendOnlyTestMessagesAsync(conversationConfigs, content);
+                }
             }
-            else
+        }
+
+        private async Task ProcessSendRealTestMessagesAsync(List<ConversationConfig> conversationConfigs, string content)
+        {
+            foreach (var conversationConfig in conversationConfigs)
             {
-                await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
-            }  
+                if (conversationConfig.DisplayName == Constants.SYS_IT)
+                {
+                    await logService.ErrorMessageAsync(content);
+                }
+                else
+                {
+                    await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
+                }
+            }
+        }
+
+        private async Task ProcessSendOnlyTestMessagesAsync(List<ConversationConfig> conversationConfigs, string content)
+        {
+            foreach (var conversationConfig in conversationConfigs)
+            {
+                if (conversationConfig.IsOnlySendTest)
+                {
+                    await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
+                }
+            }
         }
     }
 }
