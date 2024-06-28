@@ -1,7 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Models
 {
     using System.Collections.Generic;
-    using CRM.Core.Enumerables;
 
     public class BotServiceSetting
     {
@@ -14,6 +13,6 @@
     {
         public string DisplayName { get; set; }
         public string ConversationId { get; set; }
-        public byte IsTest { get; set; }
+        public bool IsOnlySendTest { get; set; }
     }
 }
