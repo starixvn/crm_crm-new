@@ -60,10 +60,6 @@
         public async Task<IActionResult> EditResultAdmNotification([FromBody] EditResultAdmNotification param)
         {
             CommandResult commandResult = await notificationCenterService.EditResultAdmNotificationAsync(param);
-            if (commandResult.IsSuccessful)
-            {
-                await pushNotificationService.PushNotificationMessageAsync();
-            }
             return Json(commandResult);
         }
 
