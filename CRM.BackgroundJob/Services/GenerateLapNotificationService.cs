@@ -9,9 +9,9 @@
 
     public interface IGenerateLapNotificationService
     {
-        Task<IEnumerable<SettlementRemotingRefInfo>> GetPrepareGenLapNotificationAsync();
+        Task<IEnumerable<SettlementRemotingRefInfo>> GetPrepareGenLapNotificationAsync(string environment);
 
-        Task InsertGenLapResultAmendmentAsync(IEnumerable<SettlementRemotingRefInfo> jSRemotingRef);
+        Task InsertGenLapResultAmendmentAsync(IEnumerable<SettlementRemotingRefInfo> jSRemotingRef, string environment);
     }
 
     public class GenerateLapNotificationService : IGenerateLapNotificationService
@@ -23,17 +23,21 @@
             this.baseService = baseService;
         }
 
-        public async Task<IEnumerable<SettlementRemotingRefInfo>> GetPrepareGenLapNotificationAsync()
+        public async Task<IEnumerable<SettlementRemotingRefInfo>> GetPrepareGenLapNotificationAsync(string environment)
         {
-            var criteria = new GetPrepareGenLapNotificationCriteria();
+            var criteria = new GetPrepareGenLapNotificationCriteria
+            {
+                Environment = environment
+            };
             return await baseService.GetDataAsync<SettlementRemotingRefInfo>(criteria);
         }
 
-        public async Task InsertGenLapResultAmendmentAsync(IEnumerable<SettlementRemotingRefInfo> jSRemotingRef)
+        public async Task InsertGenLapResultAmendmentAsync(IEnumerable<SettlementRemotingRefInfo> jSRemotingRef, string environment)
         {
             var command = new InsertGenLapResultAmendmentCommand
             {
-                JSRemotingRef = JsonConvert.SerializeObject(jSRemotingRef)
+                JSRemotingRef = JsonConvert.SerializeObject(jSRemotingRef),
+                Environment = environment
             };
             await baseService.ExecuteNonQueryAsync(command);
         }

@@ -6,6 +6,8 @@
     {
         public int NotificationID { get; set; }
 
+        public string Environment { get; set; }
+
         public int MessageID { get; set; }
 
         public string UpdType { get; set; }

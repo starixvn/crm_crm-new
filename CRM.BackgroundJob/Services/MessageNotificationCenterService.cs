@@ -151,7 +151,7 @@
                 logService.LogInformation("Service Push Notification ResultAmendment is shutdown.");
                 return;
             }
-            await pushNotificationResultAmendmentService.PushNotificationMessageAsync();
+            await pushNotificationResultAmendmentService.PushNotificationMessageAsync(Environment);
         }
 
         public async Task GenerateLapNotificationAsync()
@@ -165,10 +165,10 @@
                     return;
                 }
 
-                var settlementGenLap = await generateLapNotificationService.GetPrepareGenLapNotificationAsync();
+                var settlementGenLap = await generateLapNotificationService.GetPrepareGenLapNotificationAsync(Environment);
                 if (settlementGenLap.Any())
                 {
-                    await generateLapNotificationService.InsertGenLapResultAmendmentAsync(settlementGenLap);
+                    await generateLapNotificationService.InsertGenLapResultAmendmentAsync(settlementGenLap, Environment);
                 }
             }
             catch (Exception ex)
