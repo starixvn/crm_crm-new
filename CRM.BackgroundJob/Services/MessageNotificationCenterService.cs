@@ -209,7 +209,7 @@
             }
         }
 
-        private async Task ProcessMessagesAsync(List<ConversationConfig> conversationConfigs, string content, int isTest)
+        private async Task ProcessMessagesAsync(List<ConversationConfig> conversationConfigs, string content, byte isTest)
         {
             if (conversationConfigs.Any())
             {
