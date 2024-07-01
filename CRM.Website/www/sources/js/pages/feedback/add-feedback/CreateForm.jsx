@@ -974,7 +974,7 @@ export class CreateForm extends Component {
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
-    async checkChattypeMapping() {
+    checkChattypeMapping = async () => {
         let validResult = await this.validateChattypeMappingPic();
         if (!validResult || validResult.length === 0) {            
             this.createFeedback();
