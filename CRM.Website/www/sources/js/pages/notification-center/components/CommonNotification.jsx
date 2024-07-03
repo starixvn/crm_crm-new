@@ -147,15 +147,18 @@ export class CommonNotification extends Component {
             return null;
         }
         return (
-            <div>
-                <div className='content-parent'>
-                    <span className='text-bold'>{title}</span><span onClick={() => this.handleOpenPopup(sites[0].siteType)} className='link-ticket'>{ticketCnt}</span>
+            <div className='content-parent'>
+                <div className='content-child'>
+                    <span className='text-bold'>{title}</span>
+                    <span onClick={() => this.handleOpenPopup(sites[0].siteType)} className='link-ticket'>{ticketCnt}</span>
                 </div>
-                {sites.map((item, index) => (
-                    <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>
-                        {item.siteGroup}: <span>{item.siteNames}</span>
-                    </div>
-                ))}
+                <div className='site-scrollbar'>
+                    {sites.map((item, index) => (
+                        <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>
+                            {item.siteGroup}: <span>{item.siteNames}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     };
@@ -322,8 +325,8 @@ export class CommonNotification extends Component {
                                 { values.messageID && <span className='pl-2'>{`(Msg: ${values.messageID})`}</span> }
                             </Form.Group>
                             <Form.Group className='info-notice'>
-                                <Form.Label className='infoId'>{LangHelper.getResource('Status')}</Form.Label>
-                                <div className={`status-button status-${values.status}`}>{values.status}</div>
+                                <Form.Label className='infoStatus'>{LangHelper.getResource('Status')}</Form.Label>
+                                <div className='action-status'><div className={`status-button status-${values.status} status-width`}></div></div>
                             </Form.Group>
                         </Form.Row>
                         <div className="group-item">
@@ -345,7 +348,7 @@ export class CommonNotification extends Component {
                         </div>
                         <div className="group-item">
                             <div className="group-header">{LangHelper.getResource('Sites')}</div>
-                            <div className="group-content">
+                            <div className="group-site">
                                 <div className="content">
                                     {
                                         this.renderMapSite()

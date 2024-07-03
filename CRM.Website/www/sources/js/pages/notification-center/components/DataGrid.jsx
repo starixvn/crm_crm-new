@@ -8,6 +8,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { Button, Modal } from 'react-bootstrap';
+import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
@@ -25,7 +27,8 @@ export class DataGrid extends Component {
             cancelPopup: { show: false, notificationId: null },
             resendFailPopup: { show: false, notificationId: null },
             deactivatePopup: { show: false, notificationId: null },
-            detailNotificationPopup: { show: false, notificationId: null }
+            detailNotificationPopup: { show: false, notificationId: null },
+            totalSitesPopup: { show: false, sites: null }
         };
         this.panels = [];
     }
@@ -59,11 +62,11 @@ export class DataGrid extends Component {
     buildHeader = isHost => (
         <HeaderRow>
             <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationID')}</HeaderCell>
-            <HeaderCell colWidth={20}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell>
-            <HeaderCell colWidth={30}>{LangHelper.getResource('Sites')}</HeaderCell>
-            <HeaderCell colWidth={isHost ? 65 : 57}>{LangHelper.getResource('Content')}</HeaderCell>
-            <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
-            <HeaderCell colWidth={20}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
+            <HeaderCell colWidth={15}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell>
+            <HeaderCell colWidth={22}>{LangHelper.getResource('Sites')}</HeaderCell>
+            <HeaderCell colWidth={isHost ? 85 : 57}>{LangHelper.getResource('Content')}</HeaderCell>
+            <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
+            <HeaderCell colWidth={15}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
             {
                 isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Action')}</HeaderCell>
             }
@@ -151,13 +154,27 @@ export class DataGrid extends Component {
         this.setState({ detailNotificationPopup: { show: true, notificationId: notificationId } });
     };
 
-    copyGroupIdToClipboard = conversationId => {
+    copySessionIdToClipboard = conversationId => {
         const input = document.createElement('input');
         input.value = conversationId;
         document.body.appendChild(input);
         input.select();
         document.execCommand('copy');
         input.remove();
+        Site.displayCopiedToClipboard();
+    };
+
+    copySitesToClipboard = sites => {
+        const dataSite = sites.map(item =>
+            `${item.siteGroup}: ${item.siteNames.split(',').length}\n${item.siteNames}\n\n`
+        ).join('');
+
+        const textarea = document.createElement("textarea");
+        textarea.value = dataSite;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
         Site.displayCopiedToClipboard();
     };
 
@@ -243,23 +260,67 @@ export class DataGrid extends Component {
         );
     };
 
-    renderSiteSection = (sites, title, status) => {
+    renderTotalSites = () => {
+        const { sites } = this.state.totalSitesPopup;
+        return (
+            <Modal show className="total-sites" dialogAs={DraggableModalDialog}
+                backdrop="static" keyboard={false} size="lg" centered
+                onHide={this.handleCloseTotalSites}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title as="div">{LangHelper.getResource('TotalSites')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {sites.map(item => (
+                        <div className='block-site'>
+                            <div key={item.siteGroup}>
+                                {item.siteGroup}: <span style={{'font-weight':'700'}}>{item.siteNames.split(',').length}</span>
+                            </div>
+                            <div style={{'font-weight':'700'}}>{item.siteNames}</div>
+                        </div>
+                    ))}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button type="submit" variant="primary" className='btn-close' size="sm" onClick={this.handleCloseTotalSites}>
+                        {LangHelper.getResource('Close')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    };
+
+    handleOpenTotalSites = sites => {
+        this.setState({ totalSitesPopup: { show: true, sites }});
+    };
+
+    handleCloseTotalSites = () => this.setState({ totalSitesPopup: { show: false }});
+
+    renderSiteSection = (sites, title) => {
         if (sites.length === 0) {
             return null;
         }
+        let countSites = 0;
+        sites.forEach(item => {
+            let siteLengthItem = item.siteNames.split(',').length;
+            countSites += siteLengthItem;
+        });
         return (
             <div>
-                <div className='text-bold'>{title}</div>
+                <div className='title-site'>
+                    <div className='text-bold'>{title}: </div>
+                    <span className='total-site' onClick={() => this.handleOpenTotalSites(sites)}>Total {countSites}</span>
+                    <span className='icon-copy-site' onClick={() => this.copySitesToClipboard(sites)}></span>
+                </div>
                 {sites.map(item => (
                     <div key={item.siteGroup} className='text-padding-bottom'>
-                        {item.siteGroup}: <span>{item.siteNames}</span>
+                        {item.siteGroup}: <span className='wrap-text'>{item.siteNames.split(',').length > 1 ? item.siteNames.split(',').length : item.siteNames}</span>
                     </div>
                 ))}
             </div>
         );
     };
 
-    renderMapSite = (id, status) => {
+    renderMapSite = id => {
         const { allSite } = this.props.gridData;
         const sites = allSite.filter(item => item.notificationID === id);
         const creditSites = filterAndSortSites(sites, 'Credit');
@@ -267,8 +328,8 @@ export class DataGrid extends Component {
 
         return (
             <div>
-                {this.renderSiteSection(creditSites, 'Credit', status)}
-                {this.renderSiteSection(licenseeSites, 'Licensee', status)}
+                {this.renderSiteSection(creditSites, 'Credit')}
+                {this.renderSiteSection(licenseeSites, 'Licensee')}
             </div>
         );
     };
@@ -294,6 +355,15 @@ export class DataGrid extends Component {
         </div>
     );
 
+    renderDivineEventName = (eventName) => {
+        const [part1, part2] = eventName.split('-vs-');
+        return (
+            <>
+                <div className='wrap-text text-padding-bottom'>{part1.trim()}</div>
+                <div className='wrap-text'>{part2.trim()}</div>
+            </>
+        );
+    };
 
     renderMapOstContent = item => {
         const languages = [
@@ -318,30 +388,30 @@ export class DataGrid extends Component {
 
         return (
             <Row key={item.notificationID+'-'+index}>
-                <Cell className='text-center icon-info'>
+                <Cell className='text-center show-sessionId'>
                     <div className='text-session'>
                         <span onClick={() => this.handleDetailNotification(item.notificationID)}>{item.notificationID}</span>
-                        {
+                    </div>
+                    <div className='text-msg'>{item.messageID ? `(Msg: ${item.messageID})` : null}</div>
+                    {
                             item.sessionID &&
                             (
-                                <div className='show-icon' onClick={() => this.copyGroupIdToClipboard(item.sessionID)}>
+                                <div className='show-icon' onClick={() => this.copySessionIdToClipboard(item.sessionID)}>
                                     {
                                         this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
-                                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-info.png')} />
+                                            <span className='icon-sessionId' />
                                         )
                                     }
                                 </div>
                             )
                         }
-                    </div>
-                    <div>{item.messageID ? `(Msg: ${item.messageID})` : null}</div>
                 </Cell>
                 <Cell className='text-left'>
                     <div className='text-padding-bottom'>{item.eventDate ? DateTimeService.toShortDateFormat(item.eventDate) : null}</div>
-                    <div>{item.eventName}</div>
+                    {this.renderDivineEventName(item.eventName)}
                 </Cell>
                 <Cell className='text-left'>
-                    {this.renderMapSite(item.notificationID, item.status)}
+                    {this.renderMapSite(item.notificationID)}
                 </Cell>
                 <Cell className='text-left'>
                     <div className='content-item'>
@@ -357,11 +427,12 @@ export class DataGrid extends Component {
                     </div>
                 </Cell>
                 <Cell className='text-left'>
-                    <div className={`status-button status-${item.status}`}>{item.status}</div>
+                    <div className={`status-button status-${item.status}`}></div>
                 </Cell>
                 <Cell className='text-left'>
                     <div className='text-padding-bottom'>{item.sender}</div>
-                    <div>{item.sendDate && DateTimeService.toLongDateTimeFormat(item.sendDate)}</div>
+                    <div className='text-padding-bottom'>{item.sendDate && DateTimeService.toShortDateFormat(item.sendDate)}</div>
+                    <div>{item.sendDate && DateTimeService.toTimeFormat(item.sendDate)}</div>
                 </Cell>
                 {
                     isHost && (
@@ -385,7 +456,7 @@ export class DataGrid extends Component {
         const { totalItems } = this.props.gridData;
         const { pageIndex, pageSize } = this.props.gridParams;
         const { isHost } = this.props;
-        const { cancelPopup, resendFailPopup, deactivatePopup, detailNotificationPopup } = this.state;
+        const { cancelPopup, resendFailPopup, deactivatePopup, detailNotificationPopup, totalSitesPopup } = this.state;
         const detailParam = { notificationId: detailNotificationPopup.notificationId, isOstUser: this.props.gridParams.isOstUser };
         const pagingOption = {
             PageIndex: pageIndex,
@@ -417,6 +488,9 @@ export class DataGrid extends Component {
                 }
                 {
                     detailNotificationPopup.show && <DetailNotification onClose={this.handleClosePopup} actionParam={detailParam}/>
+                }
+                {
+                    totalSitesPopup.show && this.renderTotalSites()
                 }
             </>
         );

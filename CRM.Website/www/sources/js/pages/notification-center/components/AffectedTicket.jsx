@@ -101,7 +101,7 @@ export default class AffectedTicket extends Component {
         return (
             <Row key={index}>
                 <Cell className='text-center'><div>{index + 1}</div></Cell>
-                <Cell className='text-left'><div>{item.siteName}</div></Cell>
+                <Cell className='text-center'><div>{item.siteName}</div></Cell>
                 <Cell className='text-center'><div>{item.transID}</div></Cell>
                 <Cell className='text-left'><div>{firstElement}</div></Cell>
                 <Cell className='text-left'><div>{secondElement}</div></Cell>
@@ -115,14 +115,13 @@ export default class AffectedTicket extends Component {
             <div className='affected-filter'>
                 <div className='affected-user'>
                     <div
-                        className={`${isCredit ? 'locked-user': ''}`}
+                        className={`credit-user ${isCredit && 'locked-user'}`}
                         onClick={this.handleChangeTab}
                     >
                         {LangHelper.getResource('Credit')}
                     </div>
                     <div
-                        className={`${!isCredit ? 'locked-user': ''}`}
-                        style={{'borderLeftWidth': '0px'}}
+                        className={`licensee-user ${!isCredit && 'locked-user'}`}
                         onClick={this.handleChangeTab}
                     >
                         {LangHelper.getResource('Licensee')}
@@ -142,7 +141,7 @@ export default class AffectedTicket extends Component {
         return (
             <div className='affected-table'>
                 <div className='site-filter'>
-                    <span>{LangHelper.getResource('Site')}</span>
+                    <span className='site-label'>{LangHelper.getResource('Site')}</span>
                     <div className='site-option'>
                         <MultipleSelect
                             dataSource={this.state.siteOptions}
@@ -189,7 +188,7 @@ export default class AffectedTicket extends Component {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>
+                    <Button type="submit" className='btn-close' variant="primary" size="sm" onClick={this.props.onClose}>
                         {LangHelper.getResource('Close')}
                     </Button>
                 </Modal.Footer>
