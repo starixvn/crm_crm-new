@@ -283,7 +283,7 @@
     Hour: 'Hour',
     IBanSwiftCode: 'IBAN/SWIFT Code',
     InactiveSettings: 'Inactive settings',
-    FilterByTestEvents: 'Filter by test events',
+    FilterByTestEvents: 'Filter by Test events',
     IntroducedBy: 'Introduced By',
     InformHeadlines: 'Inform Headlines',
     Insert: 'Insert',
