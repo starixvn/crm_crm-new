@@ -223,8 +223,8 @@ export class CreateForm extends Component {
     };
 
     productHandleChange = (currentItem, selectedItemsKey, setFieldValue, subProductSelected) => {
+        setFieldValue('product', selectedItemsKey);
         if (selectedItemsKey) {
-            setFieldValue('product', selectedItemsKey);
             const subProducts = this.props.settings.subProducts;
             const selectedProduct = selectedItemsKey.split(',');
             const subProductSelectedArr = subProductSelected.length > 0 ? subProductSelected.split(',') : [];
