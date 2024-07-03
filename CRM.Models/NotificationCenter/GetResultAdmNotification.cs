@@ -26,7 +26,7 @@
 
         public string Sender { get; set; }
 
-        public bool? IsIncludeTestData { get; set; }
+        public bool? IsTestOnly { get; set; }
 
         public int PageIndex { get; set; }
 

@@ -50,7 +50,7 @@
                 Content = param.Content,
                 Status = param.Statuses,
                 Sender = param.Sender,
-                IncludeTest = param.IsIncludeTestData,
+                TestOnly = param.IsTestOnly,
                 PageIndex = param.PageIndex,
                 PageSize = param.PageSize,
                 SitePermission = param.SitePermission,

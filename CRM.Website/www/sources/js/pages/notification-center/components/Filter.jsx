@@ -32,7 +32,7 @@ export class Filter extends Component {
                 content: null,
                 statuses: statusOptionOST.map(x=> x.name).join(','),
                 sender: null,
-                isIncludeTestData: false
+                isTestOnly: false
             },
             statusOptions : statusOptionOST,
             isOstUser: true,
@@ -74,7 +74,7 @@ export class Filter extends Component {
                     content: filterParams.content,
                     statuses: filterParams.statuses ?? this.state.filter.statuses,
                     sender: filterParams.sender,
-                    isIncludeTestData: filterParams.isIncludeTestData ?? this.state.isIncludeTestData
+                    isTestOnly: filterParams.isTestOnly ?? this.state.isTestOnly
                 }
             });
         }
@@ -116,7 +116,7 @@ export class Filter extends Component {
         this.setState(prevState => ({
             filter: {
                 ...prevState.filter,
-                isIncludeTestData: !prevState.filter.isIncludeTestData
+                isTestOnly: !prevState.filter.isTestOnly
             }
         }), () => this.props.setGridParams(this.getParams()));
     };
@@ -152,20 +152,28 @@ export class Filter extends Component {
     };
 
     isDisabledField = () => {
+        const { notificationId, fromNotificationId, toNotificationId, messageId } = this.state.filter;
+        const isHaveNotification = notificationId || fromNotificationId || toNotificationId;
+        return isHaveNotification || messageId;
+    };
+
+    isDisabledMessage = () => {
         const { notificationId, fromNotificationId, toNotificationId } = this.state.filter;
         return notificationId || fromNotificationId || toNotificationId;
     };
 
+    isDisabledNotification = () => this.state.filter.messageId;
+
     getParams = () => {
         const { fromDate, toDate, matchId, notificationId, fromNotificationId, toNotificationId,
-            messageId, content, statuses, sender, isIncludeTestData } = this.state.filter;
+            messageId, content, statuses, sender, isTestOnly } = this.state.filter;
         const { isCompareIdEqual, isOstUser } = this.state;
 
         return {
             fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
             toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
             matchId, messageId, content, statuses, sender,
-            isIncludeTestData, isOstUser, isCompareIdEqual,
+            isTestOnly, isOstUser, isCompareIdEqual,
             notificationId: isCompareIdEqual ? notificationId : null,
             fromNotificationId: !isCompareIdEqual ? fromNotificationId : null,
             toNotificationId: !isCompareIdEqual ? toNotificationId : null,
@@ -271,6 +279,7 @@ export class Filter extends Component {
                                 <Form.Control as="select" size="sm" className="shadow-none notification-id-select" name='notification'
                                     value={this.state.isCompareIdEqual ? this.notificationTypes[0].id : this.notificationTypes[1].id}
                                     onChange={this.handleChangeNotificationType}
+                                    disabled={this.isDisabledNotification()}
                                 >
                                     {this.notificationTypes.map((item, key) => <option key={key} value={item.id}>{item.name}</option>)}
                                 </Form.Control>
@@ -281,6 +290,7 @@ export class Filter extends Component {
                                         name='fromNotificationId' id='fromNotificationId'
                                         placeholder='From'
                                         value={this.state.filter.fromNotificationId}
+                                        disabled={this.isDisabledNotification()}
                                         onChange={e => this.handleChangeNotificationFromTo('fromNotificationId', e.target.value)}
                                     />
                                     <div className='notification-concate text-center ml-1 mr-1'>-</div>
@@ -290,6 +300,7 @@ export class Filter extends Component {
                                         name='toNotificationId' id='toNotificationId'
                                         placeholder='To'
                                         value={this.state.filter.toNotificationId}
+                                        disabled={this.isDisabledNotification()}
                                         onChange={e => this.handleChangeNotificationFromTo('toNotificationId', e.target.value)}
                                     />
                                 </div>
@@ -298,6 +309,7 @@ export class Filter extends Component {
                                     hidden={!this.state.isCompareIdEqual}
                                     name="notificationId" id="notificationId"
                                     className="shadow-none ml-2" pattern='[0-9]*'
+                                    disabled={this.isDisabledNotification()}
                                     onChange={e => this.handleFilterChange('notificationId', e.target.value)}
                                 />
                             </div>
@@ -306,7 +318,7 @@ export class Filter extends Component {
                             <Form.Label>{LangHelper.getResource('MessageID')}</Form.Label>
                             <Form.Control as='input' type='text' size='sm' pattern='[0-9]*' className='shadow-none'
                                 name='messageId' id='messageId'
-                                disabled={this.isDisabledField()}
+                                disabled={this.isDisabledMessage()}
                                 value={this.state.filter.messageId}
                                 onChange={e => this.handleFilterChange('messageId', e.target.value)}
                             />
@@ -341,7 +353,7 @@ export class Filter extends Component {
                         </Form.Group>
                         <Form.Group style={{width: '375px'}}>
                             <Form.Label htmlFor="sender">{LangHelper.getResource('Sender')}</Form.Label>
-                            <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
+                            <Form.Control as='input' type='text' size='sm' className='shadow-none' name='sender'
                                 value={this.state.filter.sender}
                                 autoComplete='off'
                                 disabled={this.isDisabledField()}
@@ -349,9 +361,9 @@ export class Filter extends Component {
                             />
                         </Form.Group>
                         <Form.Group style={{justifyContent: 'space-between'}}>
-                            <Form.Check type="checkbox" id="check-box-include" label={LangHelper.getResource('IncludeTestData')}
-                                htmlFor="check-box-include" checked={this.state.filter.isIncludeTestData}
-                                value={this.state.filter.isIncludeTestData}
+                            <Form.Check type="checkbox" id="check-box-include" label={LangHelper.getResource('FilterByTestEvents')}
+                                htmlFor="check-box-include" checked={this.state.filter.isTestOnly}
+                                value={this.state.filter.isTestOnly}
                                 disabled={this.isDisabledField()}
                                 onChange={this.handleChangeTestData}
                             />
