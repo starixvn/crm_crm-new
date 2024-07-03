@@ -510,6 +510,7 @@
     RedemptionStatistics: 'Redemption Statistics',
     RemarkTab: 'Remark tab',
     Reset: 'Reset',
+    ResendFail: 'Resend Fail',
     Save: 'Save',
     SaveAndContinue: 'Save & Continue',
     SaveInformHeadlinesSuccessfully: 'Save inform headlines successfully!',
@@ -606,6 +607,7 @@
     ToDate: 'To Date',
     ToDateIsEarlierThanFromDate: 'ToDate is earlier than FromDate',
     Total: 'Total',
+    TotalSites: 'Total Sites',
     ToCannotGreaterFromValue: 'The To value cannot be greater than From value',
     TicketRefNo: 'Ticket Ref. No',
     TooltipRefTicket: "Automatically fill in Description with Event Details from ticket. Support tickets of Sportsbook, "
