@@ -154,7 +154,7 @@ export class CommonNotification extends Component {
                 </div>
                 <div className='site-scrollbar'>
                     {sites.map((item, index) => (
-                        <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>
+                        <div key={`${item.siteGroup}-${index}`} className='text-line'>
                             {item.siteGroup}: <span className='text-bold'>{item.siteNames}</span>
                         </div>
                     ))}
