@@ -687,5 +687,6 @@
     PostCode: 'Post Code',
     Parameters: 'Parameters',
     Push: 'Push',
+    PushNotificationSuccessfully: 'Push Notification Successfully!',
     Yes: 'Yes'
 };

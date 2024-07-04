@@ -101,7 +101,7 @@ export class CommonNotification extends Component {
     handleSubmitConfirm = async () => {
         const status = this.props.actionParam.isOstUser ? 'Sending' : 'Active';
         const params = this.getParams(status);
-        const message = status === 'Sending' ? 'SendNotificationSuccessfully' : 'ActiveNotificationSuccessfully';
+        const message = status === 'Sending' ? 'PushNotificationSuccessfully' : 'ActiveNotificationSuccessfully';
         await this.handleCreateNotification(params, LangHelper.getResource(message));
     };
 
@@ -155,7 +155,7 @@ export class CommonNotification extends Component {
                 <div className='site-scrollbar'>
                     {sites.map((item, index) => (
                         <div key={`${item.siteGroup}-${index}`} className='text-line content-child'>
-                            {item.siteGroup}: <span>{item.siteNames}</span>
+                            {item.siteGroup}: <span className='text-bold'>{item.siteNames}</span>
                         </div>
                     ))}
                 </div>
