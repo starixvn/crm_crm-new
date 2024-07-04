@@ -266,7 +266,7 @@
 
         .text-session {
             padding-bottom: 5px;
-            padding-top: 20px;
+            //padding-top: 20px;
             color: #3873E9;
         }
         
@@ -277,9 +277,9 @@
         .show-icon {
             text-align: center;
             opacity: 0;
-            display: block;
+            display: none;
             transition: .3s ease-in-out;
-            //animation: slideInOut .5s ease-in-out; 
+            animation: slideInOut .5s ease-in-out; 
 
             .icon-sessionId {
                 background: url(/www/dist/css/images/icon/icon-copyId.svg) no-repeat;
@@ -289,25 +289,25 @@
             }
         }
 
-        // @keyframes slideInOut { 
-        //     0% { 
-        //         opacity: 0; 
-        //         visibility: hidden; 
-        //         transform: translateY(-10px); 
-        //     } 
+        @keyframes slideInOut { 
+            0% { 
+                opacity: 0; 
+                visibility: hidden; 
+                transform: translateY(-10px); 
+            } 
           
-        //     50% { 
-        //         opacity: 0.5; 
-        //         visibility: visible; 
-        //         transform: translateY(0); 
-        //     } 
+            50% { 
+                opacity: 0.5; 
+                visibility: visible; 
+                transform: translateY(0); 
+            } 
           
-        //     100% { 
-        //         opacity: 1; 
-        //         visibility: visible; 
-        //         transform: translateY(0); 
-        //     } 
-        // }
+            100% { 
+                opacity: 1; 
+                visibility: visible; 
+                transform: translateY(0); 
+            } 
+        }
     }
 
     .show-sessionId:hover {
