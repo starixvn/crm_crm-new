@@ -256,7 +256,7 @@ export class Filter extends Component {
                                     endDate={this.state.filter.toDate}
                                     maxDate={this.maxDate}
                                     disabled={this.isDisabledField()}
-                                    maxDateRange={31}
+                                    maxDateRange={Number.MAX_SAFE_INTEGER}
                                     selectsRange
                                     isRangeDate
                                 />
@@ -357,7 +357,7 @@ export class Filter extends Component {
                             />
                         </Form.Group>
                         <Form.Group style={{justifyContent: 'space-between', height:'100%'}}>
-			    <Form.Check className='group-include-test' type="checkbox" id="check-box-include" label={LangHelper.getResource('FilterByTestEvents')}
+			                <Form.Check className='group-include-test' type="checkbox" id="check-box-include" label={LangHelper.getResource('FilterByTestEvents')}
                                 htmlFor="check-box-include" checked={this.state.filter.isTestOnly}
                                 value={this.state.filter.isTestOnly}
                                 disabled={this.isDisabledField()}
