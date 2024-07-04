@@ -20,19 +20,16 @@
         private readonly INotificationCenterService notificationCenterService;
         private readonly IExportExcelService excelService;
         private readonly IPermissionService permissionService;
-        private readonly IPushNotificationResultAmendmentService pushNotificationService;
 
         public NotificationCenterController(
             INotificationCenterService notificationCenterService,
             IExportExcelService excelService,
-            IPermissionService permissionService,
-            IPushNotificationResultAmendmentService pushNotificationService
+            IPermissionService permissionService
         )
         {
             this.notificationCenterService = notificationCenterService;
             this.excelService = excelService;
             this.permissionService = permissionService;
-            this.pushNotificationService = pushNotificationService;
         }
 
         [HttpPost]
