@@ -222,6 +222,7 @@
     ExternalID: 'External ID',
     EXT: 'EXT.#',
     ExtStation: 'Ext. Station',
+    ExceedsTheIntegerDatatypeRange: 'exceeds the Integer datatype range!',
     ErrorMessageInactiveSiteRelate: 'Some Usernames belong to Inactive Site: ',
     Entity: 'Entity',
     EditBy: 'Edit By',

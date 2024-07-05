@@ -15,6 +15,7 @@ export class AppContainer extends Component {
         this.state = {
            policy: null
         };
+        this.isLoadGrid = this.props.isLoadGrid;
     }
 
     componentDidMount() {
@@ -23,12 +24,18 @@ export class AppContainer extends Component {
         });
         document.title = LangHelper.getResource('NotificationCenter');
 
-        const { isLoadGrid, filterParams } = this.props;
-        if (isLoadGrid) {
+        const { filterParams } = this.props;
+        if (this.isLoadGrid) {
             if (!isEitherExitsFromToId(filterParams) && !isFromIdOverToId(filterParams)) {
                 this.props.getGridData(filterParams);
             }
             window.history.replaceState(null, '');
+        }
+        if (this.props.gridParams.fromDate) {
+            this.isLoadGrid = true;
+            if (!isEitherExitsFromToId(this.props.gridParams) && !isFromIdOverToId(this.props.gridParams)) {
+                this.props.getGridData(this.props.gridParams);
+            }
         }
     };
 
@@ -44,7 +51,7 @@ export class AppContainer extends Component {
 
         return (
             <Fragment>
-                <Filter isLoadGrid={this.props.isLoadGrid} filterParams={this.props.filterParams}/>
+                <Filter isLoadGrid={this.isLoadGrid} filterParams={this.props.filterParams || this.props.gridParams}/>
                 <DataGrid isHost={isHost}/>
             </Fragment>
         );

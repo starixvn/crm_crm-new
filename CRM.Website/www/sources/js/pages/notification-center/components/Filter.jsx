@@ -44,6 +44,7 @@ export class Filter extends Component {
             { id: 0, name: 'Equal' },
             { id: 1, name: 'From/To' }
         ];
+        this.isValidMaxInt = true;
     }
 
     componentDidMount() {
@@ -121,11 +122,27 @@ export class Filter extends Component {
         }), () => this.props.setGridParams(this.getParams()));
     };
 
+    checkExceedMaxInt = (field, errMsg) => {
+        const maxInt = 2147483647;
+        const isExceedMaxInt = field.value ? parseInt(field.value, 10) >= maxInt : false;
+        if (isExceedMaxInt) {
+            this.isValidMaxInt = false;
+            errMsg.push(`${field.name} ${LangHelper.getResource('ExceedsTheIntegerDatatypeRange')}`);
+        }
+    };
+
     isValidParams = () => {
         const errMsg = [];
         let isValid = true;
         const { filter, isCompareIdEqual } = this.state;
         const { fromDate, toDate } = filter;
+        const fieldsToCheckMaxInt = [
+            { value: filter.matchId, name: 'Match ID' },
+            { value: filter.fromNotificationId, name: 'From Notification ID' },
+            { value: filter.toNotificationId, name: 'To Notification ID' },
+            { value: filter.notificationId, name: 'Notification ID' },
+            { value: filter.messageId, name: 'Message ID' }
+        ];
 
         if (!isCompareIdEqual) {
             if (isEitherExitsFromToId(filter)) {
@@ -138,10 +155,13 @@ export class Filter extends Component {
                 errMsg.push(LangHelper.getResource('ToCannotGreaterFromValue'));
             }
         }
-        if(!fromDate || !toDate){
+        if (!fromDate || !toDate){
             isValid = false;
             errMsg.push(LangHelper.getResource('InvalidRangeDateFilter'));
         }
+
+        fieldsToCheckMaxInt.map(field => this.checkExceedMaxInt(field, errMsg));
+        isValid = isValid && this.isValidMaxInt;
 
         return { isValid, errMsg };
     };
