@@ -22,7 +22,7 @@
         public const string CreateFeedbackForRefundSettledTicket = "CreateFeedbackForRefundSettledTicket";
         public const string CreateFeedbackForVoidBetID = "CreateFeedbackForVoidBetID";
         public const string CreateFeedbackForAbnormalBets = "CreateFeedbackForAbnormalBets";
-        public const string CreateAutoFeedbackForResultAmendment = "CreateAutoFeedbackForResultAmendment";
+        public const string CreateFeedbackForMessageNotificationCenter = "CreateFeedbackForMessageNotificationCenter";
         public const string CaptureSettlementData = "CaptureSettlementData";
         public const string GenerateResultAmendment = "GenerateResultAmendment";
         public const string PushNotificationResultAmendment = "PushNotificationResultAmendment";
