@@ -187,7 +187,7 @@
             services.AddSingleton<IPushNotificationResultAmendmentService, PushNotificationResultAmendmentService>();
             services.AddSingleton<IGenerateLapNotificationService, GenerateLapNotificationService>();
             services.AddSingleton<ISendNotificationCenterService, SendNotificationCenterService>();
-            services.AddSingleton<IAutoFbResultAmendmentService, AutoFbResultAmendmentService>();
+            services.AddSingleton<IAutoFbMessageNotificaitonCenterService, AutoFbMessageNotificaitonCenterService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -199,7 +199,7 @@
             services.AddHostedService<AutoFbTurnoverControlWorker>();
             services.AddHostedService<AutoFbVoidingBetIDWorker>();
             services.AddHostedService<AutoFbAbnormalBetsWorker>();
-            services.AddHostedService<AutoFbResultAmendmentWoker>();
+            services.AddHostedService<AutoFbMessageNotificationCenterWoker>();
 
             services.AddHostedService<AutoChatbotWorker>();
             services.AddHostedService<AutoChatbotCWLWoker>();

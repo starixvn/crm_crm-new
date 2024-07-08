@@ -30,7 +30,7 @@
         Task RefundSettledTicketJobAsync();
         Task VoidingBetIDExecuteJobAsync();
         Task AbnormalBetsExecuteJobAsync();
-        Task ResultAmendmentExecuteJobAsync();
+        Task MessageNotificationCenterExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -51,7 +51,7 @@
         private readonly IRefundSettledTicketService refundSettledTicketService;
         private readonly IVoidingBetIDService voidingBetIDService;
         private readonly IAbnormalBetService abnormalBetService;
-        private readonly IAutoFbResultAmendmentService autoFbResultAmendmentService;
+        private readonly IAutoFbMessageNotificaitonCenterService autoFbMessageNotificationService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -75,7 +75,7 @@
             IRefundSettledTicketService refundSettledTicketService,
             IVoidingBetIDService voidingBetIDService,
             IAbnormalBetService abnormalBetService,
-            IAutoFbResultAmendmentService autoFbResultAmendmentService,
+            IAutoFbMessageNotificaitonCenterService autoFbMessageNotificationService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -95,7 +95,7 @@
             this.refundSettledTicketService = refundSettledTicketService;
             this.voidingBetIDService = voidingBetIDService;
             this.abnormalBetService = abnormalBetService;
-            this.autoFbResultAmendmentService = autoFbResultAmendmentService;
+            this.autoFbMessageNotificationService = autoFbMessageNotificationService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -618,18 +618,18 @@
             }
         }
 
-        public async Task ResultAmendmentExecuteJobAsync()
+        public async Task MessageNotificationCenterExecuteJobAsync()
         {
             try
             {
-                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoResultAmendment, Environment);
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Environment);
                 if (!systemSettingInfo.ServiceFlag)
                 {
-                    logService.LogInformation("Service ResultAmendment is shutdown.");
+                    logService.LogInformation("Service AutoFeedback MessageNotificationCenter is shutdown.");
                     return;
                 }
-                var message = await autoFbResultAmendmentService.GetMsgInfoResultAmendmentAsync(systemSettingInfo.LastMsgTargetId, systemSettingInfo.BatchSize);
-                var (commandResult, command) = await autoFbResultAmendmentService.ImportResultAmendmentAsync(message, Environment);
+                var message = await autoFbMessageNotificationService.GetMsgInfoMessageNotificationAsync(systemSettingInfo.LastMsgTargetId, systemSettingInfo.BatchSize);
+                var (commandResult, command) = await autoFbMessageNotificationService.ImportMessageNotificationAsync(message, Environment);
                 if (commandResult.IsSuccessful)
                 {
                     await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();

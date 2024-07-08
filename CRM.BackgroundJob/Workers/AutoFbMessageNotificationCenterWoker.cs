@@ -10,11 +10,11 @@
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
 
-    public class AutoFbResultAmendmentWoker : BaseWorker
+    public class AutoFbMessageNotificationCenterWoker : BaseWorker
     {
         private readonly IAutoFeedbackService autoFeedbackService;
 
-        public AutoFbResultAmendmentWoker(
+        public AutoFbMessageNotificationCenterWoker(
             IAutoFeedbackService autoFeedbackService,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
@@ -22,12 +22,12 @@
                 : base(maintenanceService, logService)
         {
             this.autoFeedbackService = autoFeedbackService;
-            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.CreateAutoFeedbackForResultAmendment);
+            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.CreateFeedbackForMessageNotificationCenter);
         }
 
         public override async Task ExecuteJobAsync()
         {
-            await autoFeedbackService.ResultAmendmentExecuteJobAsync();
+            await autoFeedbackService.MessageNotificationCenterExecuteJobAsync();
         }
     }
 }
