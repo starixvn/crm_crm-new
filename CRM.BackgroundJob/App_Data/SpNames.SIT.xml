@@ -158,8 +158,8 @@
         <Setting Key="MNC_Notification_AlertSel" SpName="MNC_Notification_AlertSel" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_Notification_SystemSettingSel" SpName="MNC_Notification_SystemSettingSel" DbName="DBCRM.MessageNotification.wsv_nap" />
     </Function>
-    <Function Name="AutoFB Result Amendment">
-        <Setting Key="Acc_CRM_AutoFB_ResultAmendment_GetMsgInfo" SpName="Acc_CRM_AutoFB_ResultAmendment_GetMsgInfo" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_ResultAmendment_Import" SpName="Acc_CRM_AutoFB_ResultAmendment_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
+    <Function Name="AutoFB MessageNotificationCenter">
+        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo" DbName="DBMSG.bodb_Message.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_Import" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
 </Functions>
