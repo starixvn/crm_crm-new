@@ -642,7 +642,6 @@
             }
             catch (Exception ex)
             {
-
                 await logService.ErrorAsync(ex);
             }
         }
