@@ -1,20 +1,5 @@
 @import '../../abstracts/variables';
 
-
-.show-left-panel {
-    .group-include-test {
-        padding-top: 26.5px !important;
-    }
-    .btn-submit-notification {
-        padding-top: 26.5px !important;
-    }
-    .notification-center {
-        .action-button {
-            padding: 8px 8px 8px 8px;
-        }
-    }
-}
-
 .notification-center {
     .is-invalid {
         border-color: #dc3545;
@@ -31,7 +16,7 @@
         font-family: Open Sans, sans-serif;
 
         .user-ost {
-            width: 49px;
+            width: 160px;
             padding: 6px 12px 6px 12px;
             border-radius: 5px 5px 0px 0px;
             background: #EAEEF4;
@@ -39,7 +24,7 @@
         }
 
         .user-licensee {
-            width: 114px;
+            width: 164px;
             padding: 6px 12px;
             margin-left: 10px;
             border-radius: 5px 5px 0 0;
@@ -222,7 +207,7 @@
 
     .action-button {
         width: 100%;
-        padding: 8px 18px 8px 18px;
+        padding: 8px 20px 8px 20px;
 
         .review-button {
             height: 26px;
@@ -264,23 +249,29 @@
 
     .show-sessionId {
         cursor: pointer;
+        padding-top: 0px;
+        padding-bottom: 0px;
 
         .text-session {
-            padding-bottom: 5px;
-            //padding-top: 20px;
+            padding-bottom: 3px;
+            position: relative;
+            top: 0;
+            transition: .2s ease-in-out;
             color: #3873E9;
         }
         
         .text-msg:not(:empty) {
-            padding-bottom: 5px;
+            position: relative;
+            top: 0;
+            transition: .2s ease-in-out;
+            padding-bottom: 3px;
         }
 
         .show-icon {
             text-align: center;
             opacity: 0;
             display: none;
-            transition: .3s ease-in-out;
-            animation: slideInOut .5s ease-in-out; 
+            animation: slideInOut .4s ease-in-out; 
 
             .icon-sessionId {
                 background: url(/www/dist/css/images/icon/icon-copyId.svg) no-repeat;
@@ -314,7 +305,12 @@
     .show-sessionId:hover {
         .show-icon {
             opacity: 1;
+            transition: .1s ease-in-out;
             display: block;
+        }
+        .text-session, .text-msg{
+            top: -1px;
+            transition: .1s ease-in-out;
         }
     }
 
@@ -745,4 +741,86 @@
     height: 26px;
     padding: 5px 0px 5px 0px;
     border-radius: 3px;
+}
+
+.show-left-panel {
+    .group-include-test {
+        padding-top: 26.5px !important;
+    }
+    .btn-submit-notification {
+        padding-top: 26.5px !important;
+    }
+    .notification-center {
+        .action-button {
+            padding: 8px 5px 8px 5px;
+        }
+    }
+    @media only screen and (max-width:1820px) {
+        .notification-center {
+            .action-button {
+                padding: 8px 0px 8px 0px;
+
+                .review-button {
+                    padding: 6px 0px 5px 0px;
+                }
+            }
+        }
+    }
+    @media only screen and (max-width:1550px) {
+        .notification-center {
+            .review-button, .cancel-button {
+                font-size: 10px;
+                padding: 7px 0px 5px 0px;
+            }
+        }
+    }
+    
+    @media only screen and (min-width:1560px) and (max-width:1905px){
+        .notification-center {
+            .btn-submit-notification {
+                margin-left: -20px;
+            }
+        }
+    }
+    @media only screen and (max-width:1559px) {
+        .notification-center {
+            .btn-submit-notification {
+                margin-left: 0px;
+                padding-top: 8px !important;
+            }
+        }
+    }
+    @media only screen and (max-width:1425px) {
+        .notification-center {
+            .group-include-test {
+                padding-top: 8px !important;
+            }
+        } 
+    }
+}
+
+@media only screen and (max-width:1785px) {
+    .notification-center {
+        .action-button {
+            padding: 8px 8px 8px 8px;
+        }
+        .btn-submit-notification, .group-include-test {
+            padding-top: 25px !important;
+        }
+    }
+}
+
+@media only screen and (max-width:1545px) {
+    .notification-center {
+        .action-button {
+            padding: 8px 0px 8px 0px;
+
+            .review-button {
+                padding: 6px 5px 5px 5px;
+            }
+        }
+        .btn-submit-notification {
+            margin-left: -20px;
+        }
+    }
 }

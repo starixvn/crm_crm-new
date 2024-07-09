@@ -59,19 +59,22 @@ export class DataGrid extends Component {
         });
     };
 
-    buildHeader = isHost => (
-        <HeaderRow>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationID')}</HeaderCell>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell>
-            <HeaderCell colWidth={22}>{LangHelper.getResource('Sites')}</HeaderCell>
-            <HeaderCell colWidth={isHost ? 85 : 57}>{LangHelper.getResource('Content')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
-            {
-                isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Action')}</HeaderCell>
-            }
-        </HeaderRow>
-    );
+    buildHeader = isHost => {
+        let isContainLeftPanel = document.getElementsByClassName('show-left-panel').length > 0;
+        return (
+            <HeaderRow>
+                <HeaderCell colWidth={13}>{LangHelper.getResource('NotificationID')}</HeaderCell>
+                {/* <HeaderCell colWidth={15}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell> */}
+                <HeaderCell colWidth={22}>{LangHelper.getResource('Sites')}</HeaderCell>
+                <HeaderCell colWidth={isHost ? 90 : 100}>{LangHelper.getResource('Content')}</HeaderCell>
+                <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
+                {
+                    isHost && <HeaderCell colWidth={12}>{LangHelper.getResource('Action')}</HeaderCell>
+                }
+            </HeaderRow>
+        )
+    };
 
     buildBody = isHost => {
         if (this.props.gridData.data.length > 0) {
@@ -406,10 +409,10 @@ export class DataGrid extends Component {
                             )
                         }
                 </Cell>
-                <Cell className='text-left'>
+                {/* <Cell className='text-left'>
                     <div className='text-padding-bottom'>{item.eventDate ? DateTimeService.toShortDateFormat(item.eventDate) : null}</div>
                     {this.renderDivineEventName(item.eventName)}
-                </Cell>
+                </Cell> */}
                 <Cell className='text-left'>
                     {this.renderMapSite(item.notificationID)}
                 </Cell>

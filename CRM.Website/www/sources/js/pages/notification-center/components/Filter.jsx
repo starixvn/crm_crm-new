@@ -44,7 +44,6 @@ export class Filter extends Component {
             { id: 0, name: 'Equal' },
             { id: 1, name: 'From/To' }
         ];
-        this.isValidMaxInt = true;
     }
 
     componentDidMount() {
@@ -103,7 +102,8 @@ export class Filter extends Component {
 
         this.setState(prevState => ({
             filter: {...prevState.filter, notificationId: null, fromNotificationId: null, toNotificationId: null},
-            isCompareIdEqual: !prevState.isCompareIdEqual
+            isCompareIdEqual: !prevState.isCompareIdEqual,
+            isValidNotification: false
         }), () => this.props.setGridParams(this.getParams()));
     };
 
@@ -122,18 +122,18 @@ export class Filter extends Component {
         }), () => this.props.setGridParams(this.getParams()));
     };
 
-    checkExceedMaxInt = (field, errMsg) => {
+    checkExceedMaxInt = (field, errMsg, isValid) => {
         const maxInt = 2147483647;
         const isExceedMaxInt = field.value ? parseInt(field.value, 10) >= maxInt : false;
         if (isExceedMaxInt) {
-            this.isValidMaxInt = false;
+            isValid.value = false;
             errMsg.push(`${field.name} ${LangHelper.getResource('ExceedsTheIntegerDatatypeRange')}`);
         }
     };
-
+    
     isValidParams = () => {
         const errMsg = [];
-        let isValid = true;
+        let isValid = { value: true };
         const { filter, isCompareIdEqual } = this.state;
         const { fromDate, toDate } = filter;
         const fieldsToCheckMaxInt = [
@@ -143,27 +143,29 @@ export class Filter extends Component {
             { value: filter.notificationId, name: 'Notification ID' },
             { value: filter.messageId, name: 'Message ID' }
         ];
-
+    
         if (!isCompareIdEqual) {
             if (isEitherExitsFromToId(filter)) {
-                isValid = false;
+                isValid.value = false;
+                this.setState({ isValidNotification: true });
                 errMsg.push(LangHelper.getResource('BothFromToNotificationId'));
             }
-
+    
             if (isFromIdOverToId(filter)) {
-                isValid = false;
+                isValid.value = false;
+                this.setState({ isValidNotification: true });
                 errMsg.push(LangHelper.getResource('ToCannotGreaterFromValue'));
             }
         }
-        if (!fromDate || !toDate){
-            isValid = false;
+    
+        if (!fromDate || !toDate) {
+            isValid.value = false;
             errMsg.push(LangHelper.getResource('InvalidRangeDateFilter'));
         }
 
-        fieldsToCheckMaxInt.map(field => this.checkExceedMaxInt(field, errMsg));
-        isValid = isValid && this.isValidMaxInt;
+        fieldsToCheckMaxInt.forEach(field => this.checkExceedMaxInt(field, errMsg, isValid));
 
-        return { isValid, errMsg };
+        return { isValid: isValid.value, errMsg };
     };
 
     handleChangeNotificationFromTo = (name, value) => {
@@ -211,7 +213,6 @@ export class Filter extends Component {
             if (!validation.isValid) {
                 validation.errMsg.forEach(item => {
                     toast.error(item);
-                    this.setState({ isValidNotification: true });
                 });
             } else {
                 const params = this.getParams();
@@ -251,13 +252,13 @@ export class Filter extends Component {
                         className={`user-ost ${this.state.isOstUser ? 'locked-user': ''}`}
                         onClick={() => this.handleChangeUser(0)}
                     >
-                        {LangHelper.getResource('OST')}
+                        {LangHelper.getResource('GeneralNotification')}
                     </div>
                     <div
                         className={`user-licensee ${!this.state.isOstUser ? 'locked-user': ''}`}
                         onClick={() => this.handleChangeUser(1)}
                     >
-                        {LangHelper.getResource('LicenseeCSD')}
+                        {LangHelper.getResource('LicenseeNotification')}
                     </div>
                 </div>
                 <Form className='form-filter' onSubmit={e => this.handleSubmit(e)}>
