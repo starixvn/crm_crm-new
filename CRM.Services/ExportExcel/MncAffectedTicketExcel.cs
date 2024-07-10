@@ -69,7 +69,7 @@
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
-            worksheet.Cells[1, 1].Value = string.Format(" Event Date: {0}\n\n Event Name: {1}", eventTime, eventName);
+            worksheet.Cells[1, 1].Value = string.Format(" Event Time: {0}\n\n Event Name: {1}", eventTime, eventName);
             worksheet.Row(1).Height = 30;
         }
 
