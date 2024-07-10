@@ -347,7 +347,7 @@ export class CommonNotification extends Component {
                                     <Form.Label className='text-bold' htmlFor="eventTime">
                                         {LangHelper.getResource('EventTimeGMT8')}
                                     </Form.Label>
-                                    <div>{values.eventTime ? DateTimeService.toShortDateFormat(values.eventTime) : null}</div>
+                                    <div>{values.eventTime ? DateTimeService.toShortDateTimeFormat(values.eventTime) : null}</div>
                                 </Form.Group>
                                 <Form.Group className='info-event'>
                                     <Form.Label className='text-bold event-name' htmlFor="eventName">
