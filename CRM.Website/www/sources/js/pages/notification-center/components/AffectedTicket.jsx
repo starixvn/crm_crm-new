@@ -52,7 +52,7 @@ export default class AffectedTicket extends Component {
     handleExport = () => {
         const params = {
             notificationId: this.props.notificationId,
-            eventDate: this.props.eventDate,
+            eventTime: this.props.eventTime,
             eventName: this.props.eventName
         }
         this.props.exportExcel(params);

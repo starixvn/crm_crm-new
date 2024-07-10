@@ -141,7 +141,6 @@ export default class CkEditor extends PureComponent {
         return {toolbar, removePlugins}
     }
 
-
     render() {
         const { className, isInvalid, isRemoveToolbarForChatbot, isRemoveAllToolbar , ...rest } = this.props;
         const {toolbar, removePlugins} = this.removeToolbarForChatBot(isRemoveToolbarForChatbot);

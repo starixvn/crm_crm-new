@@ -82,9 +82,9 @@
         {
             var (sitePermission, licenseeType) = await GetDataPermission();
             IEnumerable<AdmSiteTicket> siteTickets = await notificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId, sitePermission, licenseeType);
-            var eventDate = param.EventDate.ToShortDateFormatDash();
-            var bytes = excelService.ExportSiteTicket(siteTickets, eventDate, param.EventName);
-            string reportName = string.Format(ViewResources.MncAffectedTicketFileName, eventDate);
+            var eventTime = param.EventTime.ToShortDateFormatDash();
+            var bytes = excelService.ExportSiteTicket(siteTickets, eventTime, param.EventName);
+            string reportName = string.Format(ViewResources.MncAffectedTicketFileName, eventTime);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
 

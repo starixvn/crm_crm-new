@@ -60,11 +60,9 @@ export class DataGrid extends Component {
     };
 
     buildHeader = isHost => {
-        let isContainLeftPanel = document.getElementsByClassName('show-left-panel').length > 0;
         return (
             <HeaderRow>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('NotificationID')}</HeaderCell>
-                {/* <HeaderCell colWidth={15}>{LangHelper.getResource('EventInfoGMT4')}</HeaderCell> */}
                 <HeaderCell colWidth={22}>{LangHelper.getResource('Sites')}</HeaderCell>
                 <HeaderCell colWidth={isHost ? 90 : 100}>{LangHelper.getResource('Content')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -358,16 +356,6 @@ export class DataGrid extends Component {
         </div>
     );
 
-    renderDivineEventName = (eventName) => {
-        const [part1, part2] = eventName.split('-vs-');
-        return (
-            <>
-                <div className='wrap-text text-padding-bottom'>{part1.trim()}</div>
-                <div className='wrap-text'>{part2.trim()}</div>
-            </>
-        );
-    };
-
     renderMapOstContent = item => {
         const languages = [
             { code: 'en', title: 'English' },
@@ -397,22 +385,18 @@ export class DataGrid extends Component {
                     </div>
                     <div className='text-msg'>{item.messageID ? `(Msg: ${item.messageID})` : null}</div>
                     {
-                            item.sessionID &&
-                            (
-                                <div className='show-icon' onClick={() => this.copySessionIdToClipboard(item.sessionID)}>
-                                    {
-                                        this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
-                                            <span className='icon-sessionId' />
-                                        )
-                                    }
-                                </div>
-                            )
-                        }
+                        item.sessionID &&
+                        (
+                            <div className='show-icon' onClick={() => this.copySessionIdToClipboard(item.sessionID)}>
+                                {
+                                    this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
+                                        <span className='icon-sessionId' />
+                                    )
+                                }
+                            </div>
+                        )
+                    }
                 </Cell>
-                {/* <Cell className='text-left'>
-                    <div className='text-padding-bottom'>{item.eventDate ? DateTimeService.toShortDateFormat(item.eventDate) : null}</div>
-                    {this.renderDivineEventName(item.eventName)}
-                </Cell> */}
                 <Cell className='text-left'>
                     {this.renderMapSite(item.notificationID)}
                 </Cell>

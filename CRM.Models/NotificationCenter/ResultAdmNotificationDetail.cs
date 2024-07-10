@@ -8,7 +8,7 @@
 
         public int? MessageID { get; set; }
 
-        public DateTime? EventDate { get; set; }
+        public DateTime? EventTime { get; set; }
 
         public string EventName { get; set; }
 

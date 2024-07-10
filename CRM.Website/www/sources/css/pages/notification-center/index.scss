@@ -824,3 +824,19 @@
         }
     }
 }
+
+.invalid-content_en {
+    a#controlled-tab-tab-English {
+        border-color: #dc3545;
+    }
+}
+.invalid-content_cs {
+    a#controlled-tab-tab-Simplified\ Chinese {
+        border-color: #dc3545;
+    }
+}
+.invalid-content_ch {
+    a#controlled-tab-tab-Traditional\ Chinese {
+        border-color: #dc3545;
+    }
+}

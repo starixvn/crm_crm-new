@@ -6,6 +6,8 @@
     {
         public string SessionID { get; set; }
 
+        public DateTime? EventDate { get; set; }
+
         public DateTime? CreatedTime { get; set; }
 
         public DateTime? SendDate { get; set; }

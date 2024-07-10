@@ -85,7 +85,7 @@
 
         byte[] ExportCategoryClassification(IEnumerable<CategoryClassification> categoryClassifications);
 
-        byte[] ExportSiteTicket(IEnumerable<AdmSiteTicket> siteTickets, string eventDate, string eventName);
+        byte[] ExportSiteTicket(IEnumerable<AdmSiteTicket> siteTickets, string eventTime, string eventName);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -303,11 +303,11 @@
             return excel.Export();
         }
 
-        public byte[] ExportSiteTicket(IEnumerable<AdmSiteTicket> siteTickets, string eventDate, string eventName)
+        public byte[] ExportSiteTicket(IEnumerable<AdmSiteTicket> siteTickets, string eventTime, string eventName)
         {
             const string ExcelTemplatePath = "ExcelTemplates/SiteAffectedTicket.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new MncAffectedTicketExcel(templatePath, siteTickets, eventDate, eventName);
+            var excel = new MncAffectedTicketExcel(templatePath, siteTickets, eventTime, eventName);
             return excel.Export();
         }
     }

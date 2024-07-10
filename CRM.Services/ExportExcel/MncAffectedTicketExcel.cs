@@ -16,7 +16,7 @@
         private int rowIndex = RowStartBody;
 
         private readonly string templatePath;
-        private readonly string eventDate;
+        private readonly string eventTime;
         private readonly string eventName;
         private readonly IEnumerable<AdmSiteTicket> siteTickets;
         private readonly List<string> sheetNames;
@@ -24,12 +24,12 @@
         public MncAffectedTicketExcel(
             string templatePath,
             IEnumerable<AdmSiteTicket> siteTickets,
-            string eventDate, string eventName
+            string eventTime, string eventName
         )
         {
             this.templatePath = templatePath;
             this.siteTickets = siteTickets;
-            this.eventDate = eventDate;
+            this.eventTime = eventTime;
             this.eventName = eventName;
             sheetNames = new List<string> { ViewResources.Credit, ViewResources.Licensee };
         }
@@ -69,7 +69,7 @@
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
-            worksheet.Cells[1, 1].Value = string.Format(" Event Date: {0}\n\n Event Name: {1}", eventDate, eventName);
+            worksheet.Cells[1, 1].Value = string.Format(" Event Date: {0}\n\n Event Name: {1}", eventTime, eventName);
             worksheet.Row(1).Height = 30;
         }
 
