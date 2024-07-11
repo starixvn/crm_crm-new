@@ -218,6 +218,11 @@ export class Filter extends Component {
                 const params = this.getParams();
                 this.props.setGridParams(params);
                 this.props.getGridData(params);
+                this.props.setAutoRefresh({
+                    ...this.props.autoRefresh,
+                    isSubmit: true,
+                    countDown: this.props.autoRefresh.value
+                });
             }
         }
     };
@@ -402,8 +407,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams } = state;
-    return { gridParams };
+    const { gridParams, autoRefresh } = state;
+    return { gridParams, autoRefresh };
 };
 
 const FilterNavigation = WithNavigation(Filter);

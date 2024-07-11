@@ -17,6 +17,7 @@ import { filterAndSortSites } from '../common.functions';
 import Site from '@jsroot/common/site';
 import { toast } from 'react-toastify';
 import DetailNotification from './DetailNotification';
+import AutoRefresh from './AutoRefresh';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -105,6 +106,7 @@ export class DataGrid extends Component {
             deactivatePopup: { show: false, notificationId: null },
             detailNotificationPopup: { show: false, notificationId: null }
         });
+        this.props.setIsRefresh(true);
     };
 
     getParamStatus = (notificationId, status) => ({
@@ -126,6 +128,7 @@ export class DataGrid extends Component {
 
     handleCancel = notificationId => {
         this.setState({ cancelPopup: { show: true, notificationId: notificationId } });
+        this.props.setIsRefresh(false);
     };
 
     handleCancelConfirm = async notificationId => {
@@ -135,6 +138,7 @@ export class DataGrid extends Component {
 
     handleResendFail = notificationId => {
         this.setState({ resendFailPopup: { show: true, notificationId: notificationId } });
+        this.props.setIsRefresh(false);
     };
 
     handleResendConfirm = async notificationId => {
@@ -144,6 +148,7 @@ export class DataGrid extends Component {
 
     handleDeactivate = notificationId => {
         this.setState({ deactivatePopup: { show: true, notificationId: notificationId } });
+        this.props.setIsRefresh(false);
     };
 
     handleDeactivateConfirm = async notificationId => {
@@ -153,6 +158,7 @@ export class DataGrid extends Component {
 
     handleDetailNotification = notificationId => {
         this.setState({ detailNotificationPopup: { show: true, notificationId: notificationId } });
+        this.props.setIsRefresh(false);
     };
 
     copySessionIdToClipboard = conversationId => {
@@ -179,10 +185,10 @@ export class DataGrid extends Component {
         Site.displayCopiedToClipboard();
     };
 
-    renderTooltipComponent = (title, component) => {
+    renderTooltipComponent = (title, component, className) => {
         return(
             <OverlayTrigger
-                placement="bottom-start"
+                placement={className}
                 overlay={
                     <Tooltip>
                         <span>{title}</span>
@@ -292,9 +298,13 @@ export class DataGrid extends Component {
 
     handleOpenTotalSites = sites => {
         this.setState({ totalSitesPopup: { show: true, sites }});
+        this.props.setIsRefresh(false);
     };
 
-    handleCloseTotalSites = () => this.setState({ totalSitesPopup: { show: false }});
+    handleCloseTotalSites = () => {
+        this.setState({ totalSitesPopup: { show: false }});
+        this.props.setIsRefresh(true);
+    }
 
     renderSiteSection = (sites, title) => {
         if (sites.length === 0) {
@@ -310,7 +320,13 @@ export class DataGrid extends Component {
                 <div className='title-site'>
                     <div className='text-bold'>{title}: </div>
                     <span className='total-site' onClick={() => this.handleOpenTotalSites(sites)}>Total {countSites}</span>
-                    <span className='icon-copy-site' onClick={() => this.copySitesToClipboard(sites)}></span>
+                    <span onClick={() => this.copySitesToClipboard(sites)}>
+                        {
+                            this.renderTooltipComponent(`Click to copy the list of sites`,
+                                <span className='icon-copy-site' />, "right-start"
+                            )
+                        }
+                    </span>
                 </div>
                 {sites.map(item => (
                     <div key={item.siteGroup} className='text-padding-bottom'>
@@ -343,10 +359,6 @@ export class DataGrid extends Component {
             </div>
         );
     };
-
-    horizontalLine = () => (
-        <div>---------------------------------------------------------------------------------------------------------------------------------------------</div>
-    );
 
     contentBlock = (index, title, content) => (
         <div key={index}>
@@ -390,7 +402,7 @@ export class DataGrid extends Component {
                             <div className='show-icon' onClick={() => this.copySessionIdToClipboard(item.sessionID)}>
                                 {
                                     this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
-                                        <span className='icon-sessionId' />
+                                        <span className='icon-sessionId' />, "bottom-start"
                                     )
                                 }
                             </div>
@@ -456,6 +468,7 @@ export class DataGrid extends Component {
             <>
                 <div className='d-flex table-title justify-content-between align-items-center'>
                     <div>{LangHelper.getResource('NotificationCenter')}</div>
+                    <AutoRefresh />
                 </div>
                 <Table
                     minWidth={960}

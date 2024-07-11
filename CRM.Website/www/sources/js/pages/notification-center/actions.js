@@ -3,7 +3,9 @@ import DataService from '@jsroot/common/dataService';
 import {
     setGridParams,
     setGridData,
-    setEditAdmNotification
+    setEditAdmNotification,
+    setAutoRefresh,
+    setIsRefresh
 } from './notificationCenterSlice';
 
 const getGridData = params => async dispatch => {
@@ -48,6 +50,8 @@ const exportExcel = params => async () => {
 export const ActionCreators = {
     setGridParams,
     setGridData,
+    setAutoRefresh,
+    setIsRefresh,
     setEditAdmNotification,
     getGridData,
     getAdmNotificationById,

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
 
 const initialState = {
     gridParams: {
@@ -7,7 +8,13 @@ const initialState = {
         pageSize: 100
     },
     gridData: null,
-    editAdmNotificationResult: null
+    editAdmNotificationResult: null,
+    autoRefresh: {
+        value: AUTO_REFRESH_TIMES[0],
+        countDown: AUTO_REFRESH_TIMES[0],
+        isSubmit: false
+    },
+    isRefresh: true
 };
 
 const notificationCenterSlice = createSlice({
@@ -22,6 +29,12 @@ const notificationCenterSlice = createSlice({
         },
         setEditAdmNotification: (state, action) => {
             state.editAdmNotificationResult = action.payload;
+        },
+        setAutoRefresh: (state, action) => {
+            state.autoRefresh = action.payload;
+        },
+        setIsRefresh: (state, action) => {
+            state.isRefresh = action.payload;
         }
     }
 });
@@ -31,7 +44,9 @@ const { actions, reducer } = notificationCenterSlice;
 export const {
     setGridParams,
     setGridData,
-    setEditAdmNotification
+    setEditAdmNotification,
+    setAutoRefresh,
+    setIsRefresh
 } = actions;
 
 export default reducer;
