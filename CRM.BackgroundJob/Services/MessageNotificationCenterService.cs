@@ -133,10 +133,6 @@
                         item.RefValueEN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.en_US);
                         item.RefValueCH = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_TW);
                         item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
-
-                        await logService.ErrorMessageAsync($"RefId1: {item.RefId1}, RefId2: {item.RefId2}, ValueEN: {item.RefValueEN}");
-                        await logService.ErrorMessageAsync($"RefId1: {item.RefId1}, RefId2: {item.RefId2}, ValueCH: {item.RefValueCH}");
-                        await logService.ErrorMessageAsync($"RefId1: {item.RefId1}, RefId2: {item.RefId2}, ValueCS: {item.RefValueCH}");
                     }
                     await generateResultAmendmentService.InsertGenResultAmendmentAsync(Environment, settlementGen);
                 }
