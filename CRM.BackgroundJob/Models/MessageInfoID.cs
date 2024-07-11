@@ -31,7 +31,7 @@
         [XMLName("TargetId")]
         public int TargetId { get; set; }
 
-        [XMLName("MacthId")]
+        [XMLName("MatchId")]
         public int MatchId { get; set; }
     }
 }
