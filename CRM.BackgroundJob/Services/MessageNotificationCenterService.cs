@@ -116,7 +116,6 @@
 
         public async Task GenerateResultAmendmentAsync()
         {
-            await logService.ErrorMessageAsync("testing");
             try
             {
                 var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
