@@ -30,5 +30,8 @@
 
         [XMLName("TargetId")]
         public int TargetId { get; set; }
+
+        [XMLName("MacthId")]
+        public int MatchId { get; set; }
     }
 }
