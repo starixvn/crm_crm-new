@@ -6,14 +6,11 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
-    using CRM.Core.Enumerables;
     using CRM.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Constants;
-    using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Configuration;
-    using Newtonsoft.Json;
 
     public interface IMessageNotificationCenterService
     {
@@ -192,10 +189,6 @@
 
                 if (messages.Any())
                 {
-                    foreach (var message in messages)
-                    {
-                        await logService.ErrorMessageAsync(JsonConvert.SerializeObject(message));
-                    }
                     await ProcessNotificationItemAsync(messages);
                 }
             }
@@ -213,11 +206,6 @@
                 {
                     var conversationConfigs = botSetting.ConversationConfigs
                         .FindAll(config => config.DisplayName == item.ChatGroupID).ToList();
-
-                    foreach (var conversationConfig in conversationConfigs)
-                    {
-                        await logService.ErrorMessageAsync($"conversationConfig: {JsonConvert.SerializeObject(conversationConfig)}");
-                    }
 
                     await ProcessMessagesAsync(conversationConfigs, item.Content, item.IsTest);
                 }
@@ -249,7 +237,6 @@
                 }
                 else
                 {
-                    await logService.ErrorMessageAsync($"ConversationId send: {conversationConfig.ConversationId} --- Content: {content}");
                     await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
                 }
             }
@@ -261,7 +248,6 @@
             {
                 if (conversationConfig.IsOnlySendTest)
                 {
-                    await logService.ErrorMessageAsync($"ConversationId send test: {conversationConfig.ConversationId} --- Content: {content}");
                     await botService.SendSkypeAsync(conversationConfig.ConversationId, content);
                 }
             }
