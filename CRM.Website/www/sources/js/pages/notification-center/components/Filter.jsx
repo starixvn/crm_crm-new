@@ -269,7 +269,7 @@ export class Filter extends Component {
                 <Form className='form-filter' onSubmit={e => this.handleSubmit(e)}>
                     <Form.Row bsPrefix='form-row'>
                         <Form.Group>
-                            <Form.Label htmlFor="created-date">{LangHelper.getResource('CreatedDateGM8')}</Form.Label>
+                            <Form.Label htmlFor="created-date">{LangHelper.getResource('CreatedDate')}</Form.Label>
                             <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                 <DatePicker
                                     dropdownMode="select"
@@ -290,10 +290,10 @@ export class Filter extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label htmlFor="MatchID">{LangHelper.getResource('Match ID')}</Form.Label>
-                            <Form.Control type="text" size="sm" as='input' pattern='[0-9]*'
+                            <Form.Control type="number" size="sm" as='input' pattern='[0-9]*'
                                 value={this.state.filter.matchId}
                                 name="matchId" id="matchId"
-                                className="shadow-none"
+                                className="shadow-none remove-arrow"
                                 disabled={this.isDisabledField()}
                                 onChange={e => this.handleFilterChange('matchId', e.target.value)}
                             />
@@ -310,8 +310,8 @@ export class Filter extends Component {
                                 </Form.Control>
                                 <div style={{display: 'contents'}} hidden={this.state.isCompareIdEqual}>
                                     <Form.Control
-                                        className={`shadow-none valid-input ml-2 notification-id-input ${classIsInvalidFromTo}`}
-                                        as='input' type='text' pattern='[0-9]*' size='sm'
+                                        className={`shadow-none remove-arrow valid-input ml-2 notification-id-input ${classIsInvalidFromTo}`}
+                                        as='input' type='number' pattern='[0-9]*' size='sm'
                                         name='fromNotificationId' id='fromNotificationId'
                                         placeholder='From'
                                         value={this.state.filter.fromNotificationId}
@@ -320,8 +320,8 @@ export class Filter extends Component {
                                     />
                                     <div className='notification-concate text-center ml-1 mr-1'>-</div>
                                     <Form.Control
-                                        className={`shadow-none valid-input notification-id-input ${classIsInvalidFromTo}`}
-                                        as='input' type='text' pattern='[0-9]*' size='sm'
+                                        className={`shadow-none valid-input remove-arrow notification-id-input ${classIsInvalidFromTo}`}
+                                        as='input' type='number' pattern='[0-9]*' size='sm'
                                         name='toNotificationId' id='toNotificationId'
                                         placeholder='To'
                                         value={this.state.filter.toNotificationId}
@@ -329,11 +329,11 @@ export class Filter extends Component {
                                         onChange={e => this.handleChangeNotificationFromTo('toNotificationId', e.target.value)}
                                     />
                                 </div>
-                                <Form.Control type="text" size="sm"
+                                <Form.Control type="number" size="sm"
                                     value={this.state.filter.notificationId}
                                     hidden={!this.state.isCompareIdEqual}
                                     name="notificationId" id="notificationId"
-                                    className="shadow-none ml-2" pattern='[0-9]*'
+                                    className="shadow-none ml-2 remove-arrow" pattern='[0-9]*'
                                     disabled={this.isDisabledNotification()}
                                     onChange={e => this.handleFilterChange('notificationId', e.target.value)}
                                 />
@@ -341,7 +341,7 @@ export class Filter extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>{LangHelper.getResource('MessageID')}</Form.Label>
-                            <Form.Control as='input' type='text' size='sm' pattern='[0-9]*' className='shadow-none'
+                            <Form.Control as='input' type='number' size='sm' pattern='[0-9]*' className='shadow-none remove-arrow'
                                 name='messageId' id='messageId'
                                 disabled={this.isDisabledMessage()}
                                 value={this.state.filter.messageId}

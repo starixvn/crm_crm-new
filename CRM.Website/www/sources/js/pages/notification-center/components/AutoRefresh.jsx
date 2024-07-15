@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
-import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
+import { REFRESH_CENTER_TIMES } from '@jsroot/common/constants';
 
 export class AutoRefresh extends Component {
     constructor(props) {
@@ -107,7 +107,7 @@ export class AutoRefresh extends Component {
                         this.state.isOpenDropdown &&
                         <ul className='auto-refresh-dropdown'>
                             {
-                                AUTO_REFRESH_TIMES.map(time =>
+                                REFRESH_CENTER_TIMES.map(time =>
                                     <li key={time} value={time} onClick={() => this.handleAutoRefreshChange(time)}>{time}</li>)
                             }
                             <li onClick={() => this.handleAutoRefreshChange(0)} value={0}>{LangHelper.getResource('NotRefresh')}</li>

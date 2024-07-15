@@ -46,6 +46,8 @@ export const MULTI_SELECT_TEXT_OPTIONS = {
 
 export const AUTO_REFRESH_TIMES = [90, 120, 150, 180];
 
+export const REFRESH_CENTER_TIMES = [60, 90, 120, 150];
+
 export const MaximumDisplayRelatedCustomer = 20;
 
 export const Policy = {

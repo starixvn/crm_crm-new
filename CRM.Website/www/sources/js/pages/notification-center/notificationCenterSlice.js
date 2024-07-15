@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
+import { REFRESH_CENTER_TIMES } from '@jsroot/common/constants';
 
 const initialState = {
     gridParams: {
@@ -10,8 +10,8 @@ const initialState = {
     gridData: null,
     editAdmNotificationResult: null,
     autoRefresh: {
-        value: AUTO_REFRESH_TIMES[0],
-        countDown: AUTO_REFRESH_TIMES[0],
+        value: REFRESH_CENTER_TIMES[0],
+        countDown: REFRESH_CENTER_TIMES[0],
         isSubmit: false
     },
     isRefresh: true
