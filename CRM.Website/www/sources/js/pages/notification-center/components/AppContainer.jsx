@@ -26,15 +26,14 @@ export class AppContainer extends Component {
 
         const { filterParams } = this.props;
         if (this.isLoadGrid) {
-            if (!isEitherExitsFromToId(filterParams) && !isFromIdOverToId(filterParams) && !isExceedMaxInt(filterParams)) {
-                console.log('filterParams', filterParams);
+            if (this.isMeetRequired(filterParams)) {
                 this.props.getGridData(filterParams);
             }
             window.history.replaceState(null, '');
         }
         if (this.props.gridParams.fromDate) {
             this.isLoadGrid = true;
-            if (!isEitherExitsFromToId(this.props.gridParams) && !isFromIdOverToId(this.props.gridParams) && !isExceedMaxInt(filterParams)) {
+            if (this.isMeetRequired(this.props.gridParams)) {
                 this.props.getGridData(this.props.gridParams);
             }
         }
@@ -48,6 +47,8 @@ export class AppContainer extends Component {
     componentWillUnmount() {
         this.props.setGridData(null);
     };
+
+    isMeetRequired = filter => !isEitherExitsFromToId(filter) && !isFromIdOverToId(filter) && !isExceedMaxInt(filter);
 
     render() {
         if(!this.state.policy){
