@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
-import { isEitherExitsFromToId, isFromIdOverToId } from '../common.functions';
+import { isEitherExitsFromToId, isFromIdOverToId, isExceedMaxInt } from '../common.functions';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
@@ -26,14 +26,15 @@ export class AppContainer extends Component {
 
         const { filterParams } = this.props;
         if (this.isLoadGrid) {
-            if (!isEitherExitsFromToId(filterParams) && !isFromIdOverToId(filterParams)) {
+            if (!isEitherExitsFromToId(filterParams) && !isFromIdOverToId(filterParams) && !isExceedMaxInt(filterParams)) {
+                console.log('filterParams', filterParams);
                 this.props.getGridData(filterParams);
             }
             window.history.replaceState(null, '');
         }
         if (this.props.gridParams.fromDate) {
             this.isLoadGrid = true;
-            if (!isEitherExitsFromToId(this.props.gridParams) && !isFromIdOverToId(this.props.gridParams)) {
+            if (!isEitherExitsFromToId(this.props.gridParams) && !isFromIdOverToId(this.props.gridParams) && !isExceedMaxInt(filterParams)) {
                 this.props.getGridData(this.props.gridParams);
             }
         }

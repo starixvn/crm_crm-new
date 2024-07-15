@@ -53,3 +53,9 @@ export const filterAndSortSites = (sites, siteType) => {
         .filter(item => item.siteType === siteType)
         .sort((x, y) => x.siteGroupOrd - y.siteGroupOrd);
 };
+
+export const isExceedMaxInt = ({ fromNotificationId, toNotificationId, matchId, messageId }) => {
+    const maxInt = 2147483647;
+    const ids = [fromNotificationId, toNotificationId, matchId, messageId];
+    return ids.some(id => parseInt(id, 10) >= maxInt);
+};
