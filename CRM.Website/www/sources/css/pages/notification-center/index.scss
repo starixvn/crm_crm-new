@@ -94,6 +94,17 @@
                         cursor: pointer;
                     }
                 }
+
+                /* Chrome, Safari, Edge, Opera */
+                input.remove-arrow::-webkit-outer-spin-button,
+                input.remove-arrow::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                /* Firefox */
+                input[type=number].remove-arrow {
+                    -moz-appearance: textfield;
+                }
             }
             
             .group-notification {
@@ -334,6 +345,9 @@
 }
 
 .notification-center-action {
+    .modal-dialog {
+        max-width: 1000px !important;
+    }
     .action-notification {
         max-width: 1000px;
         line-height: normal;
@@ -659,6 +673,7 @@
 
         .body-content {
             max-height: 400px !important;
+            overflow-x: hidden;
         }
     }
 }

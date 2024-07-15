@@ -37,6 +37,11 @@ export class AppContainer extends Component {
                 this.props.getGridData(this.props.gridParams);
             }
         }
+        this.props.setAutoRefresh({
+            ...this.props.autoRefresh,
+            isSubmit: true,
+            countDown: this.props.autoRefresh.value
+        });
     };
 
     componentWillUnmount() {
@@ -64,13 +69,15 @@ const mapStateToProps = state => {
     const {
         cancelAnnouncementPopup,
         contentPopup,
-        gridParams
+        gridParams,
+        autoRefresh
     } = state;
 
     return {
         cancelAnnouncementPopup,
         contentPopup,
-        gridParams
+        gridParams,
+        autoRefresh
     };
 };
 
