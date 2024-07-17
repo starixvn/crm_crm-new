@@ -16,6 +16,7 @@
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
 
     public interface IAutoFeedbackService
     {
@@ -623,6 +624,7 @@
             try
             {
                 SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Environment);
+                await logService.ErrorMessageAsync($"systemSettingInfo: {JsonConvert.SerializeObject(systemSettingInfo)}");
                 if (!systemSettingInfo.ServiceFlag)
                 {
                     logService.LogInformation("Service AutoFeedback MessageNotificationCenter is shutdown.");
