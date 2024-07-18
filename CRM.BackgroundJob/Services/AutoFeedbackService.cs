@@ -624,7 +624,7 @@
             try
             {
                 SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Environment);
-                await logService.ErrorMessageAsync($"systemSettingInfo: {JsonConvert.SerializeObject(systemSettingInfo)}");
+
                 if (!systemSettingInfo.ServiceFlag)
                 {
                     logService.LogInformation("Service AutoFeedback MessageNotificationCenter is shutdown.");
