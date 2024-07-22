@@ -19,7 +19,8 @@ export default class CkEditor extends PureComponent {
         className: '',
         isInvalid: false,
         isRemoveToolbarForChatbot: false,
-        isRemoveAllToolbar: false
+        isRemoveAllToolbar: false,
+        isPaddingContent: false
     };
 
     constructor(props) {
@@ -132,6 +133,7 @@ export default class CkEditor extends PureComponent {
 
         CKEDITOR.addCss('body {margin: 2px !important;}');
         CKEDITOR.addCss('p {margin: 0 !important;}');
+        this.props.isPaddingContent && CKEDITOR.addCss('body {padding: 12px !important;}');
     };
 
     removeToolbarForChatBot = isRemoveToolbarForChatbot =>{

@@ -3,7 +3,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Col, Form, Tabs, Tab, Button } from 'react-bootstrap';
+import { Col, Form, Tabs, Tab, Button, Collapse, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
@@ -29,7 +29,8 @@ export class CommonNotification extends Component {
             savePopup: { show: false },
             activatePopup: { show: false },
             messageSuccessful: null,
-            isFirstCheck: false
+            isFirstCheck: false,
+            collapseEvent: true
         }
 
         this.languages = languageOptions(this.props.actionParam.isOstUser);
@@ -187,6 +188,12 @@ export class CommonNotification extends Component {
         }
     };
 
+    handleCollapseExpand = () => {
+        this.setState(prevState => ({
+            collapseEvent: !prevState.collapseEvent
+        }));
+    };
+
     validateFormik = values => {
         const errors = {};
         const { isOstUser } = this.props.actionParam;
@@ -310,7 +317,7 @@ export class CommonNotification extends Component {
         errors,
         touched
     }) => {
-        const { messageSuccessful, affectedTicketPopup } = this.state;
+        const { messageSuccessful, affectedTicketPopup, collapseEvent } = this.state;
         const { editAdmNotificationResult, isEdit, actionParam } = this.props;
         const { isOstUser } = actionParam;
         const headerClass = isOstUser ? 'group-header required' : 'group-header';
@@ -331,31 +338,42 @@ export class CommonNotification extends Component {
                     <div className='action-content'>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group className='info-notice'>
-                                <Form.Label className='infoId'>{LangHelper.getResource('NotificationID_MsgID')}</Form.Label>
+                                <Form.Label className='infoId'>{`${LangHelper.getResource('NotificationID_MsgID')}:`}</Form.Label>
                                 <div>{values.notificationID}</div>
                                 { values.messageID && <span className='pl-2'>{`(Msg: ${values.messageID})`}</span> }
                             </Form.Group>
                             <Form.Group className='info-notice'>
-                                <Form.Label className='infoStatus'>{LangHelper.getResource('Status')}</Form.Label>
+                                <Form.Label className='infoStatus'>{`${LangHelper.getResource('Status')}:`}</Form.Label>
                                 <div className='action-status'><div className={`status-button status-${values.status} status-width`}></div></div>
                             </Form.Group>
                         </Form.Row>
                         <div className="group-item">
-                            <div className="group-header">{LangHelper.getResource('EventInfo')}</div>
-                            <div className="group-content">
-                                <Form.Group className='info-event'>
-                                    <Form.Label className='text-bold' htmlFor="eventTime">
-                                        {LangHelper.getResource('EventTimeGMT8')}
-                                    </Form.Label>
-                                    <div>{values.eventTime ? DateTimeService.toShortDateTimeFormat(values.eventTime) : null}</div>
-                                </Form.Group>
-                                <Form.Group className='info-event'>
-                                    <Form.Label className='text-bold event-name' htmlFor="eventName">
-                                        {LangHelper.getResource('EventName')}
-                                    </Form.Label>
-                                    <div>{values.eventName}</div>
-                                </Form.Group>
+                            <div className="group-header header-event"
+                                aria-controls="text-expand-event"
+                                aria-expanded={!collapseEvent}
+                                onClick={() => this.handleCollapseExpand()}
+                            >
+                                <div className='label'>{LangHelper.getResource('EventInfo')}</div>
+                                <div className={`drop-down-event ${collapseEvent && 'down-right'}`}></div>
                             </div>
+                            <Collapse in={!collapseEvent}>
+                                <div id="text-expand-event" >
+                                    <div className="group-event-info">
+                                        <Form.Group className='info-event'>
+                                            <Form.Label className='text-bold' htmlFor="eventTime">
+                                                {`${LangHelper.getResource('EventTimeGMT8')}:`}
+                                            </Form.Label>
+                                            <div>{values.eventTime ? DateTimeService.toShortDateTimeFormat(values.eventTime) : null}</div>
+                                        </Form.Group>
+                                        <Form.Group className='info-event'>
+                                            <Form.Label className='text-bold event-name' htmlFor="eventName">
+                                                {`${LangHelper.getResource('EventName')}:`}
+                                            </Form.Label>
+                                            <div>{values.eventName}</div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+                            </Collapse>
                         </div>
                         <div className="group-item">
                             <div className="group-header">{LangHelper.getResource('Sites')}</div>
@@ -368,7 +386,7 @@ export class CommonNotification extends Component {
                             </div>
                         </div>
                         <div className="group-item">
-                            <div className={headerClass}>{LangHelper.getResource(resourceKey)}</div>
+                            <div className={`${headerClass} group-sub-lan`}>{LangHelper.getResource(resourceKey)}</div>
                             {
                                 !isOstUser &&
                                 (
@@ -411,6 +429,7 @@ export class CommonNotification extends Component {
                                                         isRemoveToolbarForChatbot
                                                         isRemoveAllToolbar={actionParam.isOstUser || !isEdit}
                                                         isInvalid={touched[language.mapLabel] && errors[language.mapLabel]}
+                                                        isPaddingContent
                                                     />
                                                 </Tab>)
                                             )
