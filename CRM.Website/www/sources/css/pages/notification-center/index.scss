@@ -551,12 +551,8 @@
                             background: #f2f2f2;
                         }
 
-                        iframe.cke_wysiwyg_frame.cke_reset {
-                            padding: 0;
-
-                            html {
-                                padding: 12px 12px !important;
-                            }
+                        .cke_contents {
+                            height: 300px !important;
                         }
                     }
                     .remove-toolbar span.cke_top {
@@ -579,6 +575,7 @@
 
             .group-btn {
                 text-align: right;
+                padding-bottom: 20px;
 
                 button {
                     &:not(:last-child) {
