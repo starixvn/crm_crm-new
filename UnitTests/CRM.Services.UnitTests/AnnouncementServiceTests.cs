@@ -2,21 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Announcement;
-    using CRM.Criteria.ChatTypeMapping;
     using CRM.Models.Announcement;
-    using CRM.Models.ChatTypeMapping;
-    using CRM.Models.CommunicationLogs;
     using CRM.Services.HeadlineNotification;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
 
