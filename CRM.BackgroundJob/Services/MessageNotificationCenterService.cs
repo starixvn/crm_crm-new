@@ -100,7 +100,7 @@
             }
         }
 
-        private string GetResourceRemotingRef(string type, string id, string languageCode)
+        protected string GetResourceRemotingRef(string type, string id, string languageCode)
         {
             return type switch
             {
@@ -194,7 +194,7 @@
             }
         }
 
-        private async Task ProcessNotificationItemAsync(IEnumerable<MessageBotInfo> messages)
+        protected async Task ProcessNotificationItemAsync(IEnumerable<MessageBotInfo> messages)
         {
             foreach (var item in messages)
             {
@@ -208,7 +208,7 @@
             }
         }
 
-        private async Task ProcessMessagesAsync(List<ConversationConfig> conversationConfigs, string content, byte isTest)
+        protected async Task ProcessMessagesAsync(List<ConversationConfig> conversationConfigs, string content, byte isTest)
         {
             if (conversationConfigs.Any())
             {
@@ -223,7 +223,7 @@
             }
         }
 
-        private async Task ProcessSendRealTestMessagesAsync(List<ConversationConfig> conversationConfigs, string content)
+        protected async Task ProcessSendRealTestMessagesAsync(List<ConversationConfig> conversationConfigs, string content)
         {
             foreach (var conversationConfig in conversationConfigs)
             {
@@ -238,7 +238,7 @@
             }
         }
 
-        private async Task ProcessSendOnlyTestMessagesAsync(List<ConversationConfig> conversationConfigs, string content)
+        protected async Task ProcessSendOnlyTestMessagesAsync(List<ConversationConfig> conversationConfigs, string content)
         {
             foreach (var conversationConfig in conversationConfigs)
             {
