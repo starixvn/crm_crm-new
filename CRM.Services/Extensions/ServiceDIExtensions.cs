@@ -62,7 +62,6 @@
             services.AddSingleton<IPermissionService, PermissionService>();
             services.AddScoped<ICategoryClassificationService, CategoryClassificationService>();
             services.AddScoped<INotificationCenterService, NotificationCenterService>();
-            services.AddSingleton<IPushNotificationResultAmendmentService, PushNotificationResultAmendmentService>();
         }
     }
 }

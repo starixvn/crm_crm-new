@@ -1,53 +1,31 @@
-﻿namespace CRM.Core.Services
+﻿namespace CRM.BackgroundJob.Services
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using CRM.Core.Criteria.PushResultAmendment;
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Criteria.PushResultAmendment;
+    using CRM.BackgroundJob.Models.MessageNotificationCenter;
+    using CRM.Core.Services;
 
     public interface IPushNotificationResultAmendmentService
     {
-        Task PushNotificationMessageAsync(string environment);
+        Task<IEnumerable<MncMessageTarget>> GetPrepareNotificationAsync(string environment);
+
+        Task GetMessageResultAmendmentAsync(GetMessageResultAmendmentCommand command);
+
+        Task EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string environment, string updType);
+
+        Task EditPushMessageResultAmendmentAsync(int messageID, string updType);
+
+        Task InsertCompleteResultAmendmentAsync(string environment);
     }
 
     public class PushNotificationResultAmendmentService : IPushNotificationResultAmendmentService
     {
         private readonly IBaseService baseService;
-        private readonly ICRMLogService logService;
 
-        public PushNotificationResultAmendmentService(IBaseService baseService, ICRMLogService logService)
+        public PushNotificationResultAmendmentService(IBaseService baseService)
         {
             this.baseService = baseService;
-            this.logService = logService;
-        }
-
-        public async Task PushNotificationMessageAsync(string environment)
-        {
-            try
-            {
-                var mncNotifications = await GetPrepareNotificationAsync(environment);
-                if (mncNotifications.Any())
-                {
-                    foreach (var item in mncNotifications)
-                    {
-                        var command = new GetMessageResultAmendmentCommand
-                        {
-                            NotificationID = item.NotificationID,
-                            JSNotification = item.JSNotification
-                        };
-                        await GetMessageResultAmendmentAsync(command);
-                        await EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, environment, "AfterInsMsg");
-                        await EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
-                    }
-                    await InsertCompleteResultAmendmentAsync(environment);
-                }
-            }
-            catch (Exception ex)
-            {
-                await logService.ErrorAsync(ex);
-            }
         }
 
         public async Task<IEnumerable<MncMessageTarget>> GetPrepareNotificationAsync(string environment)

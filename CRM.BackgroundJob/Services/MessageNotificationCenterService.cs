@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
     using CRM.Core.Services;
@@ -11,6 +12,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Hosting;
 
     public interface IMessageNotificationCenterService
     {
@@ -144,13 +146,36 @@
 
         public async Task PushNotificationResultAmendmentAsync()
         {
-            var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
-            if (!serviceFlag)
+            try
             {
-                logService.LogInformation("Service Push Notification ResultAmendment is shutdown.");
-                return;
+                var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
+                if (!serviceFlag)
+                {
+                    logService.LogInformation("Service Push Notification ResultAmendment is shutdown.");
+                    return;
+                }
+
+                var mncNotifications = await pushNotificationResultAmendmentService.GetPrepareNotificationAsync(Environment);
+                if (mncNotifications.Any())
+                {
+                    foreach (var item in mncNotifications)
+                    {
+                        var command = new GetMessageResultAmendmentCommand
+                        {
+                            NotificationID = item.NotificationID,
+                            JSNotification = item.JSNotification
+                        };
+                        await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
+                        await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, Environment, "AfterInsMsg");
+                        await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
+                    }
+                    await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync(Environment);
+                }
             }
-            await pushNotificationResultAmendmentService.PushNotificationMessageAsync(Environment);
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
         }
 
         public async Task GenerateLapNotificationAsync()

@@ -1,4 +1,4 @@
-﻿namespace CRM.Core.Criteria.PushResultAmendment
+﻿namespace CRM.BackgroundJob.Criteria.PushResultAmendment
 {
     using CRM.Core.Models;
 
