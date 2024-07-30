@@ -1,8 +1,8 @@
 ﻿namespace CRM.BackgroundJob.Criteria.PushResultAmendment
 {
-    using CRM.Core.Models;
+    using Fanex.Data.Repository;
 
-    public class InsertInfoAdminSiteCommand : BaseNonQueryCommand
+    public class InsertInfoAdminSiteCommand : NonQueryCommand
     {
         public string Men {  get; set; }
 
