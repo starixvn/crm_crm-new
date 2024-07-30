@@ -14,9 +14,11 @@
 
         Task EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string environment, string updType);
 
-        Task EditPushMessageResultAmendmentAsync(int messageID, string updType);
+        Task<AdminMessageSite> EditPushMessageResultAmendmentAsync(int messageID, string updType);
 
         Task InsertCompleteResultAmendmentAsync(string environment);
+
+        Task InsertAdminMessageSiteAsync(AdminMessageSite adminMessage);
     }
 
     public class PushNotificationResultAmendmentService : IPushNotificationResultAmendmentService
@@ -54,23 +56,40 @@
             await baseService.ExecuteNonQueryAsync(command);
         }
 
-        public async Task EditPushMessageResultAmendmentAsync(int messageID, string updType)
+        public async Task<AdminMessageSite> EditPushMessageResultAmendmentAsync(int messageID, string updType)
         {
-            var command = new EditMessageResultAmendmentCommand
+            var criteria = new EditMessageResultAmendmentCriteria
             {
                 MessageID = messageID,
                 UpdType = updType
             };
-            await baseService.ExecuteNonQueryAsync(command);
+            return await baseService.GetDataEntityAsync<AdminMessageSite>(criteria);
         }
 
         public async Task InsertCompleteResultAmendmentAsync(string environment)
         {
-            var commmand = new InsertCompleteResultAmendmentCommand
+            var command = new InsertCompleteResultAmendmentCommand
             {
                 Environment = environment
             };
-            await baseService.ExecuteNonQueryAsync(commmand);
+            await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task InsertAdminMessageSiteAsync(AdminMessageSite adminMessage)
+        {
+            var command = new InsertInfoAdminSiteCommand
+            {
+                Men = adminMessage.Men,
+                Mch = adminMessage.Mch,
+                Member = adminMessage.Member,
+                Agent = adminMessage.Agent,
+                Ma = adminMessage.Ma,
+                Sma = adminMessage.Sma,
+                Creator = adminMessage.Creator,
+                NewMessageID = adminMessage.NewMessageID,
+                Remark = adminMessage.Remark
+            };
+            await baseService.ExecuteNonQueryAsync(command);
         }
     }
 }

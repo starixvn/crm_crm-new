@@ -1,8 +1,8 @@
 ﻿namespace CRM.BackgroundJob.Criteria.PushResultAmendment
 {
-    using CRM.Core.Models;
+    using Fanex.Data.Repository;
 
-    public class EditMessageResultAmendmentCommand : BaseNonQueryCommand
+    public class EditMessageResultAmendmentCriteria : CriteriaBase
     {
         public int MessageID { get; set; }
 

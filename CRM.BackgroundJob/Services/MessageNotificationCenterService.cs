@@ -167,7 +167,8 @@
                         };
                         await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
                         await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, Environment, "AfterInsMsg");
-                        await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
+                        var adminMessage = await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
+                        await pushNotificationResultAmendmentService.InsertAdminMessageSiteAsync(adminMessage);
                     }
                     await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync(Environment);
                 }

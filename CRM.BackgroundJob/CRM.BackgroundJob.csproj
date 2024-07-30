@@ -156,8 +156,4 @@
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Criteria\PushResultAmendment\" />
-    </ItemGroup>
 </Project>
