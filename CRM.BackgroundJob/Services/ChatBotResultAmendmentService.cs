@@ -151,6 +151,10 @@
 
             foreach (var transaction in transactions)
             {
+                var getTeamNameFunc = transaction.EventType == 5
+                                        ? new Func<string, string, string>(commonFeedback.GetTeamName3rd)
+                                        : new Func<string, string, string>(commonFeedback.GetTeamName);
+
                 var sportNameEN = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.en_US);
                 var sportNameSC = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.zh_CN);
                 var sportNameTH = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.th_TH);
@@ -161,15 +165,15 @@
                 var leagueNameTH = HttpUtility.HtmlEncode(commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.th_TH));
                 var leagueNameYN = HttpUtility.HtmlEncode(commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.vi_VN));
 
-                var homeNameEN = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.en_US));
-                var homeNameSC = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.zh_CN));
-                var homeNameTH = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.th_TH));
-                var homeNameYN = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.vi_VN));
+                var homeNameEN = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.HomeId.ToString(), Language.en_US));
+                var homeNameSC = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.HomeId.ToString(), Language.zh_CN));
+                var homeNameTH = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.HomeId.ToString(), Language.th_TH));
+                var homeNameYN = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.HomeId.ToString(), Language.vi_VN));
 
-                var awayNameEN = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.en_US));
-                var awayNameSC = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.zh_CN));
-                var awayNameTH = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.th_TH));
-                var awayNameYN = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.vi_VN));
+                var awayNameEN = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.AwayId.ToString(), Language.en_US));
+                var awayNameSC = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.AwayId.ToString(), Language.zh_CN));
+                var awayNameTH = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.AwayId.ToString(), Language.th_TH));
+                var awayNameYN = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.AwayId.ToString(), Language.vi_VN));
 
                 var matchInfoEN = HttpUtility.HtmlEncode(commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.en_US));
                 var matchInfoSC = HttpUtility.HtmlEncode(commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.zh_CN));
