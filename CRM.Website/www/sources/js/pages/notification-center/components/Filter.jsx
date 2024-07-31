@@ -7,7 +7,7 @@ import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
-import { statusOptionOST, statusOptionCSD, isEitherExitsFromToId, isFromIdOverToId } from '../common.functions';
+import { statusOptionOST, statusOptionCSD, isEitherExitsFromToId, isFromIdOverToId, checkExceedMaxInt } from '../common.functions';
 import { isHavePermissionOnSite, isHaveLicenseePermissionOnSite } from '@jsroot/common/shareScripts';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
@@ -122,15 +122,6 @@ export class Filter extends Component {
         }), () => this.props.setGridParams(this.getParams()));
     };
 
-    checkExceedMaxInt = (field, errMsg, isValid) => {
-        const maxInt = 2147483647;
-        const isExceedMaxInt = field.value ? parseInt(field.value, 10) >= maxInt : false;
-        if (isExceedMaxInt) {
-            isValid.value = false;
-            errMsg.push(`${field.name} ${LangHelper.getResource('ExceedsTheIntegerDatatypeRange')}`);
-        }
-    };
-    
     isValidParams = () => {
         const errMsg = [];
         let isValid = { value: true };
@@ -163,7 +154,7 @@ export class Filter extends Component {
             errMsg.push(LangHelper.getResource('InvalidRangeDateFilter'));
         }
 
-        fieldsToCheckMaxInt.forEach(field => this.checkExceedMaxInt(field, errMsg, isValid));
+        fieldsToCheckMaxInt.forEach(field => checkExceedMaxInt(field, errMsg, isValid));
 
         return { isValid: isValid.value, errMsg };
     };

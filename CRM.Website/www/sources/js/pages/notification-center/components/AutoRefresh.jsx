@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import { REFRESH_CENTER_TIMES } from '@jsroot/common/constants';
+import { isValidGetDataAutoRefresh } from '../common.functions';
 
 export class AutoRefresh extends Component {
     constructor(props) {
@@ -47,8 +48,10 @@ export class AutoRefresh extends Component {
                 pageIndex: 1
             };
 
-            this.props.setGridParams(params);
-            this.props.getGridData(params);
+            if (isValidGetDataAutoRefresh(params)) {
+                this.props.setGridParams(params);
+                this.props.getGridData(params);
+            }
         }
     };
 

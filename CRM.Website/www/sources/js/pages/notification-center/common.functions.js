@@ -1,3 +1,5 @@
+import LangHelper from '@jsroot/common/langHelper';
+
 export const statusOptionOST = [
     {id: 'New', name: 'New', checked: true},
     {id: 'Sent', name: 'Sent', checked: true},
@@ -54,8 +56,48 @@ export const filterAndSortSites = (sites, siteType) => {
         .sort((x, y) => x.siteGroupOrd - y.siteGroupOrd);
 };
 
-export const isExceedMaxInt = ({ fromNotificationId, toNotificationId, matchId, messageId }) => {
+export const isExceedMaxInt = filter => {
+    const { fromNotificationId, toNotificationId, notificationId, matchId, messageId } = filter;
     const maxInt = 2147483647;
-    const ids = [fromNotificationId, toNotificationId, matchId, messageId];
+    const ids = [fromNotificationId, toNotificationId, notificationId, matchId, messageId];
     return ids.some(id => parseInt(id, 10) >= maxInt);
+};
+
+export const checkExceedMaxInt = (field, errMsg, isValid) => {
+    const maxInt = 2147483647;
+    const isExceedMaxInt = field.value ? parseInt(field.value, 10) >= maxInt : false;
+    if (isExceedMaxInt) {
+        isValid.value = false;
+        errMsg && errMsg.push(`${field.name} ${LangHelper.getResource('ExceedsTheIntegerDatatypeRange')}`);
+    }
+};
+
+export const isValidGetDataAutoRefresh = filter => {
+    let isValid = { value: true };
+    const { fromDate, toDate } = filter;
+    const fieldsCheckMaxInt = [
+        { value: filter.notificationId, name: 'Notification ID' },
+        { value: filter.messageId, name: 'Message ID' },
+        { value: filter.matchId, name: 'Match ID' },
+        { value: filter.fromNotificationId, name: 'From Notification ID' },
+        { value: filter.toNotificationId, name: 'To Notification ID' },
+    ];
+
+    if (!filter.isCompareIdEqual) {
+        if (isEitherExitsFromToId(filter)) {
+            isValid.value = false;
+        }
+
+        if (isFromIdOverToId(filter)) {
+            isValid.value = false;
+        }
+    }
+
+    if (!fromDate || !toDate) {
+        isValid.value = false;
+    }
+
+    fieldsCheckMaxInt.forEach(field => checkExceedMaxInt(field, null, isValid));
+
+    return isValid.value;
 };
