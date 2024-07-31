@@ -12,6 +12,7 @@
     using CRM.Core.Models;
     using CRM.Models.Auth;
     using CRM.Resources;
+    using Fanex.Data;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Models;
@@ -276,9 +277,8 @@
 
         private async Task<bool> IsValidTime(string time)
         {
-            #pragma warning disable S6580
+            DateTime.TryParse(CryptographyHelper.DecryptPassword(time.Replace(" ", "+")), out DateTime descryptTime1);
             DateTime.TryParse(await securityService.GetTimeAsync(), out DateTime descryptTime2);
-            #pragma warning restore S6580
             var expiration = descryptTime2 - descryptTime1;
 
             return expiration.TotalSeconds <= appSettings.SingleSignOnExpiredTime;

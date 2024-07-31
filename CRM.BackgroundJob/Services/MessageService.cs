@@ -85,7 +85,7 @@
             DateTime LastDateUAT)
         {
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MsgID='{1}' ReqID='{2}' UsernameList='{3}' CustIdList='{4}'/>";
-            var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(Constants.BackgroundJobConstants.BeginRootTag);
             var voidingMessageGroupBy = voidingMessageUserName.GroupBy(x => new { x.VoidingHistoryCollectionId, x.RequestId, x.MessageId }).Select(y => new VoidingMessageUserName
             {
                 VoidingHistoryCollectionId = y.Key.VoidingHistoryCollectionId,
@@ -108,7 +108,7 @@
                     userName?.UsernameList,
                     userName?.CustIdList);
             }
-            stringBuilder.Append(Constants.Constants.EndRootTag);
+            stringBuilder.Append(Constants.BackgroundJobConstants.EndRootTag);
             var criteria = new ImportVoidingMessageCriteria
             {
                 MessageIds = stringBuilder.ToString(),
@@ -145,12 +145,12 @@
         public async Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames, string environment)
         {
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MsgID='{1}' ReqID='{2}' />";
-            var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(Constants.BackgroundJobConstants.BeginRootTag);
             foreach (var voidingMessageUserName in voidingMessageUserNames)
             {
                 stringBuilder.AppendFormat(XmlTemplate, voidingMessageUserName.VoidingHistoryCollectionId, voidingMessageUserName.MessageId, voidingMessageUserName.RequestId);
             }
-            stringBuilder.Append(Constants.Constants.EndRootTag);
+            stringBuilder.Append(Constants.BackgroundJobConstants.EndRootTag);
             var criteria = new EditStatusVoidingMessageCommand
             {
                 MessageIds = stringBuilder.ToString(),

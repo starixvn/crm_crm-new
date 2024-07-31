@@ -197,7 +197,7 @@
                "LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' LeagueNameYN='{23}' MatchCode='{24}' " +
                "MatchInfoEN='{25}' MatchInfoSC='{26}' MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}' LeagueGroupID='{30}'/>";
 
-            var stringBuilderEventData = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilderEventData = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
 
             commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.en_US).Returns("sportNameEN");
             commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
@@ -234,7 +234,7 @@
                         "matchInfoTH", "matchInfoYN", transaction.Type, transaction.LeagueGroupID
                         );
 
-            stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilderEventData.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
 
             const string xmlTemplateMessage = "<root><r MessageId='1' Content_en='Content_en' Content_cs='Content_cs' Content_th='Content_th' Content_vn='Content_vn'/></root>";
             var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
@@ -245,7 +245,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotResultAmendmentCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
-            var actual = await service.ImportChatBotAmendmentResultAsync(ticketEvents, transactions, messages, targetMessages, targetMessagesInfo, Constants.DefaultEnvironment, "Servername");
+            var actual = await service.ImportChatBotAmendmentResultAsync(ticketEvents, transactions, messages, targetMessages, targetMessagesInfo, BackgroundJobConstants.DefaultEnvironment, "Servername");
             var t = stringBuilderEventData.ToString();
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
@@ -254,7 +254,7 @@
             Assert.Equal(xmlTemplateMessage, criteria.MessageData);
             Assert.Equal(targetMessages.ToXML("root").ToString(), criteria.TargetMessage);
             Assert.Equal(targetMessagesInfo.ToXML("root").ToString(), criteria.InfoMessage);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
             Assert.Equal("Servername", criteria.Servername);
 
             Assert.Equal(0, criteria.ErrCode);

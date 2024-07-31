@@ -39,7 +39,7 @@
            IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
            int MAXVoidingHistoryCollectionId,
            int MAXMsgTargetId,
-           string Environment = Constants.DefaultEnvironment);
+           string Environment = BackgroundJobConstants.DefaultEnvironment);
 
         Task<IEnumerable<ChatBotVoidingBetIdHistory>> GetVoidingBetIdMessageAsync(int lastMsgTargetId, int batchSize);
     }
@@ -131,12 +131,12 @@
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
             int MAXVoidingHistoryCollectionId,
             int MAXMsgTargetId,
-            string Environment = Constants.DefaultEnvironment)
+            string Environment = BackgroundJobConstants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MessageId='{1}' UsernameList='{2}' CustId='{3}' " +
                 "Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' IsTest='{7}' " +
                 "Content_en='{8}' Content_cs='{9}' Content_th='{10}' Content_vn='{11}' Type='{12}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
@@ -159,7 +159,7 @@
             }
            
 
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportChatBotTicketVoidingInfoCommand
             {
                 XmlData = stringBuilder.ToString(),

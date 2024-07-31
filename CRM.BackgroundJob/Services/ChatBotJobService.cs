@@ -45,7 +45,7 @@
         private readonly IBaseService baseService;
         private readonly string Environment;
 
-        private const string DefaultEnvironment = Constants.DefaultEnvironment;
+        private const string DefaultEnvironment = BackgroundJobConstants.DefaultEnvironment;
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -81,7 +81,7 @@
         {
             try
             {
-                AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
+                AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot, Environment);
                 if (!setting.ServiceFlag)
                 {
                     logService.LogInformation("ChatBot - AbnormalBets Service is shutdown.");
@@ -121,7 +121,7 @@
         {
             try
             {
-                AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Environment);
+                AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_CWL, Environment);
                 if (!setting.ServiceFlag)
                 {
                     logService.LogInformation("Chat Bot CWL Service is shutdown.");
@@ -149,7 +149,7 @@
         {
             try
             {
-                AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Environment);
+                AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_TOControl, Environment);
                 if (!settingCTO.ServiceFlag)
                 {
                     logService.LogInformation("Chat Bot CTO Service is shutdown.");
@@ -178,7 +178,7 @@
         {
             try
             {
-                AbnormalBetSystemSetting settingProblemsAccount = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Environment);
+                AbnormalBetSystemSetting settingProblemsAccount = await systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ProblemAccounts, Environment);
                 if (!settingProblemsAccount.ServiceFlag)
                 {
                     logService.LogInformation("Chat Bot Problems Account Service is shutdown.");
@@ -207,7 +207,7 @@
         {
             try
             {
-                AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
+                AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ResultAmendment, Environment);
                 if (!settingResultAmendment.ServiceFlag)
                 {
                     logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
@@ -263,7 +263,7 @@
         {
             try
             {
-                AbnormalBetSystemSetting archivingDASetting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Environment);
+                AbnormalBetSystemSetting archivingDASetting = await systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ArchivedAccounts, Environment);
                 if (!archivingDASetting.ServiceFlag)
                 {
                     logService.LogInformation("Chat Bot Archiving Dormant Accounts Service is shutdown.");

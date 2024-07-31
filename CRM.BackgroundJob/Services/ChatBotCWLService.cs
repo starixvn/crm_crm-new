@@ -1,24 +1,25 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using CRM.BackgroundJob.Criteria.ChatBotCWL;
 using CRM.BackgroundJob.Models.ChatBotCWL;
-using Fanex.CRM.BackgroundJob.Constants;
 using CRM.Core.Models;
 using CRM.Core.Services;
+using Fanex.CRM.BackgroundJob.Constants;
 using Fanex.RemotingRef;
-using System;
 
 namespace CRM.BackgroundJob.Services
 {
     public interface IChatBotCWLService
     {
         Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(long LastLogId, int BatchSize);
+
         Task<ValueTuple<CommandResult, ImportCWLLogInfoCommand>> ImportCWLLogInfoAsync(
-            IEnumerable<ChatBotCWLInfo> cwlInfors, 
-            string Environment = Constants.DefaultEnvironment);
+            IEnumerable<ChatBotCWLInfo> cwlInfors,
+            string Environment = BackgroundJobConstants.DefaultEnvironment);
     }
+
     public class ChatBotCWLService : IChatBotCWLService
     {
         private readonly IBaseService baseService;
@@ -41,14 +42,14 @@ namespace CRM.BackgroundJob.Services
         }
 
         public async Task<ValueTuple<CommandResult, ImportCWLLogInfoCommand>> ImportCWLLogInfoAsync(
-            IEnumerable<ChatBotCWLInfo> cwlInfors, 
-            string Environment = Constants.DefaultEnvironment)
+            IEnumerable<ChatBotCWLInfo> cwlInfors,
+            string Environment = BackgroundJobConstants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' CurrencyName='{2}' " +
                 "Username='{3}' Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' " +
                 "Winloss='{7}' ProductNameEN='{8}' ProductNameSC='{9}' ProductNameTH='{10}' " +
                 "ProductNameVN='{11}' LevelId='{12}' GroupId='{13}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             foreach (ChatBotCWLInfo cwl in cwlInfors)
             {
                 var productEN = GetProductName(cwl.ProductId.ToString(), "en-US");
@@ -73,7 +74,7 @@ namespace CRM.BackgroundJob.Services
                     cwl.GroupId);
             }
 
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportCWLLogInfoCommand
             {
                 XmlData = stringBuilder.ToString(),

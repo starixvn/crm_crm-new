@@ -46,7 +46,7 @@
         private readonly ICRMLogService logService;
         private readonly string Environment;
 
-        private const string DefaultEnvironment = Constants.DefaultEnvironment;
+        private const string DefaultEnvironment = BackgroundJobConstants.DefaultEnvironment;
 
         public FeedbackTicketVoidingService(
             IBaseService baseService,
@@ -65,7 +65,7 @@
                AbnormalBetSystemSetting setting)
         {
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MsgID='{1}' ReqID='{2}' UsernameList='{3}' CustIdList='{4}' />";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
 
             foreach (var voidingMessageUserName in voidingMessageUserNames)
             {
@@ -78,7 +78,7 @@
                     );
             }
 
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
 
             var criteria = new GetAbnormalTicketInfoCriteria
             {
@@ -150,7 +150,7 @@
         {
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' IssueTypeId='{6}' />";
             const int duplicateType = 20;
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             var transactionInfosDistinct = transactionInfos.Select(x => new
             {
                 x.CustId,
@@ -192,7 +192,7 @@
                 }
             }
 
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             return stringBuilder.ToString();
         }
 

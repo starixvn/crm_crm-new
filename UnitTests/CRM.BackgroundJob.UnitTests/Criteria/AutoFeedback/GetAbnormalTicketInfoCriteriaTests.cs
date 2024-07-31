@@ -33,7 +33,7 @@
                 MessageIds = messageIds,
                 ConfigUAT = true,
                 ConfigPRO = false,
-                Environment = Constants.DefaultEnvironment
+                Environment = BackgroundJobConstants.DefaultEnvironment
             };
 
             // Act

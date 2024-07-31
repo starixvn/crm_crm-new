@@ -62,7 +62,7 @@
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment)
         {
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ResultAmendment);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, BackgroundJobConstants.ServiceName_ResultAmendment);
 
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -73,7 +73,7 @@
             if (isAnyNotCompeleteStatus)
             {
                 logService.LogInformation("Data has some status not completed");
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_ResultAmendment);
                 return;
             }
             if (custAmendmentNotifications.Any())
@@ -102,7 +102,7 @@
             {
                 logService.LogInformation(string.Format("Import Amendment Auto Feedback Infor doesn't have any data with custId: {0} TicketId: {1}!",
                     string.Join(",", custAmendmentNotifications.Select(x => x.CustId)), string.Join(",", custAmendmentNotifications.Select(x => x.TicketId))));
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_ResultAmendment);
                 return;
             }
 
@@ -117,7 +117,7 @@
                         isNoResultTemplate);
             }
 
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_ResultAmendment);
             logService.LogInformation("end service result amendment serivce!");
         }
 
@@ -139,7 +139,7 @@
                 maxSeq,
                 lastSubmitTimeEnvName,
                 maxLastSubmitTime.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
-                Constants.ServiceName_ResultAmendment
+                BackgroundJobConstants.ServiceName_ResultAmendment
            );
         }
 
@@ -158,7 +158,7 @@
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
                  && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
-                && x.SettingId == Constants.ExtentionNA);
+                && x.SettingId == BackgroundJobConstants.ExtentionNA);
             var bettypeSplits = amendment.Listbettype.Split(",");
             var betTypeMappings = new List<string>();
             foreach (var betType in bettypeSplits.Distinct().ToList())
@@ -183,7 +183,7 @@
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
                 ResponseId = response != null ? response.SettingId : 0,
-                UserRole = Constants.UserRole,
+                UserRole = BackgroundJobConstants.UserRole,
                 Subject = DefaultValue.Special_Notification,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField = string.Empty,
@@ -250,7 +250,7 @@
             SettingItem product = GetAmenmentProduct(settings, settingMappings, productId);
             IList<SettingItem> subProducts = GetAmendmentSubProduct(product.SettingId, sportTypeId, settings, settingMappings);
             IList<SystemSettingMapping> tempBettypes = GetAmendmentBettype(betTypeMappings, settingMappings);
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             foreach (var settingId in subProducts.Select(x => x.SettingId))
             {
                 if (tempBettypes.Any())
@@ -262,10 +262,10 @@
                 }
                 else
                 {
-                    stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, settingId, Constants.BettypeNA);
+                    stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, settingId, BackgroundJobConstants.BettypeNA);
                 }
             }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual SettingItem GetAmenmentProduct(
@@ -282,7 +282,7 @@
                 && productMapping != null
                 && x.SettingId == productMapping.SettingId);
 
-            return product ?? new SettingItem { SettingId = Constants.ProductNA };
+            return product ?? new SettingItem { SettingId = BackgroundJobConstants.ProductNA };
         }
 
         protected internal virtual IList<SettingItem> GetAmendmentSubProduct(
@@ -304,7 +304,7 @@
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
                 {
-                    new SettingItem { SettingId = Constants.SubProductNA, ParentIds = new List<int> { Constants.ProductNA } }
+                    new SettingItem { SettingId = BackgroundJobConstants.SubProductNA, ParentIds = new List<int> { BackgroundJobConstants.ProductNA } }
                 };
         }
 
@@ -319,7 +319,7 @@
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SystemSettingMapping>
                 {
-                    new SystemSettingMapping { SettingId = Constants.BettypeNA }
+                    new SystemSettingMapping { SettingId = BackgroundJobConstants.BettypeNA }
                 };
         }
 
@@ -345,11 +345,11 @@
 
         protected internal virtual string GetAmendmentRelatedCustomerXml(AmendmentAutoFeedbackInfor amendment)
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
 
             if (string.IsNullOrEmpty(amendment.affectedId))
             {
-                return stringBuilder.Append(Constants.EndRootTag).ToString();
+                return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
             }
             var relateCustIds = amendment.affectedId.Split(",");
             var userNames = amendment.affectedName.Split(",");
@@ -358,13 +358,13 @@
             {
                 stringBuilder.AppendFormat(XmlTemplate, amendment.HeadlineId, relateCustIds[i], userNames[i]);
             }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual string GetAmendmentDescription(AmendmentAutoFeedbackInfor amendment, bool isNoResultTemplate)
         {
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             var amendmentDescTemplate = commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>(descTemplateXml);
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
@@ -389,8 +389,8 @@
             if (isNoResultTemplate)
             {
                 const string messageIdColor = "<span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}{1}</span>";
-                stringBuilder.AppendFormat(messageIdColor, amendment.MessageId, Constants.LineBreak);
-                stringBuilder.AppendFormat(amendmentDescTemplate.NoResult, EventdateGMT4Format, sportName, kO_time, leagueName, homeName, awayName, Constants.Break);
+                stringBuilder.AppendFormat(messageIdColor, amendment.MessageId, BackgroundJobConstants.LineBreak);
+                stringBuilder.AppendFormat(amendmentDescTemplate.NoResult, EventdateGMT4Format, sportName, kO_time, leagueName, homeName, awayName, BackgroundJobConstants.Break);
             }
             else
             {
@@ -412,7 +412,7 @@
                                leagueName,
                                homeName,
                                awayName,
-                               Constants.Break
+                               BackgroundJobConstants.Break
                             );
                             break;
                         }
@@ -425,7 +425,7 @@
                                matchCodeReplace,
                                homeName,
                                awayName,
-                               Constants.Break
+                               BackgroundJobConstants.Break
                             );
                         break;
 
@@ -442,7 +442,7 @@
                         break;
                 }
             }
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             return stringBuilder.ToString();
         }
 
@@ -465,7 +465,7 @@
                   sportName,
                   homeName,
                   awayName,
-                  Constants.Break
+                  BackgroundJobConstants.Break
                );
             }
             else
@@ -475,7 +475,7 @@
                   EventdateGMT4,
                   sportName,
                   Race_time,
-                  Constants.Break
+                  BackgroundJobConstants.Break
                );
             }
 
@@ -497,7 +497,7 @@
                   EventdateGMT4,
                   game,
                   amendment.MatchCode,
-                  Constants.Break
+                  BackgroundJobConstants.Break
                );
             return stringBuilder;
         }
@@ -519,7 +519,7 @@
                startTimeOutright,
                leagueName,
                homeName,
-               Constants.Break
+               BackgroundJobConstants.Break
               );
             }
             else
@@ -529,7 +529,7 @@
                amendment.Leaguenametc,
                startTimeOutright,
                leagueName,
-               Constants.Break
+               BackgroundJobConstants.Break
               );
             }
             return stringBuilder;
@@ -545,12 +545,12 @@
                 if (isVipCust)
                 {
                     stringBuilder.AppendFormat(amendmentSolTemplate.NoResultENYN, messageContent?.FirstOrDefault()?.Content_en,
-                        amendment.affectedName, Constants.Break, Constants.LineBreak);
+                        amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
                 }
                 else
                 {
                     stringBuilder.AppendFormat(amendmentSolTemplate.NoResultENSC, messageContent?.FirstOrDefault()?.Content_en,
-                        messageContent?.FirstOrDefault()?.Content_cs, amendment.affectedName, Constants.Break, Constants.LineBreak);
+                        messageContent?.FirstOrDefault()?.Content_cs, amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
                 }
             }
             else
@@ -587,7 +587,7 @@
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.OutrightEN,
                             outRightMessageEn,
-                            Constants.LineBreak);
+                            BackgroundJobConstants.LineBreak);
                         break;
                     }
                     stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookEN,
@@ -598,8 +598,8 @@
                         Eventdate,
                         amendment.ActualResult,
                         amendment.WrongResult,
-                        Constants.Break,
-                        Constants.LineBreak);
+                        BackgroundJobConstants.Break,
+                        BackgroundJobConstants.LineBreak);
                     break;
 
                 case "Virtual Sports 2":
@@ -612,14 +612,14 @@
                             Eventdate,
                             amendment.ActualResult,
                             amendment.WrongResult,
-                            Constants.Break,
-                            Constants.LineBreak);
+                            BackgroundJobConstants.Break,
+                            BackgroundJobConstants.LineBreak);
                     break;
 
                 case "Virtual Sports":
                     stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsEN,
                         sportName,
-                        Constants.LineBreak);
+                        BackgroundJobConstants.LineBreak);
                     break;
 
                 case "Number Game":
@@ -627,8 +627,8 @@
                         numberGameEnGame,
                         matchCode,
                         Eventdate,
-                        Constants.LineBreak,
-                        Constants.Break);
+                        BackgroundJobConstants.LineBreak,
+                        BackgroundJobConstants.Break);
                     break;
 
                 default:
@@ -682,12 +682,12 @@
                     if (isVipCust)
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, sportNameYN,
-                        matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
+                        matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
                     }
                     else
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, sportNameSC, matchCodeReplaceSC,
-                        Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
+                        Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
                     }
                     break;
 
@@ -734,13 +734,13 @@
                     stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
                     outRightMessageSc,
                     amendment.affectedName,
-                    Constants.LineBreak);
+                    BackgroundJobConstants.LineBreak);
                 }
                 else
                 {
                     stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookSC, sportNameSC, homeNameSC, awayNameSC,
                     leagueNameSC, Eventdate, amendment.ActualResult, amendment.WrongResult,
-                    amendment.affectedName, Constants.Break, Constants.LineBreak);
+                    amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
                 }
             }
             return stringBuilder;
@@ -766,12 +766,12 @@
                 stringBuilder.AppendFormat(amendmentSolTemplate.OutrightYN,
                 outRightMessageYn,
                 amendment.affectedName,
-                Constants.LineBreak);
+                BackgroundJobConstants.LineBreak);
             }
             else
             {
                 stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookYN, sportNameYN, homeNameYN, awayNameYN,
-                leagueNameYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
+                leagueNameYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
             }
             return stringBuilder;
         }
@@ -789,7 +789,7 @@
                 stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsYN,
                 sportNameYN,
                 affectedName,
-                Constants.LineBreak
+                BackgroundJobConstants.LineBreak
                 );
             }
             else
@@ -797,7 +797,7 @@
                 stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsSC,
                 sportNameSC,
                 affectedName,
-                Constants.LineBreak
+                BackgroundJobConstants.LineBreak
                 );
             }
             return stringBuilder;
@@ -816,12 +816,12 @@
             if (isVipCust)
             {
                 stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameYN, numberGameNameYn, MatchCode,
-                Eventdate, affectedName, Constants.LineBreak, Constants.Break);
+                Eventdate, affectedName, BackgroundJobConstants.LineBreak, BackgroundJobConstants.Break);
             }
             else
             {
                 stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameSC, numberGameNameSc, MatchCode, Eventdate,
-                affectedName, Constants.LineBreak, Constants.Break);
+                affectedName, BackgroundJobConstants.LineBreak, BackgroundJobConstants.Break);
             }
             return stringBuilder;
         }

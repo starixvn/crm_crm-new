@@ -43,7 +43,7 @@
             Assert.Equal(expected, actual);
             Assert.Equal(username, criteria.Username);
             Assert.Equal(isGuest, criteria.IsGuest);
-            Assert.Equal(Constants.UserRole, criteria.UserRole);
+            Assert.Equal(BackgroundJobConstants.UserRole, criteria.UserRole);
         }
 
         [Fact]
@@ -85,7 +85,7 @@
             Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]
@@ -133,7 +133,7 @@
             Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]

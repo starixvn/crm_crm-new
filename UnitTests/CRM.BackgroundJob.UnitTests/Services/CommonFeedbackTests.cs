@@ -366,7 +366,7 @@
             var service = GetService();
 
             // Act
-            await service.EditFeedbackSystemSettingAsync(1, Constants.ServiceName_TOControlFB);
+            await service.EditFeedbackSystemSettingAsync(1, BackgroundJobConstants.ServiceName_TOControlFB);
 
             // Assert
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
@@ -379,7 +379,7 @@
             var service = GetService();
 
             // Act
-            await service.EditSystemSettingAsyncByEnv("JobStatusNameEnv", "LastRuntimeNameEnv", "JobStatusValue", Constants.ServiceName_TOControlFB);
+            await service.EditSystemSettingAsyncByEnv("JobStatusNameEnv", "LastRuntimeNameEnv", "JobStatusValue", BackgroundJobConstants.ServiceName_TOControlFB);
 
             // Assert
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
@@ -392,7 +392,7 @@
             var service = GetService();
 
             // Act
-            await service.EditSystemSettingUpdateLastLogIdAsyncByEnv("JobStatusNameEnv", "LastRuntimeNameEnv", "lastLogIdName", 1, Constants.ServiceName_TOControlFB);
+            await service.EditSystemSettingUpdateLastLogIdAsyncByEnv("JobStatusNameEnv", "LastRuntimeNameEnv", "lastLogIdName", 1, BackgroundJobConstants.ServiceName_TOControlFB);
 
             // Assert
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
@@ -405,7 +405,7 @@
             var service = GetService();
 
             // Act
-            await service.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "lastSeqEnvName", 1, "lastSubmitTimeEnvName", "maxLastSubmitTime", Constants.ServiceName_ResultAmendment);
+            await service.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "lastSeqEnvName", 1, "lastSubmitTimeEnvName", "maxLastSubmitTime", BackgroundJobConstants.ServiceName_ResultAmendment);
 
             // Assert
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());

@@ -20,6 +20,7 @@ namespace CRM.BackgroundJob.Services
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv, string JobStatusNameEnv, string Environment
         );
     }
+
     public class ArchivingDAService : IArchivingDAService
     {
         private readonly AppJobSettings appSettings;
@@ -52,7 +53,7 @@ namespace CRM.BackgroundJob.Services
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv, string JobStatusNameEnv, string Environment
         )
         {
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ArchivingDA);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, BackgroundJobConstants.ServiceName_ArchivingDA);
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
@@ -71,7 +72,7 @@ namespace CRM.BackgroundJob.Services
                     var archivedDate = custInfor.First().ArchivedDate;
                     var custIdsJoin = string.Join(",", custInfor.Select(x => x.CustID));
                     await feedbackTransactionService.ArchivingImportDirectAccountAsync(custIdsJoin, archivedDate);
-                    await commonFeedback.EditArchivingDAStatusSettingAsync(Constants.ServiceName_ArchivingDA, "1");
+                    await commonFeedback.EditArchivingDAStatusSettingAsync(BackgroundJobConstants.ServiceName_ArchivingDA, "1");
                     archivingAutoFbInfos = await feedbackTransactionService.ArchivingAutoFeedbackInfoInsAsync(archivingDASetting, Environment);
                 }
 
@@ -82,7 +83,7 @@ namespace CRM.BackgroundJob.Services
                 logService.LogInformation("stage is not one, update status!!!");
                 await UpdateArchivingStatus(archivingDASetting.IsSyncArchivedAccount, LastRuntimeNameEnv, JobStatusNameEnv);
             }
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ArchivingDA);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_ArchivingDA);
         }
 
         protected internal virtual async Task CheckExistAnyArchivingFb(
@@ -98,7 +99,7 @@ namespace CRM.BackgroundJob.Services
                     await CreateFeedbackForArchivingDACreditAsync(archivingAutoFbInfo, settings, settingMappings);
                 }
                 var maxLogId = archivingAutoFbInfos.Max(x => x.LogFeedbackId);
-                await commonFeedback.EditArchivingDAMaxLogIdSettingAsync(Constants.ServiceName_ArchivingDA, maxLogId.ToString());
+                await commonFeedback.EditArchivingDAMaxLogIdSettingAsync(BackgroundJobConstants.ServiceName_ArchivingDA, maxLogId.ToString());
             }
         }
 
@@ -107,7 +108,7 @@ namespace CRM.BackgroundJob.Services
            IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start create achiving DA feedback logId: {0} , headlineName: {1}!" , archivingAutoFbInfo.LogFeedbackId, archivingAutoFbInfo.HeadlineName));
+            logService.LogInformation(string.Format("Start create achiving DA feedback logId: {0} , headlineName: {1}!", archivingAutoFbInfo.LogFeedbackId, archivingAutoFbInfo.HeadlineName));
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTimeOffset.Now.DateTime.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -115,7 +116,7 @@ namespace CRM.BackgroundJob.Services
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
                  && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
-                && x.SettingId == Constants.ExtentionNA);
+                && x.SettingId == BackgroundJobConstants.ExtentionNA);
             var category = GetCategorySubCategoryArchivingDA(settings, DefaultValue.Special_Notification);
 
             var criteria = new CreateMutipleFeedbackCommand
@@ -131,7 +132,7 @@ namespace CRM.BackgroundJob.Services
                 ResponseId = response != null ? response.SettingId : 0,
                 CategoryXml = category.Item3,
                 CategoryIds = category.Item1.ToString(),
-                UserRole = Constants.UserRole,
+                UserRole = BackgroundJobConstants.UserRole,
                 Subject = DefaultValue.Special_Notification,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField = string.Empty,
@@ -153,13 +154,13 @@ namespace CRM.BackgroundJob.Services
         {
             const int fromArchiveDate = 90;
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             var template = commonFeedback.GetFeedbackTemplates<ArchivingTemplate>(templateXml);
-            stringBuilder.AppendFormat(template.Description, 
+            stringBuilder.AppendFormat(template.Description,
                 archivingAutoFbInfo.ArchivedDate.ToString("MMM-yyyy"),
                 archivingAutoFbInfo.ArchivedDate.AddDays(-fromArchiveDate).ToString("MM/dd/yyyy"),
                 archivingAutoFbInfo.ArchivedDate.ToString("MM/dd/yyyy"),
-                Constants.LineBreak);
+                BackgroundJobConstants.LineBreak);
 
             return stringBuilder.ToString();
         }
@@ -167,22 +168,21 @@ namespace CRM.BackgroundJob.Services
         protected internal virtual string GetArchivingDASolution(ArchivingAutoFbInfo archivingAutoFbInfo)
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             var isVipCust = archivingAutoFbInfo.SiteLabel == "789y" && archivingAutoFbInfo.IsVip;
             var template = commonFeedback.GetFeedbackTemplates<ArchivingTemplate>(templateXml);
             var templateYNSC = isVipCust ? template.SolutionENYN : template.SolutionENSC;
-            stringBuilder.AppendFormat(templateYNSC, archivingAutoFbInfo.AffectedName, Constants.LineBreak, Constants.Break);
+            stringBuilder.AppendFormat(templateYNSC, archivingAutoFbInfo.AffectedName, BackgroundJobConstants.LineBreak, BackgroundJobConstants.Break);
             return stringBuilder.ToString();
         }
 
-
         protected internal virtual string GetArchivingRelatedCustomerXml(ArchivingAutoFbInfo archivingAutoFbInfo)
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
 
             if (string.IsNullOrEmpty(archivingAutoFbInfo.AffectedId))
             {
-                return stringBuilder.Append(Constants.EndRootTag).ToString();
+                return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
             }
             var relateCustIds = archivingAutoFbInfo.AffectedId.Split(",");
             var userNames = archivingAutoFbInfo.AffectedName.Split(",");
@@ -191,7 +191,7 @@ namespace CRM.BackgroundJob.Services
             {
                 stringBuilder.AppendFormat(XmlTemplate, archivingAutoFbInfo.HeadlineID, relateCustIds[i], userNames[i]);
             }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual async Task CheckValidArchivingParamsAndInsertFeedbackAsync(
@@ -236,9 +236,9 @@ namespace CRM.BackgroundJob.Services
 
         protected internal virtual string GetProductXmlNA()
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            stringBuilder.AppendFormat(DefaultValue.ProductXml, Constants.ProductNA, Constants.SubProductNA, Constants.BettypeNA);
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
+            stringBuilder.AppendFormat(DefaultValue.ProductXml, BackgroundJobConstants.ProductNA, BackgroundJobConstants.SubProductNA, BackgroundJobConstants.BettypeNA);
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual Tuple<int, int, string> GetCategorySubCategoryArchivingDA(IEnumerable<SettingItem> settings, string settingValueName)
@@ -262,17 +262,16 @@ namespace CRM.BackgroundJob.Services
                     subCategoryId));
         }
 
-
         protected internal virtual async Task UpdateArchivingStatus(bool isSyncArchivedAccount, string lastRuntimeNameEnv, string jobStatusNameEnv)
         {
             if (isSyncArchivedAccount)
             {
-                await commonFeedback.EditArchivingDAStatusSettingAsync(Constants.ServiceName_ArchivingDA, "0");
+                await commonFeedback.EditArchivingDAStatusSettingAsync(BackgroundJobConstants.ServiceName_ArchivingDA, "0");
             }
             else
             {
-                await commonFeedback.EditSystemSettingAsyncByEnv(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ArchivingDA);
+                await commonFeedback.EditSystemSettingAsyncByEnv(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_ArchivingDA);
             }
         }
-    } 
+    }
 }

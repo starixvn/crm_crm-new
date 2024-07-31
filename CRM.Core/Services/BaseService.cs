@@ -8,12 +8,14 @@
     using CRM.Core.Models;
     using Fanex.Caching;
     using Fanex.Data.Repository;
-    using Fanex.NAP.Core.Extensions;
+    using Fanex.NAP.Client.Helpers.Extensions;
 
     public interface IBaseService
     {
         Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria);
+
         Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria);
+
         Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(SiteDbBaseCriteria criteria);
 
         Task<T> GetDataEntityAsync<T>(ICriteria criteria);
@@ -21,6 +23,8 @@
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>> FetchMultipleAsync<TFirst, TSecond>(ICriteria criteria);
 
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria);
+
+        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>> FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria);
 
         Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command);
     }
@@ -103,6 +107,17 @@
             }
 
             return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>(new List<TFirst>(), new List<TSecond>(), new List<TThird>());
+        }
+
+        public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>)> FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria)
+        {
+            if (criteria != null && criteria.IsValid())
+            {
+                return await dynamicRepository.FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(criteria);
+            }
+
+            return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>(
+                new List<TFirst>(), new List<TSecond>(), new List<TThird>(), new List<TFour>());
         }
 
         public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command)

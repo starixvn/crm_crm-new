@@ -70,7 +70,7 @@
             string jobStatusNameEnv, string environment)
         {
             logService.LogInformation("start service voiding settled!!!");
-            await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoVoidFB);
+            await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Running, BackgroundJobConstants.ServiceName_AutoVoidFB);
 
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -105,7 +105,7 @@
             }
             if (!voidingTickets.Any())
             {
-                await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoVoidFB);
+                await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_AutoVoidFB);
                 logService.LogInformation("Do not have any data set1, return voiding settled tickets!!!");
                 return;
             }
@@ -132,7 +132,7 @@
                 await CreateVoidingSettledTicketsAsync(feedbackInfoFirst, eventDetails, messages, settings, settingMappings, environment);
             }
 
-            await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoVoidFB);
+            await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_AutoVoidFB);
             logService.LogInformation("end service voiding settled!!!");
         }
 
@@ -150,7 +150,7 @@
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
-                && x.SettingId == Constants.ExtentionNA);
+                && x.SettingId == BackgroundJobConstants.ExtentionNA);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
 
@@ -174,7 +174,7 @@
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
-                UserRole = Constants.UserRole,
+                UserRole = BackgroundJobConstants.UserRole,
                 Subject = feedbackInfo.IssueTypeId == DuplicateTicketIssueTypeId ? DefaultValue.Special_Notification : DefaultValue.ResultAmended,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, feedbackInfo.HeadlineId, feedbackInfo.HeadlineName),
@@ -243,7 +243,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             var listBetTypes = bettypes.Split(",");
             IList<SettingItem> products = GetVoidingSettledTicketsProduct(settings, settingMappings, productIds);
             var productSettingIds = products.Select(x => x.SettingId);
@@ -259,10 +259,10 @@
             }
             else
             {
-                stringBuilder.AppendFormat(DefaultValue.ProductXml, Constants.ProductNA, Constants.SubProductNA, Constants.BettypeNA);
+                stringBuilder.AppendFormat(DefaultValue.ProductXml, BackgroundJobConstants.ProductNA, BackgroundJobConstants.SubProductNA, BackgroundJobConstants.BettypeNA);
             }
             logService.LogInformation("end mapping product, sub-product, bet type voiding settled tickets.");
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual string GetProductSubXml(
@@ -273,7 +273,7 @@
             var stringBuilder = new StringBuilder();
             if (!subProducts.Any())
             {
-                stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, Constants.SubProductNA, Constants.BettypeNA);
+                stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, BackgroundJobConstants.SubProductNA, BackgroundJobConstants.BettypeNA);
             }
             else
             {
@@ -286,7 +286,7 @@
                     }
                     else
                     {
-                        stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, subProduct.SettingId, Constants.BettypeNA);
+                        stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, subProduct.SettingId, BackgroundJobConstants.BettypeNA);
                     }
                 }
             }
@@ -330,7 +330,7 @@
 
             return products.Any()
                 ? products.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
-                : new List<SettingItem> { new SettingItem { SettingId = Constants.ProductNA } };
+                : new List<SettingItem> { new SettingItem { SettingId = BackgroundJobConstants.ProductNA } };
         }
 
         protected internal virtual IList<SettingItem> GetVoidingSettledTicketsSubProduct(
@@ -363,7 +363,7 @@
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
                 {
-                    new SettingItem { SettingId = Constants.SubProductNA, ParentIds = new List<int> { Constants.ProductNA } }
+                    new SettingItem { SettingId = BackgroundJobConstants.SubProductNA, ParentIds = new List<int> { BackgroundJobConstants.ProductNA } }
                 };
         }
 
@@ -392,7 +392,7 @@
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SystemSettingMapping>
                 {
-                    new SystemSettingMapping { SettingId = Constants.BettypeNA }
+                    new SystemSettingMapping { SettingId = BackgroundJobConstants.BettypeNA }
                 };
         }
 
@@ -421,11 +421,11 @@
 
         protected internal virtual string GetRelatedCustomerXml(VoidingAutoFeedbackInfo feedbackInfo)
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
 
             if (string.IsNullOrEmpty(feedbackInfo.AffectedId))
             {
-                return stringBuilder.Append(Constants.EndRootTag).ToString();
+                return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
             }
             var relateCustIds = feedbackInfo.AffectedId.Split(",");
             var userNames = feedbackInfo.AffectedName.Split(",");
@@ -434,7 +434,7 @@
             {
                 stringBuilder.AppendFormat(XmlTemplate, feedbackInfo.HeadlineId, relateCustIds[i], userNames[i]);
             }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual string GetVoidingSettledTicketSolution(VoidingAutoFeedbackInfo feedbackInfo, IEnumerable<Message> messages)
@@ -447,13 +447,13 @@
             if (feedbackInfo.SiteLabel == "789y" && feedbackInfo.IsVip)
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
-                   content_en, feedbackInfo.AffectedName, Constants.Break, Constants.LineBreak
+                   content_en, feedbackInfo.AffectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak
                );
             }
             else
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENSC,
-                    content_en, content_cs, feedbackInfo.AffectedName, Constants.LineBreak, Constants.Break
+                    content_en, content_cs, feedbackInfo.AffectedName, BackgroundJobConstants.LineBreak, BackgroundJobConstants.Break
                 );
             }
 
@@ -469,8 +469,8 @@
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             var stringBuilderMainParlay = new StringBuilder();
             var stringBuilderTicket = new StringBuilder();
-            stringBuilder.Append(Constants.Break);
-            stringBuilder.AppendFormat(messageTemplate, feedbackInfo.MessageId, Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
+            stringBuilder.AppendFormat(messageTemplate, feedbackInfo.MessageId, BackgroundJobConstants.Break);
             var ticketDescTemplate = commonFeedback.GetFeedbackTemplates<VoidingSettledTicketDescriptionTemplate>(descTemplateXml);
             var countAppendTicket = 0;
             var countAppendMainParlay = 0;
@@ -483,7 +483,7 @@
                     {
                         stringBuilderTicket.Append(settledTicketsText);
                     }
-                    stringBuilderTicket.Append(Constants.Break);
+                    stringBuilderTicket.Append(BackgroundJobConstants.Break);
                     stringBuilderTicket.Append(GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate, feedbackInfo.Site));
                     countAppendTicket++;
                 }
@@ -491,10 +491,10 @@
                 {
                     if (countAppendMainParlay == 0)
                     {
-                        stringBuilderMainParlay.Append(Constants.Break);
+                        stringBuilderMainParlay.Append(BackgroundJobConstants.Break);
                         stringBuilderMainParlay.Append(mainParlayticketsText);
                     }
-                    stringBuilderMainParlay.Append(Constants.Break);
+                    stringBuilderMainParlay.Append(BackgroundJobConstants.Break);
                     const string templateMainParlaytickets = "- {0}";
                     stringBuilderMainParlay.AppendFormat(templateMainParlaytickets, eventDetail.MatchCode);
                     countAppendMainParlay++;
@@ -527,20 +527,20 @@
             stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName));
             if (productName == "Virtual Sports" && (eventDetail.Sporttype == SportType180 || eventDetail.Sporttype == SportType186))
             {
-                stringBuilder.AppendFormat(line, Constants.Break);
-                stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports, EventdateGMT4Format, sportName, homeName, awayName, Constants.Break);
+                stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports, EventdateGMT4Format, sportName, homeName, awayName, BackgroundJobConstants.Break);
             }
 
             if (productName == "Virtual Sports" && (eventDetail.Sporttype > SportType180 && eventDetail.Sporttype < SportType186))
             {
-                stringBuilder.AppendFormat(line, Constants.Break);
-                stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports181185, EventdateGMT4Format, sportName, race_time, Constants.Break);
+                stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports181185, EventdateGMT4Format, sportName, race_time, BackgroundJobConstants.Break);
             }
 
             if (productName == "Number Game")
             {
-                stringBuilder.AppendFormat(line, Constants.Break);
-                stringBuilder.AppendFormat(ticketDescTemplate.NumberGames, EventdateGMT4Format, numberGameEnGame, matchCode, Constants.Break);
+                stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.NumberGames, EventdateGMT4Format, numberGameEnGame, matchCode, BackgroundJobConstants.Break);
             }
 
             return stringBuilder.ToString();
@@ -557,8 +557,8 @@
             var EventdateGMT4Format = eventDetail.Eventdate.ToString(DefaultValue.FortmatddmmmyyyyDash);
             if (productName == "Sportsbook" && eventDetail.EventType == EventType2)
             {
-                stringBuilder.AppendFormat(line, Constants.Break);
-                stringBuilder.AppendFormat(ticketDescTemplate.Outright, eventDetail.Leaguenametc, kO_time, leagueName, homeName, Constants.Break);
+                stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.Outright, eventDetail.Leaguenametc, kO_time, leagueName, homeName, BackgroundJobConstants.Break);
             }
 
 #pragma warning disable S1067
@@ -568,7 +568,7 @@
                 productName != "Virtual Sports 4") return stringBuilder.ToString();
 #pragma warning restore S1067
 #pragma warning restore S121
-            stringBuilder.AppendFormat(line, Constants.Break);
+            stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
             string league = leagueName;
             if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) 
                 || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) 
@@ -576,7 +576,7 @@
             {
                 league = sportName;
             }
-            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, Constants.Break);
+            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, BackgroundJobConstants.Break);
 
             return stringBuilder.ToString();
         }

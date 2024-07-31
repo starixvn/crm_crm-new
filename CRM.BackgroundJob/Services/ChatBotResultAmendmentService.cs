@@ -114,13 +114,13 @@
 
         public async Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds)
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             const string Xml = "<r MessageId='{0}'/>";
             foreach (var messageId in messageIds)
             {
                 stringBuilder.AppendFormat(Xml, messageId);
             }
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new GetChatBotMsgCriteria
             {
                 Messages = stringBuilder.ToString()
@@ -138,8 +138,8 @@
             string Servername
             )
         {
-            var stringBuilderEventData = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
-            var stringBuilderMessage = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilderEventData = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
+            var stringBuilderMessage = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
 
             const string XmlTemplate = "<r TicketEventId='{0}' ProductId='{1}' EventDate='{2}' " +
                 "SubmitDate='{3}' EventType='{4}' ActualResult='{5}' WrongResult='{6}' MessageId='{7}' " +
@@ -187,7 +187,7 @@
                         matchInfoEN, matchInfoSC, matchInfoTH, matchInfoYN, transaction.Type, transaction.LeagueGroupID
                 );
             }
-            stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilderEventData.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
 
             const string xmlTemplateMessage = "<r MessageId='{0}' Content_en='{1}' Content_cs='{2}' Content_th='{3}' Content_vn='{4}'/>";
 
@@ -203,7 +203,7 @@
                 );
             }
 
-            stringBuilderMessage.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilderMessage.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
 
             var criteria = new ImportChatBotResultAmendmentCommand
             {

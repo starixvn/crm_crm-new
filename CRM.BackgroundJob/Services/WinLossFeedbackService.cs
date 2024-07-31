@@ -65,7 +65,7 @@
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
             };
             logService.LogInformation(string.Format("Start run WL serivce with last log ID: {0}!", setting.LastLogId));
-            await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
+            await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_WinLimitFB);
             IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.GetListCustReachLimitAsync(setting);
             var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
@@ -82,7 +82,7 @@
                 logService.LogInformation(string.Format("Import CWL doesn't have any data with custId: {0} headlineName: {1}!",
                    string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
                 var lastLogID = cusWinLimit.Any() ? cusWinLimit.Max(x => x.LogID) : setting.LastLogId;
-                await commonFeedback.EditFeedbackSystemSettingAsync(lastLogID, Constants.ServiceName_WinLimitFB);
+                await commonFeedback.EditFeedbackSystemSettingAsync(lastLogID, BackgroundJobConstants.ServiceName_WinLimitFB);
                 return;
             }
 
@@ -98,7 +98,7 @@
                         settingMappings);
             }
             var maxLastLogID = winlossInfo.Item1.Max(x => x.LogID);
-            await commonFeedback.EditFeedbackSystemSettingAsync(maxLastLogID, Constants.ServiceName_WinLimitFB);
+            await commonFeedback.EditFeedbackSystemSettingAsync(maxLastLogID, BackgroundJobConstants.ServiceName_WinLimitFB);
         }
 
         protected internal virtual async Task CreateWinLossFeedbackCreditAsync(
@@ -116,7 +116,7 @@
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
                  && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
-                && x.SettingId == Constants.ExtentionNA);
+                && x.SettingId == BackgroundJobConstants.ExtentionNA);
             var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.CompanyWLLimit);
             string[] betTypeLists = winLimit.BettypeIDList.Split(",");
             var betTypeMappings = (from bet in bettype
@@ -132,7 +132,7 @@
                 StationId = station != null ? station.SettingId.ToString() : string.Empty,
                 StatusId = status != null ? status.SettingId : 0,
                 ResponseId = response != null ? response.SettingId : 0,
-                UserRole = Constants.UserRole,
+                UserRole = BackgroundJobConstants.UserRole,
                 CategoryXml = category.Item3,
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
@@ -205,7 +205,7 @@
             SettingItem product = GetProduct(settings, settingMappings, winLimit.ProductName);
             List<SettingItem> subProducts = GetSubProduct(winLimit, sports, product.SettingId, settings, settingMappings);
             IList<SettingItem> bettypes = GetBettype(subProducts.Select(x => x.SettingId), betTypeMappings, settingMappings, settings);
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
 
             foreach (var settingId in subProducts.Select(x => x.SettingId))
             {
@@ -219,10 +219,10 @@
                 }
                 else
                 {
-                    stringBuilder.AppendFormat(XmlTemplate, product.SettingId, settingId, Constants.BettypeNA);
+                    stringBuilder.AppendFormat(XmlTemplate, product.SettingId, settingId, BackgroundJobConstants.BettypeNA);
                 }
             }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual SettingItem GetProduct(
@@ -238,7 +238,7 @@
                 && productMapping != null
                 && x.SettingId == productMapping.SettingId);
 
-            return product ?? new SettingItem { SettingId = Constants.ProductNA };
+            return product ?? new SettingItem { SettingId = BackgroundJobConstants.ProductNA };
         }
 
         protected internal virtual List<SettingItem> GetSubProduct(
@@ -263,7 +263,7 @@
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
                 {
-                    new SettingItem { SettingId = Constants.SubProductNA, ParentIds = new List<int> { Constants.ProductNA } }
+                    new SettingItem { SettingId = BackgroundJobConstants.SubProductNA, ParentIds = new List<int> { BackgroundJobConstants.ProductNA } }
                 };
         }
 
@@ -286,7 +286,7 @@
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
                 {
-                    new SettingItem { SettingId = Constants.BettypeNA, ParentIds = new List<int> { Constants.SubProductNA } }
+                    new SettingItem { SettingId = BackgroundJobConstants.BettypeNA, ParentIds = new List<int> { BackgroundJobConstants.SubProductNA } }
                 };
         }
 
@@ -307,7 +307,7 @@
             string templateRng = "";
             string templateJackpotPrize = "";
 
-            var totalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
+            var totalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(BackgroundJobConstants.ThousanPase);
             var templates = commonFeedback.GetFeedbackTemplates<FeedbackTemplate>(templateXml);
             var formatTemplates = templates.Templates;
             if (isVipHeadline)
@@ -333,11 +333,11 @@
             var stringBuilder = new StringBuilder();
             if (winLimit.ProductName == "RNG Casino" && (winLimit.ProductGroup == "RNG Casino - Minor Jackpot" || winLimit.ProductGroup == "RNG Casino - Mega Jackpot"))
             {
-                stringBuilder.AppendFormat(templateRng, winLimit.UserName, totalWinAmt, winLimit.Currency, Constants.LineBreak);
+                stringBuilder.AppendFormat(templateRng, winLimit.UserName, totalWinAmt, winLimit.Currency, BackgroundJobConstants.LineBreak);
             }
             else if (winLimit.ProductName == "PP" && winLimit.ProductGroup == "PP - Jackpot Prize")
             {
-                stringBuilder.AppendFormat(templateJackpotPrize, winLimit.UserName, totalWinAmt, winLimit.Currency, Constants.LineBreak);
+                stringBuilder.AppendFormat(templateJackpotPrize, winLimit.UserName, totalWinAmt, winLimit.Currency, BackgroundJobConstants.LineBreak);
             }
             else
             {
@@ -345,19 +345,19 @@
                 {
                     case "Orange":
                     case "Yellow":
-                        stringBuilder.AppendFormat(templateYellow, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
+                        stringBuilder.AppendFormat(templateYellow, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, BackgroundJobConstants.LineBreak);
                         break;
 
                     case "Grey":
-                        stringBuilder.AppendFormat(templateGrey, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
+                        stringBuilder.AppendFormat(templateGrey, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, BackgroundJobConstants.LineBreak);
                         break;
 
                     case "Red":
-                        stringBuilder.AppendFormat(templateRed, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
+                        stringBuilder.AppendFormat(templateRed, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, BackgroundJobConstants.LineBreak);
                         break;
 
                     case "Black":
-                        stringBuilder.AppendFormat(templateBlack, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
+                        stringBuilder.AppendFormat(templateBlack, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, BackgroundJobConstants.LineBreak);
                         break;
 
                     default:
@@ -373,9 +373,9 @@
             const int numGames = 3;
             List<BettypeInfo> numGamesDisplay = bettype.Count > 3 ? bettype.Take(numGames).ToList() : bettype;
             var numGamesFormat = numGamesDisplay.Any() ? string.Join(", ", numGamesDisplay.Select(x => x.Name)) : "";
-            var MaxWinLimitSetting = Math.Truncate(Convert.ToDouble(winlimit.MaxWinLimitSetting)).ToString(Constants.ThousanPase);
-            var TotalWinAmt_RM = Math.Truncate(winlimit.TotalWinAmt_RM).ToString(Constants.ThousanPase);
-            var TotalWinAmt = Math.Truncate(winlimit.TotalWinAmt).ToString(Constants.ThousanPase);
+            var MaxWinLimitSetting = Math.Truncate(Convert.ToDouble(winlimit.MaxWinLimitSetting)).ToString(BackgroundJobConstants.ThousanPase);
+            var TotalWinAmt_RM = Math.Truncate(winlimit.TotalWinAmt_RM).ToString(BackgroundJobConstants.ThousanPase);
+            var TotalWinAmt = Math.Truncate(winlimit.TotalWinAmt).ToString(BackgroundJobConstants.ThousanPase);
 
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             stringBuilder.Append("<br />Informed Headline Win/Loss Alert for below member:");
@@ -386,7 +386,7 @@
             stringBuilder.AppendFormat("<br /> Winning/Losing Limit Amount: {0} (RM), Winning/Losing Amount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
             , MaxWinLimitSetting, TotalWinAmt_RM, TotalWinAmt, winlimit.Currency);
             stringBuilder.AppendFormat("<br />Reached Limit Time: {0}, Reached Limit Level: {1}", winlimit.ReachedTime, winlimit.Level);
-            stringBuilder.Append(Constants.LineBreak);
+            stringBuilder.Append(BackgroundJobConstants.LineBreak);
 
             return stringBuilder.ToString();
         }
@@ -394,10 +394,10 @@
         protected internal virtual string GetRelatedCustomerXml(WinLimitFeedBackInfo winLimit)
         {
             const string XmlTemplate = DefaultValue.RelatedCustomerXml;
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             stringBuilder.AppendFormat(XmlTemplate, winLimit.HeadlineId, winLimit.RelatedCustId, winLimit.UserName);
 
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
     }
 }

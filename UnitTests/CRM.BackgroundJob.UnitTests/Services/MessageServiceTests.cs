@@ -85,9 +85,9 @@
                 }
             };
             const string XmlTemplate = "<r VoidingHistoryCollectionId='1' MsgID='1' ReqID='1' UsernameList='UsernameList' CustIdList='CustIdList'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             stringBuilder.Append(XmlTemplate);
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             var date = new DateTime();
             var criteria = new ImportVoidingMessageCriteria();
             var service = GetMessageService();

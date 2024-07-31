@@ -5,7 +5,7 @@
 
     public class GetAllSettingRelationCriteria : CriteriaBase
     {
-        public int UserRole { get; } = Constants.UserRole;
+        public int UserRole { get; } = BackgroundJobConstants.UserRole;
 
         public override string GetSettingKey() => "Acc_CRM_SettingRelationSel";
 

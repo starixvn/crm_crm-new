@@ -44,7 +44,7 @@
         private readonly IBaseService baseService;
         private readonly string Environment;
 
-        private const string DefaultEnvironment = Constants.Constants.DefaultEnvironment;
+        private const string DefaultEnvironment = Constants.BackgroundJobConstants.DefaultEnvironment;
 
         public CustomerService(
             IDynamicRepository dynamicRepository,

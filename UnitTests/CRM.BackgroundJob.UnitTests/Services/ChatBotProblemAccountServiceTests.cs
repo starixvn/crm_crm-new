@@ -62,7 +62,7 @@
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' CategoryId='{6}' " +
                 "CategoryNameEN='{7}' CategoryNameSC='{8}' CategoryNameTH='{9}' CategoryNameYN='{10}' " +
                 "IsTest='{11}' />";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             var problemsAccount = problemsAccounts.First();
 
             commonFeedback.GetCategogyName(Arg.Any<string>(), "en-US").Returns("a");
@@ -82,19 +82,19 @@
                     'c',
                     'd',
                     problemsAccount.IsTest);
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new ProblemsAccountImportCommand();
             var commandResult = fixture.Create<CommandResult>();
             var valueTupe = new ValueTuple<CommandResult, ProblemsAccountImportCommand>(commandResult, criteria);
             baseService.ExecuteNonQueryAsync(Arg.Do<ProblemsAccountImportCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
-            var actual = await service.ImportProblemsAccountInfoAsync(problemsAccounts, Constants.DefaultEnvironment);
+            var actual = await service.ImportProblemsAccountInfoAsync(problemsAccounts, BackgroundJobConstants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
             Assert.Null(criteria.ErrMsg);
 

@@ -17,7 +17,7 @@
         Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(long LastLogId, int BatchSize);
         Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> tOReachInfors);
         Task<ValueTuple<CommandResult, TOControlImportCommand>> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
-                                         string Environment = Constants.DefaultEnvironment);
+                                         string Environment = BackgroundJobConstants.DefaultEnvironment);
     }
     public class ChatBotCTOService : IChatBotCTOService
     {
@@ -51,7 +51,7 @@
         }
 
         public async Task<ValueTuple<CommandResult, TOControlImportCommand>> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
-                                         string Environment = Constants.DefaultEnvironment)
+                                         string Environment = BackgroundJobConstants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' Recommend='{3}'" +
                 " Mrecommend='{4}' Srecommend='{5}' CurrencyName='{6}'" +
@@ -62,7 +62,7 @@
                 " AwayNameEN='{23}' AwayNameSC='{24}' AwayNameTH='{25}' AwayNameYN='{26}' " +
                 " Outstanding='{27}'> </r>";
 
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             foreach (TOSMAInfor smaInfor in tOSMAInfors)
             {
                 var sportNameEN = commonFeedback.GetSportName(smaInfor.Sporttype.ToString(), Language.en_US);
@@ -120,7 +120,7 @@
                     );
             }
 
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new TOControlImportCommand
             {
                 XmlData = stringBuilder.ToString(),

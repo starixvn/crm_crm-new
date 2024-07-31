@@ -2,9 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Threading.Tasks;
+
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -18,6 +19,8 @@
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
+    using CRM.Models.Feedback.LatestFeedback;
+    using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.FeedbackStatistic;
     using CRM.Resources;
     using Fanex.Data.Repository;
@@ -39,6 +42,7 @@
         Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId);
 
         Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command);
+
         Task<CommandResult> EditCustomerNewManualFeedbackAsync(EditCustomerNewManualFeedbackCommand command);
 
         Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param);
@@ -54,18 +58,15 @@
     {
         private readonly IDynamicRepository dynamicRepository;
         private readonly IBaseService baseService;
-        private readonly IDynamicRepository dynamicRepository;
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
 
         public FeedbackService(
             IDynamicRepository dynamicRepository,
             IBaseService baseService,
-            IDynamicRepository dynamicRepository,
             ISettingService settingService,
             ICommonService commonService)
         {
-            this.dynamicRepository = dynamicRepository;
             this.baseService = baseService;
             this.settingService = settingService;
             this.commonService = commonService;
@@ -79,7 +80,7 @@
             var criteriaNewFeedback = new GetCustomerNewManualFeedbackByIdCriteria { FeedbackId = feedbackId };
 
             var customerFeedbackModel =
-                isCheckFeedbackIdIsNew ? await feedbackRepository.GetCustomerFeedbackByIdAsync(criteriaNewFeedback) :
+                isCheckFeedbackIdIsNew ? await GetCustomerFeedbackDataByIdAsync(criteriaNewFeedback) :
                     await GetCustomerOldFeedbackByIdAsync(feedbackId);
 
             CustomerFeedback feedback = null;
@@ -108,6 +109,20 @@
             return feedback;
         }
 
+        private async Task<CustomerFeedbackModel> GetCustomerFeedbackDataByIdAsync(ICriteria criteria)
+        {
+            var (customerFeedback, fbCommunicationTools, fbSettingRelations, relatedCustomerPermission) = await baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(criteria);
+            var customerFeedbackModel = new CustomerFeedbackModel
+            {
+                CustomerFeedback = customerFeedback,
+                FeedbackCommunicationTool = fbCommunicationTools,
+                FeedbackSettingRelation = fbSettingRelations,
+                RelatedCustomerPermission = relatedCustomerPermission
+            };
+
+            return customerFeedbackModel;
+        }
+
         public async Task<IEnumerable<DeletedFeedbackStatistic>> GetDeletedFeedbackStatisticAsync(ICriteria criteria)
         {
             var results = await baseService.FetchMultipleAsync<DeletedFeedbackStatistic, FeedbackSettingRelation>(criteria);
@@ -132,6 +147,7 @@
 
             return results;
         }
+
         private static FeedbackStatisticInfo ReadFeedbackStatistic(IDataReader reader, IDataReader reader2)
         {
             var userNames = new List<BaseModel>();
@@ -258,15 +274,15 @@
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
-        
+
         public async Task<CommandResult> EditCustomerNewManualFeedbackAsync(EditCustomerNewManualFeedbackCommand command)
         {
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
-	
-         private async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(ICriteria criteria)
+
+        private async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(ICriteria criteria)
         {
             var results = await baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(criteria);
             var feedbacks = results.Item1;
@@ -279,7 +295,6 @@
 
             return feedbacks;
         }
-
 
         public async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param)
         {
@@ -371,7 +386,7 @@
                 FeedbackId = feedbackId
             };
 
-            var (communicationLogInfos, relatedCustomers, settingItems) = 
+            var (communicationLogInfos, relatedCustomers, settingItems) =
                 await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(criteria);
             CommunicationLog communicationLog = null;
 

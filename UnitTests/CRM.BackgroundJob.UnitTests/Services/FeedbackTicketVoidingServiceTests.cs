@@ -47,9 +47,9 @@
                 }
             };
             const string XmlTemplate = "<r VoidingHistoryCollectionId='1' MsgID='1' ReqID='1' UsernameList='UsernameList' CustIdList='CustIdList' />";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             stringBuilder.Append(XmlTemplate);
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = new List<TransactionInfo>();
             var duplicateTicketDetail = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
@@ -70,7 +70,7 @@
             Assert.Equal(stringBuilder.ToString(), criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]
@@ -92,9 +92,9 @@
                 }
             };
             const string XmlTemplate = "<r VoidingHistoryCollectionId='1' MsgID='1' ReqID='1' UsernameList='UsernameList' CustIdList='CustIdList' />";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             stringBuilder.Append(XmlTemplate);
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var duplicateTicketDetail = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
@@ -114,7 +114,7 @@
             Assert.Equal(stringBuilder.ToString(), criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]

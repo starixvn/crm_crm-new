@@ -29,13 +29,13 @@
 
         Task<CommandResult> EditSystemSettingAsync(
             IEnumerable<SystemSettingItem> settings, 
-            string serviceName = Constants.ServiceName_AutoFB);
+            string serviceName = BackgroundJobConstants.ServiceName_AutoFB);
 
         Task<CommandResult> EditJobStatusAsync(string status);
 
         Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(
             string serviceName, 
-            string Environment = Constants.DefaultEnvironment);
+            string Environment = BackgroundJobConstants.DefaultEnvironment);
 
         Task<WinLossSystemSetting> GetWinLossSettingAsync();
 
@@ -72,7 +72,7 @@
 
         public async Task<CommandResult> EditSystemSettingAsync(
             IEnumerable<SystemSettingItem> settings,
-            string serviceName = Constants.ServiceName_AutoFB)
+            string serviceName = BackgroundJobConstants.ServiceName_AutoFB)
         {
             var criteria = new EditSystemSettingCommand
             {
@@ -93,7 +93,7 @@
 
         public async Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(
             string serviceName, 
-            string Environment = Constants.DefaultEnvironment)
+            string Environment = BackgroundJobConstants.DefaultEnvironment)
         {
             var criteria = new GetChatBotSystemSettingCriteria
             {
@@ -137,7 +137,7 @@
         {
             var criteria = new GetSystemSettingByServiceNameCriteria
             {
-                ServiceName = Constants.ServiceName_ArchivingDA
+                ServiceName = BackgroundJobConstants.ServiceName_ArchivingDA
             };
             return await baseService.GetDataEntityAsync<ArchivingDASetting>(criteria);
         }

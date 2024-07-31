@@ -15,7 +15,7 @@
         Task<IEnumerable<ChatBotProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize);
 
         Task<ValueTuple<CommandResult, ProblemsAccountImportCommand>> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
-                                                  string Environment = Constants.DefaultEnvironment);
+                                                  string Environment = BackgroundJobConstants.DefaultEnvironment);
     }
 
     public class ChatBotProblemAccountService : IChatBotProblemAccountService
@@ -40,13 +40,13 @@
         }
 
         public async Task<ValueTuple<CommandResult, ProblemsAccountImportCommand>> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
-                                                  string Environment = Constants.DefaultEnvironment)
+                                                  string Environment = BackgroundJobConstants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' CategoryId='{6}' " +
                 "CategoryNameEN='{7}' CategoryNameSC='{8}' CategoryNameTH='{9}' CategoryNameYN='{10}' " +
                 "IsTest='{11}' />";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             foreach (ChatBotProblemsAccountInfor problemAccount in problemsAccounts)
             {
                 var CategoryNameEN = commonFeedback.GetCategogyName(problemAccount.CategoryId.ToString(), Language.en_US);
@@ -69,7 +69,7 @@
                     problemAccount.IsTest);
             }
 
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new ProblemsAccountImportCommand
             {
                 XmlData = stringBuilder.ToString(),

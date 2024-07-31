@@ -52,7 +52,7 @@
         private readonly IAbnormalBetService abnormalBetService;
         private readonly string Environment;
 
-        private const string DefaultEnvironment = Constants.DefaultEnvironment;
+        private const string DefaultEnvironment = BackgroundJobConstants.DefaultEnvironment;
         private const string dateTimeParse = "yyyy-MM-dd hh:mm:ss.fff tt";
 
 #pragma warning disable S107 // Methods should not have too many parameters
@@ -100,7 +100,7 @@
             try
             {
                 logService.LogInformation("Abnormal Bet - Service is Start.");
-                AbnormalBetSystemSetting setting = await systemSettingService.GetAbnormalBetSettingAsync(Constants.ServiceName_AutoFB);
+                AbnormalBetSystemSetting setting = await systemSettingService.GetAbnormalBetSettingAsync(BackgroundJobConstants.ServiceName_AutoFB);
                 if (!setting.ServiceFlag)
                 {
                     logService.LogInformation("Abnormal Bet - Service is shutdown.");
@@ -191,7 +191,7 @@
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
                            new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
-                        await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
+                        await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_WinLimitFB);
                     }
                 }
             }
@@ -234,7 +234,7 @@
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
                            new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse)},
                         };
-                        await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
+                        await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_TOControlFB);
                     }
                 }
             }
@@ -304,7 +304,7 @@
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
                            new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
-                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_ResultAmendment);
                 }
             }
         }
@@ -370,7 +370,7 @@
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
                            new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
-                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_ProblemsAccount);
                 }
             }
         }
@@ -453,7 +453,7 @@
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
                            new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss") },
                         };
-                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_AutoVoidFB);
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_AutoVoidFB);
                 }
             }
         }
@@ -519,7 +519,7 @@
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
                            new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
-                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ArchivingDA);
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_ArchivingDA);
                 }
             }
         }
@@ -528,7 +528,7 @@
         {
             try
             {
-                SystemSettingInfo refundSettledSetting = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_RefundSettledTickets, Environment);
+                SystemSettingInfo refundSettledSetting = await systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_RefundSettledTickets, Environment);
                 if (!refundSettledSetting.ServiceFlag)
                 {
                     logService.LogInformation("Service Refund Settled Tickets is shutdown.");
@@ -557,7 +557,7 @@
         {
             try
             {
-                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoVoidBetID, Environment);
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoVoidBetID, Environment);
                 if (!systemSettingInfo.ServiceFlag)
                 {
                     logService.LogInformation("Service VoidBetID is shutdown.");
@@ -587,7 +587,7 @@
         {
             try
             {
-                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoAbnormalBets, Environment);
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoAbnormalBets, Environment);
                 if (!systemSettingInfo.ServiceFlag)
                 {
                     logService.LogInformation("Service AutoFeedback AbnormalBets is shutdown.");

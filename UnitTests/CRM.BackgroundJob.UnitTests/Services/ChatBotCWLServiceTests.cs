@@ -52,7 +52,7 @@
                 "Username='{3}' Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' " +
                 "Winloss='{7}' ProductNameEN='{8}' ProductNameSC='{9}' ProductNameTH='{10}' " +
                 "ProductNameVN='{11}' LevelId='{12}' GroupId='{13}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
 
             service.GetProductName(Arg.Any<string>(),"en-US").Returns("a");
             service.GetProductName(Arg.Any<string>(), "zh-CN").Returns("b");
@@ -74,19 +74,19 @@
                     "d",
                     cWLInfo.LevelId,
                     cWLInfo.GroupId);
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportCWLLogInfoCommand();
 
             var commandResult = fixture.Create<CommandResult>();
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportCWLLogInfoCommand>(x => criteria = x)).Returns(commandResult);
             var valueTupe = new ValueTuple<CommandResult, ImportCWLLogInfoCommand>(commandResult, criteria);
             // Act
-            var actual = await service.ImportCWLLogInfoAsync(cWLInfos, Constants.DefaultEnvironment);
+            var actual = await service.ImportCWLLogInfoAsync(cWLInfos, BackgroundJobConstants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
             Assert.Null(criteria.ErrMsg);
 

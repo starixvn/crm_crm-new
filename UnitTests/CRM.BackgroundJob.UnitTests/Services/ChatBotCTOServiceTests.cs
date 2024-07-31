@@ -76,7 +76,7 @@
                 " AwayNameEN='{23}' AwayNameSC='{24}' AwayNameTH='{25}' AwayNameYN='{26}' " +
                 " Outstanding='{27}'> </r>";
 
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             var smaInfor = tOSMAInfors[0];
             commonFeedback.GetSportName(smaInfor.Sporttype.ToString(), Language.en_US).Returns("sportNameEN");
             commonFeedback.GetSportName(smaInfor.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
@@ -134,7 +134,7 @@
                     smaInfor.Outstanding
                 );
                    
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = fixture.Create<TOControlImportCommand>();
 
             var commandResult = fixture.Create<CommandResult>();
@@ -143,7 +143,7 @@
 
 
             // Act
-            var actual = await service.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment);
+            var actual = await service.ImportTOSMAInfoAsync(tOSMAInfors, BackgroundJobConstants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);

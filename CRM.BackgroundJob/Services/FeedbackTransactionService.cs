@@ -80,7 +80,7 @@
         {
             const string XmlTemplate = "<r logid='{0}' custid='{1}' hl='{2}' hlname='{3}' related='{4}' product='{5}' group='{6}' level='{7}' " +
                                        "limitsetting='{8}' winamount='{9}' winamountRM='{10}' time='{11}' bettype='{12}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             foreach (var limitInfo in cusWinLimit)
             {
                 double settingAmount = 0;
@@ -128,7 +128,7 @@
                     limitInfo.ReachedTime,
                     BettypeIDList);
             }
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             var criteria = new ImportWinLossFeedbackInfoCriteria
             {
                 xml = stringBuilder.ToString()
@@ -196,7 +196,7 @@
         {
             const string XmlTemplate = "<r logid='{0}' custid='{1}' matchid='{2}' profileID='{3}' hl='{4}' hlname='{5}' related='{6}' profileName='{7}' maxTO='{8}' " +
                                        "houseTO='{9}' totalTO='{10}' outstanding='{11}' bettype='{12}' level='{13}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             foreach (TONotification TO in custNotifications)
             {
                 var hlname = "";
@@ -230,7 +230,7 @@
                     TO.ReachLevel
                     );
             }
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             var criteria = new InsertTOControl_AutoFeedbackInfoCommand
             {
                 xml = stringBuilder.ToString()
@@ -244,7 +244,7 @@
              string Environment)
         {
             const string XmlTemplate = "<r logid='{0}' custid='{1}' hl='{2}' hlname='{3}' related='{4}' catid='{5}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             foreach (CustCategoryInfor custCategory in custCatogorys)
             {
                 var hlname = "";
@@ -264,7 +264,7 @@
                         custCategory.CategoryID
                     );
             }
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             var criteria = new InsertProblemsAccountAutoFeedbackInforCommand
             {
                 xml = stringBuilder.ToString(),
@@ -313,7 +313,7 @@
         public async Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments, string Environment)
         {
             const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype='{3}' Seq='{4}' SubmitDate='{5}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             foreach (var cust in CustAmendments)
             {
                 stringBuilder.AppendFormat(XmlTemplate,
@@ -324,7 +324,7 @@
                         cust.Seq,
                         cust.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"));
             }
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
 
             var criteria = new InsertAmendmentNotificationCommand
             {

@@ -7,7 +7,7 @@
     {
         public string Username { get; set; }
         public bool IsGuest { get; set; }
-        public short UserRole { get; } = Constants.UserRole;
+        public short UserRole { get; } = BackgroundJobConstants.UserRole;
         public string SiteLabel { get; set; } = string.Empty;
 
         #pragma warning disable S3052

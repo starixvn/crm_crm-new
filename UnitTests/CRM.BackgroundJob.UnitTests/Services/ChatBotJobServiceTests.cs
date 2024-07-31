@@ -52,7 +52,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -81,15 +81,15 @@
             var valueTupeImportVoiding = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResultImportTicket, criteriaVoiding);
 
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidingMessagesHis);
             ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
                 Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
             ).Returns(userNameList);
             ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(chatBotVoidingBetIdHistory);
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotVoidingHistoryCollection>>(), chatBotVoidingBetIdHistory, Constants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotVoidingHistoryCollection>>(), chatBotVoidingBetIdHistory, BackgroundJobConstants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
             ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2).Returns(messages);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4, Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupeImportVoiding);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -119,15 +119,15 @@
             var valueTupeImportVoiding = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResultImportTicket, criteriaVoiding);
 
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidingMessagesHis);
             ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
                 Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
             ).Returns(userNameList);
             ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(chatBotVoidingBetIdHistory);
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotVoidingHistoryCollection>>(), chatBotVoidingBetIdHistory, Constants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotVoidingHistoryCollection>>(), chatBotVoidingBetIdHistory, BackgroundJobConstants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
             ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2).Returns(messages);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4 ,Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4 ,BackgroundJobConstants.DefaultEnvironment).Returns(valueTupeImportVoiding);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -143,7 +143,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_TOControl, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
@@ -165,11 +165,11 @@
             var valueTupe = new ValueTuple<CommandResult, TOControlImportCommand>(commandResult, criteria);
 
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_TOControl, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(tOReachInfors);
             chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
 
-            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
@@ -191,11 +191,11 @@
             var criteria = fixture.Create<TOControlImportCommand>();
             var valueTupe = new ValueTuple<CommandResult, TOControlImportCommand>(commandResult, criteria);
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_TOControl, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(tOReachInfors);
             chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
 
-            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
@@ -210,7 +210,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_CWL, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
@@ -229,9 +229,9 @@
             var criteria = fixture.Create<ImportCWLLogInfoCommand>();
             var valueTupe = new ValueTuple<CommandResult, ImportCWLLogInfoCommand>(commandResult, criteria);
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_CWL, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(cwlInfors);
-            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
@@ -251,9 +251,9 @@
             var criteria = fixture.Create<ImportCWLLogInfoCommand>();
             var valueTupe = new ValueTuple<CommandResult, ImportCWLLogInfoCommand>(commandResult, criteria);
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_CWL, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(cwlInfors);
-            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
@@ -268,7 +268,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ProblemAccounts, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
@@ -289,10 +289,10 @@
             var valueTupe = new ValueTuple<CommandResult, ProblemsAccountImportCommand>(commandResult, criteria);
 
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ProblemAccounts, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(problemsAcountInfors);
 
-            chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
@@ -313,10 +313,10 @@
             var valueTupe = new ValueTuple<CommandResult, ProblemsAccountImportCommand>(commandResult, criteria);
 
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ProblemAccounts, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(problemsAcountInfors);
 
-            chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
@@ -331,7 +331,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ResultAmendment, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
@@ -349,7 +349,7 @@
             var settledTicket = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var siteDbConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ResultAmendment, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync(1,1).Returns(voidingMesssageSettled);
             baseService.GetSiteDbConfigAsync(new GetSiteDbConfigCriteria()).Returns(siteDbConfigs);
             chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMesssageSettled.Item2, siteDbConfigs.First().SiteDBGroupID).Returns(settledTicket);
@@ -377,7 +377,7 @@
             var resultAmendmentInfo = new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>(valueTupe, "ServerName");
             var commandMessage = new CommandResult { Code = 0 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ResultAmendment, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync(1,2).Returns(voidingMesssageSettled);
             chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(voidingMesssageSettled.Item2).Returns(voidingMessageInfo);
             chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
@@ -387,7 +387,7 @@
 
             chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
                     resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
-                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, Constants.DefaultEnvironment, resultAmendmentInfo.Item2
+                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, BackgroundJobConstants.DefaultEnvironment, resultAmendmentInfo.Item2
                    ).Returns(valueTupeAmendment);
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
@@ -414,7 +414,7 @@
             var resultAmendmentInfo = new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>(valueTupe, "ServerName");
             var commandMessage = new CommandResult { Code = 0 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ResultAmendment, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync(1,2).Returns(voidingMesssageSettled);
             chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(voidingMesssageSettled.Item2).Returns(voidingMessageInfo);
             chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
@@ -423,7 +423,7 @@
             var valueTupeAmendment = new ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>(commandResult, criteria);
             chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
                     resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
-                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, Constants.DefaultEnvironment, resultAmendmentInfo.Item2
+                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, BackgroundJobConstants.DefaultEnvironment, resultAmendmentInfo.Item2
                    ).Returns(valueTupeAmendment);
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
@@ -438,7 +438,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ArchivedAccounts, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
@@ -457,9 +457,9 @@
             var valueTupe = new ValueTuple<CommandResult, ImportArchivedAccountsCommand>(commandResult, command);
             var archivingDAInfors = fixture.Create<IEnumerable<ChatbotArchivingDAInfor>>();
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ArchivedAccounts, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotArchivingDAService.GetChatbotArchivingDASettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(archivingDAInfors);
-            chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
             // Act
             await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
 
@@ -477,9 +477,9 @@
             var valueTupe = new ValueTuple<CommandResult, ImportArchivedAccountsCommand>(commandResult, command);
             var archivingDAInfors = fixture.Create<IEnumerable<ChatbotArchivingDAInfor>>();
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ArchivedAccounts, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotArchivingDAService.GetChatbotArchivingDASettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(archivingDAInfors);
-            chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
             // Act
             await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
 

@@ -33,7 +33,7 @@
             baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Any<GetSystemSettingByServiceNameCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAbnormalBetSettingAsync(Constants.ServiceName_AutoFB);
+            var actual = await service.GetAbnormalBetSettingAsync(BackgroundJobConstants.ServiceName_AutoFB);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -57,7 +57,7 @@
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(xml, criteria.Settings);
-            Assert.Equal(Constants.ServiceName_AutoFB, criteria.ServiceName);
+            Assert.Equal(BackgroundJobConstants.ServiceName_AutoFB, criteria.ServiceName);
         }
 
         [Fact]
@@ -95,12 +95,12 @@
             baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Do<GetChatBotSystemSettingCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment);
+            var actual = await service.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot, BackgroundJobConstants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
-            Assert.Equal(Constants.ServiceName_ChatBot, criteria.ServiceName);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.ServiceName_ChatBot, criteria.ServiceName);
         }
 
         [Fact]

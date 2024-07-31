@@ -413,7 +413,7 @@
             var actual = service.Public_GetProduct(settings, settingMappings, producName);
 
             // Assert
-            Assert.Equal(Constants.ProductNA, actual.SettingId);
+            Assert.Equal(BackgroundJobConstants.ProductNA, actual.SettingId);
         }
 
         [Fact]
@@ -435,7 +435,7 @@
             var actual = service.Public_GetProduct(settings, settingMappings, producName);
 
             // Assert
-            Assert.Equal(Constants.ProductNA, actual.SettingId);
+            Assert.Equal(BackgroundJobConstants.ProductNA, actual.SettingId);
         }
 
         [Fact]
@@ -457,7 +457,7 @@
             var actual = service.Public_GetProduct(settings, settingMappings, producName);
 
             // Assert
-            Assert.Equal(Constants.ProductNA, actual.SettingId);
+            Assert.Equal(BackgroundJobConstants.ProductNA, actual.SettingId);
         }
 
         [Fact]
@@ -503,10 +503,10 @@
 
             // Assert
             Assert.Single(actual);
-            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
+            Assert.Equal(BackgroundJobConstants.SubProductNA, actual.First().SettingId);
 
             Assert.Single(actual.First().ParentIds);
-            Assert.Equal(Constants.ProductNA, actual.First().ParentIds.First());
+            Assert.Equal(BackgroundJobConstants.ProductNA, actual.First().ParentIds.First());
         }
 
 
@@ -563,10 +563,10 @@
 
             // Assert
             Assert.Single(actual);
-            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+            Assert.Equal(BackgroundJobConstants.BettypeNA, actual.First().SettingId);
 
             Assert.Single(actual.First().ParentIds);
-            Assert.Equal(Constants.SubProductNA, actual.First().ParentIds.First());
+            Assert.Equal(BackgroundJobConstants.SubProductNA, actual.First().ParentIds.First());
         }
 
 
@@ -682,7 +682,7 @@
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "en-US").Returns("ProductNameUS");
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "zh-CN").Returns("ProductNameSC");
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("ProductNameYN");
-            var expect = "test 1,000 USD ProductNameUS " + productName + Constants.LineBreak;
+            var expect = "test 1,000 USD ProductNameUS " + productName + BackgroundJobConstants.LineBreak;
             // Act
             var result = service.Public_GetSolution(winlimit, isVip);
 
@@ -786,7 +786,7 @@
             description.AppendFormat("<br /> Winning/Losing Limit Amount: {0} (RM), Winning/Losing Amount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
             , "1,000", "1,000", "1,000", winlimit.Currency);
             description.AppendFormat("<br />Reached Limit Time: {0}, Reached Limit Level: {1}", winlimit.ReachedTime, winlimit.Level);
-            description.Append(Constants.LineBreak);
+            description.Append(BackgroundJobConstants.LineBreak);
 
             // Act
             var actual = service.Public_GetDescription(winlimit, bettypes);

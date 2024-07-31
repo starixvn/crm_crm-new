@@ -513,7 +513,7 @@
             var actual = service.Public_GetCommunicationTool(settings);
 
             // Assert
-            Assert.Equal(Constants.CommunicationNA.ToString(), actual.SettingId.ToString());
+            Assert.Equal(BackgroundJobConstants.CommunicationNA.ToString(), actual.SettingId.ToString());
         }
 
         [Fact]
@@ -628,7 +628,7 @@
             var actual = service.Public_GetSportsbookProduct(settings);
 
             // Assert
-            Assert.Equal(Constants.ProductNA, actual.SettingId);
+            Assert.Equal(BackgroundJobConstants.ProductNA, actual.SettingId);
         }
 
         [Fact]
@@ -666,10 +666,10 @@
 
             // Assert
             Assert.Single(actual);
-            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
+            Assert.Equal(BackgroundJobConstants.SubProductNA, actual.First().SettingId);
 
             Assert.Single(actual.First().ParentIds);
-            Assert.Equal(Constants.ProductNA, actual.First().ParentIds.First());
+            Assert.Equal(BackgroundJobConstants.ProductNA, actual.First().ParentIds.First());
         }
 
         [Fact]
@@ -687,10 +687,10 @@
 
             // Assert
             Assert.Single(actual);
-            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
+            Assert.Equal(BackgroundJobConstants.SubProductNA, actual.First().SettingId);
 
             Assert.Single(actual.First().ParentIds);
-            Assert.Equal(Constants.ProductNA, actual.First().ParentIds.First());
+            Assert.Equal(BackgroundJobConstants.ProductNA, actual.First().ParentIds.First());
         }
 
         [Fact]
@@ -738,10 +738,10 @@
 
             // Assert
             Assert.Single(actual);
-            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+            Assert.Equal(BackgroundJobConstants.BettypeNA, actual.First().SettingId);
 
             Assert.Single(actual.First().ParentIds);
-            Assert.Equal(Constants.SubProductNA, actual.First().ParentIds.First());
+            Assert.Equal(BackgroundJobConstants.SubProductNA, actual.First().ParentIds.First());
         }
 
         [Fact]
@@ -759,10 +759,10 @@
 
             // Assert
             Assert.Single(actual);
-            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+            Assert.Equal(BackgroundJobConstants.BettypeNA, actual.First().SettingId);
 
             Assert.Single(actual.First().ParentIds);
-            Assert.Equal(Constants.SubProductNA, actual.First().ParentIds.First());
+            Assert.Equal(BackgroundJobConstants.SubProductNA, actual.First().ParentIds.First());
         }
 
         [Fact]
@@ -1090,8 +1090,8 @@
             commonFeedback.GetFeedbackTemplates<MixParlayTemplate>("MixParlayTemplate.xml").Returns(testDescTemp);
             var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
-            description.Append(Constants.LineBreak);
-            description.AppendFormat(testDescTemp.DescriptionCredit, matchInfo.DecidedBy, matchInfo.Requestby, matchInfo.VoidBy, Constants.Break);
+            description.Append(BackgroundJobConstants.LineBreak);
+            description.AppendFormat(testDescTemp.DescriptionCredit, matchInfo.DecidedBy, matchInfo.Requestby, matchInfo.VoidBy, BackgroundJobConstants.Break);
 
             // Act
             var actual = service.Public_GetDescriptionMixParlayForCreditSite(messageId, requestIds, matchInfo);

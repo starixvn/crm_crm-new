@@ -22,11 +22,11 @@
         private readonly IExportExcelService excelService;
         private readonly IPermissionService permissionService;
 
-            IFeedbackService feedbackService,
-            ICommonService commonService,
-            ISettingService settingService,
-            IExportExcelService excelService,
-            IPermissionService permissionService)
+        public FeedbackStatisticController(IFeedbackService feedbackService,
+           ICommonService commonService,
+           ISettingService settingService,
+           IExportExcelService excelService,
+           IPermissionService permissionService)
         {
             this.feedbackService = feedbackService;
             this.settingService = settingService;
@@ -38,8 +38,6 @@
         [HttpPost]
         public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
         {
-            var pageSize = criteria.PageSize;
-            var pageIndex = criteria.PageIndex;
             var title = string.Format(ViewResources.FeedbackStatisticTitle,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
@@ -47,11 +45,12 @@
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
+            var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
             feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
             if (feedbackStatistic.TotalItems > 0)
             {
-                feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+                feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
             }
 
             return Json(feedbackStatistic);
@@ -62,6 +61,7 @@
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            var feedbackDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);
             var total = feedbackDetail.Count();
             if (feedbackDetail.Any())
             {
@@ -85,6 +85,7 @@
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
+            var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
             var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
             string reportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);

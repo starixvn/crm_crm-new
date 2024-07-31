@@ -57,7 +57,7 @@
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment)
         {
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ProblemsAccount);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, BackgroundJobConstants.ServiceName_ProblemsAccount);
             var custCategory = await customerService.GetCustCategoryInfor(problemsAccountSetting, isUAT);
             var custIds = custCategory.Select(x => x.CustID).Distinct();
             var headlines = await customerService.GetGroupHeadlineAsync(custIds);
@@ -66,7 +66,7 @@
             {
                 logService.LogInformation(string.Format("Import problems account doesn't have any data with custId: {0} headlineName: {1}!",
                    string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ProblemsAccount);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_ProblemsAccount);
                 return;
             }
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
@@ -99,10 +99,10 @@
             if (custCategory.Any())
             {
                 var maxLastLogId = custCategory.Max(x => x.LogID);
-                await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId, Constants.ServiceName_ProblemsAccount);
+                await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId, BackgroundJobConstants.ServiceName_ProblemsAccount);
                 return;
             }
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ProblemsAccount);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_ProblemsAccount);
         }
 
         protected internal virtual async Task CreateProblemsAccountFeedbackByBatchAsync(
@@ -153,7 +153,7 @@
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
                  && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
-                && x.SettingId == Constants.ExtentionNA);
+                && x.SettingId == BackgroundJobConstants.ExtentionNA);
             var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.ProblemAccount);
 
             var criteria = new CreateMutipleFeedbackCommand
@@ -166,7 +166,7 @@
                 StationId = station != null ? station.SettingId.ToString() : string.Empty,
                 StatusId = status != null ? status.SettingId : 0,
                 ResponseId = response != null ? response.SettingId : 0,
-                UserRole = Constants.UserRole,
+                UserRole = BackgroundJobConstants.UserRole,
                 CategoryXml = category.Item3,
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
@@ -225,22 +225,22 @@
             IEnumerable<SettingItem> settings
             )
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             var product = GetProblemsSportsbookProduct(settings);
-            stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, Constants.SubProductNA, Constants.BettypeNA);
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, BackgroundJobConstants.SubProductNA, BackgroundJobConstants.BettypeNA);
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual string GetRelatedCustomerXml(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
         {
             const string XmlTemplate = DefaultValue.RelatedCustomerXml;
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             var distinctRelatedAndUserName = problemsAccounts.GroupBy(x => new { x.HeadlineID, x.RelatedCustID, x.UserName }).Select(group => group.First()).ToList();
             foreach (var problemsAccount in distinctRelatedAndUserName)
             {
                 stringBuilder.AppendFormat(XmlTemplate, problemsAccount.HeadlineID, problemsAccount.RelatedCustID, problemsAccount.UserName);
             }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual string GetCustomerXml(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
@@ -254,7 +254,7 @@
         {
             var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Sportsbook, StringComparison.OrdinalIgnoreCase));
-            return product ?? new SettingItem { SettingId = Constants.ProductNA };
+            return product ?? new SettingItem { SettingId = BackgroundJobConstants.ProductNA };
         }
 
         protected internal virtual string GetSolution(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
@@ -274,18 +274,18 @@
                     .Select(group => group.First()).ToList();
                 var listUserNames = string.Join(", ", distinctUserName.Select(x => x.UserName));
                 stringBuilderContent.AppendFormat(templateContent, categoryNameEN, categoryNameYNSC, listUserNames);
-                stringBuilderContent.Append(Constants.Break);
+                stringBuilderContent.Append(BackgroundJobConstants.Break);
             }
-            stringBuilder.AppendFormat(templateYNSC, stringBuilderContent, Constants.LineBreak);
+            stringBuilder.AppendFormat(templateYNSC, stringBuilderContent, BackgroundJobConstants.LineBreak);
             return stringBuilder.ToString();
         }
 
         protected internal virtual string GetDescription()
         {
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             stringBuilder.Append("Announcement sent to Headline and informed our related department marked their member as problem account.");
-            stringBuilder.Append(Constants.LineBreak);
+            stringBuilder.Append(BackgroundJobConstants.LineBreak);
             return stringBuilder.ToString();
         }
     }

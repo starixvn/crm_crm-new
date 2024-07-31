@@ -66,7 +66,7 @@
                     new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
                 };
 
-            await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
+            await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_TOControlFB);
             IEnumerable<TONotification> custNotifications = await customerService.GetListSMANotificationAsync(turnOverSetting);
             var custNotificationsDistinct = custNotifications.GroupBy(item => new { item.CustID, item.MatchID })
                                                               .Select(g => g.First())
@@ -86,7 +86,7 @@
                     string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
                 var maxLogID = custNotifications.Any() ? custNotifications.Max(x => x.LogID) : turnOverSetting.LastLogId;
 
-                await commonFeedback.EditFeedbackSystemSettingAsync(maxLogID, Constants.ServiceName_TOControlFB);
+                await commonFeedback.EditFeedbackSystemSettingAsync(maxLogID, BackgroundJobConstants.ServiceName_TOControlFB);
                 return;
             }
 
@@ -102,7 +102,7 @@
                         settingMappings);
             }
             var maxLogIdTO = importTOFeedbacks.Max(x => x.LogID);
-            await commonFeedback.EditFeedbackSystemSettingAsync(maxLogIdTO, Constants.ServiceName_TOControlFB);
+            await commonFeedback.EditFeedbackSystemSettingAsync(maxLogIdTO, BackgroundJobConstants.ServiceName_TOControlFB);
         }
 
         protected internal virtual async Task CreateTOControlFeedbackAsync(
@@ -117,7 +117,7 @@
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
                  && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
-                && x.SettingId == Constants.ExtentionNA);
+                && x.SettingId == BackgroundJobConstants.ExtentionNA);
             var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.MANotification);
 
             var sportTypeName = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
@@ -144,7 +144,7 @@
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
                 ResponseId = response != null ? response.SettingId : 0,
-                UserRole = Constants.UserRole,
+                UserRole = BackgroundJobConstants.UserRole,
                 Subject = DefaultValue.Special_Notification,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField = string.Empty,
@@ -209,7 +209,7 @@
             SettingItem product = GetTOSportsbookProduct(settings);
             IList<SystemSettingMapping> tempBettypes = GetTOBettype(betTypeMappings, settingMappings);
 
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             foreach (var settingId in subProducts.Select(x => x.SettingId))
             {
                 if (tempBettypes.Any())
@@ -221,10 +221,10 @@
                 }
                 else
                 {
-                    stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, settingId, Constants.BettypeNA);
+                    stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, settingId, BackgroundJobConstants.BettypeNA);
                 }
             }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual SettingItem GetTOSportsbookProduct(IEnumerable<SettingItem> settings)
@@ -232,7 +232,7 @@
             var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Sportsbook, StringComparison.OrdinalIgnoreCase));
 
-            return product ?? new SettingItem { SettingId = Constants.ProductNA };
+            return product ?? new SettingItem { SettingId = BackgroundJobConstants.ProductNA };
         }
 
         protected internal virtual IList<SettingItem> GetTOSubProduct(
@@ -253,7 +253,7 @@
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
                 {
-                    new SettingItem { SettingId = Constants.SubProductNA, ParentIds = new List<int> { Constants.ProductNA } }
+                    new SettingItem { SettingId = BackgroundJobConstants.SubProductNA, ParentIds = new List<int> { BackgroundJobConstants.ProductNA } }
                 };
         }
 
@@ -269,22 +269,22 @@
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SystemSettingMapping>
                 {
-                    new SystemSettingMapping { SettingId = Constants.BettypeNA }
+                    new SystemSettingMapping { SettingId = BackgroundJobConstants.BettypeNA }
                 };
         }
 
         protected internal virtual string GetTORelatedCustomerXml(TOControlFeedbackInfor ToInfor)
         {
             const string XmlTemplate = DefaultValue.RelatedCustomerXml;
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             stringBuilder.AppendFormat(XmlTemplate, ToInfor.HeadlineID, ToInfor.RelatedCustID, ToInfor.UserName);
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            return stringBuilder.Append(BackgroundJobConstants.EndRootTag).ToString();
         }
 
         protected internal virtual string GetTODescription(TOControlFeedbackInfor ToInfor)
         {
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             var TODescTemplate = commonFeedback.GetFeedbackTemplates<TODescriptionTemplate>(descTemplateXml);
             const byte SuperID = 4;
             const byte MasterID = 3;
@@ -306,16 +306,16 @@
                     awayName,
                     ToInfor.UserName,
                     ToInfor.Currency,
-                    ToInfor.TotalTurnover.ToString(Constants.ThousanPaseMoney),
+                    ToInfor.TotalTurnover.ToString(BackgroundJobConstants.ThousanPaseMoney),
                     ToInfor.ProfileName,
-                    ToInfor.HouseTurnover.ToString(Constants.ThousanPaseMoney),
-                    ToInfor.MaxTurnover.ToString(Constants.ThousanPaseMoney),
-                    ToInfor.Usage.ToString(Constants.ThousanPaseMoney),
-                    ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney),
-                    Constants.Break
+                    ToInfor.HouseTurnover.ToString(BackgroundJobConstants.ThousanPaseMoney),
+                    ToInfor.MaxTurnover.ToString(BackgroundJobConstants.ThousanPaseMoney),
+                    ToInfor.Usage.ToString(BackgroundJobConstants.ThousanPaseMoney),
+                    ToInfor.Outstanding.ToString(BackgroundJobConstants.ThousanPaseMoney),
+                    BackgroundJobConstants.Break
                     );
 
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             return stringBuilder.ToString();
         }
 
@@ -344,9 +344,9 @@
             var solutionTemplateSC = GetTOSolutionTemplateYNSC(ToInfor, isVipCust, smaLevelEN, smaLevelSC, TOSolTemplate);
 
             stringBuilder.Append(solutionTemplateEN);
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             stringBuilder.Append(solutionTemplateSC);
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(BackgroundJobConstants.Break);
             return stringBuilder.ToString();
         }
 
@@ -356,7 +356,7 @@
            string smaLevelEN)
         {
             var stringBuilder = new StringBuilder();
-            var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
+            var outstanding = ToInfor.Outstanding.ToString(BackgroundJobConstants.ThousanPaseMoney);
             var sportNameEN = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
             var leagueNameEN = commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), Language.en_US);
             var homeNameEN = commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), Language.en_US);
@@ -372,7 +372,7 @@
                leagueNameEN,
                homeNameEN,
                awayNameEN,
-               Constants.Break);
+               BackgroundJobConstants.Break);
             return stringBuilder;
         }
 
@@ -384,7 +384,7 @@
             TOSolutionTemplate TOSolTemplate)
         {
             var stringBuilder = new StringBuilder();
-            var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
+            var outstanding = ToInfor.Outstanding.ToString(BackgroundJobConstants.ThousanPaseMoney);
             string smaLevel = "";
             string solutionTemplate = "";
             string sportName = "";
@@ -421,7 +421,7 @@
                 leagueName,
                 homeName,
                 awayName,
-                Constants.Break);
+                BackgroundJobConstants.Break);
 
             return stringBuilder;
         }

@@ -170,12 +170,12 @@
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MessageId='{1}' UsernameList='{2}' CustId='{3}' " +
                 "Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' IsTest='{7}' " +
                 "Content_en='{8}' Content_cs='{9}' Content_th='{10}' Content_vn='{11}' Type='{12}'/>";
-            var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var messageStringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             var fixture = new Fixture();
 
             var MAXVoidingHistoryCollectionId = fixture.Create<int>();
             var MAXMsgTargetId = fixture.Create<int>();
-            messageStringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            messageStringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
 
             var messages = new List<Message>
             {
@@ -194,7 +194,7 @@
             ticketInfos.First().MessageId = messages.First().MessageId;
             var ticketInfo = ticketInfos.FirstOrDefault();
             var message = messages.FirstOrDefault();
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             stringBuilder.AppendFormat(XmlTemplate,
                     ticketInfo.VoidingHistoryCollectionId,
                     ticketInfo.MessageId,
@@ -209,7 +209,7 @@
                     HttpUtility.HtmlEncode(message?.Content_th),
                     HttpUtility.HtmlEncode(message?.Content_vn),
                     ticketInfo.Type);
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var commandResult = fixture.Create<CommandResult>();
             var criteria = new ImportChatBotTicketVoidingInfoCommand();
             var valueTupe = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResult, criteria);
@@ -218,12 +218,12 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, MAXMsgTargetId, Constants.DefaultEnvironment);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, MAXMsgTargetId, BackgroundJobConstants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
             Assert.Null(criteria.ErrMsg);
         }
@@ -260,7 +260,7 @@
 
             ticketInfos.First().MessageId = messages.First().MessageId;
             var ticketInfo = ticketInfos.FirstOrDefault();
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             stringBuilder.AppendFormat(XmlTemplate,
                     ticketInfo.VoidingHistoryCollectionId,
                     ticketInfo.MessageId,
@@ -275,7 +275,7 @@
                     "",
                     "",
                     ticketInfo.Type);
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var commandResult = fixture.Create<CommandResult>();
             var criteria = new ImportChatBotTicketVoidingInfoCommand();
             var valueTupe = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResult, criteria);
@@ -284,12 +284,12 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, MAXMsgTargetId, Constants.DefaultEnvironment);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, MAXMsgTargetId, BackgroundJobConstants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
-            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
             Assert.Null(criteria.ErrMsg);
         }

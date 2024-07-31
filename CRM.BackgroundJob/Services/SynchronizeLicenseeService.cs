@@ -36,12 +36,12 @@ namespace CRM.BackgroundJob.Services
         public async Task<CommandResult> ImportLicenseeStatus(IEnumerable<LicenseeStatus> licensees, string Environment)
         {
             const string XmlTemplate = "<r Name='{0}' status='{1}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
             foreach(var licensee in licensees)
             {
                 stringBuilder.AppendFormat(XmlTemplate, licensee.LicenseeName, licensee.StatusId);
             }
-            stringBuilder.Append(Constants.EndRootTag);
+            stringBuilder.Append(BackgroundJobConstants.EndRootTag);
             var criteria = new ImportLicenseeStatusCommand
             {
                 Licensees = stringBuilder.ToString(),

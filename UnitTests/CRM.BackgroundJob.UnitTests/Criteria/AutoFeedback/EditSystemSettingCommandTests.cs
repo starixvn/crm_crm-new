@@ -31,7 +31,7 @@
             var criteria = new EditSystemSettingCommand
             {
                 Settings = settings,
-                ServiceName = Constants.ServiceName_AutoFB
+                ServiceName = BackgroundJobConstants.ServiceName_AutoFB
             };
 
             // Act

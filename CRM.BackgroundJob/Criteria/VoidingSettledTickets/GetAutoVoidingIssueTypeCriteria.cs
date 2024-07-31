@@ -23,12 +23,12 @@
                     return string.Empty;
                 }
 
-                var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+                var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag);
                 foreach (var messageId in VoidingMessages)
                 {
                     stringBuilder.AppendFormat(XmlTemplate, messageId);
                 }
-                stringBuilder.Append(Constants.EndRootTag);
+                stringBuilder.Append(BackgroundJobConstants.EndRootTag);
                 return stringBuilder.ToString();
             }
         }
