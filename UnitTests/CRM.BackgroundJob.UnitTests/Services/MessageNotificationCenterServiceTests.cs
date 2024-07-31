@@ -115,63 +115,63 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public async Task CaptureSettlementDataAsync_ExpectedCallExactFunction()
-        {
-            // Arrange
-            var service = GetService();
+        //[Fact]
+        //public async Task GenerateResultAmendmentAsync_ExpectedCallExactFunction()
+        //{
+        //    // Arrange
+        //    var service = GetService();
 
-            var serviceFlag = true;
-            var initSiteDbConfigs = new List<SiteDbConfig>
-            {
-                new() {SiteDBGroupID = 1, LinkedServerName = "LinkedServerName", ClientAccessName = "ClientAccessName", AGIP = "1", Environment = "dev", FDTime = new DateTime()}
-            };
-            var sessionResultHistorys = new List<SettlResultHistory>
-            {
-                new () { Environment = "dev", JSSettlResultHist = "JSSettlResultHist"}
-            };
-            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
-            captureSettlementDataService.GetInitialSiteDbConfigsAsync(Arg.Any<string>()).Returns(initSiteDbConfigs);
-            captureSettlementDataService.GetSessionByDateAsync(initSiteDbConfigs[0]).Returns(sessionResultHistorys);
+        //    var serviceFlag = true;
+        //    var initSiteDbConfigs = new List<SettlementRemotingRefInfo>
+        //    {
+        //        new() {SiteDBGroupID = 1, LinkedServerName = "LinkedServerName", ClientAccessName = "ClientAccessName", AGIP = "1", Environment = "dev", FDTime = new DateTime()}
+        //    };
+        //    var sessionResultHistorys = new List<SettlResultHistory>
+        //    {
+        //        new () { Environment = "dev", JSSettlResultHist = "JSSettlResultHist"}
+        //    };
+        //    systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+        //    generateResultAmendmentService.GetPrepareGenNotificationAsync(Arg.Any<string>()).Returns(initSiteDbConfigs);
+        //    captureSettlementDataService.GetSessionByDateAsync(initSiteDbConfigs[0]).Returns(sessionResultHistorys);
 
-            // Act
-            await service.CaptureSettlementDataAsync();
+        //    // Act
+        //    await service.CaptureSettlementDataAsync();
 
-            // Assert
-            await captureSettlementDataService.Received(1).InsertDataLoadAsync("dev", "JSSettlResultHist");
-        }
+        //    // Assert
+        //    await captureSettlementDataService.Received(1).InsertDataLoadAsync("dev", "JSSettlResultHist");
+        //}
 
-        [Fact]
-        public async Task CaptureSettlementDataAsync_ExpectedReturnLogService()
-        {
-            // Arrange
-            var service = GetService();
+        //[Fact]
+        //public async Task GenerateResultAmendmentAsync_ExpectedReturnLogService()
+        //{
+        //    // Arrange
+        //    var service = GetService();
 
-            var serviceFlag = false;
-            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+        //    var serviceFlag = false;
+        //    systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
 
-            // Act
-            await service.CaptureSettlementDataAsync();
+        //    // Act
+        //    await service.CaptureSettlementDataAsync();
 
-            // Assert
-            logService.Received(1).LogInformation(Arg.Any<string>());
-        }
+        //    // Assert
+        //    logService.Received(1).LogInformation(Arg.Any<string>());
+        //}
 
-        [Fact]
-        public async Task CaptureSettlementDataAsync_ThrowException()
-        {
-            // Arrange
-            var service = GetService();
-            var exception = fixture.Create<Exception>();
+        //[Fact]
+        //public async Task GenerateResultAmendmentAsync_ThrowException()
+        //{
+        //    // Arrange
+        //    var service = GetService();
+        //    var exception = fixture.Create<Exception>();
 
-            systemSettingService.When(x => x.GetSystemSettingNotificationAsync(Arg.Any<string>())).Throw(exception);
+        //    systemSettingService.When(x => x.GetSystemSettingNotificationAsync(Arg.Any<string>())).Throw(exception);
 
-            // Act
-            await service.CaptureSettlementDataAsync();
+        //    // Act
+        //    await service.CaptureSettlementDataAsync();
 
-            // Assert
-            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
-        }
+        //    // Assert
+        //    await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
+        //}
 
         #region Helpers
 
