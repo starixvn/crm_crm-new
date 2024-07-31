@@ -43,6 +43,7 @@
     {
         private readonly IBaseService baseService;
         private readonly ICommonFeedback commonFeedback;
+        private readonly int EventType5 = 5;
 
         public ChatBotResultAmendmentService(IBaseService baseService, ICommonFeedback commonFeedback)
         {
@@ -151,7 +152,7 @@
 
             foreach (var transaction in transactions)
             {
-                var getTeamNameFunc = transaction.EventType == 5
+                var getTeamNameFunc = transaction.EventType == EventType5
                                         ? new Func<string, string, string>(commonFeedback.GetTeamName3rd)
                                         : new Func<string, string, string>(commonFeedback.GetTeamName);
 
