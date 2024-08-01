@@ -565,14 +565,15 @@
 #pragma warning disable S121
             if ((productName != "Sportsbook" || eventDetail.EventType == EventType2) &&
                 productName != "Virtual Sports 2" && productName != "Virtual Sports 3" &&
-                productName != "Virtual Sports 4") return stringBuilder.ToString();
+                productName != "Virtual Sports 4" && productName != "Virtual Sports 5") return stringBuilder.ToString();
 #pragma warning restore S1067
 #pragma warning restore S121
             stringBuilder.AppendFormat(line, Constants.Break);
             string league = leagueName;
             if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) 
                 || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) 
-                || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
+                || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase)
+                || productName.Equals("Virtual Sports 5", StringComparison.OrdinalIgnoreCase))
             {
                 league = sportName;
             }

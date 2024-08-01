@@ -429,7 +429,7 @@
                         stringBuilder.AppendFormat(
                             amendmentDescTemplate.VirtualSports2,
                                EventdateGMT4Format,
-                               sportName,
+                               leagueName,
                                kO_time,
                                matchCodeReplace,
                                homeName,
@@ -450,7 +450,7 @@
                         stringBuilder.AppendFormat(
                             amendmentDescTemplate.VirtualSports2,
                                EventdateGMT4Format,
-                               sportName,
+                               leagueName,
                                kO_time,
                                matchCodeReplace,
                                homeName,
@@ -630,7 +630,7 @@
                         amendmentSolTemplate.VirtualSports2EN,
                             homeName,
                             awayName,
-                            sportName,
+                            leagueName,
                             matchCodeReplace,
                             Eventdate,
                             amendment.ActualResult,
@@ -659,7 +659,7 @@
                         amendmentSolTemplate.VirtualSports2EN,
                             homeName,
                             awayName,
-                            sportName,
+                            leagueName,
                             matchCodeReplace,
                             Eventdate,
                             amendment.ActualResult,
@@ -719,12 +719,12 @@
                 case "Virtual Sports 2":
                     if (isVipCust)
                     {
-                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, sportNameYN,
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, leagueNameYN,
                         matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
                     }
                     else
                     {
-                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, sportNameSC, matchCodeReplaceSC,
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, leagueNameSC, matchCodeReplaceSC,
                         Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
                     }
                     break;
@@ -740,12 +740,12 @@
                 case "Virtual Sports 5":
                     if (isVipCust)
                     {
-                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, sportNameYN,
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, leagueNameYN,
                         matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
                     }
                     else
                     {
-                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, sportNameSC, matchCodeReplaceSC,
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, leagueNameSC, matchCodeReplaceSC,
                         Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
                     }
                     break;
