@@ -64,7 +64,7 @@
                 MessageID = messageID,
                 UpdType = updType,
                 IsTest = isTest,
-                ApproveMode = approveMode
+                NotiApproveMode = approveMode
             };
             return await baseService.GetDataEntityAsync<AdminMessageSite>(criteria);
         }
