@@ -166,9 +166,12 @@
                             JSNotification = item.JSNotification
                         };
                         await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
-                        await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, Environment, "AfterInsMsg");
-                        var adminMessage = await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
-                        await pushNotificationResultAmendmentService.InsertAdminMessageSiteAsync(adminMessage);
+                        var (isTest, approveMode) = await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, Environment, "AfterInsMsg");
+                        var adminMessage = await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti", isTest, approveMode);
+                        if (adminMessage != null)
+                        {
+                            await pushNotificationResultAmendmentService.InsertAdminMessageSiteAsync(adminMessage);
+                        }
                     }
                     await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync(Environment);
                 }

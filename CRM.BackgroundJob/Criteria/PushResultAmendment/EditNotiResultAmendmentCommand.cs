@@ -12,6 +12,10 @@
 
         public string UpdType { get; set; }
 
+        public bool IsTest { get; set; }
+
+        public byte ApproveMode { get; set; }
+
         public override string GetSettingKey() => "MNC_PushNotification_NotiUpd";
 
         public override bool IsValid() => true;

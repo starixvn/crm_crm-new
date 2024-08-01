@@ -12,9 +12,9 @@
 
         Task GetMessageResultAmendmentAsync(GetMessageResultAmendmentCommand command);
 
-        Task EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string environment, string updType);
+        Task<(bool isTest, byte approveMode)> EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string environment, string updType);
 
-        Task<AdminMessageSite> EditPushMessageResultAmendmentAsync(int messageID, string updType);
+        Task<AdminMessageSite> EditPushMessageResultAmendmentAsync(int messageID, string updType, bool isTest, byte approveMode);
 
         Task InsertCompleteResultAmendmentAsync(string environment);
 
@@ -44,7 +44,7 @@
             await baseService.ExecuteNonQueryAsync(command);
         }
 
-        public async Task EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string environment, string updType)
+        public async Task<(bool isTest, byte approveMode)> EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string environment, string updType)
         {
             var command = new EditNotiResultAmendmentCommand
             {
@@ -54,14 +54,17 @@
                 UpdType = updType
             };
             await baseService.ExecuteNonQueryAsync(command);
+            return (command.IsTest, command.ApproveMode);
         }
 
-        public async Task<AdminMessageSite> EditPushMessageResultAmendmentAsync(int messageID, string updType)
+        public async Task<AdminMessageSite> EditPushMessageResultAmendmentAsync(int messageID, string updType, bool isTest, byte approveMode)
         {
             var criteria = new EditMessageResultAmendmentCriteria
             {
                 MessageID = messageID,
-                UpdType = updType
+                UpdType = updType,
+                IsTest = isTest,
+                ApproveMode = approveMode
             };
             return await baseService.GetDataEntityAsync<AdminMessageSite>(criteria);
         }
