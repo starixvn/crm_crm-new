@@ -515,7 +515,7 @@
             const string line = "-------------------------------------------------------- {0}";
             var sportName = commonFeedback.GetSportName(eventDetail.Sporttype.ToString(), Language.en_US);
             var leagueName = commonFeedback.GetLeagueNameBySiteName(site, eventDetail.LeagueId, eventDetail.LeagueGroupId, Language.en_US);
-            var getTeamNameFunc = eventDetail.EventType == 5
+            var getTeamNameFunc = eventDetail.EventType == EventType5
                             ? new Func<string, string, string>(commonFeedback.GetTeamName3rd)
                             : new Func<string, string, string>(commonFeedback.GetTeamName);
             var homeName = getTeamNameFunc(eventDetail.HomeId.ToString(), Language.en_US);
