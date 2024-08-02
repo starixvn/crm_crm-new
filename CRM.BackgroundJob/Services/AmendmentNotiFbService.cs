@@ -378,6 +378,7 @@
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
             var leagueName = commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.en_US);
+            var leagueName3rd = commonFeedback.GetLeagueName3rd(amendment.LeagueId.ToString(), Language.en_US);
             var homeName = getTeamNameFunc(amendment.HomeId.ToString(), Language.en_US);
             var awayName = getTeamNameFunc(amendment.Awayid.ToString(), Language.en_US);
 
@@ -450,7 +451,7 @@
                         stringBuilder.AppendFormat(
                             amendmentDescTemplate.VirtualSports2,
                                EventdateGMT4Format,
-                               leagueName,
+                               leagueName3rd,
                                kO_time,
                                matchCodeReplace,
                                homeName,
@@ -596,6 +597,7 @@
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
             var leagueName = commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.en_US);
+            var leagueName3rd = commonFeedback.GetLeagueName3rd(amendment.LeagueId.ToString(), Language.en_US);
             var homeName = getTeamNameFunc(amendment.HomeId.ToString(), Language.en_US);
             var awayName = getTeamNameFunc(amendment.Awayid.ToString(), Language.en_US);
             var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode, Language.en_US);
@@ -659,7 +661,7 @@
                         amendmentSolTemplate.VirtualSports2EN,
                             homeName,
                             awayName,
-                            leagueName,
+                            leagueName3rd,
                             matchCodeReplace,
                             Eventdate,
                             amendment.ActualResult,
@@ -690,11 +692,13 @@
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
             var sportNameYN = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN);
             var leagueNameYN = commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.vi_VN);
+            var leagueName3rdYN = commonFeedback.GetLeagueName3rd(amendment.LeagueId.ToString(), Language.vi_VN);
             var homeNameYN = getTeamNameFunc(amendment.HomeId.ToString(), Language.vi_VN);
             var awayNameYN = getTeamNameFunc(amendment.Awayid.ToString(), Language.vi_VN);
             var matchCodeReplaceYN = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.vi_VN);
             var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
             var leagueNameSC = commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.zh_CN);
+            var leagueName3rdSC = commonFeedback.GetLeagueName3rd(amendment.LeagueId.ToString(), Language.zh_CN);
             var homeNameSC = getTeamNameFunc(amendment.HomeId.ToString(), Language.zh_CN);
             var awayNameSC = getTeamNameFunc(amendment.Awayid.ToString(), Language.zh_CN);
             var matchCodeReplaceSC = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.zh_CN);
@@ -740,12 +744,12 @@
                 case "Virtual Sports 5":
                     if (isVipCust)
                     {
-                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, leagueNameYN,
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, leagueName3rdYN,
                         matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
                     }
                     else
                     {
-                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, leagueNameSC, matchCodeReplaceSC,
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, leagueName3rdSC, matchCodeReplaceSC,
                         Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
                     }
                     break;
