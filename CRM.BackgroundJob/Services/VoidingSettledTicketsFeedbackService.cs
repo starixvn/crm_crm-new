@@ -38,6 +38,7 @@
         private readonly int[] MixParlayMatchIds = { 9, 29, 2799, 10449 };
 
         private readonly int EventType2 = 2;
+        private readonly int EventType5 = 5;
         private readonly int SportType180 = 180;
         private readonly int SportType186 = 186;
         private readonly int SportType161 = 161;
@@ -514,8 +515,11 @@
             const string line = "-------------------------------------------------------- {0}";
             var sportName = commonFeedback.GetSportName(eventDetail.Sporttype.ToString(), Language.en_US);
             var leagueName = commonFeedback.GetLeagueNameBySiteName(site, eventDetail.LeagueId, eventDetail.LeagueGroupId, Language.en_US);
-            var homeName = commonFeedback.GetTeamName(eventDetail.HomeId.ToString(), Language.en_US);
-            var awayName = commonFeedback.GetTeamName(eventDetail.AwayId.ToString(), Language.en_US);
+            var getTeamNameFunc = eventDetail.EventType == 5
+                            ? new Func<string, string, string>(commonFeedback.GetTeamName3rd)
+                            : new Func<string, string, string>(commonFeedback.GetTeamName);
+            var homeName = getTeamNameFunc(eventDetail.HomeId.ToString(), Language.en_US);
+            var awayName = getTeamNameFunc(eventDetail.AwayId.ToString(), Language.en_US);
 
             var EventdateGMT4Format = eventDetail.Eventdate.ToString(DefaultValue.FortmatddmmmyyyyDash);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
@@ -572,10 +576,13 @@
             string league = leagueName;
             if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) 
                 || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) 
-                || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase)
-                || productName.Equals("Virtual Sports 5", StringComparison.OrdinalIgnoreCase))
+                || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
             {
                 league = sportName;
+            }
+            if (productName.Equals("Virtual Sports 5", StringComparison.OrdinalIgnoreCase))
+            {
+                league = commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
             }
             stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, Constants.Break);
 
