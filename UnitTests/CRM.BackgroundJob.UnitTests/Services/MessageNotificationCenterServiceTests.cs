@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
     using CRM.BackgroundJob.Services;
@@ -115,63 +116,122 @@
             Assert.Equal(expected, actual);
         }
 
-        //[Fact]
-        //public async Task GenerateResultAmendmentAsync_ExpectedCallExactFunction()
-        //{
-        //    // Arrange
-        //    var service = GetService();
+        [Fact]
+        public async Task GenerateResultAmendmentAsync_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var service = GetService();
+            var serviceFlag = true;
+            var settlementRemotingRefInfo = fixture.Create<IEnumerable<SettlementRemotingRefInfo>>();
+            var refLanguage = "MNC";
+            foreach (var item in settlementRemotingRefInfo)
+            {
+                item.RefId1 = "LeagueID";
+                item.RefId2 = "1";
+                item.RefValueEN = refLanguage;
+                item.RefValueCH = refLanguage;
+                item.RefValueCS = refLanguage;
+            }
+            generateResultAmendmentService.GetPrepareGenNotificationAsync(Arg.Any<string>()).Returns(settlementRemotingRefInfo);
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+            service.Public_GetResourceRemotingRef("LeagueID", "1", Arg.Any<string>()).Returns(refLanguage);
 
-        //    var serviceFlag = true;
-        //    var initSiteDbConfigs = new List<SettlementRemotingRefInfo>
-        //    {
-        //        new() {SiteDBGroupID = 1, LinkedServerName = "LinkedServerName", ClientAccessName = "ClientAccessName", AGIP = "1", Environment = "dev", FDTime = new DateTime()}
-        //    };
-        //    var sessionResultHistorys = new List<SettlResultHistory>
-        //    {
-        //        new () { Environment = "dev", JSSettlResultHist = "JSSettlResultHist"}
-        //    };
-        //    systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
-        //    generateResultAmendmentService.GetPrepareGenNotificationAsync(Arg.Any<string>()).Returns(initSiteDbConfigs);
-        //    captureSettlementDataService.GetSessionByDateAsync(initSiteDbConfigs[0]).Returns(sessionResultHistorys);
+            // Act
+            await service.GenerateResultAmendmentAsync();
 
-        //    // Act
-        //    await service.CaptureSettlementDataAsync();
+            // Assert
+            await generateResultAmendmentService.Received(1).InsertGenResultAmendmentAsync(Arg.Any<string>(), settlementRemotingRefInfo);
+        }
 
-        //    // Assert
-        //    await captureSettlementDataService.Received(1).InsertDataLoadAsync("dev", "JSSettlResultHist");
-        //}
+        [Fact]
+        public async Task GenerateResultAmendmentAsync_ExpectedReturnLogService()
+        {
+            // Arrange
+            var service = GetService();
 
-        //[Fact]
-        //public async Task GenerateResultAmendmentAsync_ExpectedReturnLogService()
-        //{
-        //    // Arrange
-        //    var service = GetService();
+            var serviceFlag = false;
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
 
-        //    var serviceFlag = false;
-        //    systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+            // Act
+            await service.GenerateResultAmendmentAsync();
 
-        //    // Act
-        //    await service.CaptureSettlementDataAsync();
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+        }
 
-        //    // Assert
-        //    logService.Received(1).LogInformation(Arg.Any<string>());
-        //}
+        [Fact]
+        public async Task GenerateResultAmendmentAsync_ThrowException()
+        {
+            // Arrange
+            var service = GetService();
+            var exception = fixture.Create<Exception>();
 
-        //[Fact]
-        //public async Task GenerateResultAmendmentAsync_ThrowException()
-        //{
-        //    // Arrange
-        //    var service = GetService();
-        //    var exception = fixture.Create<Exception>();
+            systemSettingService.When(x => x.GetSystemSettingNotificationAsync(Arg.Any<string>())).Throw(exception);
 
-        //    systemSettingService.When(x => x.GetSystemSettingNotificationAsync(Arg.Any<string>())).Throw(exception);
+            // Act
+            await service.GenerateResultAmendmentAsync();
 
-        //    // Act
-        //    await service.CaptureSettlementDataAsync();
+            // Assert
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
+        }
 
-        //    // Assert
-        //    await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
-        //}
+        [Fact]
+        public async Task PushNotificationResultAmendmentAsync_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var service = GetService();
+            var serviceFlag = true;
+            var mncMessageTarget = new List<MncMessageTarget>
+            {
+                new () { NotificationID = 1, JSNotification = "MNC" }
+            };
+            var approveTest = fixture.Create<(bool, byte)>();
+            var adminMessageSite = fixture.Create<AdminMessageSite>();
+
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+            pushNotificationResultAmendmentService.GetPrepareNotificationAsync(Arg.Any<string>()).Returns(mncMessageTarget);
+            pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(1, Arg.Any<int>(), Arg.Any<string>(), "AfterInsMsg").Returns(approveTest);
+            pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(Arg.Any<int>(), "AfterUpdNoti", approveTest.Item1, approveTest.Item2).Returns(adminMessageSite);
+
+            // Act
+            await service.PushNotificationResultAmendmentAsync();
+
+            // Assert
+            await pushNotificationResultAmendmentService.Received(1).InsertAdminMessageSiteAsync(adminMessageSite);
+            await pushNotificationResultAmendmentService.Received(1).InsertCompleteResultAmendmentAsync(Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task PushNotificationResultAmendmentAsync_ExpectedReturnLogService()
+        {
+            // Arrange
+            var service = GetService();
+
+            var serviceFlag = false;
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+
+            // Act
+            await service.PushNotificationResultAmendmentAsync();
+
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task PushNotificationResultAmendmentAsync_ThrowException()
+        {
+            // Arrange
+            var service = GetService();
+            var exception = fixture.Create<Exception>();
+
+            systemSettingService.When(x => x.GetSystemSettingNotificationAsync(Arg.Any<string>())).Throw(exception);
+
+            // Act
+            await service.PushNotificationResultAmendmentAsync();
+
+            // Assert
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
+        }
 
         #region Helpers
 
