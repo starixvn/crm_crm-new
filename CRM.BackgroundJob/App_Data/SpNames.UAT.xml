@@ -137,6 +137,6 @@
     <Function Name="AbnormalBet">
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" SpName="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" DbName="DBACC.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_GetMessage" SpName="Acc_CRM_AutoFB_AbnormalBets_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
 </Functions>
