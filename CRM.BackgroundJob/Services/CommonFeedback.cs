@@ -28,6 +28,8 @@
 
         string GetLeagueNameBySiteName(string siteName, int leagueId, int leagueGroupId, string languageCode);
 
+        string GetLeagueName3rd(string leagueId, string languageCode);
+
         string GetTeamName(string teamId, string languageCode);
 
         string GetTeamName3rd(string teamId, string languageCode);
@@ -116,6 +118,12 @@
         public string GetLeagueName(string leagueId, string leagueGroupId, string languageCode)
         {
             var leagueName = remotingRefService.GetLeagueName(leagueId, leagueGroupId, languageCode, string.Empty);
+            return leagueName;
+        }
+
+        public string GetLeagueName3rd(string leagueId, string languageCode)
+        {
+            var leagueName = remotingRefService.GetLeagueName3rd(leagueId, languageCode);
             return leagueName;
         }
 
