@@ -27,7 +27,7 @@
 
         public override async Task ExecuteJobAsync()
         {
-            await messageNotificationCenter.SendNotificationCenter();
+            await messageNotificationCenter.SendNotificationCenterAsync();
         }
     }
 }

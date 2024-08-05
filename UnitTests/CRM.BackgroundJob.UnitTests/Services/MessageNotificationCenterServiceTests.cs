@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
     using CRM.BackgroundJob.Services;
@@ -233,6 +232,196 @@
             await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
         }
 
+        [Fact]
+        public async Task GenerateLapNotificationAsync_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var service = GetService();
+            var serviceFlag = true;
+            var settlementGenLap = fixture.Create<IEnumerable<SettlementRemotingRefInfo>>();
+
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+            generateLapNotificationService.GetPrepareGenLapNotificationAsync(Arg.Any<string>()).Returns(settlementGenLap);
+
+            // Act
+            await service.GenerateLapNotificationAsync();
+
+            // Assert
+            await generateLapNotificationService.Received(1).InsertGenLapResultAmendmentAsync(settlementGenLap, Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task GenerateLapNotificationAsync_ExpectedReturnLogService()
+        {
+            // Arrange
+            var service = GetService();
+
+            var serviceFlag = false;
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+
+            // Act
+            await service.GenerateLapNotificationAsync();
+
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task GenerateLapNotificationAsync_ThrowException()
+        {
+            // Arrange
+            var service = GetService();
+            var exception = fixture.Create<Exception>();
+
+            systemSettingService.When(x => x.GetSystemSettingNotificationAsync(Arg.Any<string>())).Throw(exception);
+
+            // Act
+            await service.GenerateLapNotificationAsync();
+
+            // Assert
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
+        }
+
+        [Fact]
+        public async Task SendNotificationCenterAsync_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var service = GetService();
+            var messages = fixture.Create<IEnumerable<MessageBotInfo>>();
+
+            sendNotificationCenterService.GetNotificationAlertAsync().Returns(messages);
+
+            // Act
+            await service.SendNotificationCenterAsync();
+
+            // Assert
+            await sendNotificationCenterService.Received(1).InsertNotificationAlertAsync();
+            await service.Received(1).Public_ProcessNotificationItemAsync(messages);
+        }
+
+
+        [Fact]
+        public async Task SendNotificationCenterAsync_ThrowException()
+        {
+            // Arrange
+            var service = GetService();
+            var exception = fixture.Create<Exception>();
+
+            sendNotificationCenterService.When(x => x.GetNotificationAlertAsync()).Throw(exception);
+
+            // Act
+            await service.SendNotificationCenterAsync();
+
+            // Assert
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
+        }
+
+        [Fact]
+        public async Task ProcessNotificationItemAsync_CallNextFunction()
+        {
+            // Arrange
+            var service = GetService();
+            var messages = new List<MessageBotInfo>
+            {
+                new() { ChatGroupID = "MNC", Content = "Content MNC", IsTest = 1 }
+            };
+            var conversationConfigs = new List<ConversationConfig>
+            {
+                new() { DisplayName = "MNC", ConversationId = "1", IsOnlySendTest = true}
+            };
+
+            // Act
+            await service.Public_ProcessNotificationItemAsync(messages);
+
+            // Assert
+            await service.Received(1).Public_ProcessMessagesAsync(conversationConfigs, "Content MNC", 1);
+        }
+
+        [Fact]
+        public async Task ProcessMessagesAsync_CallNextFunctionWithIsTestTrue()
+        {
+            // Arrange
+            var service = GetService();
+            var conversationConfigs = new List<ConversationConfig>
+            {
+                new() { DisplayName = "MNC", ConversationId = "1", IsOnlySendTest = true}
+            };
+
+            // Act
+            await service.Public_ProcessMessagesAsync(conversationConfigs, "Content MNC", 1);
+
+            // Assert
+            await service.Received(1).Public_ProcessSendRealTestMessagesAsync(conversationConfigs, "Content MNC");
+        }
+
+        [Fact]
+        public async Task ProcessMessagesAsync_CallNextFunctionWithIsTestFalse()
+        {
+            // Arrange
+            var service = GetService();
+            var conversationConfigs = new List<ConversationConfig>
+            {
+                new() { DisplayName = "MMM", ConversationId = "2", IsOnlySendTest = false}
+            };
+
+            // Act
+            await service.Public_ProcessMessagesAsync(conversationConfigs, "Content MMM", 1);
+
+            // Assert
+            await service.Received(1).Public_ProcessSendOnlyTestMessagesAsync(conversationConfigs, "Content MNC");
+        }
+
+        [Fact]
+        public async Task ProcessSendRealTestMessagesAsync_SendLogService()
+        {
+            // Arrange
+            var service = GetService();
+            var conversationConfigs = new List<ConversationConfig>
+            {
+                new() { DisplayName = "SYS", ConversationId = "2", IsOnlySendTest = false}
+            };
+
+            // Act
+            await service.Public_ProcessSendRealTestMessagesAsync(conversationConfigs, "Content SYS");
+
+            // Assert
+            await logService.Received(1).ErrorMessageAsync("Content SYS");
+        }
+
+        [Fact]
+        public async Task ProcessSendRealTestMessagesAsync_SendSkypeService()
+        {
+            // Arrange
+            var service = GetService();
+            var conversationConfigs = new List<ConversationConfig>
+            {
+                new() { DisplayName = "MNC", ConversationId = "1", IsOnlySendTest = true}
+            };
+
+            // Act
+            await service.Public_ProcessSendRealTestMessagesAsync(conversationConfigs, "Content MNC");
+
+            // Assert
+            await botService.Received(1).SendSkypeAsync("1", "Content MNC");
+        }
+
+        [Fact]
+        public async Task ProcessSendOnlyTestMessagesAsync_SendSkypeService()
+        {
+            // Arrange
+            var service = GetService();
+            var conversationConfigs = new List<ConversationConfig>
+            {
+                new() { DisplayName = "MNC", ConversationId = "1", IsOnlySendTest = true}
+            };
+
+            // Act
+            await service.Public_ProcessSendOnlyTestMessagesAsync(conversationConfigs, "Content MNC");
+
+            // Assert
+            await botService.Received(1).SendSkypeAsync("1", "Content MNC");
+        }
+
         #region Helpers
 
         private MessageNotificationCenterServiceTestable GetService()
@@ -240,7 +429,12 @@
             botSetting = new BotServiceSetting
             {
                 AppId = 1,
-                ServiceUrl = "/test"
+                ServiceUrl = "/test",
+                ConversationConfigs = new List<ConversationConfig>
+                {
+                    new() { DisplayName = "MNC", ConversationId = "1", IsOnlySendTest = true},
+                    new() { DisplayName = "MMM", ConversationId = "2", IsOnlySendTest = false}
+                }
             };
             logService = Substitute.For<ICRMLogService>();
             configuration = Substitute.For<IConfiguration>();

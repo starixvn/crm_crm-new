@@ -28,7 +28,7 @@
             await service.ExecuteJobAsync();
 
             // Assert
-            await messageNotificationCenter.Received().SendNotificationCenter();
+            await messageNotificationCenter.Received().SendNotificationCenterAsync();
         }
 
         private MncSendNotificationCenterWorker GetService()

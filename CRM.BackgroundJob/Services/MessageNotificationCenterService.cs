@@ -24,7 +24,7 @@
 
         Task GenerateLapNotificationAsync();
 
-        Task SendNotificationCenter();
+        Task SendNotificationCenterAsync();
     }
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
@@ -205,7 +205,7 @@
             }
         }
 
-        public async Task SendNotificationCenter()
+        public async Task SendNotificationCenterAsync()
         {
             try
             {
