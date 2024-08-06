@@ -618,7 +618,7 @@
     ToCannotGreaterFromValue: 'The To value cannot be greater than From value',
     TicketRefNo: 'Ticket Ref. No',
     TooltipRefTicket: "Automatically fill in Description with Event Details from ticket. Support tickets of Sportsbook, "
-        + "Virtual Sports, Virtual Sports 2, Number Game, NG2, Keno, Lottery, Virtual Game, Table Game, Indo 4D with Win Loss Date from ",
+        + "Virtual Sports, Number Game, Keno, Lottery, Virtual Game, Table Game, Indo 4D with Win Loss Date from ",
     ThisInformationRequired: 'This information is required!',
     TypeOfContact: 'Type Of Contact',
     ToMonth: 'To Month',
