@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.Core.Enumerables;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.NotificationCenter;

@@ -59,13 +59,13 @@
             }
         }
 
-        private static IEnumerable<AdmSiteTicket> GetData(IEnumerable<AdmSiteTicket> siteTickets, bool isCredit)
+        protected internal static IEnumerable<AdmSiteTicket> GetData(IEnumerable<AdmSiteTicket> siteTickets, bool isCredit)
         {
             var siteType = isCredit ? ViewResources.Credit : ViewResources.Licensee;
             return siteTickets.Where(item => item.SiteType == siteType);
         }
 
-        private void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        protected internal void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
@@ -73,13 +73,13 @@
             worksheet.Row(1).Height = 30;
         }
 
-        private static void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        protected internal static void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]
               .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]);
         }
 
-        private void RenderBody(ExcelWorksheet worksheet, bool isCredit)
+        protected internal void RenderBody(ExcelWorksheet worksheet, bool isCredit)
         {
             var fillterSiteTickets = GetData(siteTickets, isCredit);
             foreach (var siteTicket in fillterSiteTickets)
@@ -88,7 +88,7 @@
             }
         }
 
-        private static void RenderRow(ExcelWorksheet worksheet, AdmSiteTicket siteTicket, int rowIndex, bool isCredit)
+        protected internal static void RenderRow(ExcelWorksheet worksheet, AdmSiteTicket siteTicket, int rowIndex, bool isCredit)
         {
             var colIndex = 1;
             var firstElement = isCredit ? siteTicket.Username : siteTicket.ExtInfo;
@@ -101,13 +101,13 @@
             worksheet.Cells[rowIndex, colIndex].Value = secondElement;
         }
 
-        private void ProcessUI(ExcelWorksheet worksheet, bool isCredit)
+        protected internal void ProcessUI(ExcelWorksheet worksheet, bool isCredit)
         {
             SetStyle(worksheet);
             SetWidthColumn(worksheet, isCredit);
         }
 
-        private static void SetStyle(ExcelWorksheet worksheet)
+        protected internal static void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
             worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -115,7 +115,7 @@
             worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
         }
 
-        private void SetWidthColumn(ExcelWorksheet worksheet, bool isCredit)
+        protected internal void SetWidthColumn(ExcelWorksheet worksheet, bool isCredit)
         {
             const int WidthSmall = 15;
             const int WidthNormal = 30;
@@ -142,7 +142,7 @@
             }
         }
 
-        private static void DrawBorderCell(ExcelRange cell)
+        protected internal static void DrawBorderCell(ExcelRange cell)
         {
             cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
             cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -150,7 +150,7 @@
             cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
         }
 
-        private static void StyleDefault(ExcelWorksheet worksheet)
+        protected internal static void StyleDefault(ExcelWorksheet worksheet)
         {
             const int FontSize = 8;
             const string FontName = "Tahoma";
