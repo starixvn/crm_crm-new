@@ -26,6 +26,8 @@
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
+    using CRM.BackgroundJob.Criteria.AutoFbMessageNotificationCenter;
+    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
     public class AutoFeedbackServiceTests
     {
@@ -46,7 +48,7 @@
         private IRefundSettledTicketService refundSettledTicketService;
         private IVoidingBetIDService voidingBetIDService;
         private IAbnormalBetService abnormalBetService;
-        private IAutoFbMessageNotificaitonCenterService autoFbMessageNotificaitonCenterService;
+        private IAutoFbMessageNotificationCenterService autoFbMessageNotificationCenterService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -1278,6 +1280,67 @@
         }
         #endregion AbnormalBetsExecuteJobAsync
 
+
+        #region MessageNotificationCenterExecuteJobAsync
+        [Fact]
+        public async Task MessageNotificationCenterExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.MessageNotificationCenterExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service AutoFeedback MessageNotificationCenter is shutdown.");
+        }
+
+        [Fact]
+        public async Task MessageNotificationCenterExecuteJobAsync_ImportAbnormalBetsAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true, LastMsgTargetId = 1, BatchSize = 100 };
+            var messageInfoID = fixture.Create<IEnumerable<MessageInfoID>>();
+            var commandResult = new CommandResult { Code = 1 };
+            var command = fixture.Create<ImportMessageNotificationCenterCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportMessageNotificationCenterCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+            autoFbMessageNotificationCenterService.GetMsgInfoMessageNotificationAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(messageInfoID);
+            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, Constants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.MessageNotificationCenterExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation(valueTupe.Item1.Message);
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+        [Fact]
+        public async Task MessageNotificationCenterExecuteJobAsync_ExpectedScanAndSendMessageToBotEndpoint()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true, LastMsgTargetId = 1, BatchSize = 100 };
+            var messageInfoID = fixture.Create<IEnumerable<MessageInfoID>>();
+            var commandResult = new CommandResult { Code = 0 };
+            var command = fixture.Create<ImportMessageNotificationCenterCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportMessageNotificationCenterCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+            autoFbMessageNotificationCenterService.GetMsgInfoMessageNotificationAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(messageInfoID);
+            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, Constants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.MessageNotificationCenterExecuteJobAsync();
+
+            // Assert
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
+        }
+        #endregion MessageNotificationCenterExecuteJobAsync
+
         #region Helpers
 
         private AutoFeedbackServiceTestable GetService()
@@ -1304,7 +1367,7 @@
             refundSettledTicketService = Substitute.For<IRefundSettledTicketService>();
             voidingBetIDService = Substitute.For<IVoidingBetIDService>();
             abnormalBetService = Substitute.For<IAbnormalBetService>();
-            autoFbMessageNotificaitonCenterService = Substitute.For<IAutoFbMessageNotificaitonCenterService>();
+            autoFbMessageNotificationCenterService = Substitute.For<IAutoFbMessageNotificationCenterService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -1322,7 +1385,7 @@
                 refundSettledTicketService,
                 voidingBetIDService,
                 abnormalBetService,
-                autoFbMessageNotificaitonCenterService,
+                autoFbMessageNotificationCenterService,
                 configuration);
         }
 

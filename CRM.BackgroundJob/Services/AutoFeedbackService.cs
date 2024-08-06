@@ -52,7 +52,7 @@
         private readonly IRefundSettledTicketService refundSettledTicketService;
         private readonly IVoidingBetIDService voidingBetIDService;
         private readonly IAbnormalBetService abnormalBetService;
-        private readonly IAutoFbMessageNotificaitonCenterService autoFbMessageNotificationService;
+        private readonly IAutoFbMessageNotificationCenterService autoFbMessageNotificationService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -76,7 +76,7 @@
             IRefundSettledTicketService refundSettledTicketService,
             IVoidingBetIDService voidingBetIDService,
             IAbnormalBetService abnormalBetService,
-            IAutoFbMessageNotificaitonCenterService autoFbMessageNotificationService,
+            IAutoFbMessageNotificationCenterService autoFbMessageNotificationService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {

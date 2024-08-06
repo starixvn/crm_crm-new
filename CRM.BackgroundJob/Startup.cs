@@ -187,7 +187,7 @@
             services.AddSingleton<IPushNotificationResultAmendmentService, PushNotificationResultAmendmentService>();
             services.AddSingleton<IGenerateLapNotificationService, GenerateLapNotificationService>();
             services.AddSingleton<ISendNotificationCenterService, SendNotificationCenterService>();
-            services.AddSingleton<IAutoFbMessageNotificaitonCenterService, AutoFbMessageNotificaitonCenterService>();
+            services.AddSingleton<IAutoFbMessageNotificationCenterService, AutoFbMessageNotificationCenterService>();
         }
 
         private static void AddWorker(IServiceCollection services)

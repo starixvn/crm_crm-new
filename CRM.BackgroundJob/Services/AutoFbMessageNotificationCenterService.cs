@@ -8,18 +8,18 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
 
-    public interface IAutoFbMessageNotificaitonCenterService
+    public interface IAutoFbMessageNotificationCenterService
     {
         Task<IEnumerable<MessageInfoID>> GetMsgInfoMessageNotificationAsync(int lastMsgTargetId, int batchSize);
 
         Task<(CommandResult commandResult, ImportMessageNotificationCenterCommand command)> ImportMessageNotificationAsync(IEnumerable<MessageInfoID> messages, string environment);
     }
 
-    public class AutoFbMessageNotificaitonCenterService : IAutoFbMessageNotificaitonCenterService
+    public class AutoFbMessageNotificationCenterService : IAutoFbMessageNotificationCenterService
     {
         private readonly IBaseService baseService;
 
-        public AutoFbMessageNotificaitonCenterService(IBaseService baseService)
+        public AutoFbMessageNotificationCenterService(IBaseService baseService)
         {
             this.baseService = baseService;
         }
