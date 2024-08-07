@@ -110,7 +110,8 @@
             foreach (AmendmentAutoFeedbackInfor amendment in amendmentAutoFeedbackInfors)
             {
                 var isEventTypeNotIn2And9 = amendment.EventType != EventType2 && amendment.EventType != EventType9;
-                var isNoResultTemplate = isEventTypeNotIn2And9 && (amendment.ProductId == 1 || amendment.ProductId == 27) && amendment.MessageId != 0;
+                var isBelongProductId = amendment.ProductId == 1 || amendment.ProductId == 27 || amendment.ProductId == 88;
+                var isNoResultTemplate = isEventTypeNotIn2And9 && isBelongProductId && amendment.MessageId != 0;
                 await CreateResultAmendmentFeedbackCreditAsync(
                         amendment,
                         settings,
