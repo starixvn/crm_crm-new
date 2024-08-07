@@ -156,15 +156,19 @@
                                         ? new Func<string, string, string>(commonFeedback.GetTeamName3rd)
                                         : new Func<string, string, string>(commonFeedback.GetTeamName);
 
+                var getLeagueNameFunc = transaction.EventType == EventType5
+                                        ? new Func<string, string, string>(commonFeedback.GetLeagueName3rd)
+                                        : new Func<string, string, string>(commonFeedback.GetLeagueName);
+
                 var sportNameEN = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.en_US);
                 var sportNameSC = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.zh_CN);
                 var sportNameTH = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.th_TH);
                 var sportNameYN = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.vi_VN);
 
-                var leagueNameEN = HttpUtility.HtmlEncode(commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.en_US));
-                var leagueNameSC = HttpUtility.HtmlEncode(commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.zh_CN));
-                var leagueNameTH = HttpUtility.HtmlEncode(commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.th_TH));
-                var leagueNameYN = HttpUtility.HtmlEncode(commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.vi_VN));
+                var leagueNameEN = HttpUtility.HtmlEncode(getLeagueNameFunc(transaction.LeagueId.ToString(), Language.en_US));
+                var leagueNameSC = HttpUtility.HtmlEncode(getLeagueNameFunc(transaction.LeagueId.ToString(), Language.zh_CN));
+                var leagueNameTH = HttpUtility.HtmlEncode(getLeagueNameFunc(transaction.LeagueId.ToString(), Language.th_TH));
+                var leagueNameYN = HttpUtility.HtmlEncode(getLeagueNameFunc(transaction.LeagueId.ToString(), Language.vi_VN));
 
                 var homeNameEN = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.HomeId.ToString(), Language.en_US));
                 var homeNameSC = HttpUtility.HtmlEncode(getTeamNameFunc(transaction.HomeId.ToString(), Language.zh_CN));
