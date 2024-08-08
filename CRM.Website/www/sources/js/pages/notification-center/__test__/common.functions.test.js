@@ -196,4 +196,45 @@ describe('commonFunctions', () => {
             expect(result).toEqual(true);
         });
     });
+
+    describe('checkExceedMaxInt', () => {
+        it('should set message when exceed max int', () => {
+            // Arrange
+            var field = {
+                value: 2147483649,
+                name: 'MNC'
+            };
+            var errMsg = [];
+            var isValid = { value: true };
+
+            // Act
+            commonFunction.checkExceedMaxInt(field, errMsg, isValid);
+
+            // Assert
+            expect(errMsg).toEqual(["MNC ExceedsTheIntegerDatatypeRange"]);
+            expect(isValid.value).toEqual(false);
+        });
+    });
+
+    describe('isValidGetDataAutoRefresh', () => {
+        it('should set message when exceed max int', () => {
+            // Arrange
+            var filter = {
+                fromDate: '08/07/2024',
+                toDate: '08/10/2024',
+                fromNotificationId: 312,
+                toNotificationId: 15,
+                notificationId: 15,
+                matchId: 100,
+                messageId: 200,
+                isCompareIdEqual: false
+            };
+
+            // Act
+            var result = commonFunction.isValidGetDataAutoRefresh(filter);
+
+            // Assert
+            expect(result).toEqual(false);
+        });
+    });
 });

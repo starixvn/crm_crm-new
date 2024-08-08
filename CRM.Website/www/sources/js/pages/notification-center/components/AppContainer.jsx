@@ -69,15 +69,11 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        cancelAnnouncementPopup,
-        contentPopup,
         gridParams,
         autoRefresh
     } = state;
 
     return {
-        cancelAnnouncementPopup,
-        contentPopup,
         gridParams,
         autoRefresh
     };
