@@ -432,11 +432,12 @@
                         stringBuilder.AppendFormat(
                             amendmentDescTemplate.VirtualSports2,
                                EventdateGMT4Format,
-                               leagueName,
+                               sportName,
                                kO_time,
                                matchCodeReplace,
                                homeName,
                                awayName,
+                               leagueName,
                                Constants.Break
                             );
                         break;
@@ -453,11 +454,12 @@
                         stringBuilder.AppendFormat(
                             amendmentDescTemplate.VirtualSports2,
                                EventdateGMT4Format,
-                               leagueName3rd,
+                               sportName,
                                kO_time,
                                matchCodeReplace,
                                homeName,
                                awayName,
+                               leagueName3rd,
                                Constants.Break
                             );
                         break;
