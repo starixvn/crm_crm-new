@@ -1,37 +1,56 @@
-import React from 'react';
-import { AutoRefresh } from '../AutoRefresh';
-import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import configureMockStore from 'redux-mock-store';
+jest.mock('react-redux');
+jest.mock('redux');
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../../actions';
 
-describe('component with redux', () => {
-    // Arrange
-    const mockStore = configureMockStore();
-    const initialState = {
-        autoRefresh: {isShow: false},
-        gridParams: {pageSize: 100},
-        isRefresh: true
-    };
+describe('connect ', () => {
+    let mapStateToProps, mapDispatchToProps;
+    const connectMock = jest.fn();
 
-    const store = mockStore(initialState);
-    
-    // Action
-    const wrapper = shallow(<AutoRefresh  store={store} />);
-
-    // Assert
-    it('component render correctly', () => {
-        expect(toJson(wrapper)).toMatchSnapshot();
+    beforeAll(() => {
+        connect.mockImplementation((mapStateToPropsFunc, mapDispatchToPropsFunc) => {
+            mapStateToProps = mapStateToPropsFunc;
+            mapDispatchToProps = mapDispatchToPropsFunc;
+            return connectMock;
+        });
+        require('../AutoRefresh').default;
     });
 
-    it('component has correct props', () => {
-        expect(wrapper.props().children.props.autoRefresh).toEqual(
-            initialState.autoRefresh
-        );
-        expect(wrapper.props().children.props.gridParams).toEqual(
-            initialState.gridParams
-        );
-        expect(wrapper.props().children.props.isRefresh).toEqual(
-            initialState.isRefresh
-        );
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
+    it('props should be mapped correctly', () => {
+        // Arrange
+        const expected = {
+            gridParams: {},
+            autoRefresh: {},
+            isRefresh: {}
+        };
+        const state = {
+            gridParams: {},
+            autoRefresh: {},
+            isRefresh: {}
+        };
+
+        // Act
+        const actual = mapStateToProps(state);
+
+        // Assert
+        expect(actual).toEqual(expected);
+    });
+
+    it('bindActionCreators should be called with correct parameter', () => {
+        // Arrange
+        const mockBindAction = jest.fn();
+        bindActionCreators.mockImplementationOnce(mockBindAction);
+        const dispatch = {};
+
+        // Act
+        mapDispatchToProps(dispatch);
+
+        // Assert
+        expect(mockBindAction).toHaveBeenCalledWith(ActionCreators, dispatch);
     });
 });
