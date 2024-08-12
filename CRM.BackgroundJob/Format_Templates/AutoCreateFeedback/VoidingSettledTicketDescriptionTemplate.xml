@@ -4,7 +4,7 @@
         Date: {0}{7}
         Sport: {1}{7}
         Event Start Time: {2}{7}
-        League: {3}{6}{7}
+        League: {3} ({6}){7}
         Match: {4} - vs - {5}{7}
     </SportsbookVirtualSports2>
     <VirtualSports>
