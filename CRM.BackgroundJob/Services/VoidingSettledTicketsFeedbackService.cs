@@ -528,7 +528,7 @@
             var matchCode = commonFeedback.GetMatchCode(eventDetail.MatchCode, Language.en_US);
             var numberGameEnGame = eventDetail.Sporttype == SportType161 ? leagueName : sportName;
             var productName = commonFeedback.GetProductName(eventDetail.ProductId.ToString(), Language.en_US);
-            stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName));
+            stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName, matchCode));
             if (productName == "Virtual Sports" && (eventDetail.Sporttype == SportType180 || eventDetail.Sporttype == SportType186))
             {
                 stringBuilder.AppendFormat(line, Constants.Break);
@@ -552,7 +552,7 @@
 
 #pragma warning disable S1541, S1067, S121
         protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
-          string kO_time, string leagueName, string homeName, string sportName, string awayName)
+          string kO_time, string leagueName, string homeName, string sportName, string awayName, string matchCode)
 #pragma warning restore S1541, S1067, S121
         {
             var stringBuilder = new StringBuilder();
@@ -584,7 +584,7 @@
             {
                 league = commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
             }
-            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, Constants.Break);
+            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, Constants.Break);
 
             return stringBuilder.ToString();
         }
