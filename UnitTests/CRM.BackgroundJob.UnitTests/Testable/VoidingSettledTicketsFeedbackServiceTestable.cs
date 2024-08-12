@@ -124,9 +124,9 @@
         }
 
         public string Public_GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
-          string kO_time, string leagueName, string homeName, string sportName, string awayName)
+          string kO_time, string leagueName, string homeName, string sportName, string awayName, string macthCode)
         {
-            return base.GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName);
+            return base.GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName, macthCode);
         }
     }
 }
