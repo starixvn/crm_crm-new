@@ -1010,7 +1010,7 @@
             stringBuilder.AppendFormat(ticketDescTemplate.Outright);
 
             // Act
-            var actual = service.Public_GetDescriptionSportBook(eventDetail, "Sportsbook", "kO_time", "leagueName", "homeName", "sportName", "awayName");
+            var actual = service.Public_GetDescriptionSportBook(eventDetail, "Sportsbook", "kO_time", "leagueName", "homeName", "sportName", "awayName", "macthCode");
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
@@ -1030,7 +1030,7 @@
             stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2);
 
             // Act
-            var actual = service.Public_GetDescriptionSportBook(eventDetail, "Sportsbook", "kO_time", "leagueName", "homeName", "sportName", "awayName");
+            var actual = service.Public_GetDescriptionSportBook(eventDetail, "Sportsbook", "kO_time", "leagueName", "homeName", "sportName", "awayName", "macthCode");
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
