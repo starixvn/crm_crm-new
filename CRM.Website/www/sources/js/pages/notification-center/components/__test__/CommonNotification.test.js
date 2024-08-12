@@ -92,10 +92,10 @@ describe('CommonNotification', () => {
             container.formik = {values: {content_en: 'en', content_cs: 'cs', content_ch: 'ch', subject: 'test'}}; 
 
             //Act
-            var result = container.getParams('New');
+            var actual = container.getParams('New');
 
             //Assert
-            expect(result).toEqual(expected); 
+            expect(actual).toEqual(expected); 
         });
     });
 
@@ -223,10 +223,10 @@ describe('CommonNotification', () => {
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
 
             //Act
-            var result = container.getStateData();
+            var actual = container.getStateData();
 
             //Assert
-            expect(result).toEqual(expected);
+            expect(actual).toEqual(expected);
         });
     });
 
@@ -274,8 +274,8 @@ describe('CommonNotification', () => {
             container.handleOpenPopup = jest.fn()
 
             //Act
-            var result = container.renderSiteSection(sites, title, ticketCnt);
-            shallow(result).find('.link-ticket').at(0).simulate('click');
+            var actual = container.renderSiteSection(sites, title, ticketCnt);
+            shallow(actual).find('.link-ticket').at(0).simulate('click');
 
             //Assert
             expect(container.handleOpenPopup).toHaveBeenCalled();
@@ -291,10 +291,10 @@ describe('CommonNotification', () => {
             container.handleOpenPopup = jest.fn()
 
             //Act
-            var result = container.renderSiteSection(sites, title, ticketCnt);
+            var actual = container.renderSiteSection(sites, title, ticketCnt);
 
             //Assert
-            expect(result).toEqual(null);
+            expect(actual).toEqual(null);
         });
     });
 
@@ -306,10 +306,10 @@ describe('CommonNotification', () => {
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
 
             //Act
-            var result = container.getTicketCount(sites);
+            var actual = container.getTicketCount(sites);
 
             //Assert
-            expect(result).toEqual(300);
+            expect(actual).toEqual(300);
         });
     });
 
@@ -406,10 +406,10 @@ describe('CommonNotification', () => {
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
 
             //Act
-            var result = container.validateFormik(values);
+            var actual = container.validateFormik(values);
 
             //Assert
-            expect(result).toEqual(expected);
+            expect(actual).toEqual(expected);
         });
 
         it('should return errs subject required', () => {
@@ -433,10 +433,10 @@ describe('CommonNotification', () => {
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
 
             //Act
-            var result = container.validateFormik(values);
+            var actual = container.validateFormik(values);
 
             //Assert
-            expect(result).toEqual(expected);
+            expect(actual).toEqual(expected);
         });
 
         it('should return errs RemoveSign required', () => {
@@ -456,10 +456,10 @@ describe('CommonNotification', () => {
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
 
             //Act
-            var result = container.validateFormik(values);
+            var actual = container.validateFormik(values);
 
             //Assert
-            expect(result).toEqual(expected);
+            expect(actual).toEqual(expected);
         });
     });
 
@@ -474,10 +474,10 @@ describe('CommonNotification', () => {
             container.setState(state);
 
             //Act
-            var result = container.invalidTabCss(errors);
+            var actual = container.invalidTabCss(errors);
 
             //Assert
-            expect(result).toEqual(expected);
+            expect(actual).toEqual(expected);
         });
     });
 
@@ -490,10 +490,10 @@ describe('CommonNotification', () => {
             container.setState(state);
 
             //Act
-            var result = container.isRenderPopupAction();
+            var actual = container.isRenderPopupAction();
 
             //Assert
-            expect(result).toEqual(true);
+            expect(actual).toEqual(true);
         });
 
         it('should return false', () => {
@@ -504,10 +504,10 @@ describe('CommonNotification', () => {
             container.setState(state);
 
             //Act
-            var result = container.isRenderPopupAction();
+            var actual = container.isRenderPopupAction();
 
             //Assert
-            expect(result).toEqual(false);
+            expect(actual).toEqual(false);
         });
     });
 
@@ -521,8 +521,8 @@ describe('CommonNotification', () => {
             container.handleSubmitConfirm = jest.fn()
 
             //Act
-            var result = container.renderConfirmPopup();
-            shallow(<div>{result}</div>).find(ConfirmPopup).at(0).simulate('submit');
+            var actual = container.renderConfirmPopup();
+            shallow(<div>{actual}</div>).find(ConfirmPopup).at(0).simulate('submit');
 
             //Assert
             expect(container.handleSubmitConfirm).toHaveBeenCalled();
@@ -537,8 +537,8 @@ describe('CommonNotification', () => {
             container.handleSaveConfirm = jest.fn()
 
             //Act
-            var result = container.renderConfirmPopup();
-            shallow(<div>{result}</div>).find(ConfirmPopup).at(0).simulate('submit');
+            var actual = container.renderConfirmPopup();
+            shallow(<div>{actual}</div>).find(ConfirmPopup).at(0).simulate('submit');
 
             //Assert
             expect(container.handleSaveConfirm).toHaveBeenCalled();
@@ -553,26 +553,134 @@ describe('CommonNotification', () => {
             container.handleSubmitConfirm = jest.fn()
 
             //Act
-            var result = container.renderConfirmPopup();
-            shallow(<div>{result}</div>).find(ConfirmPopup).at(0).simulate('submit');
+            var actual = container.renderConfirmPopup();
+            shallow(<div>{actual}</div>).find(ConfirmPopup).at(0).simulate('submit');
 
             //Assert
             expect(container.handleSubmitConfirm).toHaveBeenCalled();
         });
+    });
 
-        it('should return null', () => {
+    describe('renderButton', () => {
+        it('should return btn-save exactly when isOstUser true', () => {
             //Arrange
             const props = {...initProps};
-            const state =  { pushPopup: {show: false}, savePopup: {show: false}, activatePopup: {show: false} };
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
-            container.setState(state);
-            container.handleSubmitConfirm = jest.fn()
+            container.handleSaveDraft = jest.fn();
 
             //Act
-            var result = container.renderConfirmPopup();
+            var actual = container.renderButton(false);
+            shallow(<div>{actual}</div>).find('.btn-save').at(0).simulate('click');
 
             //Assert
-            expect(result).toEqual(null);
+            expect(container.handleSaveDraft).toHaveBeenCalled();
+        });
+
+        it('should return btn-send exactly when isOstUser true', () => {
+            //Arrange
+            const props = {...initProps};
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleActive = jest.fn();
+
+            //Act
+            var actual = container.renderButton(false);
+            shallow(<div>{actual}</div>).find('.btn-send').at(0).simulate('click');
+
+            //Assert
+            expect(container.handleActive).toHaveBeenCalledWith('pushPopup');
+        });
+
+        it('should return btn-save exactly when isOstUser false', () => {
+            //Arrange
+            const props = {
+                ...initProps,
+                actionParam: {
+                    ...initProps.actionParam,
+                    isOstUser: false
+                }
+            };
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleActive = jest.fn();
+
+            //Act
+            var actual = container.renderButton(false);
+            shallow(<div>{actual}</div>).find('.btn-save').at(0).simulate('click');
+
+            //Assert
+            expect(container.handleActive).toHaveBeenCalledWith('savePopup');
+        });
+
+        it('should return btn-send exactly when isOstUser false', () => {
+            //Arrange
+            const props = {
+                ...initProps,
+                actionParam: {
+                    ...initProps.actionParam,
+                    isOstUser: false
+                }
+            };
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleActive = jest.fn();
+
+            //Act
+            var actual = container.renderButton(false);
+            shallow(<div>{actual}</div>).find('.btn-send').at(0).simulate('click');
+
+            //Assert
+            expect(container.handleActive).toHaveBeenCalledWith('activatePopup');
+        });
+    });
+
+    describe('renderMessage', () => {
+        it('should return result message isSuccessful false', () => {
+            //Arrange
+            const props = {...initProps};
+            const param = {
+                isSuccessful: false,
+                message: 'test;testing'
+            }
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleSaveDraft = jest.fn();
+
+            //Act
+            var actual = container.renderMessage(param, 'message');
+
+            //Assert
+            expect(actual).toEqual(['test','testing']);
+        });
+
+        it('should return result message isSuccessful true', () => {
+            //Arrange
+            const props = {...initProps};
+            const param = {
+                isSuccessful: true,
+                message: 'test;testing'
+            }
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleSaveDraft = jest.fn();
+
+            //Act
+            var actual = container.renderMessage(param, 'message');
+
+            //Assert
+            expect(actual).toEqual(['test;testing']);
+        });
+
+        it('should return message isSuccessful true', () => {
+            //Arrange
+            const props = {...initProps};
+            const param = {
+                isSuccessful: true,
+                message: null
+            }
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleSaveDraft = jest.fn();
+
+            //Act
+            var actual = container.renderMessage(param, 'message');
+
+            //Assert
+            expect(actual).toEqual(['message']);
         });
     });
 });
