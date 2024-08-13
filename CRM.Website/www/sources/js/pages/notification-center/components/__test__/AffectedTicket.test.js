@@ -1,12 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AffectedTicket from '../AffectedTicket';
-import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { Button, Modal } from 'react-bootstrap';
-import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
-import ExcelIcon from '@jsroot/components/ExcelIcon';
-import MultipleSelect from '@jsroot/components/multiple-select/index';
 
 describe('AffectedTicket', () => {
     beforeAll(() =>{

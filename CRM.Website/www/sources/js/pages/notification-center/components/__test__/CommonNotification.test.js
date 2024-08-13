@@ -7,9 +7,9 @@ import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import { Tabs } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import { Formik } from 'formik';
-import AffectedTicket from '../AffectedTicket';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
 describe('CommonNotification', () => {
@@ -22,6 +22,7 @@ describe('CommonNotification', () => {
         DateTimeService.toShortDateTimeFormat = jest.fn(val => val);
         functions.languageOptions = jest.fn(() => [{ name: 'us', mapLabel: 'us-language' }]);
         functions.filterAndSortSites = jest.fn(() => [{ siteType: 'mnc', siteGroupOrd: 1 }]);
+        window.currentUsername = 'sa';
         jest.useFakeTimers();
     });
     afterAll(() => {
@@ -133,6 +134,7 @@ describe('CommonNotification', () => {
             //Arrange
             const props = {...initProps};
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleClosePopup = jest.fn();
             container.formik = {setSubmitting: jest.fn()}
 
             //Act
@@ -140,7 +142,8 @@ describe('CommonNotification', () => {
             jest.runAllTimers();
 
             //Assert
-            expect(container.formik.setSubmitting).toHaveBeenCalledWith(true); 
+            expect(container.formik.setSubmitting).toHaveBeenCalledWith(true);
+            expect(container.handleClosePopup).toHaveBeenCalled(); 
             expect(props.editAdmNotification).toHaveBeenCalled(); 
             expect(props.setEditAdmNotification).toHaveBeenCalled();
             expect(props.navigate).toHaveBeenCalled();
@@ -154,6 +157,7 @@ describe('CommonNotification', () => {
                 editAdmNotificationResult: { isSuccessful: false }
             };
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.handleClosePopup = jest.fn();
             container.formik = {setSubmitting: jest.fn()}
 
             //Act
@@ -681,6 +685,184 @@ describe('CommonNotification', () => {
 
             //Assert
             expect(actual).toEqual(['message']);
+        });
+    });
+
+    describe('renderForm', () => {
+        const params = {
+            values:{},
+            errors:{},
+            touched:{},
+            handleChange: jest.fn(),
+            handleSubmit: jest.fn(),
+            setFieldValue: jest.fn(),
+            isSubmitting: true
+        };
+
+        it('should render ResponseMessage FormikErrorMessage correctly', () => {
+            // Arrange
+            const state = {messageSuccessful: 'message'};
+            const props = {
+                ...initProps
+            }
+            
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().setState(state);
+            const form = shallow(container.instance().renderForm(params));
+  
+            // Assert
+            expect(form.find(ResponseMessage).length).toBe(1);
+            expect(form.find(FormikErrorMessage).length).toBe(1);
+        });
+
+        it('should render collapse correctly', () => {
+            // Arrange
+            const state = {messageSuccessful: 'message'};
+            const props = {
+                ...initProps
+            }
+
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().handleCollapseExpand = jest.fn();
+            container.instance().setState(state);
+            const form = shallow(container.instance().renderForm(params));
+            form.find('.header-event').at(0).simulate('click');
+  
+            // Assert
+            expect(container.instance().handleCollapseExpand).toHaveBeenCalled();
+        });
+        
+        it('should render Licensee correctly', () => {
+            // Arrange
+            const event = {target:{value:'value'}};
+            const state = {messageSuccessful: 'message'};
+            const props = {
+                ...initProps,
+                actionParam: {
+                    ...initProps.actionParam,
+                    isOstUser: false
+                }
+            }
+
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().setState(state);
+            const form = shallow(container.instance().renderForm(params));
+            form.find('.shadow-none').at(0).simulate('change', event);
+  
+            // Assert
+            expect(params.setFieldValue).toHaveBeenCalledWith('subject', 'value');
+        });
+
+        it('should render Tabs correctly', () => {
+            // Arrange
+            const state = {messageSuccessful: 'message'};
+            const props = {
+                ...initProps,
+                actionParam: {
+                    ...initProps.actionParam,
+                    isOstUser: false
+                }
+            }
+
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().handleChangeTab = jest.fn();
+            container.instance().setState(state);
+            const form = shallow(container.instance().renderForm(params));
+            form.find(Tabs).at(0).simulate('select');
+  
+            // Assert
+            expect(container.instance().handleChangeTab).toHaveBeenCalled();
+        });
+
+        it('should render CkEditor correctly', () => {
+            // Arrange
+            const state = {messageSuccessful: 'message'};
+            const props = {
+                ...initProps,
+                actionParam: {
+                    ...initProps.actionParam,
+                    isOstUser: false
+                }
+            }
+
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().handleChangeTab = jest.fn();
+            container.instance().setState(state);
+            const form = shallow(container.instance().renderForm(params));
+            form.find(CkEditor).at(0).simulate('change', 'value');
+  
+            // Assert
+            expect(params.setFieldValue).toHaveBeenCalledWith(['us-language'], 'value');
+        });
+
+        it('should render btn-cancel correctly', () => {
+            // Arrange
+            const state = {messageSuccessful: 'message'};
+            const props = {
+                ...initProps,
+                actionParam: {
+                    ...initProps.actionParam,
+                    isOstUser: false
+                }
+            }
+
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().handleClose = jest.fn();
+            container.instance().setState(state);
+            const form = shallow(container.instance().renderForm(params));
+            form.find('.btn-cancel').at(0).simulate('click');
+  
+            // Assert
+            expect(container.instance().handleClose).toHaveBeenCalled();
+        });
+    });
+
+    describe('render', () => {
+        it('should render Formik correctly', () => {
+            // Arrange
+            const state = {
+                data: {
+                    notificationID:1, messageID: 1, status: 'New', eventTime: '',
+                    eventName: '',subject: '', content_en: '', content_cs: '', content_ch:''
+                }
+            };
+            const props = {
+                ...initProps
+            }
+
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().validateFormik = jest.fn();
+            container.instance().setState(state);
+            const form = shallow(<div>{container.instance().render()}</div>);
+            form.find(Formik).props().validate('values');
+    
+            // Assert
+            expect(container.instance().validateFormik).toHaveBeenCalled();
+        });
+
+        it('should return null', () => {
+            // Arrange
+            const state = {
+                data: null
+            };
+            const props = {
+                ...initProps
+            }
+
+            // Act
+            const container = shallow(<CommonNotification {...props} />, { disableLifecycleMethods: true });
+            container.instance().validateFormik = jest.fn();
+            container.instance().setState(state);
+    
+            // Assert
+            expect(container).toEqual({});
         });
     });
 });
