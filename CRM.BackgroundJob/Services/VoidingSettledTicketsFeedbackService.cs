@@ -35,9 +35,10 @@
 
         private readonly string descTemplateXml = "VoidingSettledTicketDescriptionTemplate.xml";
         private readonly string solTemplateXml = "VoidingSettledTicketSolutionTemplate.xml";
-        private readonly int[] MixParlayMatchIds = { 9, 29, 2799, 10449 };
+        private readonly int[] MixParlayMatchIds = { 9, 29, 2799, 10449, 11099 };
 
         private readonly int EventType2 = 2;
+        private readonly int EventType5 = 5;
         private readonly int SportType180 = 180;
         private readonly int SportType186 = 186;
         private readonly int SportType161 = 161;
@@ -514,8 +515,11 @@
             const string line = "-------------------------------------------------------- {0}";
             var sportName = commonFeedback.GetSportName(eventDetail.Sporttype.ToString(), Language.en_US);
             var leagueName = commonFeedback.GetLeagueNameBySiteName(site, eventDetail.LeagueId, eventDetail.LeagueGroupId, Language.en_US);
-            var homeName = commonFeedback.GetTeamName(eventDetail.HomeId.ToString(), Language.en_US);
-            var awayName = commonFeedback.GetTeamName(eventDetail.AwayId.ToString(), Language.en_US);
+            var getTeamNameFunc = eventDetail.EventType == EventType5
+                            ? new Func<string, string, string>(commonFeedback.GetTeamName3rd)
+                            : new Func<string, string, string>(commonFeedback.GetTeamName);
+            var homeName = getTeamNameFunc(eventDetail.HomeId.ToString(), Language.en_US);
+            var awayName = getTeamNameFunc(eventDetail.AwayId.ToString(), Language.en_US);
 
             var EventdateGMT4Format = eventDetail.Eventdate.ToString(DefaultValue.FortmatddmmmyyyyDash);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
@@ -524,7 +528,7 @@
             var matchCode = commonFeedback.GetMatchCode(eventDetail.MatchCode, Language.en_US);
             var numberGameEnGame = eventDetail.Sporttype == SportType161 ? leagueName : sportName;
             var productName = commonFeedback.GetProductName(eventDetail.ProductId.ToString(), Language.en_US);
-            stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName));
+            stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName, matchCode));
             if (productName == "Virtual Sports" && (eventDetail.Sporttype == SportType180 || eventDetail.Sporttype == SportType186))
             {
                 stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
@@ -548,7 +552,7 @@
 
 #pragma warning disable S1541, S1067, S121
         protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
-          string kO_time, string leagueName, string homeName, string sportName, string awayName)
+          string kO_time, string leagueName, string homeName, string sportName, string awayName, string matchCode)
 #pragma warning restore S1541, S1067, S121
         {
             var stringBuilder = new StringBuilder();
@@ -565,7 +569,7 @@
 #pragma warning disable S121
             if ((productName != "Sportsbook" || eventDetail.EventType == EventType2) &&
                 productName != "Virtual Sports 2" && productName != "Virtual Sports 3" &&
-                productName != "Virtual Sports 4") return stringBuilder.ToString();
+                productName != "Virtual Sports 4" && productName != "Virtual Sports 5") return stringBuilder.ToString();
 #pragma warning restore S1067
 #pragma warning restore S121
             stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
@@ -576,7 +580,11 @@
             {
                 league = sportName;
             }
-            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, BackgroundJobConstants.Break);
+            if (productName.Equals("Virtual Sports 5", StringComparison.OrdinalIgnoreCase))
+            {
+                league = commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
+            }
+            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, Constants.Break);
 
             return stringBuilder.ToString();
         }

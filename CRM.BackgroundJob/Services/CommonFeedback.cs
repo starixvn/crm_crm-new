@@ -28,7 +28,11 @@
 
         string GetLeagueNameBySiteName(string siteName, int leagueId, int leagueGroupId, string languageCode);
 
+        string GetLeagueName3rd(string leagueId, string languageCode);
+
         string GetTeamName(string teamId, string languageCode);
+
+        string GetTeamName3rd(string teamId, string languageCode);
 
         string GetBettypeName(string betTypeId, string languageCode);
 
@@ -112,6 +116,12 @@
             return leagueName;
         }
 
+        public string GetLeagueName3rd(string leagueId, string languageCode)
+        {
+            var leagueName = remotingRefService.GetLeagueName3rd(leagueId, languageCode);
+            return leagueName;
+        }
+
         public string GetLeagueNameBySiteName(string siteName , int leagueId, int leagueGroupId, string languageCode)
         {
             return siteName == BackgroundJobConstants.SiteLabel777 ? GetLeagueName(leagueId.ToString(), leagueGroupId.ToString(), languageCode) : GetLeagueName(leagueId.ToString(), languageCode);
@@ -121,6 +131,12 @@
         {
             var teamName = remotingRefService.GetTeamName(teamId, languageCode, string.Empty);
             return teamName;
+        }
+
+        public string GetTeamName3rd(string teamId, string languageCode)
+        {
+            var teamName3rd = remotingRefService.GetTeamName3rd(teamId, languageCode, string.Empty);
+            return teamName3rd;
         }
 
         public string GetBettypeName(string betTypeId, string languageCode)
