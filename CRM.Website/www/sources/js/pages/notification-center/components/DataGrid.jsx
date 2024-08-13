@@ -34,32 +34,6 @@ export class DataGrid extends Component {
         this.panels = [];
     }
 
-    handleToggleRow = id => {
-        this.setState(prevState => {
-            const { toggleRows } = prevState;
-            const index = toggleRows.indexOf(id);
-            const updatedToggleRows = [...toggleRows];
-            
-            if (index >= 0) {
-                updatedToggleRows.splice(index, 1);
-            } else {
-                updatedToggleRows.push(id);
-            }
-    
-            return { toggleRows: updatedToggleRows };
-        });
-    };
-
-    toggleExpandPanels = () => {
-        this.setState(prevState => ({ expandPanels: !prevState.expandPanels }), () => {
-            if (this.props.gridData.data.length) {
-                this.panels.filter(x => x && (x.state.isOpen !== this.state.expandPanels)).forEach(panel => {
-                    panel.set(this.state.expandPanels);
-                });
-            }
-        });
-    };
-
     buildHeader = isHost => {
         return (
             <HeaderRow>
