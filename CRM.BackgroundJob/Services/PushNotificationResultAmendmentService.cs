@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Services;
 
     public interface IPushNotificationResultAmendmentService
     {

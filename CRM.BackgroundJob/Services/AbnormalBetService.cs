@@ -6,9 +6,9 @@
     using CRM.BackgroundJob.Criteria.AbnormalBet;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.AbnormalBet;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
 
     public interface IAbnormalBetService
     {

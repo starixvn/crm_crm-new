@@ -1,22 +1,29 @@
-﻿using CRM.Core.Extensions.XML;
+﻿using CRM.BackgroundJob.Core.Extensions.Xml;
 
 namespace Fanex.CRM.BackgroundJob.Models.ChatBot
 {
     public class ChatBotVoidingTicketInfo
     {
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
-        [XMLName("CustId")]
+
+        [XmlName("CustId")]
         public int CustId { get; set; }
+
         public string UsernameList { get; set; }
-        [XMLName("Srecommend")]
+
+        [XmlName("Srecommend")]
         public string Srecommend { get; set; }
-        [XMLName("Mrecommend")]
+
+        [XmlName("Mrecommend")]
         public string Mrecommend { get; set; }
-        [XMLName("Recommend")]
+
+        [XmlName("Recommend")]
         public string Recommend { get; set; }
-        [XMLName("IsTest")]
+
+        [XmlName("IsTest")]
         public bool IsTest { get; set; }
+
         public byte Type { get; set; }
         public int VoidingHistoryCollectionId { get; set; }
     }

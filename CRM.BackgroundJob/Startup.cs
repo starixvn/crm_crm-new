@@ -2,21 +2,21 @@
 {
     using System;
     using System.Collections.Generic;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Models.BotServices;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.HealthCheck;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.Workers;
-    using CRM.Core.Extensions;
-    using CRM.Core.Middlewares;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using Fanex.BotService.Client.AspNetCore;
     using Fanex.BotService.Client.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.Caching;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
-    using Fanex.Data;
+    using Fanex.Data.Repository;
+    using Fanex.Data.SqlServer;
     using Fanex.Logging;
     using Fanex.Logging.Sentry;
     using Fanex.RemotingRef;
@@ -56,7 +56,7 @@
                     })
                });
 
-            services.AddFanexData(Configuration);
+            services.AddFanexSql(Configuration);
 
             RefDataTypeContainer
             .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
@@ -64,13 +64,15 @@
 
             services.AddSingleton(Configuration);
             services.AddControllers();
-            services.ResolveCoreConfiguration(Configuration);
+
+            var botConfigs = Configuration.GetSection("BotServiceSettings").Get<BotServiceSettings>();
+            services.AddSingleton(botConfigs);
+
             services.RegisterBotClient(Configuration);
 
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
-            services.ResolveCoreDI();
             AddConfiguration(services, Configuration);
             AddDependencyInjection(services, Configuration);
             AddWorker(services);
@@ -110,6 +112,18 @@
 
         private static void AddDependencyInjection(IServiceCollection services, IConfiguration configuration)
         {
+            #region Core services
+
+            services.AddSingleton<IDynamicRepository, DynamicRepository>();
+            services.AddSingleton<IBaseService, BaseService>();
+            services.AddSingleton<ICacheService, CacheService>();
+            services.AddSingleton<ILogger, Logger>();
+            services.AddSingleton<ICrmLogService, CrmLogService>();
+
+            services.AddHttpClient();
+
+            #endregion Core services
+
             #region ONEbookUM
 
             services.AddSingleton(new UMClientConfiguration().Initialize(configuration));
@@ -121,7 +135,9 @@
             #endregion ONEbookUM
 
             #region BotService
+
             services.AddSingleton<IBotService, BotService>();
+
             #endregion BotService
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -165,6 +181,9 @@
             services.AddSingleton<IGenerateLapNotificationService, GenerateLapNotificationService>();
             services.AddSingleton<ISendNotificationCenterService, SendNotificationCenterService>();
             services.AddSingleton<IAutoFbMessageNotificationCenterService, AutoFbMessageNotificationCenterService>();
+            services.AddSingleton<BotServiceHttpClientBase>();
+            services.AddSingleton<ISendNotificationService, SendNotificationService>();
+            services.AddSingleton<IChatBotSendMessageService, ChatBotSendMessageService>();
         }
 
         private static void AddWorker(IServiceCollection services)

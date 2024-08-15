@@ -1,6 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Criteria.PushResultAmendment
 {
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Core.Models;
 
     public class EditNotiResultAmendmentCommand : BaseNonQueryCommand
     {

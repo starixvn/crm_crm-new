@@ -5,7 +5,7 @@
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
@@ -18,7 +18,7 @@
             IMessageNotificationCenterService messageNotificationCenter,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
-            ICRMLogService logService)
+            ICrmLogService logService)
                 : base(maintenanceService, logService)
         {
             this.messageNotificationCenter = messageNotificationCenter;

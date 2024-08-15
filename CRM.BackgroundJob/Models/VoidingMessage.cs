@@ -1,17 +1,19 @@
 ﻿namespace CRM.BackgroundJob.Models
 {
     using System;
-    using CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class VoidingMessage
     {
-        [XMLName("VoidingHistoryCollectionId")]
+        [XmlName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
-        [XMLName("MessageId")]
+
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
-        [XMLName("RequestId")]
+
+        [XmlName("RequestId")]
         public int RequestId { get; set; }
     }
 }

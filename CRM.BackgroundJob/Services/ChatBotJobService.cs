@@ -6,14 +6,13 @@
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Core.Services;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
     using global::CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using global::CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using global::CRM.BackgroundJob.Services;
-    using global::CRM.Core.Models;
-    using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
 
     public interface IChatBotJobService
@@ -33,7 +32,7 @@
 
     public class ChatBotJobService : IChatBotJobService
     {
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         private readonly ISystemSettingService systemSettingService;
         private readonly IChatBotTicketVoidingService ticketVoidingService;
         private readonly ISendNotificationService sendNotificationService;
@@ -50,7 +49,7 @@
 #pragma warning disable S107 // Methods should not have too many parameters
 
         public ChatBotJobService(
-            ICRMLogService logService,
+            ICrmLogService logService,
             ISystemSettingService systemSettingService,
             IChatBotTicketVoidingService ticketVoidingService,
             ISendNotificationService sendNotificationService,
@@ -220,7 +219,7 @@
                 IEnumerable<MessageVoidSettled> settledTickets = new List<MessageVoidSettled>();
                 if (voidingMesssageSettled.Any())
                 {
-                    var siteDbConfigs = await baseService.GetSiteDbConfigAsync(new GetSiteDbConfigCriteria());
+                    var siteDbConfigs = await baseService.GetSiteDbConfigAsync();
 
                     foreach (var item in siteDbConfigs)
                     {

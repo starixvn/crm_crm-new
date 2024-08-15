@@ -5,9 +5,9 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
     using CRM.BackgroundJob.Models.ChatBot;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     public interface IChatBotArchivingDAService
     {
         Task<IEnumerable<ChatbotArchivingDAInfor>> GetChatbotArchivingDASettingInfoAsync(long LastLogId, int BatchSize);

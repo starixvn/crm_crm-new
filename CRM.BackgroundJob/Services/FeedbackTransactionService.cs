@@ -10,8 +10,8 @@
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Models.WinLossLimit;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;

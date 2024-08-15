@@ -6,8 +6,8 @@
     using CRM.BackgroundJob.Criteria.ChatBotCWL;
     using CRM.BackgroundJob.Models.ChatBotCWL;
     using Fanex.CRM.BackgroundJob.Constants;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
 using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.RemotingRef;
     using System;

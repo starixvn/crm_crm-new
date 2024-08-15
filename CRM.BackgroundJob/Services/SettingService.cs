@@ -1,13 +1,12 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
-    using global::CRM.Core.Services;
+    using global::CRM.BackgroundJob.Core.Services;
 
     public interface ISettingService
     {
@@ -40,7 +39,6 @@
                     setting.ParentIds = relations.Where(x => x.SettingId == setting.SettingId).Select(x => x.ParentId);
                 }
             }
-            
 
             return settings;
         }

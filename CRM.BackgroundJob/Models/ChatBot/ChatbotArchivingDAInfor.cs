@@ -1,19 +1,22 @@
-﻿using CRM.Core.Extensions.XML;
-using System;
-
-namespace CRM.BackgroundJob.Models.ChatBot
+﻿namespace CRM.BackgroundJob.Models.ChatBot
 {
+    using System;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class ChatbotArchivingDAInfor
     {
-        [XMLName("LogId")]
+        [XmlName("LogId")]
         public int LogId { get; set; }
-        [XMLName("Username")]
+
+        [XmlName("Username")]
         public string Username { get; set; }
-        [XMLName("CustId")]
+
+        [XmlName("CustId")]
         public int CustId { get; set; }
-        [XMLName("IsTest")]
+
+        [XmlName("IsTest")]
         public bool IsTest { get; set; }
     }
 }

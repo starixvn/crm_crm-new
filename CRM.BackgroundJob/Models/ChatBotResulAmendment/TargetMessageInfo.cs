@@ -1,14 +1,14 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBotResulAmendment
 {
     using System;
-    using CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
 
     [Serializable]
-    [XMLName("r")]
-    public class TargetMessageInfo: ChatBotVoidingTicketInfo
+    [XmlName("r")]
+    public class TargetMessageInfo : ChatBotVoidingTicketInfo
     {
-        [XMLName("Username")]
+        [XmlName("Username")]
         public string Username { get; set; }
     }
 }

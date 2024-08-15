@@ -5,6 +5,8 @@
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Core.Models;
+    using global::CRM.BackgroundJob.Core.Services;
     using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
@@ -12,8 +14,6 @@
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
-    using global::CRM.Core.Models;
-    using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
 
@@ -52,7 +52,7 @@
         private readonly IWinLossFeedbackService winLossService;
         private readonly ITOControlFeedbackService turnoverService;
         private readonly IAmendmentNotiFbService amendmentNotiFbService;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         private readonly IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private readonly IFeedbackService feedbackService;
         private readonly ISynchronizeLicenseeService licenseeService;
@@ -75,7 +75,7 @@
             IJobRunningChecker jobRunningChecker,
             ISystemSettingService systemSettingService,
             IWinLossFeedbackService winLossService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             ITOControlFeedbackService turnoverService,
             IAmendmentNotiFbService amendmentNotiFbService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,

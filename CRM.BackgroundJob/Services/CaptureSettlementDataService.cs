@@ -1,12 +1,11 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.CaptureSettlementData;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
 
     public interface ICaptureSettlementDataService
     {
@@ -43,7 +42,7 @@
                 FDTime = siteDbConfig.FDTime,
                 SiteDBGroupID = siteDbConfig.SiteDBGroupID
             };
-            return await baseService.GetDataAsync<SettlResultHistory>(criteria, siteDbConfig.AGIP);
+            return await baseService.GetDataByIpConfigAsync<SettlResultHistory>(siteDbConfig.AGIP, siteDbConfig.LinkedServerName, criteria);
         }
 
         public async Task InsertDataLoadAsync(string environment, string JSSettlResultHist)

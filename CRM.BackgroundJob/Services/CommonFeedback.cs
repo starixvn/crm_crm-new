@@ -7,8 +7,8 @@
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -37,13 +37,12 @@
         string GetBettypeName(string betTypeId, string languageCode);
 
         string GetMatchCode(string matchCode, string languageCode);
-        
+
         string GetCategogyName(string categoryId, string languageCode);
 
         string GetResourceCricketName(string resourceCricketId, string languageCode);
 
         string GetResultSettlementName(string resultSettlementId, string languageCode);
-
 
         T GetFeedbackTemplates<T>(string fileXml);
 
@@ -64,6 +63,7 @@
 
         Task<CommandResult> EditSystemSettingUpdateLastLogIdAsyncByEnv(string JobStatusNameEnv, string LastRuntimeNameEnv,
             string lastLogIdName, int maxLastLogId, string serviceName);
+
         Task<CommandResult> EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync(
            string JobStatusNameEnv,
            string lastSeqEnvName,
@@ -78,6 +78,7 @@
 
         Task<CommandResult> EditArchivingDAMaxLogIdSettingAsync(string serviceName, string maxLogFBId);
     }
+
     public class CommonFeedback : ICommonFeedback
     {
         private readonly IRemotingRefService remotingRefService;
@@ -127,7 +128,7 @@
             return leagueName;
         }
 
-        public string GetLeagueNameBySiteName(string siteName , int leagueId, int leagueGroupId, string languageCode)
+        public string GetLeagueNameBySiteName(string siteName, int leagueId, int leagueGroupId, string languageCode)
         {
             return siteName == BackgroundJobConstants.SiteLabel777 ? GetLeagueName(leagueId.ToString(), leagueGroupId.ToString(), languageCode) : GetLeagueName(leagueId.ToString(), languageCode);
         }
@@ -177,7 +178,7 @@
         public T GetFeedbackTemplates<T>(string fileXml)
         {
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, path, fileXml);
-            var template = XMLIO.DeserializeXMLFileToObject<T>(templatePath);
+            var template = XmlIO.DeserializeXMLFileToObject<T>(templatePath);
             return (T)Convert.ChangeType(template, typeof(T));
         }
 
@@ -278,7 +279,7 @@
         }
 
         public async Task<CommandResult> EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync(
-           string JobStatusNameEnv, 
+           string JobStatusNameEnv,
            string lastSeqEnvName,
            int maxSeq,
            string lastSubmitTimeEnvName,
@@ -328,6 +329,5 @@
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }
-
     }
 }

@@ -1,20 +1,25 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBotResulAmendment
 {
     using System;
-    using CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class MessageVoidSettled
     {
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
-        [XMLName("MsgTargetId")]
+
+        [XmlName("MsgTargetId")]
         public int MsgTargetId { get; set; }
-        [XMLName("BetTransId")]
+
+        [XmlName("BetTransId")]
         public string BetTransId { get; set; }
-        [XMLName("MsgContentsType")]
+
+        [XmlName("MsgContentsType")]
         public byte MsgContentsType { get; set; }
-        [XMLName("MatchId")]
+
+        [XmlName("MatchId")]
         public int MatchId { get; set; }
     }
 }

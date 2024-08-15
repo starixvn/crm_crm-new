@@ -4,8 +4,8 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.SendNotificationCenter;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
 
     public interface ISendNotificationCenterService
     {

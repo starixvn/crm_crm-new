@@ -1,6 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Criteria.GenerateLapNotification
 {
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Core.Models;
 
     public class InsertGenLapResultAmendmentCommand : BaseNonQueryCommand
     {

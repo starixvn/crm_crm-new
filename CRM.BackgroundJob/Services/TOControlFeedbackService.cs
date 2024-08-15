@@ -7,8 +7,8 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Models.WinLossLimit;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -27,7 +27,7 @@
         private readonly ISettingService settingService;
         private readonly ISystemSettingService systemSettingService;
         private readonly ICustomerService customerService;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         private readonly ICommonFeedback commonFeedback;
         private readonly IFeedbackTransactionService transactionService;
 
@@ -42,7 +42,7 @@
             ISettingService settingService,
             ISystemSettingService systemSettingService,
             ICustomerService customerService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             ICommonFeedback commonFeedback,
             IFeedbackTransactionService transactionService
             )

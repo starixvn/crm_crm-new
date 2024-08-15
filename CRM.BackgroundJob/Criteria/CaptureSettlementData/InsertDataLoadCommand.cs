@@ -1,10 +1,10 @@
 ﻿namespace CRM.BackgroundJob.Criteria.CaptureSettlementData
 {
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Core.Models;
 
     public class InsertDataLoadCommand : BaseNonQueryCommand
     {
-        public string Environment {  get; set; }
+        public string Environment { get; set; }
 
         public string JSSettlResultHist { get; set; }
 

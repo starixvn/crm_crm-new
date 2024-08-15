@@ -1,16 +1,16 @@
 ﻿namespace CRM.BackgroundJob.Models.VoidingSettledTickets
 {
     using System;
-    using CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class MsgTarget
     {
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
 
-        [XMLName("MsgTargetId")]
+        [XmlName("MsgTargetId")]
         public string MsgTargetId { get; set; }
     }
 }

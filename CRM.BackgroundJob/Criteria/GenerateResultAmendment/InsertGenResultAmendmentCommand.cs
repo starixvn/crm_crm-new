@@ -1,6 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Criteria.GenerateResultAmendment
 {
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Core.Models;
 
     public class InsertGenResultAmendmentCommand : BaseNonQueryCommand
     {

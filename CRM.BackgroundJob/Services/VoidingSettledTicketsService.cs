@@ -8,9 +8,9 @@
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
 
     public interface IVoidingSettledTicketsService
     {
@@ -31,10 +31,10 @@
     public class VoidingSettledTicketsService : IVoidingSettledTicketsService
     {
         private readonly IBaseService baseService;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
 
         public VoidingSettledTicketsService(
-            IBaseService baseService, ICRMLogService logService)
+            IBaseService baseService, ICrmLogService logService)
         {
             this.baseService = baseService;
             this.logService = logService;

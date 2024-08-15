@@ -8,9 +8,9 @@
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
 

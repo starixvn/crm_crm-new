@@ -1,19 +1,19 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBotCTO
 {
     using System;
-    using global::CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class TOReachInfor
     {
-        [XMLName("LogId")]
+        [XmlName("LogId")]
         public long LogId { get; set; }
 
-        [XMLName("CustId")]
+        [XmlName("CustId")]
         public int CustId { get; set; }
 
-        [XMLName("MatchId")]
+        [XmlName("MatchId")]
         public int MatchId { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Criteria.AbnormalBet
 {
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Core.Models;
 
     public class ImportAbnormalBetCommand : BaseNonQueryCommand
     {

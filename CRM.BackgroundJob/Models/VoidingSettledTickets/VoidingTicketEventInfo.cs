@@ -1,36 +1,49 @@
 ﻿namespace CRM.BackgroundJob.Models.VoidingSettledTickets
 {
     using System;
-    using CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class VoidingTicketEventInfo
     {
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
-        [XMLName("TransId")]
+
+        [XmlName("TransId")]
         public long TransId { get; set; }
-        [XMLName("CustID")]
+
+        [XmlName("CustID")]
         public int CustID { get; set; }
-        [XMLName("UserName")]
+
+        [XmlName("UserName")]
         public string UserName { get; set; }
-        [XMLName("HeadlineID")]
+
+        [XmlName("HeadlineID")]
         public int HeadlineID { get; set; }
-        [XMLName("HeadlineName")]
+
+        [XmlName("HeadlineName")]
         public string HeadlineName { get; set; }
-        [XMLName("MatchId")]
+
+        [XmlName("MatchId")]
         public int MatchId { get; set; }
-        [XMLName("MatchCode")]
+
+        [XmlName("MatchCode")]
         public string MatchCode { get; set; }
-        [XMLName("EventDate")]
+
+        [XmlName("EventDate")]
         public DateTime EventDate { get; set; }
-        [XMLName("Bettype")]
+
+        [XmlName("Bettype")]
         public int Bettype { get; set; }
-        [XMLName("EventType")]
+
+        [XmlName("EventType")]
         public short EventType { get; set; }
-        [XMLName("ProductID")]
+
+        [XmlName("ProductID")]
         public int ProductID { get; set; }
-        [XMLName("ListMsgTargetId")]
+
+        [XmlName("ListMsgTargetId")]
         public string ListMsgTargetId { get; set; }
     }
 }

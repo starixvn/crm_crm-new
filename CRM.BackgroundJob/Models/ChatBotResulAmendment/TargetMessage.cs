@@ -1,17 +1,19 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBotResulAmendment
 {
     using System;
-    using global::CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class TargetMessage
     {
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
-        [XMLName("MsgTargetId")]
+
+        [XmlName("MsgTargetId")]
         public int MsgTargetId { get; set; }
-        [XMLName("Type")]
+
+        [XmlName("Type")]
         public string Type { get; set; }
     }
 }

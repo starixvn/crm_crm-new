@@ -1,6 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Criteria.ChatBot
 {
-    using CRM.Core.Criteria;
+    using CRM.BackgroundJob.Core.Criteria;
 
     public class GetChatBotAbnormalAccountGetUsernameListCriteria : SiteDbBaseCriteria
     {

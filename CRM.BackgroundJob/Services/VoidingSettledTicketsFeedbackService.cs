@@ -8,8 +8,8 @@
     using CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -28,7 +28,7 @@
         private readonly AppJobSettings appSettings;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         private readonly ICommonFeedback commonFeedback;
         private readonly IVoidingSettledTicketsService voidingSettledTicketsService;
         private readonly IFeedbackTransactionService feedbackTransaction;
@@ -50,7 +50,7 @@
             IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             ICommonFeedback commonFeedback,
             IVoidingSettledTicketsService voidingSettledTicketsService,
             IFeedbackTransactionService feedbackTransaction

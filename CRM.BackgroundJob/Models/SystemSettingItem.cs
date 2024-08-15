@@ -1,13 +1,13 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Models
 {
     using System;
-    using global::CRM.Core.Extensions.XML;
+    using global::CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class SystemSettingItem
     {
-        [XMLName("Name")]
+        [XmlName("Name")]
         public string SettingName { get; set; }
 
         public string Value { get; set; }

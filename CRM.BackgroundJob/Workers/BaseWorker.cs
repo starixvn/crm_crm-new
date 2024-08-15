@@ -3,20 +3,20 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models;
-    using CRM.Core.Services;
     using Microsoft.Extensions.Hosting;
     using ONEbook.UM.Services;
 
     public abstract class BaseWorker : BackgroundService
     {
         private readonly IMaintenanceService maintenanceService;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         protected JobSetting jobSetting;
 
         protected BaseWorker(
             IMaintenanceService maintenanceService,
-            ICRMLogService logService)
+            ICrmLogService logService)
         {
             this.maintenanceService = maintenanceService;
             this.logService = logService;

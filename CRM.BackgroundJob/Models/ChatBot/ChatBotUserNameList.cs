@@ -1,18 +1,20 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBot
 {
-    using CRM.Core.Extensions.XML;
     using System;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
 
     [Serializable]
-    [XMLName("r")]
-    public class ChatBotUserNameList: ChatBotVoidingMessage
+    [XmlName("r")]
+    public class ChatBotUserNameList : ChatBotVoidingMessage
     {
-        [XMLName("UsernameList")]
+        [XmlName("UsernameList")]
         public string UsernameList { get; set; }
-        [XMLName("VoidingHistoryCollectionId")]
+
+        [XmlName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
-        [XMLName("VoidingHistoryID")]
+
+        [XmlName("VoidingHistoryID")]
         public int? VoidingHistoryId { get; set; }
     }
 }

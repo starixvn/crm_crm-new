@@ -3,8 +3,8 @@ namespace CRM.BackgroundJob.Services
 {
     using CRM.BackgroundJob.Criteria.SynchronizeLicensee;
     using CRM.BackgroundJob.Models.LicenseeInfo;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using System.Collections.Generic;
     using System.Text;

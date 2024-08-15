@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
@@ -17,7 +17,7 @@
             ISendAnnouncementService sendService,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
-            ICRMLogService logService)
+            ICrmLogService logService)
                 : base(maintenanceService, logService)
         {
             this.sendService = sendService;

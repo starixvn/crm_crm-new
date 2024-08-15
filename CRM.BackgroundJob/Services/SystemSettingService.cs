@@ -6,35 +6,35 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Core.Extensions.Xml;
+    using global::CRM.BackgroundJob.Core.Models;
+    using global::CRM.BackgroundJob.Core.Services;
     using global::CRM.BackgroundJob.Criteria;
+    using global::CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Criteria.ArchivingDA;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using global::CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
     using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
+    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
-    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
-    using global::CRM.Core.Extensions.XML;
-    using global::CRM.Core.Models;
-    using global::CRM.Core.Services;
 
     public interface ISystemSettingService
     {
         Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync(string serviceName);
 
         Task<CommandResult> EditSystemSettingAsync(
-            IEnumerable<SystemSettingItem> settings, 
+            IEnumerable<SystemSettingItem> settings,
             string serviceName = BackgroundJobConstants.ServiceName_AutoFB);
 
         Task<CommandResult> EditJobStatusAsync(string status);
 
         Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(
-            string serviceName, 
+            string serviceName,
             string Environment = BackgroundJobConstants.DefaultEnvironment);
 
         Task<WinLossSystemSetting> GetWinLossSettingAsync();
@@ -94,7 +94,7 @@
         }
 
         public async Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(
-            string serviceName, 
+            string serviceName,
             string Environment = BackgroundJobConstants.DefaultEnvironment)
         {
             var criteria = new GetChatBotSystemSettingCriteria
@@ -122,7 +122,7 @@
             var criteria = new GetProblemsAccountSystemSettingCriteria();
             return await baseService.GetDataEntityAsync<ProblemsAccountSetting>(criteria);
         }
-        
+
         public async Task<AmendmentNotiFbSetting> GetResultAmendmentSettingAsync()
         {
             var criteria = new GetResultAmendmentSystemSettingCriteria();

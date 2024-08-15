@@ -6,9 +6,9 @@
     using CRM.BackgroundJob.Criteria.RefundSettledTicket;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.RefundSettledTicket;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
 
     public interface IRefundSettledTicketService
     {

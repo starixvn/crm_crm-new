@@ -1,16 +1,16 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Models.ChatBot
 {
     using System;
-    using global::CRM.Core.Extensions.XML;
+    using global::CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class ChatBotVoidingMessage
     {
-        [XMLName("MessageID")]
+        [XmlName("MessageID")]
         public int MessageId { get; set; }
 
-        [XMLName("RequestID")]
+        [XmlName("RequestID")]
         public int RequestId { get; set; }
     }
 }

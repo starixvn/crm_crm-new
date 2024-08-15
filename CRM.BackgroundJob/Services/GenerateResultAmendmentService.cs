@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.GenerateResultAmendment;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Services;
     using Newtonsoft.Json;
 
     public interface IGenerateResultAmendmentService

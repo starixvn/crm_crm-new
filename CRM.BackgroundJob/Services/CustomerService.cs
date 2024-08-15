@@ -7,16 +7,16 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.Data.Repository;
+    using global::CRM.BackgroundJob.Core.Services;
+    using global::CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using global::CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
-    using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
+    using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.TurnoverControll;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
-    using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
 
     public interface ICustomerService

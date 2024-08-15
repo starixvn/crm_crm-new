@@ -5,15 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fanex.Caching" Version="2.2.3" />
+        <PackageReference Include="Fanex.Caching" Version="2.2.4" />
         <PackageReference Include="Fanex.Data.ProxyClient" Version="0.0.3" />
-        <PackageReference Include="Fanex.Logging.Extensions.AspNetCore" Version="1.0.0" />
+        <PackageReference Include="Fanex.Logging.Extensions.AspNetCore" Version="1.0.1" />
         <PackageReference Include="Fanex.Logging.Sentry" Version="1.0.6" />
         <PackageReference Include="Fanex.NAP.Client.AspNetCore" Version="2.0.0.13" />
         <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.16" />
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.16" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.16" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.8" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />

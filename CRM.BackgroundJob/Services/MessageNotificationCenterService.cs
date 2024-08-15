@@ -7,7 +7,7 @@
     using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Services;
@@ -28,7 +28,7 @@
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
     {
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         private readonly ICommonFeedback commonFeedback;
         private readonly ICaptureSettlementDataService captureSettlementDataService;
         private readonly IGenerateResultAmendmentService generateResultAmendmentService;
@@ -43,7 +43,7 @@
         private const string DefaultEnvironment = BackgroundJobConstants.DefaultEnvironment;
 
         public MessageNotificationCenterService(
-            ICRMLogService logService,
+            ICrmLogService logService,
             IConfiguration configuration,
             ICommonFeedback commonFeedback,
             ICaptureSettlementDataService captureSettlementDataService,

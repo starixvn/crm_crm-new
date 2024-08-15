@@ -5,14 +5,14 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
-    using global::CRM.Core.Models;
-    using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
 
     public interface IWinLossFeedbackService
@@ -27,7 +27,7 @@
         private readonly ISettingService settingService;
         private readonly ISystemSettingService systemSettingService;
         private readonly ICustomerService customerService;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         private readonly IFeedbackTransactionService transactionService;
         private readonly ICommonFeedback commonFeedback;
 
@@ -41,7 +41,7 @@
             ISettingService settingService,
             ISystemSettingService systemSettingService,
             ICustomerService customerService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             IFeedbackTransactionService transactionService,
             ICommonFeedback commonFeedback
             )

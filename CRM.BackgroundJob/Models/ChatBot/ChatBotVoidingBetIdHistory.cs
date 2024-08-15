@@ -1,26 +1,25 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBot
 {
-    using CRM.Core.Extensions.XML;
     using System;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
-
+    [XmlName("r")]
     public class ChatBotVoidingBetIdHistory
     {
-        [XMLName("VoidingHistoryCollectionId")]
+        [XmlName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
 
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
 
-        [XMLName("BetTransId")]
+        [XmlName("BetTransId")]
         public string BetTransId { get; set; }
 
-        [XMLName("MsgTargetId")]
+        [XmlName("MsgTargetId")]
         public int MsgTargetId { get; set; }
 
-        [XMLName("TargetId")]
+        [XmlName("TargetId")]
         public int TargetId { get; set; }
     }
 }

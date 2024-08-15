@@ -1,21 +1,21 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using System.Web;
-    using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
-    using global::CRM.Core.Extensions.XML;
-    using global::CRM.Core.Models;
-    using global::CRM.Core.Services;
-    using System;
-    using global::CRM.BackgroundJob.Models.ChatBot;
+    using global::CRM.BackgroundJob.Core.Extensions.Xml;
+    using global::CRM.BackgroundJob.Core.Models;
+    using global::CRM.BackgroundJob.Core.Services;
     using global::CRM.BackgroundJob.Criteria.ChatBot;
     using global::CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models.ChatBot;
 
     public interface IChatBotTicketVoidingService
     {
@@ -79,7 +79,6 @@
             return await baseService.GetDataAsync<ChatBotVoidingHistory>(criteria);
         }
 
-
         public async Task<CommandResult> EditVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages)
         {
             var criteria = new EditChatBotVoidingMessageCommand
@@ -122,7 +121,7 @@
                 Messages_VoidByBetID = voidingBetIdMessages.ToXML("root").ToString()
             };
             var data = await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(criteria);
-            return new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int> 
+            return new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>
                 (data.Item1, data.Item2, criteria.MAXVoidingHistoryCollectionId, criteria.MAXMsgTargetId);
         }
 
@@ -137,7 +136,7 @@
                 "Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' IsTest='{7}' " +
                 "Content_en='{8}' Content_cs='{9}' Content_th='{10}' Content_vn='{11}' Type='{12}'/>";
             var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
-            
+
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
                 Message message = messages.FirstOrDefault(x => x.VoidingHistoryCollectionId == ticketInfo.VoidingHistoryCollectionId);
@@ -157,7 +156,6 @@
                     ticketInfo.Type
              );
             }
-           
 
             stringBuilder.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportChatBotTicketVoidingInfoCommand

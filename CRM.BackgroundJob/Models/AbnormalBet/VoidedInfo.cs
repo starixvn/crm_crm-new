@@ -1,36 +1,46 @@
 ﻿namespace CRM.BackgroundJob.Models.AbnormalBet
 {
-    using CRM.Core.Extensions.XML;
     using System;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
-
+    [XmlName("r")]
     public class VoidedInfo
     {
-        [XMLName("VoidingHistoryCollectionId")]
+        [XmlName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
-        [XMLName("RequestId")]
+
+        [XmlName("RequestId")]
         public int RequestId { get; set; }
-        [XMLName("MessageId")]
+
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
-        [XMLName("IssueTypeId")]
+
+        [XmlName("IssueTypeId")]
         public int IssueTypeId { get; set; }
-        [XMLName("IsParlay")]
+
+        [XmlName("IsParlay")]
         public bool IsParlay { get; set; }
-        [XMLName("RequestBy")]
+
+        [XmlName("RequestBy")]
         public string RequestBy { get; set; }
-        [XMLName("DecidedBy")]
+
+        [XmlName("DecidedBy")]
         public string DecidedBy { get; set; }
-        [XMLName("VoidBy")]
+
+        [XmlName("VoidBy")]
         public string VoidBy { get; set; }
-        [XMLName("MatchId")]
+
+        [XmlName("MatchId")]
         public int MatchId { get; set; }
-        [XMLName("TransIdList")]
+
+        [XmlName("TransIdList")]
         public string TransIdList { get; set; }
-        [XMLName("OriginalTransId")]
+
+        [XmlName("OriginalTransId")]
         public string OriginalTransId { get; set; }
-        [XMLName("UsernameList")]
+
+        [XmlName("UsernameList")]
         public string UsernameList { get; set; }
     }
 }

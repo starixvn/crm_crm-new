@@ -2,8 +2,8 @@
 {
     using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
     using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using System;
     using System.Collections.Generic;

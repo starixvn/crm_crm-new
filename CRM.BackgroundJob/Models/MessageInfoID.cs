@@ -1,37 +1,37 @@
 ﻿namespace CRM.BackgroundJob.Models
 {
     using System;
-    using CRM.Core.Extensions.XML;
-    [Serializable]
-    [XMLName("r")]
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
+    [Serializable]
+    [XmlName("r")]
     public class MessageInfoID
     {
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
 
-        [XMLName("BetTransId")]
+        [XmlName("BetTransId")]
         public string BetTransId { get; set; }
 
-        [XMLName("ListBetTransId")]
+        [XmlName("ListBetTransId")]
         public string ListBetTransId { get; set; }
 
-        [XMLName("Content_en")]
+        [XmlName("Content_en")]
         public string Content_en { get; set; }
 
-        [XMLName("Content_cs")]
+        [XmlName("Content_cs")]
         public string Content_cs { get; set; }
 
-        [XMLName("Content_yn")]
+        [XmlName("Content_yn")]
         public string Content_yn { get; set; }
 
-        [XMLName("MsgTargetId")]
+        [XmlName("MsgTargetId")]
         public int MsgTargetId { get; set; }
 
-        [XMLName("TargetId")]
+        [XmlName("TargetId")]
         public int TargetId { get; set; }
 
-        [XMLName("MatchId")]
+        [XmlName("MatchId")]
         public int MatchId { get; set; }
     }
 }

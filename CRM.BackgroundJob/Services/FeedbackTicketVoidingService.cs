@@ -9,10 +9,10 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Core.Models;
+    using global::CRM.BackgroundJob.Core.Services;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
-    using global::CRM.Core.Models;
-    using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
 
     public interface IFeedbackTicketVoidingService
@@ -43,7 +43,7 @@
     {
         private readonly IBaseService baseService;
         private readonly IMessageService messageService;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = BackgroundJobConstants.DefaultEnvironment;
@@ -51,7 +51,7 @@
         public FeedbackTicketVoidingService(
             IBaseService baseService,
             IMessageService messageService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             IConfiguration configuration)
         {
             this.baseService = baseService;
@@ -139,6 +139,7 @@
 
 #pragma warning disable S3776
 #pragma warning disable S1541
+
         protected internal virtual string GetXmlImportTicketFeedback(
             IEnumerable<MatchInfo> matchInfos,
             IEnumerable<TransactionInfo> transactionInfos,
@@ -187,7 +188,7 @@
                         MessageId = transaction.MessageId
                     };
 
-                    GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, 
+                    GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId,
                         transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType ? transaction.CustId : relatedCustId);
                 }
             }

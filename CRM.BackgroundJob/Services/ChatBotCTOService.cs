@@ -7,9 +7,9 @@
     using System.Web;
     using CRM.BackgroundJob.Criteria.ChatBot_CTO;
     using CRM.BackgroundJob.Models.ChatBotCTO;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
 
     public interface IChatBotCTOService

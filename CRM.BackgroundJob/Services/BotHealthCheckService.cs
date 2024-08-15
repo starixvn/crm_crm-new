@@ -2,9 +2,9 @@
 {
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.HealthCheck;
-    using CRM.Core.Enumerables;
-    using CRM.Core.Models.BotServices;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Enumerables;
+    using CRM.BackgroundJob.Core.Models.BotServices;
+    using CRM.BackgroundJob.Core.Services;
 
     public interface IBotHealthCheckService
     {
@@ -15,11 +15,11 @@
     {
         private readonly IChatBotSendMessageService chatBotSendMessageService;
         private readonly LetstalkHealthCheckSettings healthCheckSettings;
-        private readonly ICRMLogService logService;
+        private readonly ICrmLogService logService;
 
         public BotHealthCheckService(IChatBotSendMessageService chatBotSendMessageService,
             LetstalkHealthCheckSettings healthCheckSettings,
-            ICRMLogService logService)
+            ICrmLogService logService)
         {
             this.chatBotSendMessageService = chatBotSendMessageService;
             this.healthCheckSettings = healthCheckSettings;

@@ -1,29 +1,37 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBotResulAmendment
 {
     using System;
-    using global::CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
     [Serializable]
-    [XMLName("r")]
+    [XmlName("r")]
     public class AmendmentResultTicketEvent
     {
-        [XMLName("TicketId")]
+        [XmlName("TicketId")]
         public int TicketId { get; set; }
-        [XMLName("TicketEventId")]
+
+        [XmlName("TicketEventId")]
         public int TicketEventId { get; set; }
-        [XMLName("Seq")]
+
+        [XmlName("Seq")]
         public int Seq { get; set; }
-        [XMLName("CustId")]
+
+        [XmlName("CustId")]
         public int CustId { get; set; }
-        [XMLName("Username")]
+
+        [XmlName("Username")]
         public string Username { get; set; }
-        [XMLName("Recommend")]
+
+        [XmlName("Recommend")]
         public int Recommend { get; set; }
-        [XMLName("Mrecommend")]
+
+        [XmlName("Mrecommend")]
         public int Mrecommend { get; set; }
-        [XMLName("Srecommend")]
+
+        [XmlName("Srecommend")]
         public int Srecommend { get; set; }
-        [XMLName("IsTest")]
+
+        [XmlName("IsTest")]
         public int IsTest { get; set; }
     }
 }
