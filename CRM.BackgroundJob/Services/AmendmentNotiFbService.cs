@@ -63,7 +63,7 @@
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment)
         {
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AmendmentNotiFB);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, BackgroundJobConstants.ServiceName_AmendmentNotiFB);
 
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -74,7 +74,7 @@
             if (isAnyNotCompeleteStatus)
             {
                 logService.LogInformation("Data has some status not completed");
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_AmendmentNotiFB);
                 return;
             }
             if (custAmendmentNotifications.Any())
@@ -103,7 +103,7 @@
             {
                 logService.LogInformation(string.Format("Import Amendment Auto Feedback Infor doesn't have any data with custId: {0} TicketId: {1}!",
                     string.Join(",", custAmendmentNotifications.Select(x => x.CustId)), string.Join(",", custAmendmentNotifications.Select(x => x.TicketId))));
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_AmendmentNotiFB);
                 return;
             }
 
@@ -119,7 +119,7 @@
                         isNoResultTemplate);
             }
 
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, BackgroundJobConstants.ServiceName_AmendmentNotiFB);
             logService.LogInformation("end service result amendment serivce!");
         }
 
@@ -141,7 +141,7 @@
                 maxSeq,
                 lastSubmitTimeEnvName,
                 maxLastSubmitTime.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
-                Constants.ServiceName_AmendmentNotiFB
+                BackgroundJobConstants.ServiceName_AmendmentNotiFB
            );
         }
 
@@ -458,7 +458,7 @@
                                homeName,
                                awayName,
                                leagueName3rd,
-                               Constants.Break
+                               BackgroundJobConstants.Break
                             );
                         break;
 
@@ -668,8 +668,8 @@
                             Eventdate,
                             amendment.ActualResult,
                             amendment.WrongResult,
-                            Constants.Break,
-                            Constants.LineBreak);
+                            BackgroundJobConstants.Break,
+                            BackgroundJobConstants.LineBreak);
                     break;
 
                 default:
@@ -747,12 +747,12 @@
                     if (isVipCust)
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, leagueName3rdYN,
-                        matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
+                        matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
                     }
                     else
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, leagueName3rdSC, matchCodeReplaceSC,
-                        Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
+                        Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, BackgroundJobConstants.Break, BackgroundJobConstants.LineBreak);
                     }
                     break;
 

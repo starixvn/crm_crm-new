@@ -12,7 +12,6 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Hosting;
 
     public interface IMessageNotificationCenterService
     {
@@ -41,7 +40,7 @@
         private readonly BotServiceSetting botSetting;
         private readonly string Environment;
 
-        private const string DefaultEnvironment = Constants.DefaultEnvironment;
+        private const string DefaultEnvironment = BackgroundJobConstants.DefaultEnvironment;
 
         public MessageNotificationCenterService(
             ICRMLogService logService,
@@ -256,7 +255,7 @@
         {
             foreach (var conversationConfig in conversationConfigs)
             {
-                if (conversationConfig.DisplayName == Constants.SYS_IT)
+                if (conversationConfig.DisplayName == BackgroundJobConstants.SYS_IT)
                 {
                     await logService.ErrorMessageAsync(content);
                 }

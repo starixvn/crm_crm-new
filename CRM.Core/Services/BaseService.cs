@@ -12,21 +12,22 @@
 
     public interface IBaseService
     {
-        Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria);
+        Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria, string serverIp = "");
 
-        Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria);
+        Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria, string serverIp = "");
 
         Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(SiteDbBaseCriteria criteria);
 
-        Task<T> GetDataEntityAsync<T>(ICriteria criteria);
+        Task<T> GetDataEntityAsync<T>(ICriteria criteria, string serverIp = "");
 
-        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>> FetchMultipleAsync<TFirst, TSecond>(ICriteria criteria);
+        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>> FetchMultipleAsync<TFirst, TSecond>(ICriteria criteria, string serverIp = "");
 
-        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria);
+        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria, string serverIp = "");
 
-        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>> FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria);
+        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>>
+            FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria, string serverIp = "");
 
-        Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command);
+        Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command, string serverIp = "");
     }
 
     public class BaseService : IBaseService
@@ -43,7 +44,7 @@
             this.cacheService = cacheService;
         }
 
-        public async Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria)
+        public async Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria, string serverIp = "")
         {
             if (criteria != null && criteria.IsValid())
             {
@@ -53,7 +54,7 @@
             return new List<T>();
         }
 
-        public virtual async Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria)
+        public virtual async Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria, string serverIp = "")
         {
             var siteConfigs = cacheService.Get<IEnumerable<SiteDbConfig>>(Config_SiteDb_Key);
             if (siteConfigs == null || !siteConfigs.Any())
@@ -79,7 +80,7 @@
             return results;
         }
 
-        public async Task<T> GetDataEntityAsync<T>(ICriteria criteria)
+        public async Task<T> GetDataEntityAsync<T>(ICriteria criteria, string serverIp = "")
         {
             if (criteria != null && criteria.IsValid())
             {
@@ -89,7 +90,7 @@
             return default(T);
         }
 
-        public async Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>> FetchMultipleAsync<TFirst, TSecond>(ICriteria criteria)
+        public async Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>> FetchMultipleAsync<TFirst, TSecond>(ICriteria criteria, string serverIp = "")
         {
             if (criteria != null && criteria.IsValid())
             {
@@ -99,7 +100,7 @@
             return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>(new List<TFirst>(), new List<TSecond>());
         }
 
-        public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>)> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria)
+        public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>)> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria, string serverIp = "")
         {
             if (criteria != null && criteria.IsValid())
             {
@@ -109,7 +110,8 @@
             return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>(new List<TFirst>(), new List<TSecond>(), new List<TThird>());
         }
 
-        public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>)> FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria)
+        public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>)>
+            FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria, string serverIp = "")
         {
             if (criteria != null && criteria.IsValid())
             {
@@ -120,7 +122,7 @@
                 new List<TFirst>(), new List<TSecond>(), new List<TThird>(), new List<TFour>());
         }
 
-        public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command)
+        public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command, string serverIp = "")
         {
             var commandResult = new CommandResult();
             if (command != null && command.IsValid())

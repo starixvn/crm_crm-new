@@ -21,7 +21,8 @@
     {
         private readonly IBaseService baseService;
 
-        public CaptureSettlementDataService(IBaseService baseService) {
+        public CaptureSettlementDataService(IBaseService baseService)
+        {
             this.baseService = baseService;
         }
 
@@ -42,7 +43,7 @@
                 FDTime = siteDbConfig.FDTime,
                 SiteDBGroupID = siteDbConfig.SiteDBGroupID
             };
-            return await baseService.GetDataByIpConfigAsync<SettlResultHistory>(siteDbConfig.AGIP, siteDbConfig.LinkedServerName, criteria);
+            return await baseService.GetDataAsync<SettlResultHistory>(criteria, siteDbConfig.AGIP);
         }
 
         public async Task InsertDataLoadAsync(string environment, string JSSettlResultHist)

@@ -412,7 +412,7 @@
             const string sourceProduct = "SABA xD";
             const string transformedProduct = "TaraPlays xD";
 
-            if (site == Constants.SiteLabel777 && productName == sourceProduct)
+            if (site == BackgroundJobConstants.SiteLabel777 && productName == sourceProduct)
             {
                 return transformedProduct;
             }

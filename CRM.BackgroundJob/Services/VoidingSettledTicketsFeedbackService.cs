@@ -551,6 +551,7 @@
         }
 
 #pragma warning disable S1541, S1067, S121
+
         protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
           string kO_time, string leagueName, string homeName, string sportName, string awayName, string matchCode)
 #pragma warning restore S1541, S1067, S121
@@ -574,8 +575,8 @@
 #pragma warning restore S121
             stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
             string league = leagueName;
-            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) 
-                || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) 
+            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase)
+                || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase)
                 || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
             {
                 league = sportName;
@@ -584,7 +585,7 @@
             {
                 league = commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
             }
-            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, Constants.Break);
+            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, BackgroundJobConstants.Break);
 
             return stringBuilder.ToString();
         }

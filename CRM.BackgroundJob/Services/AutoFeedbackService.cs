@@ -7,30 +7,40 @@
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
+    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
-    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public interface IAutoFeedbackService
     {
         Task AbnormalbetExecuteJobAsync();
+
         Task WinLossExecuteJobAsync();
+
         Task TurnoverControlExecuteJobAsync();
+
         Task ProblemsAcccountExecuteJobAsync();
+
         Task AmendmentNotiFbExecuteJobAsync();
+
         Task SynchronizeNewLicenseeOICExecuteJobAsync();
+
         Task VoidingSettledTicketsExecuteJobAsync();
+
         Task ArchivingDAExecuteJobAsync();
+
         Task RefundSettledTicketJobAsync();
+
         Task VoidingBetIDExecuteJobAsync();
+
         Task AbnormalBetsExecuteJobAsync();
+
         Task MessageNotificationCenterExecuteJobAsync();
     }
 
@@ -59,6 +69,7 @@
         private const string dateTimeParse = "yyyy-MM-dd hh:mm:ss.fff tt";
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public AutoFeedbackService(
             IOptions<AppJobSettings> appSettings,
             IJobRunningChecker jobRunningChecker,
@@ -309,7 +320,7 @@
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
                            new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
-                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_AmendmentNotiFB);
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, BackgroundJobConstants.ServiceName_AmendmentNotiFB);
                 }
             }
         }
@@ -553,7 +564,6 @@
             }
             catch (Exception ex)
             {
-
                 await logService.ErrorAsync(ex);
             }
         }
@@ -583,7 +593,6 @@
             }
             catch (Exception ex)
             {
-
                 await logService.ErrorAsync(ex);
             }
         }
@@ -598,7 +607,7 @@
                     logService.LogInformation("Service AutoFeedback AbnormalBets is shutdown.");
                     return;
                 }
-                var (voidedCollectionInfo, messageAbnormals, maxVoidingHistoryCollectionId) = 
+                var (voidedCollectionInfo, messageAbnormals, maxVoidingHistoryCollectionId) =
                     await abnormalBetService.GetVoidedInfoAsync(systemSettingInfo.LastVoidingHistoryCollectionId, systemSettingInfo.BatchSize);
                 var messages = await abnormalBetService.GetMessageAbnormalBetAsync(messageAbnormals);
                 var (commandResult, command) = await abnormalBetService.ImportAbnormalBetsAsync(messages, voidedCollectionInfo, Environment, maxVoidingHistoryCollectionId);
@@ -614,7 +623,6 @@
             }
             catch (Exception ex)
             {
-
                 await logService.ErrorAsync(ex);
             }
         }
@@ -623,7 +631,8 @@
         {
             try
             {
-                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Environment);
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(
+                    BackgroundJobConstants.ServiceName_AutoMessageNotificationCenter, Environment);
 
                 if (!systemSettingInfo.ServiceFlag)
                 {
