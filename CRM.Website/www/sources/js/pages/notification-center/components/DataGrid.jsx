@@ -328,6 +328,7 @@ export class DataGrid extends Component {
     renderCollapseContent = item => {
         return (
             <div>
+                <div className='text-bold'>Match ID: {item.matchId}</div>
                 <div className='text-it'>Created on {DateTimeService.toLongDateTimeFormat(item.createdTime)}</div>
                 <div className='text-bold'>{item.subject}</div>
             </div>
@@ -351,6 +352,7 @@ export class DataGrid extends Component {
 
         return (
             <div>
+                <div className='text-bold'>Match ID: {item.matchId}</div>
                 <div className='text-it'>Created on {DateTimeService.toLongDateTimeFormat(item.createdTime)}</div>
                 <div className='text-bold'>{item.subject}</div>
                 {languages.map(({ code, title }, index) =>
