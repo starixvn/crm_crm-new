@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoFixture;
-using CRM.Controllers.HeadlineNotification;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using CRM.Criteria.Announcement;
-using CRM.Criteria.NotificationList;
-using CRM.Criteria.PicAndHeadline;
-using CRM.Models;
-using CRM.Models.Announcement;
-using CRM.Services;
-using CRM.Services.Interfaces;
-using Fanex.NAP.Client.Helpers.Web;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
-using NSubstitute.ReceivedExtensions;
-using Xunit;
-
-namespace CRM.Controllers.UnitTests
+﻿namespace CRM.Controllers.UnitTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.Controllers.HeadlineNotification;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.Announcement;
+    using CRM.Criteria.PicAndHeadline;
+    using CRM.Models;
+    using CRM.Models.Announcement;
+    using CRM.Services;
+    using CRM.Services.Interfaces;
+    using Fanex.NAP.Client.Helpers.Web;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using NSubstitute;
+    using NSubstitute.ReceivedExtensions;
+    using Xunit;
+
     public class AnnouncementControllerTests
     {
         private IAnnouncementService announcementService;

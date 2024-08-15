@@ -2,12 +2,12 @@
 {
     using CRM.BackgroundJob.Criteria.ArchivingDA;
     using CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using CRM.BackgroundJob.Criteria.ResultAmendment;
+    using CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using CRM.BackgroundJob.Criteria.TurnoverControll;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
     using CRM.BackgroundJob.Models.ArchivingDA;
     using CRM.BackgroundJob.Models.ProblemsAccount;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.Core.Models;

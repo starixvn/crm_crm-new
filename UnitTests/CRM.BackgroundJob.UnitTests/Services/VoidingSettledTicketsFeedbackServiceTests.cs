@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
@@ -40,7 +40,7 @@
             // Arrange
             var service = MockService();
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
-            var voidingSettledTicketSetting = fixture.Create<ResultAmendmentSetting>();
+            var voidingSettledTicketSetting = fixture.Create<AmendmentNotiFbSetting>();
             var settings = fixture.Create<IEnumerable<SettingItem>>();
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var messageVoidSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();
@@ -78,7 +78,7 @@
             var service = MockService();
             var commandResult = new CommandResult { Code = 1 };
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
-            var voidingSettledTicketSetting = fixture.Create<ResultAmendmentSetting>();
+            var voidingSettledTicketSetting = fixture.Create<AmendmentNotiFbSetting>();
             var settings = fixture.Create<IEnumerable<SettingItem>>();
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var messageVoidSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();

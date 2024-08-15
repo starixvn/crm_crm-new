@@ -174,7 +174,7 @@
         //    var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
         //    var result = actualResult.First();
         //    // Assert
-        //    logService.Received(4).LogInformation(Arg.Any<string>());
+              //logService.Received(16).LogInformation(Arg.Any<string>());
         //    await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
         //    Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
         //    Assert.Equal(result.ConversationId, expected.ConversationId);

@@ -152,6 +152,9 @@
         <None Update="ExcelTemplates\Settlement_Issues_Report.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="ExcelTemplates\SiteAffectedTicket.xlsx">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Update="ExcelTemplates\UpdateInformHeadlines.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>

@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
-using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
-using CRM.BackgroundJob.Criteria.ChatBot_CTO;
-using CRM.BackgroundJob.Models.ChatBot;
-using CRM.BackgroundJob.Models.ChatBotCTO;
-using CRM.BackgroundJob.Services;
-using CRM.Core.Constants;
-using CRM.Core.Extensions.XML;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using NSubstitute;
-using Xunit;
-
-namespace CRM.BackgroundJob.UnitTests.Services
+﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
+    using CRM.BackgroundJob.Criteria.ChatBot_CTO;
+    using CRM.BackgroundJob.Models.ChatBot;
+    using CRM.BackgroundJob.Models.ChatBotCTO;
+    using CRM.BackgroundJob.Services;
+    using CRM.Core.Constants;
+    using CRM.Core.Extensions.XML;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using NSubstitute;
+    using Xunit;
+
     public class ChatBotArchivingDAServiceTests
     {
         private IBaseService baseService;

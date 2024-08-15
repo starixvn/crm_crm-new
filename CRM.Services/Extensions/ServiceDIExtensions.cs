@@ -12,6 +12,7 @@
     using CRM.Services.HeadlineNotification;
     using CRM.Services.InformHeadline;
     using CRM.Services.Interfaces;
+    using CRM.Services.NotificationCenter;
     using CRM.Services.Redemption;
     using CRM.Services.Remark;
     using CRM.Services.Report;
@@ -57,6 +58,7 @@
             services.AddScoped<ISendAnnouncementService, SendAnnouncementService>();
             services.AddSingleton<IPermissionService, PermissionService>();
             services.AddScoped<ICategoryClassificationService, CategoryClassificationService>();
+            services.AddScoped<INotificationCenterService, NotificationCenterService>();
         }
     }
 }

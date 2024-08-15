@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using CRM.BackgroundJob.Criteria.ChatBotCWL;
-using CRM.BackgroundJob.Models.ChatBotCWL;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using Fanex.CRM.BackgroundJob.Constants;
-using Fanex.RemotingRef;
-
-namespace CRM.BackgroundJob.Services
+﻿namespace CRM.BackgroundJob.Services
 {
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
+    using CRM.BackgroundJob.Criteria.ChatBotCWL;
+    using CRM.BackgroundJob.Models.ChatBotCWL;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.RemotingRef;
+    using System;
+
     public interface IChatBotCWLService
     {
         Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(long LastLogId, int BatchSize);

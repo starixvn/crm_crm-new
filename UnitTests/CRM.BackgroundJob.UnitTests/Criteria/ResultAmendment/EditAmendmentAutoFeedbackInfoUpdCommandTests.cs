@@ -1,6 +1,6 @@
-﻿namespace CRM.BackgroundJob.UnitTests.Criteria.ResultAmendment
+﻿namespace CRM.BackgroundJob.UnitTests.Criteria.AmendmentNotiFB
 {
-    using CRM.BackgroundJob.Criteria.ResultAmendment;
+    using CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using Xunit;
 
     public class EditAmendmentAutoFeedbackInfoUpdCommandTests

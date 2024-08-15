@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using AutoFixture;
-using CRM.BackgroundJob.Services;
-using CRM.BackgroundJob.UnitTests.Testable;
-using CRM.Core.Services;
-using Fanex.CRM.BackgroundJob.Models;
-using Fanex.CRM.BackgroundJob.Services;
-using Microsoft.Extensions.Options;
-using NSubstitute;
-using Xunit;
-using CRM.BackgroundJob.Models.ArchivingDA;
-using NSubstitute.ReceivedExtensions;
-using Fanex.CRM.BackgroundJob.Constants;
-using Fanex.CRM.BackgroundJob.Criteria;
-using System.Text;
-using CRM.BackgroundJob.Models.ResultAmendment;
-using CRM.Core.Models;
-
-namespace CRM.BackgroundJob.UnitTests.Services
+﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System;
+    using AutoFixture;
+    using CRM.BackgroundJob.Services;
+    using CRM.BackgroundJob.UnitTests.Testable;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Models;
+    using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Options;
+    using NSubstitute;
+    using Xunit;
+    using CRM.BackgroundJob.Models.ArchivingDA;
+    using NSubstitute.ReceivedExtensions;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Criteria;
+    using System.Text;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
+    using CRM.Core.Models;
+
     public class ArchivingDAServiceTests
     {
         private AppJobSettings appSettings;

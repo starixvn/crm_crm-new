@@ -6,7 +6,7 @@
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
@@ -15,9 +15,9 @@
     public interface IVoidingSettledTicketsService
     {
         Task<IEnumerable<MessageVoidSettled>> GetMessageVoidSettledAsync();
-        Task<IEnumerable<MessageVoidSettled>> GetAutoVoidingMessageAsync(ResultAmendmentSetting voidingSettledTicketSetting, string environment);
+        Task<IEnumerable<MessageVoidSettled>> GetAutoVoidingMessageAsync(AmendmentNotiFbSetting voidingSettledTicketSetting, string environment);
         Task<ValueTuple<IEnumerable<VoidingTicketEventInfo>, IEnumerable<MsgTarget>>> GetAutoVoidingTicketAsync(
-            ResultAmendmentSetting voidingSettledTicketSetting, List<MessageVoidSettled> voidSettleds, string environment
+            AmendmentNotiFbSetting voidingSettledTicketSetting, List<MessageVoidSettled> voidSettleds, string environment
             );
         Task<IEnumerable<MessageVoidSettled>> GetFailVoidingMessageAsync();
         Task<IEnumerable<MessageVoidSettled>> GetVoidingMessasgeCheckAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds, string environment);
@@ -46,7 +46,7 @@
             return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
         }
 
-        public async Task<IEnumerable<MessageVoidSettled>> GetAutoVoidingMessageAsync(ResultAmendmentSetting voidingSettledTicketSetting, string environment)
+        public async Task<IEnumerable<MessageVoidSettled>> GetAutoVoidingMessageAsync(AmendmentNotiFbSetting voidingSettledTicketSetting, string environment)
         {
             var criteria = new GetAutoVoidingMessageCriteria
             {
@@ -59,7 +59,7 @@
         }
 
         public async Task<ValueTuple<IEnumerable<VoidingTicketEventInfo>, IEnumerable<MsgTarget>>> GetAutoVoidingTicketAsync(
-            ResultAmendmentSetting voidingSettledTicketSetting, List<MessageVoidSettled> voidSettleds, string environment
+            AmendmentNotiFbSetting voidingSettledTicketSetting, List<MessageVoidSettled> voidSettleds, string environment
             )
         {
             var criteria = new GetAutoVoidingTicketCriteria

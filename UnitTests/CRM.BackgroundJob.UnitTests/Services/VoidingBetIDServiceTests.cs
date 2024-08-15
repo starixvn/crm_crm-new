@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.VoidingBetID;
-    using CRM.BackgroundJob.Models.VoidingBetID;
+    using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -21,9 +21,9 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<MessageVoidBetID>>();
+            var expected = fixture.Create<IEnumerable<MessageInfoID>>();
             var service = GetService();
-            baseService.GetDataAsync<MessageVoidBetID>(Arg.Any<GetMessageVoidByBetIDCriteria>()).Returns(expected);
+            baseService.GetDataAsync<MessageInfoID>(Arg.Any<GetMessageVoidByBetIDCriteria>()).Returns(expected);
 
             // Act
             var actual = await service.GetMessageVoidBetIDAsync(1,2);
@@ -37,10 +37,10 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var message = fixture.Create<IEnumerable<MessageVoidBetID>>();
-            var expected = fixture.Create<IEnumerable<MessageVoidBetID>>();
+            var message = fixture.Create<IEnumerable<MessageInfoID>>();
+            var expected = fixture.Create<IEnumerable<MessageInfoID>>();
             var service = GetService();
-            baseService.GetDataAsync<MessageVoidBetID>(Arg.Any<CleanMessageVoidByBetIDCriteria>()).Returns(expected);
+            baseService.GetDataAsync<MessageInfoID>(Arg.Any<CleanMessageVoidByBetIDCriteria>()).Returns(expected);
 
             // Act
             var actual = await service.CleanMessageVoidBetIDAsync(message);
@@ -54,7 +54,7 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var message = fixture.Create<IEnumerable<MessageVoidBetID>>();
+            var message = fixture.Create<IEnumerable<MessageInfoID>>();
             var commandResult = fixture.Create<CommandResult>();
             var command = fixture.Create<ImportVoidBetIDCommand>();
             var expected = new ValueTuple<CommandResult, ImportVoidBetIDCommand>(commandResult, command);

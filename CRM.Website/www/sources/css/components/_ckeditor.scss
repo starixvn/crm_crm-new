@@ -27,3 +27,9 @@
         }
     }
 }
+
+.remove-toolbar {
+    span.cke_top {
+        visibility: hidden;
+    }
+}

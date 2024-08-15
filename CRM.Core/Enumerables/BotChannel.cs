@@ -3,6 +3,7 @@
     public enum BotChannel
     {
         Letstalk = 1,
-        Telegram
+        Telegram,
+        Skype
     }
 }

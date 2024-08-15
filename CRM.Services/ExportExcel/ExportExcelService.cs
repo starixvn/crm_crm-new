@@ -8,6 +8,7 @@
     using CRM.Models.ChatTypeMapping;
     using CRM.Models.Feedback;
     using CRM.Models.InformHeadline;
+    using CRM.Models.NotificationCenter;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report;
     using CRM.Models.Report.CategoriesSummaryReport;
@@ -83,6 +84,8 @@
         byte[] ExportCustomerReport(CustomerReportInfo customerReportInfo);
 
         byte[] ExportCategoryClassification(IEnumerable<CategoryClassification> categoryClassifications);
+
+        byte[] ExportSiteTicket(IEnumerable<AdmSiteTicket> siteTickets, string eventTime, string eventName);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -297,6 +300,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/CategoryClassification.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new CategoryClassificationExcel(templatePath, categoryClassifications);
+            return excel.Export();
+        }
+
+        public byte[] ExportSiteTicket(IEnumerable<AdmSiteTicket> siteTickets, string eventTime, string eventName)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/SiteAffectedTicket.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new MncAffectedTicketExcel(templatePath, siteTickets, eventTime, eventName);
             return excel.Export();
         }
     }

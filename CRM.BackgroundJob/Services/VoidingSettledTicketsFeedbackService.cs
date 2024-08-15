@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.VoidingSettledTickets;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -18,7 +18,7 @@
 
     public interface IVoidingSettledTicketsFeedbackService
     {
-        Task CreateFeedbackForVoidingSettledTickets(ResultAmendmentSetting voidingSettledTicketSetting, bool isUAT,
+        Task CreateFeedbackForVoidingSettledTickets(AmendmentNotiFbSetting voidingSettledTicketSetting, bool isUAT,
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment);
     }
@@ -66,7 +66,7 @@
             this.feedbackTransaction = feedbackTransaction;
         }
 
-        public async Task CreateFeedbackForVoidingSettledTickets(ResultAmendmentSetting voidingSettledTicketSetting, bool isUAT,
+        public async Task CreateFeedbackForVoidingSettledTickets(AmendmentNotiFbSetting voidingSettledTicketSetting, bool isUAT,
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment)
         {

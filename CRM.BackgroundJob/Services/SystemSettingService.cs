@@ -9,7 +9,7 @@
     using global::CRM.BackgroundJob.Criteria;
     using global::CRM.BackgroundJob.Criteria.ArchivingDA;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using global::CRM.BackgroundJob.Criteria.ResultAmendment;
+    using global::CRM.BackgroundJob.Criteria.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
@@ -17,7 +17,7 @@
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
-    using global::CRM.BackgroundJob.Models.ResultAmendment;
+    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
@@ -43,13 +43,15 @@
 
         Task<ProblemsAccountSetting> GetProblemsAccountSettingAsync();
 
-        Task<ResultAmendmentSetting> GetResultAmendmentSettingAsync();
+        Task<AmendmentNotiFbSetting> GetResultAmendmentSettingAsync();
 
-        Task<ResultAmendmentSetting> GetVoidingSettledTicketsSettingAsync();
+        Task<AmendmentNotiFbSetting> GetVoidingSettledTicketsSettingAsync();
 
         Task<ArchivingDASetting> GetArchivingDASettingAsync();
 
         Task<SystemSettingInfo> GetSystemSettingAsync(string serviceName, string environment);
+
+        Task<bool> GetSystemSettingNotificationAsync(string environment);
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -121,16 +123,16 @@
             return await baseService.GetDataEntityAsync<ProblemsAccountSetting>(criteria);
         }
         
-        public async Task<ResultAmendmentSetting> GetResultAmendmentSettingAsync()
+        public async Task<AmendmentNotiFbSetting> GetResultAmendmentSettingAsync()
         {
             var criteria = new GetResultAmendmentSystemSettingCriteria();
-            return await baseService.GetDataEntityAsync<ResultAmendmentSetting>(criteria);
+            return await baseService.GetDataEntityAsync<AmendmentNotiFbSetting>(criteria);
         }
 
-        public async Task<ResultAmendmentSetting> GetVoidingSettledTicketsSettingAsync()
+        public async Task<AmendmentNotiFbSetting> GetVoidingSettledTicketsSettingAsync()
         {
             var criteria = new GetVoidingSettledTicketsSettingCriteria();
-            return await baseService.GetDataEntityAsync<ResultAmendmentSetting>(criteria);
+            return await baseService.GetDataEntityAsync<AmendmentNotiFbSetting>(criteria);
         }
 
         public async Task<ArchivingDASetting> GetArchivingDASettingAsync()
@@ -150,6 +152,15 @@
                 Environment = environment
             };
             return await baseService.GetDataEntityAsync<SystemSettingInfo>(criteria);
+        }
+
+        public async Task<bool> GetSystemSettingNotificationAsync(string environment)
+        {
+            var criteria = new GetSystemSettingNotificationCriteria
+            {
+                Environment = environment
+            };
+            return await baseService.GetDataEntityAsync<bool>(criteria);
         }
     }
 }

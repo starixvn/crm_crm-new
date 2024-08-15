@@ -6,6 +6,7 @@ const ShortDateTimeFormat = 'MMM DD, YYYY hh:mm A';
 const LongDateTimeFormat = 'MMM DD, YYYY hh:mm:ss A';
 const LongDateTime24HourFormat = 'YYYY-MM-DD HH:mm:ss';
 const StartTimeRemarkPrefix = 'YYYYMMDD/hh:mmA';
+const TimeFormat = 'hh:mm:ss A';
 
 export default class DateTimeService {
     static startOfDay(date) {
@@ -84,6 +85,10 @@ export default class DateTimeService {
 
     static toLongDateTime24HourFormat(date) {
         return moment(date).format(LongDateTime24HourFormat);
+    }
+
+    static toTimeFormat(date) {
+        return moment(date).format(TimeFormat);
     }
 
     static toStartTimePrefix(date) {

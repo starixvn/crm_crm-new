@@ -22,10 +22,14 @@ export class Edit extends Component {
     }
     validateFormik = values =>{
         const errors = {};
-        if(values.dataType !== 'Boolean' &&  values.value === ''){
+        if(values.dataType !== 'Boolean' &&  values.value === '' && this.isRequired(values.settingName)){
             errors.settingName = LangHelper.formatString(LangHelper.getResource('FieldRequired'), values.settingName);
         }
         return errors;
+    };
+
+    isRequired = settingName => {
+        return settingName !== 'AutoSendNotificationBySport';
     };
 
     getParamCheckboxType = values => {
@@ -168,10 +172,10 @@ export class Edit extends Component {
         handleSubmit,
         isSubmitting
     }) => {
-        const jobStatusOptions = [
-            LangHelper.getResource('Completed'),
+        const jobStatusOptions = values.serviceName === 'Notification Center' ? [
+            LangHelper.getResource('Done'),
             LangHelper.getResource('Running')
-        ];
+        ] : [LangHelper.getResource('Completed'), LangHelper.getResource('Running')];
 
         const isRenderComboBox = jobStatusOptions.filter(x=> x === values.value).length > 0;
         return (
@@ -193,7 +197,7 @@ export class Edit extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="3"  sm="4" htmlFor="settingName" className="required">
+                        <Form.Label column md="3"  sm="4" htmlFor="settingName" className={this.isRequired(values.settingName) ? 'required' : ''}>
                             {values.settingName}
                         </Form.Label>
                         <Col>

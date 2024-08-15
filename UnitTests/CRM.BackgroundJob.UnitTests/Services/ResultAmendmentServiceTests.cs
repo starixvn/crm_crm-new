@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
     using CRM.Core.Models;
@@ -30,14 +30,14 @@
         private IFeedbackTransactionService transactionService;
         private readonly IFixture fixture = new Fixture();
 
-        #region CreateFeedbackForResultAmendmentAsync
+        #region CreateFeedbackForAmendmentNotiFbAsync
 
         [Fact]
-        public async Task CreateFeedbackForResultAmendmentAsync_isAnyNotCompeleteStatusIsTrue_EditSystemSettingAsyncCalled()
+        public async Task CreateFeedbackForAmendmentNotiFbAsync_isAnyNotCompeleteStatusIsTrue_EditSystemSettingAsyncCalled()
         {
             // Arrange
             var service = MockService();
-            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var resultAmendmentSetting = fixture.Create<AmendmentNotiFbSetting>();
             var custNotifications = new List<CusReachAmendmentNotification>
             {
                 new CusReachAmendmentNotification
@@ -52,10 +52,10 @@
 
             customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting).Returns(custNotifications);
             // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await service.CreateFeedbackForAmendmentNotiFbAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
-            await commonFeedback.EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), JobStatus.Completed, BackgroundJobConstants.ServiceName_ResultAmendment);
+            await commonFeedback.EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
             logService.Received(1).LogInformation(Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateResultAmendmentFeedbackCreditAsync",
@@ -66,11 +66,11 @@
         }
 
         [Fact]
-        public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackCreateUnSuccessfull_ExpectedWriteLog()
+        public async Task CreateFeedbackForAmendmentNotiFbAsync_InserAmendmentNotiAutoFeedbackCreateUnSuccessfull_ExpectedWriteLog()
         {
             // Arrange
             var service = MockService();
-            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var resultAmendmentSetting = fixture.Create<AmendmentNotiFbSetting>();
             var custNotifications = new List<CusReachAmendmentNotification>
             {
                 new CusReachAmendmentNotification
@@ -89,7 +89,7 @@
             transactionService.InserAmendmentNotiAutoFeedback(custNotifications, "LIVE").Returns(commandResult);
 
             // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await service.CreateFeedbackForAmendmentNotiFbAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
@@ -102,11 +102,11 @@
         }
 
         [Fact]
-        public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackCreateSuccessfull_ExpectedWriteLogAndUpdate()
+        public async Task CreateFeedbackForAmendmentNotiFbAsync_InserAmendmentNotiAutoFeedbackCreateSuccessfull_ExpectedWriteLogAndUpdate()
         {
             // Arrange
             var service = MockService();
-            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var resultAmendmentSetting = fixture.Create<AmendmentNotiFbSetting>();
             var custNotifications = new List<CusReachAmendmentNotification>
             {
                 new CusReachAmendmentNotification
@@ -128,7 +128,7 @@
             transactionService.InserAmendmentNotiAutoFeedback(custNotifications, "LIVE").Returns(commandResult);
 
             // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await service.CreateFeedbackForAmendmentNotiFbAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
@@ -143,11 +143,11 @@
         }
 
         [Fact]
-        public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackThrowException_ExpectedWriteLogAndUpdateStatus()
+        public async Task CreateFeedbackForAmendmentNotiFbAsync_InserAmendmentNotiAutoFeedbackThrowException_ExpectedWriteLogAndUpdateStatus()
         {
             // Arrange
             var service = MockService();
-            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var resultAmendmentSetting = fixture.Create<AmendmentNotiFbSetting>();
             var custNotifications = new List<CusReachAmendmentNotification>
             {
                 new CusReachAmendmentNotification
@@ -167,13 +167,13 @@
             transactionService.When(x => x.InserAmendmentNotiAutoFeedback(custNotifications, "LIVE")).Throw(exception);
 
             // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await service.CreateFeedbackForAmendmentNotiFbAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
             await logService.Received().ErrorAsync(exception);
         }
 
-        #endregion CreateFeedbackForResultAmendmentAsync
+        #endregion CreateFeedbackForAmendmentNotiFbAsync
 
         #region ResultAmendmentUpdateSystemSetting
 
@@ -182,7 +182,7 @@
         {
             // Arrange
             var service = MockService();
-            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var resultAmendmentSetting = fixture.Create<AmendmentNotiFbSetting>();
             var custAmendmentNotifications = fixture.Create<IEnumerable<CusReachAmendmentNotification>>();
 
             // Act
@@ -195,7 +195,7 @@
                Arg.Any<int>(),
                Arg.Any<string>(),
                Arg.Any<string>(),
-               BackgroundJobConstants.ServiceName_ResultAmendment
+               Constants.ServiceName_AmendmentNotiFB
           );
         }
 
@@ -204,7 +204,7 @@
         {
             // Arrange
             var service = MockService();
-            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var resultAmendmentSetting = fixture.Create<AmendmentNotiFbSetting>();
             var custAmendmentNotifications = fixture.Create<IEnumerable<CusReachAmendmentNotification>>();
 
             // Act
@@ -217,7 +217,7 @@
                 Arg.Any<int>(),
                 Arg.Any<string>(),
                 Arg.Any<string>(),
-                BackgroundJobConstants.ServiceName_ResultAmendment
+                Constants.ServiceName_AmendmentNotiFB
            );
         }
 

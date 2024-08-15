@@ -377,3 +377,11 @@ export const isHavePermissionOnSite = () => {
     }
     return hasPermissionOnSite;
 };
+
+export const isHaveLicenseePermissionOnSite = () => {
+    const hasPermissionOnSite = document.getElementById('hasReadLicenseePermission').checked;
+    if (!hasPermissionOnSite) {
+        toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
+    }
+    return hasPermissionOnSite;
+};

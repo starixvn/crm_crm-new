@@ -5,18 +5,15 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.AbnormalBet;
-    using CRM.BackgroundJob.Criteria.ChatBotCWL;
     using CRM.BackgroundJob.Criteria.RefundSettledTicket;
     using CRM.BackgroundJob.Criteria.VoidingBetID;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.AbnormalBet;
-    using CRM.BackgroundJob.Models.ChatBotCWL;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.LicenseeInfo;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.RefundSettledTicket;
-    using CRM.BackgroundJob.Models.ResultAmendment;
-    using CRM.BackgroundJob.Models.VoidingBetID;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
@@ -29,6 +26,8 @@
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
+    using CRM.BackgroundJob.Criteria.AutoFbMessageNotificationCenter;
+    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
     public class AutoFeedbackServiceTests
     {
@@ -41,7 +40,7 @@
         private IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private ISynchronizeLicenseeService licenseeService;
         private IConfiguration configuration;
-        private IResultAmendmentService resultAmendmentService;
+        private IAmendmentNotiFbService amendmentNotiFbService;
         private IFeedbackService feedbackService;
         private IVoidingSettledTicketsFeedbackService voidingSettledTicketsService;
         private IArchivingDAService archivingDAService;
@@ -49,6 +48,7 @@
         private IRefundSettledTicketService refundSettledTicketService;
         private IVoidingBetIDService voidingBetIDService;
         private IAbnormalBetService abnormalBetService;
+        private IAutoFbMessageNotificationCenterService autoFbMessageNotificationCenterService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -442,7 +442,7 @@
 
         #endregion TurnoverControlExecuteJobAsync
 
-        #region ResultAmendmentExecuteJobAsync
+        #region AmendmentNotiFbExecuteJobAsync
         [Fact]
         public async Task VoidingSettledTicketsExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
         {
@@ -463,7 +463,7 @@
         public async Task VoidingSettledTicketsExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting { ServiceFlag = false };
+            var setting = new AmendmentNotiFbSetting { ServiceFlag = false };
             var service = GetService();
             systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
 
@@ -478,7 +478,7 @@
         public async Task VoidingSettledTicketsExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 JobStatus = "running",
@@ -502,7 +502,7 @@
         public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntime = DateTime.Now,
@@ -524,7 +524,7 @@
         public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntimeUAT = DateTime.Now.AddMinutes(-6),
@@ -545,7 +545,7 @@
         public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntimeUAT = DateTime.Now,
@@ -567,7 +567,7 @@
         public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntime = DateTime.Now.AddMinutes(-6),
@@ -590,7 +590,7 @@
         public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntime = DateTime.Now,
@@ -614,7 +614,7 @@
         public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntimeUAT = DateTime.Now,
@@ -623,7 +623,7 @@
             };
             var service = GetService();
             systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackAmendmentNotiFB).Returns(false);
 
             // Act
             await service.Public_VoidingSettledTicketsRunJobByEnviromentAsync(true, false, false, setting, "UAT");
@@ -634,7 +634,7 @@
             await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
         }
 
-        #endregion ResultAmendmentExecuteJobAsync
+        #endregion AmendmentNotiFbExecuteJobAsync
 
         #region ProblemsAcccountExecuteJobAsync
         [Fact]
@@ -900,7 +900,7 @@
 
         #region VoidingSettledTicketsExecuteJobAsync
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
+        public async Task AmendmentNotiFbExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
         {
             // Arrange
             var exception = fixture.Create<Exception>();
@@ -908,33 +908,33 @@
             systemSettingService.When(x => x.GetResultAmendmentSettingAsync()).Throw(exception);
 
             // Assert
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.AmendmentNotiFbExecuteJobAsync();
 
             // Act
             await logService.Received().ErrorAsync(exception);
-            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackAmendmentNotiFB);
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        public async Task AmendmentNotiFbExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting { ServiceFlag = false };
+            var setting = new AmendmentNotiFbSetting { ServiceFlag = false };
             var service = GetService();
             systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
 
             // Act
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.AmendmentNotiFbExecuteJobAsync();
 
             // Assert
-            logService.Received().LogInformation("Service Result Amendment is shutdown.");
+            logService.Received().LogInformation("Service amendment notiFB is shutdown.");
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
+        public async Task AmendmentNotiFbExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 JobStatus = "running",
@@ -946,7 +946,7 @@
             configuration.GetValue<string>("SiteEnvironment").Returns(env);
 
             // Act
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.AmendmentNotiFbExecuteJobAsync();
 
             // Assert
             service.Received().Protected("ResultAmendmentRunJobByEnviromentAsync",
@@ -955,10 +955,10 @@
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        public async Task AmendmentNotiFbExecuteJobAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntime = DateTime.Now,
@@ -977,10 +977,10 @@
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        public async Task AmendmentNotiFbExecuteJobAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntimeUAT = DateTime.Now.AddMinutes(-6),
@@ -988,20 +988,20 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackAmendmentNotiFB).Returns(false);
 
             // Act
             await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
 
             // Assert
-            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), BackgroundJobConstants.ServiceName_ResultAmendment);
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AmendmentNotiFB);
         }
 
         [Fact]
         public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntimeUAT = DateTime.Now,
@@ -1023,7 +1023,7 @@
         public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntime = DateTime.Now.AddMinutes(-6),
@@ -1032,21 +1032,21 @@
             };
             var service = GetService();
             systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackAmendmentNotiFB).Returns(false);
 
             // Act
             await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, true, true, setting, "LIVE");
 
             // Assert
             logService.Received().LogInformation("Update  status and return serive result amendment.");
-            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), BackgroundJobConstants.ServiceName_ResultAmendment);
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AmendmentNotiFB);
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
+        public async Task AmendmentNotiFbExecuteJobAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntime = DateTime.Now,
@@ -1061,16 +1061,16 @@
             await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, false, false, setting, "LIVE");
 
             // Assert
-            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
-            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
-            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackAmendmentNotiFB);
+            await amendmentNotiFbService.Received().CreateFeedbackForAmendmentNotiFbAsync(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackAmendmentNotiFB);
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
+        public async Task AmendmentNotiFbExecuteJobAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
         {
             // Arrange
-            var setting = new ResultAmendmentSetting
+            var setting = new AmendmentNotiFbSetting
             {
                 ServiceFlag = true,
                 LastRuntimeUAT = DateTime.Now,
@@ -1079,15 +1079,15 @@
             };
             var service = GetService();
             systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackAmendmentNotiFB).Returns(false);
 
             // Act
             await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, false, false, setting, "UAT");
 
             // Assert
-            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
-            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
-            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackAmendmentNotiFB);
+            await amendmentNotiFbService.Received().CreateFeedbackForAmendmentNotiFbAsync(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackAmendmentNotiFB);
         }
 
         #endregion VoidingSettledTicketsExecuteJobAsync
@@ -1173,8 +1173,8 @@
         {
             // Arrange
             var setting = new SystemSettingInfo { ServiceFlag = true };
-            var messages = fixture.Create<IEnumerable<MessageVoidBetID>>();
-            var cleanMessages = fixture.Create<ValueTuple<IEnumerable<MessageVoidBetID>, int>>();
+            var messages = fixture.Create<IEnumerable<MessageInfoID>>();
+            var cleanMessages = fixture.Create<ValueTuple<IEnumerable<MessageInfoID>, int>>();
             var commandResult = new CommandResult { Code = 1 };
             var criteria = fixture.Create<ImportVoidBetIDCommand>();
             var valueTupe = new ValueTuple<CommandResult, ImportVoidBetIDCommand>(commandResult, criteria);
@@ -1197,8 +1197,8 @@
         {
             // Arrange
             var setting = new SystemSettingInfo { ServiceFlag = true };
-            var messages = fixture.Create<IEnumerable<MessageVoidBetID>>();
-            var cleanMessages = fixture.Create<ValueTuple<IEnumerable<MessageVoidBetID>, int>>();
+            var messages = fixture.Create<IEnumerable<MessageInfoID>>();
+            var cleanMessages = fixture.Create<ValueTuple<IEnumerable<MessageInfoID>, int>>();
             var commandResult = new CommandResult { Code = 0 };
             var criteria = fixture.Create<ImportVoidBetIDCommand>();
             var valueTupe = new ValueTuple<CommandResult, ImportVoidBetIDCommand>(commandResult, criteria);
@@ -1280,6 +1280,67 @@
         }
         #endregion AbnormalBetsExecuteJobAsync
 
+
+        #region MessageNotificationCenterExecuteJobAsync
+        [Fact]
+        public async Task MessageNotificationCenterExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.MessageNotificationCenterExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service AutoFeedback MessageNotificationCenter is shutdown.");
+        }
+
+        [Fact]
+        public async Task MessageNotificationCenterExecuteJobAsync_ImportAbnormalBetsAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true, LastMsgTargetId = 1, BatchSize = 100 };
+            var messageInfoID = fixture.Create<IEnumerable<MessageInfoID>>();
+            var commandResult = new CommandResult { Code = 1 };
+            var command = fixture.Create<ImportMessageNotificationCenterCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportMessageNotificationCenterCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+            autoFbMessageNotificationCenterService.GetMsgInfoMessageNotificationAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(messageInfoID);
+            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, Constants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.MessageNotificationCenterExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation(valueTupe.Item1.Message);
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+        [Fact]
+        public async Task MessageNotificationCenterExecuteJobAsync_ExpectedScanAndSendMessageToBotEndpoint()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true, LastMsgTargetId = 1, BatchSize = 100 };
+            var messageInfoID = fixture.Create<IEnumerable<MessageInfoID>>();
+            var commandResult = new CommandResult { Code = 0 };
+            var command = fixture.Create<ImportMessageNotificationCenterCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportMessageNotificationCenterCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+            autoFbMessageNotificationCenterService.GetMsgInfoMessageNotificationAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(messageInfoID);
+            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, Constants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.MessageNotificationCenterExecuteJobAsync();
+
+            // Assert
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
+        }
+        #endregion MessageNotificationCenterExecuteJobAsync
+
         #region Helpers
 
         private AutoFeedbackServiceTestable GetService()
@@ -1296,7 +1357,7 @@
             logService = Substitute.For<ICRMLogService>();
             tOControlFeedbackService = Substitute.For<ITOControlFeedbackService>();
             problemsAccountFeedbackService = Substitute.For<IProblemsAccountFeedbackService>();
-            resultAmendmentService = Substitute.For<IResultAmendmentService>();
+            amendmentNotiFbService = Substitute.For<IAmendmentNotiFbService>();
             feedbackService = Substitute.For<IFeedbackService>();
             licenseeService = Substitute.For<ISynchronizeLicenseeService>(); 
             configuration = Substitute.For<IConfiguration>();
@@ -1306,6 +1367,7 @@
             refundSettledTicketService = Substitute.For<IRefundSettledTicketService>();
             voidingBetIDService = Substitute.For<IVoidingBetIDService>();
             abnormalBetService = Substitute.For<IAbnormalBetService>();
+            autoFbMessageNotificationCenterService = Substitute.For<IAutoFbMessageNotificationCenterService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -1313,7 +1375,7 @@
                 winLossService,
                 logService,
                 tOControlFeedbackService,
-                resultAmendmentService,
+                amendmentNotiFbService,
                 problemsAccountFeedbackService,
                 feedbackService,
                 licenseeService,
@@ -1323,6 +1385,7 @@
                 refundSettledTicketService,
                 voidingBetIDService,
                 abnormalBetService,
+                autoFbMessageNotificationCenterService,
                 configuration);
         }
 

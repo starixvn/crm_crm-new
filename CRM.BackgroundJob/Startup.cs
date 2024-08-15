@@ -10,6 +10,9 @@
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using Fanex.BotService.Client.AspNetCore;
+    using Fanex.BotService.Client.Core.Services;
+    using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.Caching;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
@@ -62,6 +65,7 @@
             services.AddSingleton(Configuration);
             services.AddControllers();
             services.ResolveCoreConfiguration(Configuration);
+            services.RegisterBotClient(Configuration);
 
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
@@ -70,6 +74,7 @@
             AddConfiguration(services, Configuration);
             AddDependencyInjection(services, Configuration);
             AddWorker(services);
+            ConfigBotService(services, Configuration);
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -115,6 +120,10 @@
 
             #endregion ONEbookUM
 
+            #region BotService
+            services.AddSingleton<IBotService, BotService>();
+            #endregion BotService
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IRemotingRefService, RemotingRefService>();
             services.AddSingleton<ICacheService, CacheService>();
@@ -138,7 +147,7 @@
             services.AddSingleton<IChatBotCTOService, ChatBotCTOService>();
             services.AddSingleton<IChatBotArchivingDAService, ChatBotArchivingDAService>();
             services.AddSingleton<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
-            services.AddSingleton<IResultAmendmentService, ResultAmendmentService>();
+            services.AddSingleton<IAmendmentNotiFbService, AmendmentNotiFbService>();
             services.AddSingleton<IChatBotProblemAccountService, ChatBotProblemAccountService>();
             services.AddSingleton<IChatBotResultAmendmentService, ChatBotResultAmendmentService>();
             services.AddSingleton<ISynchronizeLicenseeService, SynchronizeLicenseeService>();
@@ -149,17 +158,25 @@
             services.AddSingleton<IRefundSettledTicketService, RefundSettledTicketService>();
             services.AddSingleton<IVoidingBetIDService, VoidingBetIDService>();
             services.AddSingleton<IAbnormalBetService, AbnormalBetService>();
+            services.AddSingleton<IMessageNotificationCenterService, MessageNotificationCenterService>();
+            services.AddSingleton<ICaptureSettlementDataService, CaptureSettlementDataService>();
+            services.AddSingleton<IGenerateResultAmendmentService, GenerateResultAmendmentService>();
+            services.AddSingleton<IPushNotificationResultAmendmentService, PushNotificationResultAmendmentService>();
+            services.AddSingleton<IGenerateLapNotificationService, GenerateLapNotificationService>();
+            services.AddSingleton<ISendNotificationCenterService, SendNotificationCenterService>();
+            services.AddSingleton<IAutoFbMessageNotificationCenterService, AutoFbMessageNotificationCenterService>();
         }
 
         private static void AddWorker(IServiceCollection services)
         {
-            services.AddHostedService<AutoFbResultAmendmentWoker>();
+            services.AddHostedService<AutoFbAmendmentNotiFbWoker>();
             services.AddHostedService<AutoFbProblemAccountWoker>();
             services.AddHostedService<AutoFbVoidingAbnormalBetWorker>();
             services.AddHostedService<AutoFbWinLossLimitWorker>();
             services.AddHostedService<AutoFbTurnoverControlWorker>();
             services.AddHostedService<AutoFbVoidingBetIDWorker>();
             services.AddHostedService<AutoFbAbnormalBetsWorker>();
+            services.AddHostedService<AutoFbMessageNotificationCenterWoker>();
 
             services.AddHostedService<AutoChatbotWorker>();
             services.AddHostedService<AutoChatbotCWLWoker>();
@@ -174,6 +191,12 @@
             services.AddHostedService<AutoChatbotArchivingDAWoker>();
             services.AddHostedService<LetstalkHealthCheckWorker>();
             services.AddHostedService<AutoFbRefundSettledTicketWoker>();
+
+            services.AddHostedService<MncCaptureSettlementDataWorker>();
+            services.AddHostedService<MncGenerateResultAmendmentWorker>();
+            services.AddHostedService<MncPushNotificationResultAmendmentWorker>();
+            services.AddHostedService<MncGenerateLapNotificationWorker>();
+            services.AddHostedService<MncSendNotificationCenterWorker>();
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
@@ -209,6 +232,12 @@
                 };
                 options.InstanceName = redisConfig.ApplicationName + ":Session:";
             });
+        }
+
+        private static void ConfigBotService(IServiceCollection services, IConfiguration configuration)
+        {
+            var botConfigs = configuration.GetSection("Fanex.BotService").Get<BotServiceSetting>();
+            services.AddSingleton(botConfigs);
         }
     }
 }

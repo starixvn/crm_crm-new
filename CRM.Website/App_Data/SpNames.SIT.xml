@@ -5,9 +5,9 @@
         <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Job Setting Management">
-        <Setting Key="Acc_CRM_ConfigAutoFeedback_ServiceSel" SpName="Acc_CRM_ConfigAutoFeedback_ServiceSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_ConfigAutoFeedback_SettingSel" SpName="Acc_CRM_ConfigAutoFeedback_SettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_ConfigAutoFeedback_SettingUpd" SpName="Acc_CRM_ConfigAutoFeedback_SettingUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_ConfigAutoFeedback_ServiceSel" SpName="Acc_CRM_ConfigAutoFeedback_ServiceSel_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_ConfigAutoFeedback_SettingSel" SpName="Acc_CRM_ConfigAutoFeedback_SettingSel_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_ConfigAutoFeedback_SettingUpd" SpName="Acc_CRM_ConfigAutoFeedback_SettingUpd_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Notification List">
         <Setting Key="Acc_CRM_ChatBot_NotificationList_Sel" SpName="Acc_CRM_ChatBot_NotificationList_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -376,5 +376,12 @@
         <Setting Key="Acc_CRM_CategoryClassificationList" SpName="Acc_CRM_CategoryClassificationList" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_CategoryClassificationSel" SpName="Acc_CRM_CategoryClassificationSel" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_CategoryClassificationUpd" SpName="Acc_CRM_CategoryClassificationUpd" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+    </Function>
+    <Function Name="MessageNotificationCenter">
+        <Setting Key="MNC_Notification_AdmSelNoti" SpName="MNC_Notification_AdmSelNoti" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
+        <Setting Key="MNC_Notification_AdmSelNotiDetail" SpName="MNC_Notification_AdmSelNotiDetail" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
+        <Setting Key="MNC_Notification_AdmUpdNoti" SpName="MNC_Notification_AdmUpdNoti" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
+        <Setting Key="MNC_Notification_AdmSelNotiTickets" SpName="MNC_Notification_AdmSelNotiTickets" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
+        <Setting Key="MNC_Notification_AdmUpdNotiSts" SpName="MNC_Notification_AdmUpdNotiSts" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
     </Function>
 </Functions>
