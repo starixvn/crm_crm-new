@@ -484,9 +484,9 @@ export class CommonNotification extends Component {
             eventTime: data.eventTime,
             eventName: data.eventName,
             subject: data.subject,
-            content_en: data.content_en,
-            content_cs: data.content_cs,
-            content_ch: isOstUser ? data.content_ch : null,
+            content_en: data.content_en.replaceAll('\n', '<br />\n'),
+            content_cs: data.content_cs.replaceAll('\n', '<br />\n'),
+            content_ch: isOstUser ? data.content_ch.replaceAll('\n', '<br />\n') : null,
         };
         return (
             <Formik
