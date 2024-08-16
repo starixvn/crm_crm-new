@@ -11,13 +11,9 @@
 
     public interface IChatBotSendMessageService
     {
-        Task<IEnumerable<SendResult>> SendMultiplePlaintextMessageAsync(BotChannel botChannel, IEnumerable<NotificationMessage> notifications);
-
         Task<IEnumerable<SendNotificationResult>> SendMultipleFormattedMessageAndAttachmentAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications);
 
         Task<IEnumerable<SendNotificationResult>> SendImageOnlyAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications);
-
-        Task<SendResult> SendSinglePlaintexMessageAsync(BotChannel botChannel, NotificationMessage notification);
     }
 
     public class ChatBotSendMessageService : BotServiceHttpClientBase, IChatBotSendMessageService
@@ -34,25 +30,10 @@
             return results;
         }
 
-        public async Task<IEnumerable<SendResult>> SendMultiplePlaintextMessageAsync(BotChannel botChannel, IEnumerable<NotificationMessage> notifications)
-        {
-            var apiConfig = GetApiConfig(botChannel);
-            var results = await PostAsync<IEnumerable<SendResult>>(apiConfig.SendMultipleMessagePath, notifications);
-            return results;
-        }
-
         public async Task<IEnumerable<SendNotificationResult>> SendImageOnlyAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
         {
             var apiConfig = GetApiConfig(botChannel);
             var results = await PostAsync<IEnumerable<SendNotificationResult>>(apiConfig.SendOnlyImagesMultiplePath, notifications);
-            return results;
-        }
-
-        public async Task<SendResult> SendSinglePlaintexMessageAsync(BotChannel botChannel, NotificationMessage notification)
-        {
-            var apiConfig = GetApiConfig(botChannel);
-
-            var results = await PostAsync<SendResult>(apiConfig.SendSingleMessagePath, notification);
             return results;
         }
 

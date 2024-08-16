@@ -2,21 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using CRM.Core.Criteria;
     using CRM.Core.Models;
-    using Fanex.Caching;
     using Fanex.Data.Repository;
     using Fanex.NAP.Client.Helpers.Extensions;
 
     public interface IBaseService
     {
         Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria, string serverIp = "");
-
-        Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria, string serverIp = "");
-
-        Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(SiteDbBaseCriteria criteria);
 
         Task<T> GetDataEntityAsync<T>(ICriteria criteria, string serverIp = "");
 
@@ -33,15 +26,10 @@
     public class BaseService : IBaseService
     {
         private readonly IDynamicRepository dynamicRepository;
-        private readonly ICacheService cacheService;
-        private const string Config_SiteDb_Key = "ConfigSiteDbKey";
 
-        public BaseService(
-            IDynamicRepository dynamicRepository,
-            ICacheService cacheService)
+        public BaseService(IDynamicRepository dynamicRepository)
         {
             this.dynamicRepository = dynamicRepository;
-            this.cacheService = cacheService;
         }
 
         public async Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria, string serverIp = "")
@@ -52,32 +40,6 @@
             }
 
             return new List<T>();
-        }
-
-        public virtual async Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria, string serverIp = "")
-        {
-            var siteConfigs = cacheService.Get<IEnumerable<SiteDbConfig>>(Config_SiteDb_Key);
-            if (siteConfigs == null || !siteConfigs.Any())
-            {
-                siteConfigs = await GetDataAsync<SiteDbConfig>(criteria);
-                cacheService.Set(Config_SiteDb_Key, siteConfigs);
-            }
-            return siteConfigs;
-        }
-
-        public async Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(SiteDbBaseCriteria criteria)
-        {
-            var siteDbCriteria = new GetSiteDbConfigCriteria();
-            var siteConfigs = await GetSiteDbConfigAsync(siteDbCriteria);
-            var results = new List<T>();
-            foreach (var siteConfig in siteConfigs)
-            {
-                criteria.SiteDBGroupID = siteConfig.SiteDBGroupID;
-                var result = await dynamicRepository.FetchAsync<T>(criteria, siteConfig.AGIP);
-                results.AddRange(result);
-            }
-
-            return results;
         }
 
         public async Task<T> GetDataEntityAsync<T>(ICriteria criteria, string serverIp = "")
