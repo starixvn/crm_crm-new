@@ -368,7 +368,7 @@
             var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
             var targetMessageInfos = fixture.Create<IEnumerable<TargetMessageInfo>>();
             var messageId = new List<int>();
-            var messages = Enumerable.Empty<Message>();
+            var messages = Enumerable.Empty<MessageContent>();
             var voidingMessageInfo = new ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>(messageId, targetMessages, targetMessageInfos);
             var voidingMesssageSettled = fixture.Create<(IEnumerable<MessageVoidSettled>, IEnumerable<MessageVoidSettled>)>();
             var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
@@ -405,7 +405,7 @@
             var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
             var targetMessageInfos = fixture.Create<IEnumerable<TargetMessageInfo>>();
             var messageId = new List<int>();
-            var messages = Enumerable.Empty<Message>();
+            var messages = Enumerable.Empty<MessageContent>();
             var voidingMessageInfo = new ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>(messageId, targetMessages, targetMessageInfos);
             var voidingMesssageSettled = fixture.Create<(IEnumerable<MessageVoidSettled>, IEnumerable<MessageVoidSettled>)>();
             var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();

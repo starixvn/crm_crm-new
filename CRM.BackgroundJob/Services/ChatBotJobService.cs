@@ -232,7 +232,7 @@
                 var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settledTicketInfo);
                 var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
                 var messagesCombineDistinct = resultAmendmentInfo.Item1.Item3.Concat(voidingMessageInfo.Item1).Distinct().ToList();
-                var messages = Enumerable.Empty<Message>();
+                var messages = Enumerable.Empty<MessageContent>();
                 if (messagesCombineDistinct.Any())
                 {
                     messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(messagesCombineDistinct);
