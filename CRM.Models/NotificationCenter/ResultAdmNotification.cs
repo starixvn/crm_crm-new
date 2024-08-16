@@ -13,5 +13,7 @@
         public DateTime? SendDate { get; set; }
 
         public string Sender { get; set; }
+
+        public int MatchId { get; set; }
     }
 }

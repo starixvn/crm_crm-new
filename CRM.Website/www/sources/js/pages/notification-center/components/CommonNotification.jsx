@@ -57,9 +57,9 @@ export class CommonNotification extends Component {
             notificationId: this.props.actionParam.notificationId,
             newStatus: status,
             newSubject: subject,
-            newContentEN: content_en,
-            newContentCS: content_cs,
-            newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
+            newContentEN: content_en.replaceAll('<br />',''),
+            newContentCS: content_cs.replaceAll('<br />',''),
+            newContentCH: this.props.actionParam.isOstUser ? content_ch.replaceAll('<br />','') : null,
             subject: subject
         };
         return params;
@@ -484,9 +484,9 @@ export class CommonNotification extends Component {
             eventTime: data.eventTime,
             eventName: data.eventName,
             subject: data.subject,
-            content_en: data.content_en,
-            content_cs: data.content_cs,
-            content_ch: isOstUser ? data.content_ch : null,
+            content_en: data.content_en.replaceAll('\n', '<br />\n'),
+            content_cs: data.content_cs.replaceAll('\n', '<br />\n'),
+            content_ch: isOstUser ? data.content_ch.replaceAll('\n', '<br />\n') : null,
         };
         return (
             <Formik
