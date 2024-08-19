@@ -94,7 +94,7 @@
                             await captureSettlementDataService.InsertDataLoadAsync(sessionResultHistory.Environment, sessionResultHistory.JSSettlResultHist);
                         } else
                         {
-                            await captureSettlementDataService.InsertDataLoadAsync(Environment, null);
+                            await captureSettlementDataService.InsertDataLoadAsync(Environment, string.Empty);
                         }
                     }
                 }
