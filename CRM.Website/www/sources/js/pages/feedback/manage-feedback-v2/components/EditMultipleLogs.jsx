@@ -417,13 +417,13 @@ export class EditMultipleLogs extends Component {
                 <div className="panel-content">
                     {
                         !isCheck.solution &&
-                        <div dangerouslySetInnerHTML={{ __html: values.solution }} />
+                        <div dangerouslySetInnerHTML={{ __html: values.solution.replaceAll('\n', '<br />\n') }} />
                     }
                     {
                         isCheck.solution &&
                         <CkEditor isInvalid={touched.solution && errors.solution}
-                            data={values.solution} username={window.currentUsername}
-                            onChange={value => setFieldValue('solution', value)}
+                            data={values.solution.replaceAll('\n', '<br />\n')} username={window.currentUsername}
+                            onChange={value => setFieldValue('solution', value.replaceAll('<br />',''))}
                         />
                     }
                 </div>
