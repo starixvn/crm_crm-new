@@ -140,9 +140,9 @@
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="MessageNotificationCenter">
-        <Setting Key="MNC_SettlResultHist_Initial" SpName="MNC_SettlResultHist_Initial" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_SettlResultHist_Initial" SpName="MNC_SettlResultHist_Initial_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_SettlResultHist_GetSessionByDate" SpName="MNC_SettlResultHist_GetSessionByDate" DbName="DBACC.bodb02.wsv_nap" />
-        <Setting Key="MNC_SettlResultHist_DataLoad" SpName="MNC_SettlResultHist_DataLoad" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_SettlResultHist_DataLoad" SpName="MNC_SettlResultHist_DataLoad_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_PrepareGen" SpName="MNC_ResultAmendment_PrepareGen" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_GenNotification" SpName="MNC_ResultAmendment_GenNotification" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_GetNotificationIDs" SpName="MNC_ResultAmendment_GetNotificationIDs" DbName="DBCRM.MessageNotification.wsv_nap" />
