@@ -46,7 +46,7 @@
         public async Task<IActionResult> CheckValidUsername([FromBody] CheckValidUsernameCommand command)
         {
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
-            return Json(commandResult);
+            return Json(new { data = commandResult, custList = command.CustList });
         }
 
         [HttpPost]
