@@ -5,11 +5,11 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
-    using CRM.BackgroundJob.Core.Models;
-    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -585,7 +585,7 @@
             {
                 league = commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
             }
-            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, Constants.Break);
+            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, BackgroundJobConstants.Break);
 
             return stringBuilder.ToString();
         }

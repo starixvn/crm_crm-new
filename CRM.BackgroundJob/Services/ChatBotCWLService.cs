@@ -1,16 +1,15 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.ChatBotCWL;
     using CRM.BackgroundJob.Models.ChatBotCWL;
     using Fanex.CRM.BackgroundJob.Constants;
-    using CRM.BackgroundJob.Core.Models;
-    using CRM.BackgroundJob.Core.Services;
-using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.RemotingRef;
-    using System;
 
     public interface IChatBotCWLService
     {

@@ -145,12 +145,6 @@
             return teamName3rd;
         }
 
-        public string GetTeamName3rd(string teamId, string languageCode)
-        {
-            var teamName3rd = remotingRefService.GetTeamName3rd(teamId, languageCode, string.Empty);
-            return teamName3rd;
-        }
-
         public string GetBettypeName(string betTypeId, string languageCode)
         {
             var betTypeName = remotingRefService.GetBetTypeName(betTypeId, languageCode);
