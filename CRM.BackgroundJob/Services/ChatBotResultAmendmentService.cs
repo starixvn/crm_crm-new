@@ -190,10 +190,10 @@
 
             foreach (var message in messages)
             {
-                message.Content_en = HttpUtility.HtmlEncode(message.Content_en?.Trim().Replace("@@", string.Empty));
-                message.Content_cs = HttpUtility.HtmlEncode(message.Content_cs?.Trim().Replace("@@", string.Empty));
-                message.Content_th = HttpUtility.HtmlEncode(message.Content_th?.Trim().Replace("@@", string.Empty));
-                message.Content_vn = HttpUtility.HtmlEncode(message.Content_vn?.Trim().Replace("@@", string.Empty));
+                message.Content_en = message.Content_en?.Trim().Replace("@@", string.Empty);
+                message.Content_cs = message.Content_cs?.Trim().Replace("@@", string.Empty);
+                message.Content_th = message.Content_th?.Trim().Replace("@@", string.Empty);
+                message.Content_vn = message.Content_vn?.Trim().Replace("@@", string.Empty);
             }
 
             var criteria = new ImportChatBotResultAmendmentCommand
