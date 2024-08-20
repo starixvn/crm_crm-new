@@ -131,9 +131,9 @@
                 {
                     foreach (var item in settlementGen)
                     {
-                        item.RefValueEN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.en_US);
-                        item.RefValueCH = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_TW);
-                        item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
+                        item.RefValueEN = null;
+                        item.RefValueCH = null;
+                        item.RefValueCS = null;
                     }
                     await generateResultAmendmentService.InsertGenResultAmendmentAsync(Environment, settlementGen);
                 }
