@@ -209,6 +209,13 @@
         {
             try
             {
+                var serviceFlag = await systemSettingService.GetSystemSettingNotificationAsync(Environment);
+                if (!serviceFlag)
+                {
+                    logService.LogInformation("Service Send Notification Center is shutdown.");
+                    return;
+                }
+
                 await sendNotificationCenterService.InsertNotificationAlertAsync(Environment);
                 var messages = await sendNotificationCenterService.GetNotificationAlertAsync(Environment);
 
