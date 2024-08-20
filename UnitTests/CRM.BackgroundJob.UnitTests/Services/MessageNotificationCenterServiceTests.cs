@@ -289,13 +289,13 @@
             var service = GetService();
             var messages = fixture.Create<IEnumerable<MessageBotInfo>>();
 
-            sendNotificationCenterService.GetNotificationAlertAsync().Returns(messages);
+            sendNotificationCenterService.GetNotificationAlertAsync(Arg.Any<string>()).Returns(messages);
 
             // Act
             await service.SendNotificationCenterAsync();
 
             // Assert
-            await sendNotificationCenterService.Received(1).InsertNotificationAlertAsync();
+            await sendNotificationCenterService.Received(1).InsertNotificationAlertAsync(Arg.Any<string>());
             await service.Received(1).Public_ProcessNotificationItemAsync(messages);
         }
 
@@ -307,7 +307,7 @@
             var service = GetService();
             var exception = fixture.Create<Exception>();
 
-            sendNotificationCenterService.When(x => x.GetNotificationAlertAsync()).Throw(exception);
+            sendNotificationCenterService.When(x => x.GetNotificationAlertAsync(Arg.Any<string>())).Throw(exception);
 
             // Act
             await service.SendNotificationCenterAsync();
