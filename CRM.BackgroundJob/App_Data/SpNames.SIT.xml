@@ -144,8 +144,8 @@
         <Setting Key="MNC_SettlResultHist_Initial" SpName="MNC_SettlResultHist_Initial_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_SettlResultHist_GetSessionByDate" SpName="MNC_SettlResultHist_GetSessionByDate" DbName="DBACC.bodb02.wsv_nap" />
         <Setting Key="MNC_SettlResultHist_DataLoad" SpName="MNC_SettlResultHist_DataLoad_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
-        <Setting Key="MNC_ResultAmendment_PrepareGen" SpName="MNC_ResultAmendment_PrepareGen" DbName="DBCRM.MessageNotification.wsv_nap" />
-        <Setting Key="MNC_ResultAmendment_GenNotification" SpName="MNC_ResultAmendment_GenNotification" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_ResultAmendment_PrepareGen" SpName="MNC_ResultAmendment_PrepareGen_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_ResultAmendment_GenNotification" SpName="MNC_ResultAmendment_GenNotification_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_GetNotificationIDs" SpName="MNC_ResultAmendment_GetNotificationIDs" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_JSParseResult" SpName="MNC_ResultAmendment_JSParseResult" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_PushNotification_PrepareNoti" SpName="MNC_PushNotification_PrepareNoti" DbName="DBCRM.MessageNotification.wsv_nap" />
