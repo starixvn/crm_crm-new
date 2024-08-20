@@ -209,8 +209,8 @@
         {
             try
             {
-                await sendNotificationCenterService.InsertNotificationAlertAsync();
-                var messages = await sendNotificationCenterService.GetNotificationAlertAsync();
+                await sendNotificationCenterService.InsertNotificationAlertAsync(Environment);
+                var messages = await sendNotificationCenterService.GetNotificationAlertAsync(Environment);
 
                 if (messages.Any())
                 {
