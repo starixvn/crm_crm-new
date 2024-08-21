@@ -70,12 +70,6 @@ export class Filter extends Component {
     };
 
     handleChange = evt => {
-        console.log('evt.target.name',evt.target.name);
-        console.log('evt.target.value',evt.target.value);
-        if (evt.target.name == 'mainCategoryId') {
-
-        }
-
         this.setState({
             ...this.state,
             [evt.target.name]: evt.target.type === 'select-one' ? parseInt(evt.target.value, 10) : evt.target.value
