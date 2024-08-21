@@ -245,7 +245,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                subCategoryOptions[0].subCate.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                subCategoryOptions.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
                             }
                         </Form.Control>
                     </Form.Group>

@@ -99,39 +99,10 @@ export class Filter extends Component {
         this.props.getDeletedFeedback(params);
     };
 
-    // filterCategories = (mainCategories, subCategories) => {
-    //     const mainCategoriesArr = [];
-    //     mainCategories.map(value => {
-    //         const subCategoriesFilter = subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
-    //         subCategoriesFilter.unshift({ name: 'All', subCategoryId: 0 });
-    //         mainCategoriesArr.push({
-    //             mainCategoryID: value.mainCategoryID,
-    //             name: value.name,
-    //             subCate: subCategoriesFilter
-    //         });
-    //     });
-    //     mainCategoriesArr.unshift({ mainCategoryID: 0, name: 'All', subCate: [{ name: 'All', subCategoryId: 0 }] });
-    //     return mainCategoriesArr;
-    // };
-
-    // filterSubCategories = (mainCategories, mainCategoryId) => {
-    //     const categoryId = parseInt(mainCategoryId, 10);
-    //     const filteredMainCategories = mainCategories.filter(item => item.mainCategoryID === categoryId);
-    //     if (filteredMainCategories.length > 0) {
-    //         const subCate = filteredMainCategories[0].subCate;
-    //         const isExistSubCate = subCate?.some(item => item.subCategoryId === this.state.subCategoryId);
-    
-    //         if (!isExistSubCate) {
-    //             this.setState({ subCategoryId: 0 });
-    //         }
-    //     }
-    
-    //     return filteredMainCategories;
-    // };
-
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     renderForm = () => {
+        const { mainCategoryId, subCategoryId } = this.state;
         const data = this.props.settings;
         const reviews = [
             { settingValue: 'All', settingId: '' },
@@ -146,7 +117,7 @@ export class Filter extends Component {
         const customerResponses = [{ id: '', value: 'All' }, ...data.customerResponses];
         const communications = [{ id: '', name: 'All' }, ...data.communications];
         const mainCategoryOptions = filterCategories(data.mainCategories, data.subCategories);
-        const subCategoryOptions = filterSubCategories(mainCategoryOptions, this.state.mainCategoryId, this.state.subCategoryId, this.setState.bind(this));
+        const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
@@ -230,7 +201,7 @@ export class Filter extends Component {
                                 onChange={this.handleChange}
                             >
                                 {
-                                    subCategoryOptions[0].subCate.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                    subCategoryOptions.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
                                 }
                             </Form.Control>
                         </Form.Group>

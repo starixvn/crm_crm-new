@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Form, Button, Row } from 'react-bootstrap';
-import { changeSiteSetting, isHavePermissionOnSite } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, isHavePermissionOnSite, filterCategories, filterSubCategories } from '@jsroot/common/shareScripts';
 import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -311,6 +311,8 @@ export class Filter extends Component {
     };
 
     handleChange = event => {
+        console.log('event.target.name', event.target.name);
+        console.log('event.target.value', event.target.value);
         const name = event.target.name;
         this.setState({
             [name]: event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value
@@ -395,16 +397,46 @@ export class Filter extends Component {
         this.props.setGridParams({ ...params, pageIndex: params.pageIndex + 1 });
     };
 
+    filterProducts = (products, subProducts) => {
+        const productsArr = [];
+        products.map(value => {
+            const subProductsFilter = subProducts.filter(item => item.parentId === value.id);
+            subProductsFilter.unshift({ value: 'All', id: 0 });
+            productsArr.push({
+                id: value.id,
+                name: value.value,
+                subProduct: subProductsFilter
+            });
+        });
+        productsArr.unshift({ id: 0, name: 'All', subProduct: [{ value: 'All', id: 0 }] });
+        return productsArr;
+    };
+
+    filterSubProducts = (products, productId) => {
+        const id = parseInt(productId, 10);
+        const filteredProducts = products.filter(item => item.id === id);
+        if (filteredProducts.length > 0) {
+            const subProduct = filteredProducts[0].subProduct;
+            const isExistSubProduct = subProduct?.some(item => item.id === this.state.subProductId);
+    
+            if (!isExistSubProduct) {
+                this.setState({ subProductId: 0 });
+            }
+        }
+        return filteredProducts[0].subProduct;
+    };
+
     render() {
         const { allSettings } = this.props;
-        const { showFilter } = this.state;
+        const { showFilter, mainCategoryId, productId, siteId, subCategoryId, subProductId } = this.state;
         if (allSettings === null) {
             return null;
         }
-        const subCategoryOptions = this.filterSubCategoryOptions(allSettings.subCategories, this.state.mainCategoryId);
-        const subProductOptions = this.filterSubProductOptions(allSettings.subProducts, this.state.productId);
+        const mainCategoryOptions = filterCategories(allSettings.mainCategories, allSettings.subCategories);
+        const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
+        const productOptions = this.filterProducts(allSettings.products, allSettings.subProducts);
+        const subProductOptions = this.filterSubProducts(productOptions, productId);
         const siteOptions = changeSiteSetting(allSettings.sites, 'childSites', 'childSites');
-        const siteId = this.state.siteId;
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
@@ -458,11 +490,11 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="product" className="col-auto col-form-label">{LangHelper.getResource('Product')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                     name="productId"
+                                    value={productId}
                                     onChange={this.handleChange}
                                 >
-                                    <option value={0}>All</option>
                                     {
-                                        allSettings.products.map((item, key) => this.renderItems(item.value, item.id, key))
+                                        productOptions.map((item, key) => this.renderItems(item.name, item.id, key))
                                     }
                                 </Form.Control>
                             </Form.Group>
@@ -470,9 +502,9 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="sub-product" className="col-auto col-form-label">{LangHelper.getResource('SubProduct')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                     name="subProductId"
+                                    value={subProductId}
                                     onChange={this.handleChange}
                                 >
-                                    <option value={0}>All</option>
                                     {
                                         subProductOptions.map((item, key) => this.renderItems(item.value, item.id, key))
                                     }
@@ -554,11 +586,11 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="main-category" className="col-auto col-form-label">{LangHelper.getResource('MainCategory')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                     name="mainCategoryId"
+                                    value={mainCategoryId}
                                     onChange={this.handleChange}
                                 >
-                                    <option value={0}>All</option>
                                     {
-                                        allSettings.mainCategories.map((item, key) => this.renderItems(item.name, item.mainCategoryID, key))
+                                        mainCategoryOptions.map((item, key) => this.renderItems(item.name, item.mainCategoryID, key))
                                     }
                                 </Form.Control>
                             </Form.Group>
@@ -566,9 +598,9 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="sub-category" className="col-auto col-form-label">{LangHelper.getResource('SubCategory')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                     name="subCategoryId"
+                                    value={subCategoryId}
                                     onChange={this.handleChange}
                                 >
-                                    <option value={0}>All</option>
                                     {
                                         subCategoryOptions.map((item, key) => this.renderItems(item.name, item.subCategoryId, key))
                                     }

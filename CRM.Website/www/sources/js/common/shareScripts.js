@@ -412,5 +412,5 @@ export const filterSubCategories = (mainCategories, mainCategoryId, subCategoryI
             setState({ subCategoryId: 0 });
         }
     }
-    return filteredMainCategories;
+    return filteredMainCategories[0].subCate;
 };
