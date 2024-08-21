@@ -8,7 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
-import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
+import { filterCategories, filterSubCategories } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -70,6 +70,12 @@ export class Filter extends Component {
     };
 
     handleChange = evt => {
+        console.log('evt.target.name',evt.target.name);
+        console.log('evt.target.value',evt.target.value);
+        if (evt.target.name == 'mainCategoryId') {
+
+        }
+
         this.setState({
             ...this.state,
             [evt.target.name]: evt.target.type === 'select-one' ? parseInt(evt.target.value, 10) : evt.target.value
@@ -105,23 +111,6 @@ export class Filter extends Component {
         this.props.getGridFeedbacks(params);
     };
 
-    filterCategories = (mainCategories, subCategories) => {
-        const mainCategoriesArr = [];
-        mainCategories.map(value => {
-            const subCategoriesFilter = subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
-            subCategoriesFilter.unshift({ name: 'All', subCategoryId: 0 });
-            mainCategoriesArr.push({
-                mainCategoryID: value.mainCategoryID,
-                name: value.name,
-                subCate: subCategoriesFilter
-            });
-        });
-        mainCategoriesArr.unshift({ mainCategoryID: 0, name: 'All', subCate: [{ name: 'All', subCategoryId: 0 }] });
-        return mainCategoriesArr;
-    };
-
-    filterSubCategories = (mainCategories, mainCategoryId) => mainCategories.filter(item => item.mainCategoryID === parseInt(mainCategoryId, 10));
-
     render() {
         const { settings } = this.props;
         if (settings === null || this.initialValues === null) {
@@ -141,8 +130,8 @@ export class Filter extends Component {
         const statusesOptions = [{ statusId: 0, name: 'All' }, ...statuses];
         const statuesFilterDelete = statusesOptions.filter(x => x.name !== 'Deleted');
         const communicationOptions = [{ id: 0, name: 'All' }, ...communications];
-        const mainCategoryOptions = this.filterCategories(mainCategories, subCategories);
-        const subCategoryOptions = this.filterSubCategories(mainCategoryOptions, mainCategoryId);
+        const mainCategoryOptions = filterCategories(mainCategories, subCategories);
+        const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
