@@ -207,7 +207,8 @@ export default class CreateNewMessage extends Component {
         const params = this.state.confirmPopup.params;
         const urlCheckValid = Site.resolveClientUrl('SMAPersonalMessage/CheckValidUsername');
         await DataService.postDataAsync(urlCheckValid, {UserName: params.userName}).then(response => {
-            const data = response.data;
+            const data = response.data.data;
+            params.custList = response.data.custList;
             this.setState({checkUsernameValidResult: data});
             if (data.isSuccessful) {
                 this.handleCreateNewMessage(params);

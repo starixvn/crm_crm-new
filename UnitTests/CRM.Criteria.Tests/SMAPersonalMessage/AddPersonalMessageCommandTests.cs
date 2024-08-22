@@ -28,7 +28,7 @@
             var criteria = new AddPersonalMessageCommand
             {
                 Content_en = content_en,
-                UserName = userName
+                CustList = userName
             };
             // Act
             var actual = criteria.IsValid();
@@ -44,7 +44,7 @@
             var criteria = new AddPersonalMessageCommand
             {
                 Content_en = "content_en",
-                UserName = "UserName"
+                CustList = "UserName"
             };
             // Act
             var actual = criteria.IsValid();
