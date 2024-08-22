@@ -349,9 +349,9 @@
     </Function>
     <Function Name="SMAPersonalMessage">
         <Setting Key="Acc_CRM_PersonalMessageSel" SpName="Acc_CRM_PersonalMessageSel" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_PersonalMessageIns" SpName="Acc_CRM_PersonalMessageIns_xpre" DbName="DBMSG.bodb_Message.wsv_nap" />
+        <Setting Key="Acc_CRM_PersonalMessageIns" SpName="Acc_CRM_PersonalMessageIns" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="Acc_CRM_PersonalMessageDel" SpName="Acc_CRM_PersonalMessageDel" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_PersonalMessageCheck" SpName="Acc_CRM_PersonalMessageCheck_xpre" DbName="DBACC.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_PersonalMessageCheck" SpName="Acc_CRM_PersonalMessageCheck" DbName="DBACC.bodb02.wsv_nap" />
     </Function>
     <Function Name="Announcement">
         <Setting Key="Acc_CRM_ChatBot_Announcement_Sel" SpName="Acc_CRM_ChatBot_Announcement_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -376,7 +376,7 @@
         <Setting Key="Acc_CRM_CategoryClassificationUpd" SpName="Acc_CRM_CategoryClassificationUpd" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
     </Function>
     <Function Name="MessageNotificationCenter">
-        <Setting Key="MNC_Notification_AdmSelNoti" SpName="MNC_Notification_AdmSelNoti_xtest" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
+        <Setting Key="MNC_Notification_AdmSelNoti" SpName="MNC_Notification_AdmSelNoti" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmSelNotiDetail" SpName="MNC_Notification_AdmSelNotiDetail" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmUpdNoti" SpName="MNC_Notification_AdmUpdNoti" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmSelNotiTickets" SpName="MNC_Notification_AdmSelNotiTickets" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
