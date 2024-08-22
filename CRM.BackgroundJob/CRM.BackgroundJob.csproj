@@ -129,6 +129,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.8" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
         <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
         <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
         <PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">

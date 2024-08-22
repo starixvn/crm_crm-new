@@ -4,8 +4,7 @@ WORKDIR /src
 
 COPY ["nuget.config", "."]
 COPY ["CRM.BackgroundJob/CRM.BackgroundJob.csproj", "CRM.BackgroundJob/"]
-COPY ["CRM.Core/CRM.Core.csproj", "CRM.Core/"]
-COPY ["CRM.Resources/CRM.Resources.csproj", "CRM.Resources/"]
+COPY ["CRM.BackgroundJob.Core/CRM.BackgroundJob.Core.csproj", "CRM.BackgroundJob.Core/"]
 
 RUN dotnet restore "CRM.BackgroundJob/CRM.BackgroundJob.csproj"
 COPY . .

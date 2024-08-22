@@ -10,7 +10,6 @@ COPY ["CRM.Resources/CRM.Resources.csproj", "CRM.Resources/"]
 COPY ["CRM.Models/CRM.Models.csproj", "CRM.Models/"]
 COPY ["CRM.Services/CRM.Services.csproj", "CRM.Services/"]
 COPY ["CRM.Criteria/CRM.Criteria.csproj", "CRM.Criteria/"]
-COPY ["CRM.Repositories/CRM.Repositories.csproj", "CRM.Repositories/"]
 COPY ["CRM.ViewModel/CRM.ViewModels.csproj", "CRM.ViewModel/"]
 
 RUN --mount=type=cache,target=/root/.nuget/packages \
