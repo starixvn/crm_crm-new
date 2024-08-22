@@ -1,31 +1,31 @@
 ﻿namespace CRM.BackgroundJob.Models.ChatBotResulAmendment
 {
     using System;
-    using CRM.Core.Extensions.XML;
-    [Serializable]
-    [XMLName("r")]
+    using CRM.BackgroundJob.Core.Extensions.Xml;
 
+    [Serializable]
+    [XmlName("r")]
     public class MessageContent
     {
-        [XMLName("MessageId")]
+        [XmlName("MessageId")]
         public int MessageId { get; set; }
 
-        [XMLName("RequestId")]
+        [XmlName("RequestId")]
         public int RequestId { get; set; }
 
-        [XMLName("Content_en")]
+        [XmlName("Content_en")]
         public string Content_en { get; set; }
 
-        [XMLName("Content_cs")]
+        [XmlName("Content_cs")]
         public string Content_cs { get; set; }
 
-        [XMLName("Content_th")]
+        [XmlName("Content_th")]
         public string Content_th { get; set; }
 
-        [XMLName("Content_vn")]
+        [XmlName("Content_vn")]
         public string Content_vn { get; set; }
 
-        [XMLName("VoidingHistoryCollectionId")]
+        [XmlName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
     }
 }
