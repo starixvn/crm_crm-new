@@ -3,13 +3,11 @@
     using System.Collections.Generic;
     using CRM.Core.Extensions.XML;
     using CRM.Models.Setting;
-    using Fanex.Data;
 
     public class PicInfo
     {
         public int PicId { get; set; }
 
-        [SpParam(SqlParamName = "PicName")]
         public string Username { get; set; }
         public int PicType { get; set; }
 

@@ -10,6 +10,7 @@
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.MultipleLogs;
     using Fanex.Data;
+    using Newtonsoft.Json;
 
     public class CreateMultipleLogsCommand : BaseNonQueryCommand
     {
@@ -95,6 +96,7 @@
         public int? NoInquiries { get; set; }
 
         [SpParam(Ignored = true)]
+        [JsonProperty("RelatedCustomerList")]
         public IEnumerable<VerifyRelatedCustomerResult> RelatedCustomers { get; set; } = new List<VerifyRelatedCustomerResult>();
 
         [SpParam(SqlParamName = "RelatedCustomers")]
