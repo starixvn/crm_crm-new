@@ -287,8 +287,10 @@
         {
             // Arrange
             var service = GetService();
+            var serviceFlag = true;
             var messages = fixture.Create<IEnumerable<MessageBotInfo>>();
 
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
             sendNotificationCenterService.GetNotificationAlertAsync(Arg.Any<string>()).Returns(messages);
 
             // Act
@@ -299,14 +301,32 @@
             await service.Received(1).Public_ProcessNotificationItemAsync(messages);
         }
 
+        [Fact]
+        public async Task SendNotificationCenterAsync_ExpectedReturnLogService()
+        {
+            // Arrange
+            var service = GetService();
+
+            var serviceFlag = false;
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
+
+            // Act
+            await service.SendNotificationCenterAsync();
+
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+        }
+
 
         [Fact]
         public async Task SendNotificationCenterAsync_ThrowException()
         {
             // Arrange
             var service = GetService();
+            var serviceFlag = true;
             var exception = fixture.Create<Exception>();
 
+            systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
             sendNotificationCenterService.When(x => x.GetNotificationAlertAsync(Arg.Any<string>())).Throw(exception);
 
             // Act
