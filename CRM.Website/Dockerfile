@@ -17,8 +17,6 @@ RUN --mount=type=cache,target=/root/.nuget/packages \
 COPY . .
 WORKDIR "/src/CRM.Website"
 
-RUN apk add libgdiplus
-
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet publish -r linux-x64 --self-contained false -o /app
 
