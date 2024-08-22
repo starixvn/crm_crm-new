@@ -9,7 +9,10 @@
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var command = new InsertNotificationAlertCommand();
+            var command = new InsertNotificationAlertCommand
+            {
+                Environment = "dev"
+            };
             var expected = "MNC_Notification_AlertIns";
 
             // Action
@@ -23,7 +26,10 @@
         public void IsValid_ParamsAreValid_ReturnTrue()
         {
             // Arrange
-            var command = new InsertNotificationAlertCommand();
+            var command = new InsertNotificationAlertCommand
+            {
+                Environment = "dev"
+            };
 
             // Act
             var actual = command.IsValid();

@@ -8,7 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
-import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
+import { filterCategories, filterSubCategories } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -105,23 +105,6 @@ export class Filter extends Component {
         this.props.getGridFeedbacks(params);
     };
 
-    filterCategories = (mainCategories, subCategories) => {
-        const mainCategoriesArr = [];
-        mainCategories.map(value => {
-            const subCategoriesFilter = subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
-            subCategoriesFilter.unshift({ name: 'All', subCategoryId: 0 });
-            mainCategoriesArr.push({
-                mainCategoryID: value.mainCategoryID,
-                name: value.name,
-                subCate: subCategoriesFilter
-            });
-        });
-        mainCategoriesArr.unshift({ mainCategoryID: 0, name: 'All', subCate: [{ name: 'All', subCategoryId: 0 }] });
-        return mainCategoriesArr;
-    };
-
-    filterSubCategories = (mainCategories, mainCategoryId) => mainCategories.filter(item => item.mainCategoryID === parseInt(mainCategoryId, 10));
-
     render() {
         const { settings } = this.props;
         if (settings === null || this.initialValues === null) {
@@ -141,8 +124,8 @@ export class Filter extends Component {
         const statusesOptions = [{ statusId: 0, name: 'All' }, ...statuses];
         const statuesFilterDelete = statusesOptions.filter(x => x.name !== 'Deleted');
         const communicationOptions = [{ id: 0, name: 'All' }, ...communications];
-        const mainCategoryOptions = this.filterCategories(mainCategories, subCategories);
-        const subCategoryOptions = this.filterSubCategories(mainCategoryOptions, mainCategoryId);
+        const mainCategoryOptions = filterCategories(mainCategories, subCategories);
+        const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
@@ -256,7 +239,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                subCategoryOptions[0].subCate.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                subCategoryOptions.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
                             }
                         </Form.Control>
                     </Form.Group>

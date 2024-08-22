@@ -54,9 +54,9 @@ export default class Contents extends PureComponent {
                     </Form.Group>
                     <Collapse in={!collapse.solution}>
                         <div className="panel-content" id="collapse-expand-solution">
-                            <CkEditor data={contents.solution} username={currentUsername}
+                            <CkEditor data={contents.solution.replaceAll('\n', '<br />\n')} username={currentUsername}
                                 isInvalid={isInValidSolution}
-                                onChange={value => handleChangeContent('solution', value)}
+                                onChange={value => handleChangeContent('solution', value.replaceAll('<br />',''))}
                             />
                         </div>
                     </Collapse>

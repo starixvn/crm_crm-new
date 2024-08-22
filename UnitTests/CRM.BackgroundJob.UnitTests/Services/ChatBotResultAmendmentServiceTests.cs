@@ -141,8 +141,8 @@
             var fixture = new Fixture();
             var service = GetService();
             var criteria = new GetChatBotMsgCriteria();
-            var expected = fixture.Create<IEnumerable<Message>>();
-            baseService.GetDataAsync<Message>(Arg.Do<GetChatBotMsgCriteria>(x => criteria = x)).Returns(expected);
+            var expected = fixture.Create<IEnumerable<MessageContent>>();
+            baseService.GetDataAsync<MessageContent>(Arg.Do<GetChatBotMsgCriteria>(x => criteria = x)).Returns(expected);
             const string Xml = "<root><r MessageId='1'/></root>";
             var messages = new List<int> {1};
 
@@ -183,7 +183,7 @@
                 }
             };
 
-            var messages = new List<Message> { new Message {
+            var messages = new List<MessageContent> { new MessageContent {
                 MessageId = 1, RequestId = 1, Content_en = "Content_en", Content_cs ="Content_cs", Content_th = "Content_th", Content_vn = "Content_vn"
             } };
 
@@ -251,7 +251,7 @@
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(ticketEvents.ToXML("root").ToString(), criteria.TicketData);
             Assert.Equal(stringBuilderEventData.ToString(), criteria.EventData);
-            Assert.Equal(xmlTemplateMessage, criteria.MessageData);
+            Assert.Equal(messages.ToXML("root").ToString(), criteria.MessageData);
             Assert.Equal(targetMessages.ToXML("root").ToString(), criteria.TargetMessage);
             Assert.Equal(targetMessagesInfo.ToXML("root").ToString(), criteria.InfoMessage);
             Assert.Equal(BackgroundJobConstants.DefaultEnvironment, criteria.Environment);

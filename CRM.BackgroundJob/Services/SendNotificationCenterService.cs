@@ -9,9 +9,9 @@
 
     public interface ISendNotificationCenterService
     {
-        Task<CommandResult> InsertNotificationAlertAsync();
+        Task<CommandResult> InsertNotificationAlertAsync(string environment);
 
-        Task<IEnumerable<MessageBotInfo>> GetNotificationAlertAsync();
+        Task<IEnumerable<MessageBotInfo>> GetNotificationAlertAsync(string environment);
     }
 
     public class SendNotificationCenterService : ISendNotificationCenterService
@@ -23,14 +23,20 @@
             this.baseService = baseService;
         }
 
-        public async Task<CommandResult> InsertNotificationAlertAsync() {
-            var command = new InsertNotificationAlertCommand();
+        public async Task<CommandResult> InsertNotificationAlertAsync(string environment) {
+            var command = new InsertNotificationAlertCommand
+            {
+                Environment = environment
+            };
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
-        public async Task<IEnumerable<MessageBotInfo>> GetNotificationAlertAsync()
+        public async Task<IEnumerable<MessageBotInfo>> GetNotificationAlertAsync(string environment)
         {
-            var criteria = new GetNotificationAlerCriteria();
+            var criteria = new GetNotificationAlerCriteria
+            {
+                Environment = environment
+            };
             return await baseService.GetDataAsync<MessageBotInfo>(criteria);
         }
     }

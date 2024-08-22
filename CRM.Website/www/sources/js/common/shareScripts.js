@@ -385,3 +385,32 @@ export const isHaveLicenseePermissionOnSite = () => {
     }
     return hasPermissionOnSite;
 };
+
+export const filterCategories = (mainCategories, subCategories) => {
+    const mainCategoriesArr = [];
+    mainCategories.map(value => {
+        const subCategoriesFilter = subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
+        subCategoriesFilter.unshift({ name: 'All', subCategoryId: 0 });
+        mainCategoriesArr.push({
+            mainCategoryID: value.mainCategoryID,
+            name: value.name,
+            subCate: subCategoriesFilter
+        });
+    });
+    mainCategoriesArr.unshift({ mainCategoryID: 0, name: 'All', subCate: [{ name: 'All', subCategoryId: 0 }] });
+    return mainCategoriesArr;
+};
+
+export const filterSubCategories = (mainCategories, mainCategoryId, subCategoryId, setState) => {
+    const categoryId = parseInt(mainCategoryId, 10);
+    const filteredMainCategories = mainCategories.filter(item => item.mainCategoryID === categoryId);
+    if (filteredMainCategories.length > 0) {
+        const subCate = filteredMainCategories[0].subCate;
+        const isExistSubCate = subCate?.some(item => item.subCategoryId === subCategoryId);
+
+        if (!isExistSubCate) {
+            setState({ subCategoryId: 0 });
+        }
+    }
+    return filteredMainCategories[0].subCate;
+};

@@ -4,6 +4,8 @@
 
     public class GetNotificationAlerCriteria : CriteriaBase
     {
+        public string Environment { get; set; }
+
         public override string GetSettingKey() => "MNC_Notification_AlertSel";
 
         public override bool IsValid() => true;

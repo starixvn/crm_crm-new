@@ -8,6 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { filterCategories, filterSubCategories } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -98,21 +99,11 @@ export class Filter extends Component {
         this.props.getDeletedFeedback(params);
     };
 
-    filterSubCategories = (subCate, mainCateId) => {
-        if (mainCateId === 0) {
-            const subCategory = [{ name: 'All', subCategoryId: 0 }];
-            return subCategory;
-        }
-        const subCategories = subCate.filter(item => item.mainCategoryID === mainCateId);
-        subCategories.unshift({ name: 'All', subCategoryId: 0 });
-        return subCategories;
-    };
-
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     renderForm = () => {
+        const { mainCategoryId, subCategoryId } = this.state;
         const data = this.props.settings;
-        const subCategories = this.filterSubCategories(data.subCategories, this.state.mainCategoryId);
         const reviews = [
             { settingValue: 'All', settingId: '' },
             { settingValue: 'Reviewed', settingId: 1 },
@@ -125,6 +116,8 @@ export class Filter extends Component {
         ];
         const customerResponses = [{ id: '', value: 'All' }, ...data.customerResponses];
         const communications = [{ id: '', name: 'All' }, ...data.communications];
+        const mainCategoryOptions = filterCategories(data.mainCategories, data.subCategories);
+        const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
@@ -193,9 +186,8 @@ export class Filter extends Component {
                                 name="mainCategoryId"
                                 onChange={this.handleChange}
                             >
-                                <option value="0">All</option>
                                 {
-                                    data.mainCategories.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
+                                    mainCategoryOptions.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
                                 }
                             </Form.Control>
                         </Form.Group>
@@ -205,10 +197,11 @@ export class Filter extends Component {
                             </Form.Label>
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="subCategoryId"
+                                value={this.state.subCategoryId}
                                 onChange={this.handleChange}
                             >
                                 {
-                                    subCategories.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                    subCategoryOptions.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
                                 }
                             </Form.Control>
                         </Form.Group>

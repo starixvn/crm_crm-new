@@ -86,13 +86,13 @@ export default class CommentInfo extends PureComponent {
                   <div id="collapse-expand-solution" className="panel-content">
                       {
                           values.isPreviewSolution &&
-                          <div dangerouslySetInnerHTML={{ __html: values.solution }} />
+                          <div dangerouslySetInnerHTML={{ __html: values.solution.replaceAll('\n', '<br />\n') }} />
                       }
                       {
                           !values.isPreviewSolution &&
                           <CkEditor isInvalid={touched.solution && errors.solution}
-                              data={values.solution} username={currentUsername}
-                              onChange={value => setFieldValue('solution', value)}
+                              data={values.solution.replaceAll('\n', '<br />\n')} username={currentUsername}
+                              onChange={value => setFieldValue('solution', value.replaceAll('<br />',''))}
                           />
                       }
                   </div>

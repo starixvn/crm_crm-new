@@ -26,12 +26,12 @@
         Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>>
             GetChatBotResultAmendmentInfoAsync(AbnormalBetSystemSetting settingResultAmendment);
 
-        Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds);
+        Task<IEnumerable<MessageContent>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds);
 
         Task<ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>> ImportChatBotAmendmentResultAsync(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
-            IEnumerable<Message> messages,
+            IEnumerable<MessageContent> messages,
             IEnumerable<TargetMessage> targetMessages,
             IEnumerable<TargetMessageInfo> targetMessagesInfo,
             string Environment,
@@ -113,7 +113,7 @@
             return new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>(result, criteria.ServerName);
         }
 
-        public async Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds)
+        public async Task<IEnumerable<MessageContent>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds)
         {
             var stringBuilder = new StringBuilder(BackgroundJobConstants.BeginRootTag.ToLowerInvariant());
             const string Xml = "<r MessageId='{0}'/>";
@@ -126,13 +126,13 @@
             {
                 Messages = stringBuilder.ToString()
             };
-            return await baseService.GetDataAsync<Message>(criteria);
+            return await baseService.GetDataAsync<MessageContent>(criteria);
         }
 
         public async Task<ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>> ImportChatBotAmendmentResultAsync(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
-            IEnumerable<Message> messages,
+            IEnumerable<MessageContent> messages,
             IEnumerable<TargetMessage> targetMessages,
             IEnumerable<TargetMessageInfo> targetMessagesInfo,
             string Environment,
@@ -198,27 +198,20 @@
             }
             stringBuilderEventData.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
 
-            const string xmlTemplateMessage = "<r MessageId='{0}' Content_en='{1}' Content_cs='{2}' Content_th='{3}' Content_vn='{4}'/>";
-
             foreach (var message in messages)
             {
-                stringBuilderMessage.AppendFormat(
-                    xmlTemplateMessage,
-                    message.MessageId,
-                    HttpUtility.HtmlEncode(message.Content_en?.Trim().Replace("@@", string.Empty)),
-                    HttpUtility.HtmlEncode(message.Content_cs?.Trim().Replace("@@", string.Empty)),
-                    HttpUtility.HtmlEncode(message.Content_th?.Trim().Replace("@@", string.Empty)),
-                    HttpUtility.HtmlEncode(message.Content_vn?.Trim().Replace("@@", string.Empty))
-                );
+                message.Content_en = message.Content_en?.Trim().Replace("@@", string.Empty);
+                message.Content_cs = message.Content_cs?.Trim().Replace("@@", string.Empty);
+                message.Content_th = message.Content_th?.Trim().Replace("@@", string.Empty);
+                message.Content_vn = message.Content_vn?.Trim().Replace("@@", string.Empty);
             }
 
             stringBuilderMessage.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
-
             var criteria = new ImportChatBotResultAmendmentCommand
             {
                 TicketData = ticketEvents.ToXML("root").ToString(),
                 EventData = stringBuilderEventData.ToString(),
-                MessageData = stringBuilderMessage.ToString(),
+                MessageData = messages.ToXML("root").ToString(),
                 TargetMessage = targetMessages.ToXML("root").ToString(),
                 InfoMessage = targetMessagesInfo.ToXML("root").ToString(),
                 Environment = Environment,
