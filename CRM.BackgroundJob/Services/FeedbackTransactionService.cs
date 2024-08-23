@@ -41,7 +41,7 @@
              IEnumerable<CustCategoryInfor> custCatogorys,
              string Environment);
 
-        Task<CommandResult> EditTOControlFeedbackInfoAsync( string LogID, string status, string description);
+        Task<CommandResult> EditTOControlFeedbackInfoAsync(string LogID, string status, string description);
 
         Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(string LogID, string status, string description);
 
@@ -231,7 +231,7 @@
                     );
             }
             stringBuilder.Append(BackgroundJobConstants.EndRootTag);
-            var criteria = new InsertTOControl_AutoFeedbackInfoCommand
+            var criteria = new InsertTOControlAutoFeedbackInfoCommand
             {
                 xml = stringBuilder.ToString()
             };
@@ -400,7 +400,7 @@
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
-        public async Task<CommandResult> EditArchivingDAAutoFeedback(int logFeedbackId, string status,string description)
+        public async Task<CommandResult> EditArchivingDAAutoFeedback(int logFeedbackId, string status, string description)
         {
             var criteria = new ArchivingAutoFeedbackUpdateCommand
             {

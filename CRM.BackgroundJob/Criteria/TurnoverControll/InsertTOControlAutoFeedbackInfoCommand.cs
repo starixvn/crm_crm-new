@@ -1,7 +1,8 @@
 ﻿namespace CRM.BackgroundJob.Criteria.TurnoverControll
 {
     using Fanex.Data.Repository;
-    public class InsertTOControl_AutoFeedbackInfoCommand : NonQueryCommand
+
+    public class InsertTOControlAutoFeedbackInfoCommand : NonQueryCommand
     {
         public string xml { get; set; }
 
