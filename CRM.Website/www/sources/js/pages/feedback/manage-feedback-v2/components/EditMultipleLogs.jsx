@@ -402,6 +402,7 @@ export class EditMultipleLogs extends Component {
 
     renderSolution = (values, touched, errors, setFieldValue) => {
         const { isCheck } = this.state;
+        console.log('têssss');
         return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title justify-content-between"
@@ -417,13 +418,13 @@ export class EditMultipleLogs extends Component {
                 <div className="panel-content">
                     {
                         !isCheck.solution &&
-                        <div dangerouslySetInnerHTML={{ __html: values.solution.replaceAll('\n', '<br />\n') }} />
+                        <div dangerouslySetInnerHTML={{ __html: values.selectedCommunicationToolIds }} />
                     }
                     {
                         isCheck.solution &&
                         <CkEditor isInvalid={touched.solution && errors.solution}
-                            data={values.solution.replaceAll('\n', '<br />\n')} username={window.currentUsername}
-                            onChange={value => setFieldValue('solution', value.replaceAll('<br />',''))}
+                            data={values.solution} username={window.currentUsername}
+                            onChange={value => setFieldValue('solution', value)}
                         />
                     }
                 </div>
