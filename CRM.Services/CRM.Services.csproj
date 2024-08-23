@@ -6,7 +6,7 @@
     <ItemGroup>
         <PackageReference Include="EPPlus" Version="4.5.3.2" />
         <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
-        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
         <PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
