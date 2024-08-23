@@ -203,6 +203,8 @@
                 );
             }
 
+            stringBuilderMessage.Append(Constants.EndRootTag.ToLowerInvariant());
+
             var criteria = new ImportChatBotResultAmendmentCommand
             {
                 TicketData = ticketEvents.ToXML("root").ToString(),
