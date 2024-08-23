@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using CRM.BackgroundJob.Core.Models;
     using CRM.BackgroundJob.Core.Models.BotServices;
+    using CRM.BackgroundJob.Core.Repositories;
     using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.HealthCheck;
@@ -115,6 +116,7 @@
             #region Core services
 
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
+            services.AddSingleton<IBaseRepository, BaseRepository>();
             services.AddSingleton<IBaseService, BaseService>();
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<ILogger, Logger>();
