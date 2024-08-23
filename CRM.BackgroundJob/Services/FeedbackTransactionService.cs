@@ -1,20 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
-    using CRM.BackgroundJob.Criteria.ArchivingDA;
-    using CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using CRM.BackgroundJob.Criteria.AmendmentNotiFB;
-    using CRM.BackgroundJob.Criteria.TurnoverControll;
-    using CRM.BackgroundJob.Criteria.WinLossLimit;
-    using CRM.BackgroundJob.Models.ArchivingDA;
-    using CRM.BackgroundJob.Models.ProblemsAccount;
-    using CRM.BackgroundJob.Models.AmendmentNotiFB;
-    using CRM.BackgroundJob.Models.TurnoverControll;
-    using CRM.BackgroundJob.Models.WinLossLimit;
-    using CRM.BackgroundJob.Core.Models;
-    using CRM.BackgroundJob.Core.Services;
-    using Fanex.CRM.BackgroundJob.Constants;
-    using Fanex.CRM.BackgroundJob.Criteria;
-    using Fanex.CRM.BackgroundJob.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -22,6 +7,21 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Xml.Linq;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
+    using CRM.BackgroundJob.Criteria.AmendmentNotiFB;
+    using CRM.BackgroundJob.Criteria.ArchivingDA;
+    using CRM.BackgroundJob.Criteria.ProblemsAccount;
+    using CRM.BackgroundJob.Criteria.TurnoverControll;
+    using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
+    using CRM.BackgroundJob.Models.ArchivingDA;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Models.TurnoverControll;
+    using CRM.BackgroundJob.Models.WinLossLimit;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Criteria;
+    using Fanex.CRM.BackgroundJob.Models;
 
     public interface IFeedbackTransactionService
     {

@@ -7,6 +7,6 @@
 
         public override string GetSettingKey() => "Acc_CRM_FeedbackSelTopByCustId";
 
-        public override bool IsValid() => Top > 0 && CustID > 0;
+        public override bool IsValid() => Top > 0 && CustID != 0;
     }
 }

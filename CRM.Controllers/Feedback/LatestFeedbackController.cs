@@ -45,8 +45,8 @@
 
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
 
-            IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
-            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
+            IEnumerable<DeletedFeedback> feedbacks = await feedbacksTask;
+            IEnumerable<Setting> mainCategories = await mainCategoriesTask;
 
             return Json(new { data = feedbacks, mainCategories });
         }
@@ -62,8 +62,8 @@
 
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
 
-            IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
-            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
+            IEnumerable<DeletedFeedback> feedbacks = await feedbacksTask;
+            IEnumerable<Setting> mainCategories = await mainCategoriesTask;
 
             return Json(new { data = feedbacks, mainCategories });
         }
@@ -77,7 +77,7 @@
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
             IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
-            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
+            IEnumerable<Setting> mainCategories = await mainCategoriesTask;
 
             var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, criteria.Top, string.Empty);
             string reportName = string.Format(ViewResources.LatestFeedbackReport_File, criteria.Top);
@@ -97,8 +97,8 @@
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
-            IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
-            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
+            IEnumerable<DeletedFeedback> feedbacks = await feedbacksTask;
+            IEnumerable<Setting> mainCategories = await mainCategoriesTask;
 
             var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, param.Top, param.UserName);
             string reportName = string.Format(ViewResources.LatestFeedback_Report_ByCustId_File, param.Top, param.UserName);

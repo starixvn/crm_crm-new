@@ -226,10 +226,7 @@
 
         public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(ICriteria criteria)
         {
-            var results = await baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(criteria);
-
-            var feedbacks = results.Item1;
-            var settings = results.Item2;
+            var (feedbacks, settings) = await baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(criteria);
 
             foreach (var feedback in feedbacks)
             {
