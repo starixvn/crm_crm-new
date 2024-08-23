@@ -339,7 +339,7 @@ export class DataGrid extends Component {
         <div key={index}>
             <div className='linear-gradient'></div>
             <div className='text-bold'>{title}</div>
-            <div className='text-padding-bottom text-line' dangerouslySetInnerHTML={{ __html: content.replaceAll('\n', '<br />\n') }} />
+            <div className='text-padding-bottom text-line' dangerouslySetInnerHTML={{ __html: content }} />
         </div>
     );
 

@@ -198,20 +198,27 @@
             }
             stringBuilderEventData.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
 
+            const string xmlTemplateMessage = "<r MessageId='{0}' Content_en='{1}' Content_cs='{2}' Content_th='{3}' Content_vn='{4}'/>";
+
             foreach (var message in messages)
             {
-                message.Content_en = message.Content_en?.Trim().Replace("@@", string.Empty);
-                message.Content_cs = message.Content_cs?.Trim().Replace("@@", string.Empty);
-                message.Content_th = message.Content_th?.Trim().Replace("@@", string.Empty);
-                message.Content_vn = message.Content_vn?.Trim().Replace("@@", string.Empty);
+                stringBuilderMessage.AppendFormat(
+                    xmlTemplateMessage,
+                    message.MessageId,
+                    HttpUtility.HtmlEncode(message.Content_en?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_cs?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_th?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_vn?.Trim().Replace("@@", string.Empty))
+                );
             }
 
             stringBuilderMessage.Append(BackgroundJobConstants.EndRootTag.ToLowerInvariant());
+
             var criteria = new ImportChatBotResultAmendmentCommand
             {
                 TicketData = ticketEvents.ToXML("root").ToString(),
                 EventData = stringBuilderEventData.ToString(),
-                MessageData = messages.ToXML("root").ToString(),
+                MessageData = stringBuilderMessage.ToString(),
                 TargetMessage = targetMessages.ToXML("root").ToString(),
                 InfoMessage = targetMessagesInfo.ToXML("root").ToString(),
                 Environment = Environment,
