@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
@@ -132,6 +133,8 @@
 
         private async Task<SendResult> SendLetstalkService(NotificationMessage notification)
         {
+            notification.Content = RemoveUnsupportedTags(notification.Content);
+
             var result = new SendResult
             {
                 NotificationId = notification.NotificationId,
@@ -180,6 +183,15 @@
             }
 
             return result;
+        }
+
+        private static string RemoveUnsupportedTags(string content)
+        {
+            string[] allowedTagsHtml = { "b", "strong", "i", "em", "ins", "u", "s", "strike", "del", "a", "tg-emoji", "code", "pre", "br" };
+            var regex = new Regex(@"(<br />|<hr />)");
+            var replaceNewLine = regex.Replace(content, Environment.NewLine);
+            string messageContentReplace = Regex.Replace(replaceNewLine, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");
+            return messageContentReplace;
         }
 
         private async Task SendLetstalkPersonal(NotificationMessage notification, SendResult result)

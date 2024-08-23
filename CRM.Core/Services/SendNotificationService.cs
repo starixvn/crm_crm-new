@@ -151,17 +151,20 @@
         private static IEnumerable<NotificationMessageUpdateResult> GetUpdateResultModel(IEnumerable<SendResult> sendResults)
         {
             var updateResults = new List<NotificationMessageUpdateResult>();
-            foreach (var result in sendResults)
+            if (sendResults != null && sendResults.Any())
             {
-                var updateModel = new NotificationMessageUpdateResult
+                foreach (var result in sendResults)
                 {
-                    NotificationId = result.NotificationId,
-                    ConversationGroupId = result.ConversationGroupId,
-                    SentDate = result.SentTime,
-                    Status = GetUpdateStatus(result),
-                    ErrMsg = result.ErrorMessage
-                };
-                updateResults.Add(updateModel);
+                    var updateModel = new NotificationMessageUpdateResult
+                    {
+                        NotificationId = result.NotificationId,
+                        ConversationGroupId = result.ConversationGroupId,
+                        SentDate = result.SentTime,
+                        Status = GetUpdateStatus(result),
+                        ErrMsg = result.ErrorMessage
+                    };
+                    updateResults.Add(updateModel);
+                }
             }
 
             return updateResults;

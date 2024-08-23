@@ -139,6 +139,7 @@
             )
         {
             var stringBuilderEventData = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilderMessage = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
 
             const string XmlTemplate = "<r TicketEventId='{0}' ProductId='{1}' EventDate='{2}' " +
                 "SubmitDate='{3}' EventType='{4}' ActualResult='{5}' WrongResult='{6}' MessageId='{7}' " +
@@ -188,19 +189,25 @@
             }
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
+            const string xmlTemplateMessage = "<r MessageId='{0}' Content_en='{1}' Content_cs='{2}' Content_th='{3}' Content_vn='{4}'/>";
+
             foreach (var message in messages)
             {
-                message.Content_en = message.Content_en?.Trim().Replace("@@", string.Empty);
-                message.Content_cs = message.Content_cs?.Trim().Replace("@@", string.Empty);
-                message.Content_th = message.Content_th?.Trim().Replace("@@", string.Empty);
-                message.Content_vn = message.Content_vn?.Trim().Replace("@@", string.Empty);
+                stringBuilderMessage.AppendFormat(
+                    xmlTemplateMessage,
+                    message.MessageId,
+                    HttpUtility.HtmlEncode(message.Content_en?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_cs?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_th?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_vn?.Trim().Replace("@@", string.Empty))
+                );
             }
 
             var criteria = new ImportChatBotResultAmendmentCommand
             {
                 TicketData = ticketEvents.ToXML("root").ToString(),
                 EventData = stringBuilderEventData.ToString(),
-                MessageData = messages.ToXML("root").ToString(),
+                MessageData = stringBuilderMessage.ToString(),
                 TargetMessage = targetMessages.ToXML("root").ToString(),
                 InfoMessage = targetMessagesInfo.ToXML("root").ToString(),
                 Environment = Environment,
