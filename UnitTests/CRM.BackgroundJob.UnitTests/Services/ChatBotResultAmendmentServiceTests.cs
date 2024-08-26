@@ -251,7 +251,7 @@
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(ticketEvents.ToXML("root").ToString(), criteria.TicketData);
             Assert.Equal(stringBuilderEventData.ToString(), criteria.EventData);
-            Assert.Equal(messages.ToXML("root").ToString(), criteria.MessageData);
+            Assert.Equal(xmlTemplateMessage.ToString(), criteria.MessageData);
             Assert.Equal(targetMessages.ToXML("root").ToString(), criteria.TargetMessage);
             Assert.Equal(targetMessagesInfo.ToXML("root").ToString(), criteria.InfoMessage);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
