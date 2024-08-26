@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.CaptureSettlementData;

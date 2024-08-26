@@ -7,16 +7,15 @@
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
+    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
-    using global::CRM.BackgroundJob.Models.AmendmentNotiFB;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public interface IAutoFeedbackService
     {
