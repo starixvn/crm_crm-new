@@ -4,7 +4,6 @@
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
-    using Newtonsoft.Json;
 
     public class ChangePicLogInfo
     {
@@ -20,10 +19,8 @@
 
         public string Action { get; set; }
 
-        [JsonIgnore]
         public string OldValues { get; set; }
 
-        [JsonIgnore]
         public string NewValues { get; set; }
 
         public string EditBy { get; set; }

@@ -86,20 +86,27 @@
 
         public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command, string serverIp = "")
         {
-            var commandResult = new CommandResult();
-            if (command != null && command.IsValid())
+            try
             {
-                await dynamicRepository.ExecuteAsync(command);
-
-                var properties = command.ToPropertyDictionary();
-                if (properties.ContainsKey("ErrCode"))
+                var commandResult = new CommandResult();
+                if (command != null && command.IsValid())
                 {
-                    commandResult.Code = int.Parse(properties["ErrCode"].ToString());
-                    commandResult.Message = properties["ErrMsg"] != null ? properties["ErrMsg"].ToString() : string.Empty;
-                }
-            }
+                    await dynamicRepository.ExecuteAsync(command);
 
-            return commandResult;
+                    var properties = command.ToPropertyDictionary();
+                    if (properties.ContainsKey("ErrCode"))
+                    {
+                        commandResult.Code = int.Parse(properties["ErrCode"].ToString());
+                        commandResult.Message = properties["ErrMsg"] != null ? properties["ErrMsg"].ToString() : string.Empty;
+                    }
+                }
+
+                return commandResult;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

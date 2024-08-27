@@ -26,7 +26,7 @@ export class PicDataGrid extends Component {
         const { picReport, gridParamsPic } = this.props;
         const { pageIndex, pageSize } = gridParamsPic;
         this.startIndex = (pageIndex - 1) * pageSize + 1;
-        if ( picReport.picInfo.length > 0) {
+        if (picReport.picInfo.length > 0) {
             return picReport.picInfo.map((item, index) => this.renderRow(item, index));
         }
         return [
@@ -44,7 +44,7 @@ export class PicDataGrid extends Component {
             <Row key={index}>
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
                 <Cell className='text-center'>{item.logId}</Cell>
-                <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
+                <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime }} />
                 <Cell>{item.editBy}</Cell>
                 <Cell>{item.picTypeName}</Cell>
                 <Cell>{item.name}</Cell>
@@ -54,7 +54,7 @@ export class PicDataGrid extends Component {
         );
     };
 
-    renderDetailsValuePic = item =>{
+    renderDetailsValuePic = item => {
         let detailValue = '';
         switch (item.actionId) {
             case LogActions.InsertNewPic:
@@ -85,7 +85,7 @@ export class PicDataGrid extends Component {
         return detailValue;
     };
 
-    getDetailValueInsertNewPic = item =>{
+    getDetailValueInsertNewPic = item => {
         const languageValue = this.getStringJoinArray(item.newLogInfo.languages);
         const picTypes = this.getStringJoinArray(item.newLogInfo.picTypes);
         const countryValue = item.newLogInfo.country ? item.newLogInfo.country.name : '-';
@@ -112,7 +112,7 @@ export class PicDataGrid extends Component {
         );
     };
 
-    getDetailChatTypeMappingInsert = item =>{
+    getDetailChatTypeMappingInsert = item => {
         const newLog = item.newLogInfo;
         const botNameValue = this.getStringObject(newLog.bot);
         const displayNameValue = this.getStringValue(newLog.conversationGroup.name);
@@ -147,7 +147,7 @@ export class PicDataGrid extends Component {
         );
     };
 
-    getDetailValueUpdatePic = item =>{
+    getDetailValueUpdatePic = item => {
         const roleValue = this.changeValueToHtmlString(this.getStringObject(item.oldLogInfo.role), this.getStringObject(item.newLogInfo.role));
         const nameValue = this.changeValueToHtmlString(item.oldLogInfo.name, item.newLogInfo.name);
         const newPicType = this.getStringJoinArray(item.newLogInfo.picTypes);
@@ -205,9 +205,8 @@ export class PicDataGrid extends Component {
         );
     };
 
-    getDetailChatTypeMappingUpdate = item =>{
-
-        const {newLogInfo, oldLogInfo} = item;
+    getDetailChatTypeMappingUpdate = item => {
+        const { newLogInfo, oldLogInfo } = item;
         const newDisplayName = this.getStringValue(newLogInfo.conversationGroup?.name);
         const oldDisplayName = this.getStringValue(oldLogInfo.conversationGroup?.name);
         const displayNameValue = this.changeValueToHtmlString(oldDisplayName, newDisplayName);
@@ -247,7 +246,7 @@ export class PicDataGrid extends Component {
                     this.renderHtmlDetail(
                         LangHelper.getResource('RecipientType'), recipientTypeValue,
                         LangHelper.getResource('Recipient'), recipientValue,
-                        oldRecipientType !== newRecipientType,  oldRecipient !== newRecipient
+                        oldRecipientType !== newRecipientType, oldRecipient !== newRecipient
                     )
                 }
                 {
@@ -268,15 +267,15 @@ export class PicDataGrid extends Component {
         );
     };
 
-    getDetailValueUpdatePicStatus = item =>{
+    getDetailValueUpdatePicStatus = item => {
         const newDirectAccountJoin = this.getStringJoinArray(item.newLogInfo.directAccounts);
         const oldDirectAccountJoin = this.getStringJoinArray(item.oldLogInfo.directAccounts);
-        const isChangeDirectAccount =  newDirectAccountJoin !== oldDirectAccountJoin;
+        const isChangeDirectAccount = newDirectAccountJoin !== oldDirectAccountJoin;
         const directAccountValue = this.changeValueToHtmlString(oldDirectAccountJoin, newDirectAccountJoin);
         const isActiveValue = this.changeValueToHtmlString(
-                this.convertBoolToDecision(item.oldLogInfo.isActive),
-                this.convertBoolToDecision(item.newLogInfo.isActive)
-            );
+            this.convertBoolToDecision(item.oldLogInfo.isActive),
+            this.convertBoolToDecision(item.newLogInfo.isActive)
+        );
         const oldHeadlineJoin = this.getStringJoinArray(item.oldLogInfo.headlines);
         const newHeadlineJoin = this.getStringJoinArray(item.newLogInfo.headlines);
         const isChangeHeadline = oldHeadlineJoin !== newHeadlineJoin;
@@ -303,55 +302,54 @@ export class PicDataGrid extends Component {
         );
     };
 
-    getDetailChaTypeMappingAction = (item, isUpdateStatus) =>{
+    getDetailChaTypeMappingAction = (item, isUpdateStatus) => {
         const displayName = LangHelper.getResource('DisplayName');
         const displayNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
-        const name = isUpdateStatus ?  LangHelper.getResource('Active') :  LangHelper.getResource('Deleted');
+        const name = isUpdateStatus ? LangHelper.getResource('Active') : LangHelper.getResource('Deleted');
         const changedValue = this.changeValueToHtmlString(
-                this.convertBoolToDecision(isUpdateStatus ? item.oldLogInfo.conversationGroup?.active : item.oldLogInfo.conversationGroup?.deleted),
-                this.convertBoolToDecision(isUpdateStatus ? item.newLogInfo.conversationGroup?.active : item.newLogInfo.conversationGroup?.deleted)
-            );
-        
+            this.convertBoolToDecision(isUpdateStatus ? item.oldLogInfo.conversationGroup?.active : item.oldLogInfo.conversationGroup?.deleted),
+            this.convertBoolToDecision(isUpdateStatus ? item.newLogInfo.conversationGroup?.active : item.newLogInfo.conversationGroup?.deleted)
+        );
+
         return (
             <div className='pic-container'>
-                { this.renderHtmlDetail(displayName, displayNameValue, name, changedValue) }
+                {this.renderHtmlDetail(displayName, displayNameValue, name, changedValue)}
             </div>
         );
     };
 
-    getDetailChaTypeMappingRemark = item =>{
+    getDetailChaTypeMappingRemark = item => {
         const displayName = LangHelper.getResource('DisplayName');
         const displayNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
         const remarkName = LangHelper.getResource('Remark');
         const changedValueRemark = this.changeValueToHtmlString(
-                item.oldLogInfo.conversationGroup?.remark,
-                item.newLogInfo.conversationGroup?.remark
-            );
-        
+            item.oldLogInfo.conversationGroup?.remark,
+            item.newLogInfo.conversationGroup?.remark
+        );
+
         return (
             <div className='pic-container'>
-                { this.renderHtmlDetail(displayName, displayNameValue, remarkName, changedValueRemark) }
+                {this.renderHtmlDetail(displayName, displayNameValue, remarkName, changedValueRemark)}
             </div>
         );
     };
 
-
-    changeValueToHtmlString = (oldValue, newValue, isChangeCommunication, isCommunication = false) =>{
+    changeValueToHtmlString = (oldValue, newValue, isChangeCommunication, isCommunication = false) => {
         const isChange = isCommunication ? isChangeCommunication : newValue !== oldValue;
         return (
             isChange ?
-            <div>
-                <div className='new-value'>
-                    <div className='pt-1 pb-1'>{newValue}</div>
-                </div><div className='old-value'>
-                    <div className='pt-1 pb-1'>{oldValue}</div>
+                <div>
+                    <div className='new-value'>
+                        <div className='pt-1 pb-1'>{newValue}</div>
+                    </div><div className='old-value'>
+                        <div className='pt-1 pb-1'>{oldValue}</div>
+                    </div>
                 </div>
-            </div>
-            : <div className='pt-1 pb-1'>{newValue}</div>
+                : <div className='pt-1 pb-1'>{newValue}</div>
         );
     };
 
-    renderHtmlDetail = (title1, value1, title2, value2, isChange1 = false, isChange2 = false) =>{
+    renderHtmlDetail = (title1, value1, title2, value2, isChange1 = false, isChange2 = false) => {
         return (
             <div className='container-detail'>
                 <div className='detail-child-col col-title-detail'>
@@ -370,8 +368,8 @@ export class PicDataGrid extends Component {
         );
     };
 
-    recursiveCommunicationTools = (tools, newCommunicationTools) =>{
-        if(tools.length > 0) {
+    recursiveCommunicationTools = (tools, newCommunicationTools) => {
+        if (tools !== null && tools.length > 0) {
             const pivot = tools[0].name;
             const childTools = tools.filter(tool => tool.name === pivot);
             newCommunicationTools.push(childTools);
@@ -380,7 +378,7 @@ export class PicDataGrid extends Component {
         }
     };
 
-    getStringCommunicationTools = tools =>{
+    getStringCommunicationTools = tools => {
         if (tools.length > 0) {
             const name = tools[0].name;
             const value = tools.map(tool => tool.value).join(', ');
@@ -389,11 +387,11 @@ export class PicDataGrid extends Component {
         return '-';
     };
 
-    renderCommunicationTools = communicationTools =>{
+    renderCommunicationTools = communicationTools => {
         return (
             <div>
                 {
-                    communicationTools.map(tools =>{
+                    communicationTools.map(tools => {
                         if (tools.length > 0) {
                             const name = tools[0].name;
                             const valueJoin = tools.map(tool => tool.value).join(', ');
@@ -410,14 +408,14 @@ export class PicDataGrid extends Component {
 
     getStringValue = value => value ? value : '-';
 
-    getStringJoinArray = array => array.length > 0 ? array.map(item => item.name).join(', ') : '-';
+    getStringJoinArray = array => array !== null && array.length > 0 ? array.map(item => item.name).join(', ') : '-';
 
     convertBoolToDecision = value => {
         if (value === true) {
             return 'Yes';
-        } else if (value === false){
+        } else if (value === false) {
             return 'No';
-        } else{
+        } else {
             return '-';
         }
     };
@@ -432,7 +430,7 @@ export class PicDataGrid extends Component {
 
     render() {
         const { picReport } = this.props;
-        if(!picReport || !picReport.picInfo){
+        if (!picReport || !picReport.picInfo) {
             return null;
         }
 

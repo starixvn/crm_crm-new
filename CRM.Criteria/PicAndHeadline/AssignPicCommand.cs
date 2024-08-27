@@ -1,8 +1,8 @@
 ﻿namespace CRM.Criteria.PicAndHeadline
 {
-    using Fanex.Data.Repository;
+    using CRM.Core.Models;
 
-    public class AssignPicCommand : NonQueryCommand
+    public class AssignPicCommand : BaseNonQueryCommand
     {
         public int HeadlineId { get; set; }
 
