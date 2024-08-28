@@ -152,7 +152,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group className="width-60">
+                    <Form.Group className="width-70">
                         <Button id='btn-submit-setting-log' variant="primary" size="sm" type="submit">
                             <UnderlineButton.submitButton />
                         </Button>

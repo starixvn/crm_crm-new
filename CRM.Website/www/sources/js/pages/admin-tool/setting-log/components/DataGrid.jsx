@@ -50,16 +50,16 @@ export class DataGrid extends Component {
                     <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.entity}</Cell>
                     <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.id}</Cell>
                     <Cell className={backgroundColor}>{item.fieldNames[0]}</Cell>
-                    <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.oldValuesList[0]) }} />
-                    <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.newValuesList[0]) }} />
+                    <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.renderEncodeData(item.oldValuesList[0]) }} />
+                    <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.renderEncodeData(item.newValuesList[0]) }} />
                 </Row>
                 {
                     item.fieldNames.length > 1 &&
                     item.fieldNames.slice(1).map( (ele ,key) => (
                         <Row key={key}>
                             <Cell className={backgroundColor}>{item.fieldNames[key+1]}</Cell>
-                            <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.oldValuesList[key+1]) }} />
-                            <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.newValuesList[key+1]) }} />
+                            <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.renderEncodeData(item.oldValuesList[key+1]) }} />
+                            <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.renderEncodeData(item.newValuesList[key+1]) }} />
                         </Row>
                     ))
                 }
@@ -68,6 +68,18 @@ export class DataGrid extends Component {
     };
 
     replaceText = text => text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';
+
+    encodeDataHtml = text => {
+        const value = text.replaceAll("&amp;", "&")
+            .replaceAll("&lt;", "<").replaceAll("&gt;", ">")
+            .replaceAll("&quot;", '"').replaceAll("&#39;", "'");
+        return value;
+    };
+
+    renderEncodeData = text => {
+        text = this.replaceText(text);
+        return this.encodeDataHtml(text);
+    };
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
