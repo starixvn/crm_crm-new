@@ -12,7 +12,6 @@
     using CRM.BackgroundJob.Core.Models;
     using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
-    using Fanex.CRM.BackgroundJob.Models;
 
     public interface IChatBotResultAmendmentService
     {

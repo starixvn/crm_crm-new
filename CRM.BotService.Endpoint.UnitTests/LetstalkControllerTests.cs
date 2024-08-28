@@ -13,6 +13,7 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
+    using CRM.Models.Announcement;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using NSubstitute;
@@ -256,11 +257,11 @@
         private List<NotificationMessage> FakeInput()
             => new()
             {
-                new NotificationMessage {ChatTypeId = 1, BotId = 1, ConversationId = "abc", NotificationId = 1},
-                new NotificationMessage {ChatTypeId = 1, BotId = 1, ConversationId = "xyz", NotificationId = 2},
-                new NotificationMessage {ChatTypeId = 2, BotId = 1, ConversationId = "def", NotificationId = 3},
-                new NotificationMessage {ChatTypeId = 2, BotId = 1, ConversationId = "ghi", NotificationId = 4},
-                new NotificationMessage {ChatTypeId = 2, BotId = 1, ConversationId = "jkm", NotificationId = 5},
+                new NotificationMessage {ChatTypeId = 1, BotId = 1, ConversationId = "abc", NotificationId = 1, Content = ""},
+                new NotificationMessage {ChatTypeId = 1, BotId = 1, ConversationId = "xyz", NotificationId = 2, Content = ""},
+                new NotificationMessage {ChatTypeId = 2, BotId = 1, ConversationId = "def", NotificationId = 3, Content = ""},
+                new NotificationMessage {ChatTypeId = 2, BotId = 1, ConversationId = "ghi", NotificationId = 4, Content = ""},
+                new NotificationMessage {ChatTypeId = 2, BotId = 1, ConversationId = "jkm", NotificationId = 5, Content = ""},
             };
 
         private LetstalkController GetController()

@@ -165,7 +165,8 @@
                             JSNotification = item.JSNotification
                         };
                         await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
-                        var (isTest, approveMode) = await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, Environment, "AfterInsMsg");
+                        var (isTest, approveMode) = await pushNotificationResultAmendmentService
+                            .EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, Environment, "AfterInsMsg");
                         var adminMessage = await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti", isTest, approveMode);
                         if (adminMessage != null)
                         {
