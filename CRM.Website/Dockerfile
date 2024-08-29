@@ -25,7 +25,7 @@ COPY ["CRM.ViewModel/CRM.ViewModels.csproj", "CRM.ViewModel/"]
 
 RUN dotnet nuget add source https://nuget.nexdev.net/api/v2
 
-RUN dotnet restore -v n -r linux-x64 ./CRM.Website/CRM.Website.csproj
+RUN dotnet restore "CRM.Website/CRM.Website.csproj"
 
 COPY . .
 WORKDIR "/src/CRM.Website"
