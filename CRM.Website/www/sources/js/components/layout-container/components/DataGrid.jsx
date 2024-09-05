@@ -450,6 +450,8 @@ export default class DataGrid extends PureComponent {
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
         const hasReadLicenseePermission = document.getElementById('hasReadLicenseePermission').checked;
         const hasReadCreditPermission = document.getElementById('hasReadCreditPermission').checked;
+        const hasHeadlineInfoPermission = document.getElementById('hasHeadlineInfoPermission').checked;
+
         return (
             <div className="group-detail-link">
                 <div className="group-title text-left btn-detail"
@@ -529,9 +531,12 @@ export default class DataGrid extends PureComponent {
                                         <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetails')}</a>
                                     </li>
                                 }
-                                <li>
-                                    <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
-                                </li>
+                                {
+                                    hasHeadlineInfoPermission &&
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
+                                    </li>
+                                }
                                 {
                                     hasReadSitePermission &&
                                     <li>

@@ -31,6 +31,7 @@
             ViewBag.hasReadFeedbackPermission = hasReadFeedbackInfoPermission && hasReadSitePermission;
             ViewBag.hasReadSitePermission = hasReadSitePermission;
             ViewBag.hasReadCustomerInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CustomerInfo);
+            ViewBag.hasHeadlineInfoPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo);
             ViewBag.hasReadLicenseePermission = hasReadLicenseePermission;
             ViewBag.hasReadCreditPermission = hasReadCreditPermission;
 
