@@ -402,7 +402,6 @@ export class EditMultipleLogs extends Component {
 
     renderSolution = (values, touched, errors, setFieldValue) => {
         const { isCheck } = this.state;
-        console.log('têssss');
         return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title justify-content-between"

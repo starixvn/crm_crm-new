@@ -311,8 +311,6 @@ export class Filter extends Component {
     };
 
     handleChange = event => {
-        console.log('event.target.name', event.target.name);
-        console.log('event.target.value', event.target.value);
         const name = event.target.name;
         this.setState({
             [name]: event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value

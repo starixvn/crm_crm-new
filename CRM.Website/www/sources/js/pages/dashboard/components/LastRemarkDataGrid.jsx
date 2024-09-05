@@ -64,7 +64,6 @@ export class LastRemarkDataGrid extends Component {
     };
 
     render() {
-        console.log('Last remark');
         const { lastRemark } = this.props;
         if (!lastRemark) {
             return null;
