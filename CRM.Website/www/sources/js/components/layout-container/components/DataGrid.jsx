@@ -532,15 +532,9 @@ export default class DataGrid extends PureComponent {
                                     </li>
                                 }
                                 {
-                                    hasHeadlineInfoPermission &&
+                                    ((hasHeadlineInfoPermission && hasReadCreditPermission) || hasReadLicenseePermission) &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
-                                    </li>
-                                }
-                                {
-                                    hasReadSitePermission &&
-                                    <li>
-                                        <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
                                     </li>
                                 }
                             </ul>
