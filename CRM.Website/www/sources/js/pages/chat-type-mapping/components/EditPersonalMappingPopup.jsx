@@ -228,6 +228,7 @@ export class EditPersonalMappingPopup extends Component {
         if (this.state.settings.letstalkIds) {
             const letstalkList = this.state.settings.letstalkIds.split(',');
             result = letstalkList.map((letstalkId, key) => {
+                letstalkId = letstalkId.trim();
                 return (
                     <Form.Check key={key} inline label={letstalkId}
                         name='letstalkID_Username' type="radio" id={`letstalkId-${key}`}
