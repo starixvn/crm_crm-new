@@ -61,7 +61,8 @@
             return (notifications, allSite);
         }
 
-        public async Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResultAdmNotificationByIdAsync(int notiId, string sitePermission, short licenseeType)
+        public async Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)>
+        GetResultAdmNotificationByIdAsync(int notiId, string sitePermission, short licenseeType)
         {
             var criteria = new GetResultAdmNotiByIdCriteria
             {

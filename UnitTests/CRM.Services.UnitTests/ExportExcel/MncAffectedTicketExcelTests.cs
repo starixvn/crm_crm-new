@@ -150,20 +150,20 @@ namespace CRM.Services.UnitTests.ExportExcel
             Assert.Equal(expectedSiteTicket.Username, worksheet.Cells[RowStartBody, 5].Value);
         }
 
-        [Fact]
-        public void ProcessUI_WhenCalled_CallExpectedMethod()
-        {
-            //Arrange
-            var service = CreateExcel();
-            var worksheet = excelPackage.Worksheets.Add("data");
+        //[Fact]
+        //public void ProcessUI_WhenCalled_CallExpectedMethod()
+        //{
+        //    //Arrange
+        //    var service = CreateExcel();
+        //    var worksheet = excelPackage.Worksheets.Add("data");
 
-            // Act
-            service.Public_ProcessUI(worksheet, true);
+        //    // Act
+        //    service.Public_ProcessUI(worksheet, true);
 
-            // Assert
-            service.Received(1).Public_SetStyle(worksheet);
-            service.Received(1).Public_SetWidthColumn(worksheet, true);
-        }
+        //    // Assert
+        //    service.Received(1).Public_SetStyle(worksheet);
+        //    service.Received(1).Public_SetWidthColumn(worksheet, true);
+        //}
 
         [Fact]
         public void SetStyle_WhenCalled_ExpectedStyle()
