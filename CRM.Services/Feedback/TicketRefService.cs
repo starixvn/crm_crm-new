@@ -29,14 +29,23 @@
         }
         public async Task<TicketInfo> GetTicketByRefNoAsync(long refno)
         {
-            var napUrl = configuration.GetSection("NapSettings:Url").Value;
-            var apiKey = configuration.GetSection("NapSettings:APIKey").Value;
-            CustomDelegatingHandler customDelegatingHandler = new CustomDelegatingHandler(apiKey);
-            HttpClient client = HttpClientFactory.Create(customDelegatingHandler);
-            var url = new Uri(napUrl + "BetListApi/GetBetListByRefNo?refno=" + refno);
-            var response = await client.GetAsync(url);
-            var jsonString = await response.Content.ReadAsStringAsync();
-            return jsonString != null ? JsonConvert.DeserializeObject<TicketInfo>(jsonString) : await Task.FromResult<TicketInfo>(null);
+            try
+            {
+                var napUrl = configuration.GetSection("NapSettings:Url").Value;
+                var apiKey = configuration.GetSection("NapSettings:APIKey").Value;
+                CustomDelegatingHandler customDelegatingHandler = new CustomDelegatingHandler(apiKey);
+                HttpClient client = HttpClientFactory.Create(customDelegatingHandler);
+                var url = new Uri(napUrl + "BetListApi/GetBetListByRefNo?refno=" + refno);
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                return jsonString != null ? JsonConvert.DeserializeObject<TicketInfo>(jsonString) : await Task.FromResult<TicketInfo>(null);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new HttpRequestException($"Error fetching ticket by refno {refno}: {ex.Message}", ex);
+            }
         }
 
         public async Task<DateTime> GetBalanceUpdayAsync()
