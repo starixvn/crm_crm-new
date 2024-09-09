@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using CRM.BackgroundJob.Core.Models;
+    using System.Diagnostics.CodeAnalysis;
     using CRM.BackgroundJob.Core.Models.BotServices;
     using CRM.BackgroundJob.Core.Repositories;
     using CRM.BackgroundJob.Core.Services;
@@ -14,6 +15,7 @@
     using Fanex.BotService.Client.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.Caching;
+    using Fanex.Caching.Redis;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Fanex.Data.Repository;
@@ -36,17 +38,23 @@
     using Sentry;
     using StackExchange.Redis;
 
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private readonly ConnectionMultiplexer Redis;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Redis = ConnectionMultiplexer.Connect(Configuration.GetSection("Fanex.Caching.Redis:ConnectionString").Value);
         }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddFanexSql(Configuration);
+
             LogManager
                .SetDefaultLogCategory(Configuration.GetSection("Fanex.Logging:LogCategory").Value)
                .Use(new List<ILogEngine>
@@ -71,9 +79,8 @@
 
             services.RegisterBotClient(Configuration);
 
-            var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
-            ConfigDataProtection(services, redisConfig);
-            ConfigRedisCache(services, redisConfig);
+            ConfigDataProtection(services);
+            ConfigRedisCache(services);
             AddConfiguration(services, Configuration);
             AddDependencyInjection(services, Configuration);
             AddWorker(services);
@@ -220,39 +227,17 @@
             services.AddHostedService<MncSendNotificationCenterWorker>();
         }
 
-        private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
+        private void ConfigDataProtection(IServiceCollection services)
         {
-            var configRedix = new ConfigurationOptions
-            {
-                EndPoints =
-                {
-                    { redisConfig.Server, redisConfig.Port }
-                },
-                Password = redisConfig.Password,
-                DefaultDatabase = redisConfig.DefaultDatabase,
-                ConnectRetry = redisConfig.ConnectRetry
-            };
-            var redis = ConnectionMultiplexer.Connect(configRedix);
+            string aplicationName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value;
             services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
-                .SetApplicationName(redisConfig.ApplicationName);
+                .SetApplicationName(aplicationName)
+                .PersistKeysToStackExchangeRedis(Redis, $"CRM.BackgroundJob:DataProtection:Keys");
         }
 
-        private static void ConfigRedisCache(IServiceCollection services, RedisConfig redisConfig)
+        private void ConfigRedisCache(IServiceCollection services)
         {
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.ConfigurationOptions = new ConfigurationOptions
-                {
-                    EndPoints =
-                    {
-                        { redisConfig.Server, redisConfig.Port }
-                    },
-                    Password = redisConfig.Password,
-                    DefaultDatabase = redisConfig.DefaultDatabase
-                };
-                options.InstanceName = redisConfig.ApplicationName + ":Session:";
-            });
+            services.AddRedisCache(Configuration.GetSection("Fanex.Caching.Redis"));
         }
 
         private static void ConfigBotService(IServiceCollection services, IConfiguration configuration)

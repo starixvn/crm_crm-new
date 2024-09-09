@@ -123,6 +123,7 @@
 
     <ItemGroup>
         <PackageReference Include="Fanex.BotService.Client.AspNetCore" Version="1.0.2" />
+        <PackageReference Include="Fanex.Logging.Extensions.AspNetCore" Version="1.0.1" />
         <PackageReference Include="Fanex.RemotingRef" Version="1.5.2" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />

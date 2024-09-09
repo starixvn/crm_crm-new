@@ -17,29 +17,24 @@
 
     public static class DIResolver
     {
-        public static void ResolveWebhookServices(this IServiceCollection services, IConfiguration configuration)
+        public static void RegisterBotServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ILetstalkEventHandler, LetstalkEventHandler>();
             services.AddSingleton<IBotCommonService, BotCommonService>();
+
             RegisterBotTelegramService(services, configuration);
             ResolveLetstalkServices(services, configuration);
         }
 
-        public static void ResolveLetstalkServices(this IServiceCollection services, IConfiguration configuration)
+        private static void ResolveLetstalkServices(this IServiceCollection services, IConfiguration configuration)
         {
             var botConfigs = configuration.GetSection("LetstalkBotConfigurations").Get<List<LetstalkBotConfig>>();
-            services.AddSingleton(botConfigs);
-
             var botChannelInfo = configuration.GetSection("BotChannelInfo").Get<List<BotChannelInfo>>();
-            services.AddSingleton(botChannelInfo);
-
-            RegisterBotLetstalkService(services, configuration, botConfigs);
-        }
-
-        private static void RegisterBotLetstalkService(IServiceCollection services, IConfiguration configuration, List<LetstalkBotConfig> botConfigs)
-        {
             var httpClientSettings = configuration.GetSection("HttpClientSetting").Get<HttpClientSetting>();
+
             services.AddSingleton(httpClientSettings);
+            services.AddSingleton(botConfigs);
+            services.AddSingleton(botChannelInfo);
 
             services.AddHttpClient(NamedHttpClients.ProxiedClient).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
             {
@@ -47,17 +42,13 @@
                 Proxy = new WebProxy(httpClientSettings.ProxyAddress, httpClientSettings.BypassOnLocal)
             });
 
-            services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<Func<long, ILetstalkClientService>>(serviceProvider => botId =>
             {
                 var botConfig = botConfigs.Find(config => config.BotAccountId == botId);
 
-                if (botConfig is null)
-                {
-                    throw new ArgumentNullException($"The letstalk bot ID: {botId} does not existed in config file");
-                }
-
-                return new LetstalkClientService(
+                return botConfig is null
+                    ? throw new ArgumentNullException($"The letstalk bot ID: {botId} does not existed in config file")
+                    : (ILetstalkClientService)new LetstalkClientService(
                     serviceProvider.GetRequiredService<IHttpClientFactory>(),
                     serviceProvider.GetRequiredService<ICacheService>(),
                     botConfig);
@@ -85,12 +76,9 @@
             {
                 var botConfig = telegramBots.Find(config => config.BotId == botId);
 
-                if (botConfig is null)
-                {
-                    throw new ArgumentNullException($"The telegram bot ID: {botId} does not existed in config file");
-                }
-
-                return new TelegramBotService(
+                return botConfig is null
+                    ? throw new ArgumentNullException($"The telegram bot ID: {botId} does not existed in config file")
+                    : (ITelegramBotService)new TelegramBotService(
                     serviceProvider.GetRequiredService<IHttpClientFactory>(),
                     telegramBots,
                     serviceProvider.GetRequiredService<ICRMLogService>(),

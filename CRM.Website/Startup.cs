@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Threading.Tasks;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Services.Extensions;
-    using Fanex.Data;
     using Fanex.Logging;
     using Fanex.Logging.Sentry;
     using Fanex.NAP.Client;
@@ -38,11 +38,15 @@
     using Sentry;
     using StackExchange.Redis;
 
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private readonly ConnectionMultiplexer Redis;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Redis = ConnectionMultiplexer.Connect(Configuration.GetSection("Fanex.Caching.Redis:ConnectionString").Value);
         }
 
         public IConfiguration Configuration { get; }
@@ -102,8 +106,7 @@
                 options.SuppressXFrameOptionsHeader = true;
             });
 
-            var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
-            ConfigDataProtection(services, redisConfig);
+            ConfigDataProtection(services);
 
             services.AddControllersWithViews(
                 mvcOption => mvcOption.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
@@ -190,27 +193,12 @@
             services.ResolveServiceDI();
         }
 
-        private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
+        private void ConfigDataProtection(IServiceCollection services)
         {
-            var configRedis = new ConfigurationOptions
-            {
-                EndPoints =
-                {
-                    { redisConfig.Server, redisConfig.Port }
-                },
-                Password = redisConfig.Password,
-                DefaultDatabase = redisConfig.DefaultDatabase,
-                ConnectRetry = redisConfig.ConnectRetry
-            };
-            var redis = ConnectionMultiplexer.Connect(configRedis);
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.ConfigurationOptions = configRedis;
-                options.InstanceName = redisConfig.ApplicationName + ":Session:2";
-            })
-            .AddDataProtection()
-            .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
-            .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
+            string aplicationName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value;
+            services.AddDataProtection()
+                .SetApplicationName(aplicationName)
+                .PersistKeysToStackExchangeRedis(Redis, $"CRM.Website:DataProtection:Keys");
         }
     }
 }
