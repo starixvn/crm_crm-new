@@ -12,6 +12,7 @@
     using CRM.Core.Services;
     using Fanex.Caching;
     using Fanex.Caching.Redis;
+    using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Logging;
     using Fanex.Logging.Sentry;
@@ -66,7 +67,6 @@
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
-            services.AddSingleton<IBaseRepository, BaseRepository>();
             services.AddSingleton<IBaseService, BaseService>();
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<ILogger, Logger>();

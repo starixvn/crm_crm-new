@@ -6,15 +6,10 @@
     using CRM.Core.Models;
     using Fanex.Data.Repository;
     using Fanex.NAP.Client.Helpers.Extensions;
-    using Fanex.Logging.Extensions.Database;
-    using Microsoft.Data.SqlClient;
 
     public interface IBaseService
     {
         Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria, string serverIp = "");
-
-
-
 
         Task<T> GetDataEntityAsync<T>(ICriteria criteria, string serverIp = "");
 

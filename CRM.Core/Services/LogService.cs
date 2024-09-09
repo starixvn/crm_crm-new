@@ -11,10 +11,6 @@
 
     public interface ICRMLogService
     {
-#pragma warning disable S4136 // Method overloads should be grouped together
-        Task ErrorAsync(Exception exception);
-#pragma warning restore S4136 // Method overloads should be grouped together
-
         Task ErrorMessageAsync(string error);
 
         Task InfoMessageAsync(string info);
@@ -22,6 +18,8 @@
         Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
 
         Task ErrorAsync(Exception exception, ICriteria criteria);
+
+        Task ErrorAsync(Exception exception);
 
         void LogInformation(string message);
 
@@ -39,9 +37,7 @@
             this.logger = logger;
         }
 
-#pragma warning disable S4136 // Method overloads should be grouped together
         public async Task ErrorAsync(Exception exception)
-#pragma warning restore S4136 // Method overloads should be grouped together
         {
             var logMessage = new LogMessage(exception.Message)
                        .AddSection("Server Info", CommonInfoGetters.GetServerInfo())

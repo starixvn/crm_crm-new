@@ -9,6 +9,7 @@
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Services.Extensions;
+    using Fanex.Data;
     using Fanex.Logging;
     using Fanex.Logging.Sentry;
     using Fanex.NAP.Client;
