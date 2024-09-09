@@ -81,7 +81,7 @@
         "redux-thunk": "^2.3.0",
         "yup": "^0.29.2"
     },
-    "overrides": {
+    "resolutions": {
         "cheerio": "1.0.0-rc.12"
     },
     "jest": {
