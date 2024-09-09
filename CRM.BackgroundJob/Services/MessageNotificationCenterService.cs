@@ -26,6 +26,8 @@
         Task SendNotificationCenterAsync();
     }
 
+    #pragma warning disable S134
+    #pragma warning disable S107
     public class MessageNotificationCenterService : IMessageNotificationCenterService
     {
         private readonly ICRMLogService logService;
@@ -256,6 +258,10 @@
                 {
                     await ProcessSendOnlyTestMessagesAsync(conversationConfigs, content);
                 }
+                else
+                {
+                    throw new InvalidOperationException($"Unexpected value of isTest: {isTest}");
+                }
             }
         }
 
@@ -285,4 +291,6 @@
             }
         }
     }
+    #pragma warning restore S134
+    #pragma warning restore S107
 }
