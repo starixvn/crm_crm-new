@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Models;
@@ -11,14 +10,18 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Data.SqlServer;
-    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Extensions;
+    using Fanex.Logging.Extensions.Database;
+    using Microsoft.Data.SqlClient;
 
     public interface IBaseService
     {
         Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria);
+
         Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria);
+
         Task<IEnumerable<T>> GetDataByIpConfigAsync<T>(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria);
+
         Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(CriteriaBaseSiteDb criteria);
 
         Task<T> GetDataEntityAsync<T>(ICriteria criteria);
