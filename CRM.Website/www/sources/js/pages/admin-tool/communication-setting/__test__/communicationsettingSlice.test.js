@@ -10,7 +10,7 @@ import communicationSetting, {
     setEditCommunicationResult,
     setDeleteCommunicationPopup,
     setDeleteCommunicationResult
-} from '../communicationSettingSlice';
+} from '../communicationsettingSlice.js';
 
 describe('communicationSetting reducer', () => {
     it('should handle initial state', () => {

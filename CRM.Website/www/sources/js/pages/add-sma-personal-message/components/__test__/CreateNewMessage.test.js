@@ -146,7 +146,7 @@ describe('CreateNewMessage', () => {
             const state = {
                 confirmPopup: {params: {}}
             };
-            const promise = Promise.resolve({data: {isSuccessful: true}});
+            const promise = Promise.resolve({data: {data:{isSuccessful: true}}});
             DataService.postDataAsync = jest.fn(() => promise);
             const container = shallow(<CreateNewMessage />).instance();
             container.formik = {setSubmitting: jest.fn()}; 
@@ -155,7 +155,7 @@ describe('CreateNewMessage', () => {
             container.handleCancelConfirmAddMessage = jest.fn(); 
             // Act
             await container.handleCheckUsername();
-            await promise;
+            await promise;           
             // Assert
             expect(container.handleCreateNewMessage).toHaveBeenCalled();
             expect(container.handleCancelConfirmAddMessage).toHaveBeenCalled();
@@ -167,7 +167,7 @@ describe('CreateNewMessage', () => {
             const state = {
                 confirmPopup: {params: {}}
             };
-            const promise = Promise.resolve({data: {isSuccessful: false}});
+            const promise = Promise.resolve({data: {data:{isSuccessful: false}}});
             DataService.postDataAsync = jest.fn(() => promise);
             const container = shallow(<CreateNewMessage />).instance();
             container.formik = {setSubmitting: jest.fn()}; 

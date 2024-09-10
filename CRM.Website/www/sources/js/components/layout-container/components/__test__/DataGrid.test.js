@@ -33,6 +33,9 @@ describe('DataGrid', () => {
         const appContainer5 = document.createElement('div');
         appContainer5.setAttribute('id', 'hasReadCreditPermission');
         appContainer5.checked = false;
+        const appContainer6 = document.createElement('div');
+        appContainer6.setAttribute('id', 'hasHeadlineInfoPermission');
+        appContainer6.checked = true;
         const leftRowContainer = document.createElement('div');
         leftRowContainer.setAttribute('id', 'left-row-container');
         document.body.appendChild(appContainer);
@@ -42,6 +45,7 @@ describe('DataGrid', () => {
         document.body.appendChild(appContainer4);
         document.body.appendChild(appContainer5);
         document.body.appendChild(leftRowContainer);
+        document.body.appendChild(appContainer6);
     });
 
     afterEach(() => {
@@ -52,16 +56,17 @@ describe('DataGrid', () => {
         const appContainer3 = document.getElementById('hasHostPicManagementPermission');
         const appContainer4 = document.getElementById('hasReadLicenseePermission');
         const appContainer5 = document.getElementById('hasReadCreditPermission');
+        const appContainer6 = document.getElementById('hasHeadlineInfoPermission');
         const leftRowContainer = document.getElementById('left-row-container');
-        if (appContainer || appContainer1 || appContainer2 || appContainer3 || appContainer4 || appContainer5 || leftRowContainer) {
-            document.body.removeChild(appContainer);
-            document.body.removeChild(appContainer1);
-            document.body.removeChild(appContainer2);
-            document.body.removeChild(appContainer3);
-            document.body.removeChild(appContainer4);
-            document.body.removeChild(appContainer5);
-            document.body.removeChild(leftRowContainer);
-        }
+
+        document.body.removeChild(appContainer);
+        document.body.removeChild(appContainer1);
+        document.body.removeChild(appContainer2);
+        document.body.removeChild(appContainer3);
+        document.body.removeChild(appContainer4);
+        document.body.removeChild(appContainer5);
+        document.body.removeChild(appContainer6);
+        document.body.removeChild(leftRowContainer);
     });
 
     it('should render correctly', () => {
@@ -282,6 +287,10 @@ describe('DataGrid', () => {
             hasReadCreditPermission.setAttribute('id', 'hasReadCreditPermission');
             hasReadCreditPermission.checked = true;
 
+            const hasHeadlineInfoPermission = document.createElement('div');
+            hasHeadlineInfoPermission.setAttribute('id', 'hasHeadlineInfoPermission');
+            hasHeadlineInfoPermission.checked = true;
+
             document.body.appendChild(leftRowContainer);
             document.body.appendChild(hasCreateFeedbackPermission);
             document.body.appendChild(hasReadFeedbackPermission);
@@ -289,6 +298,7 @@ describe('DataGrid', () => {
             document.body.appendChild(hasHostPicManagementPermission);
             document.body.appendChild(hasReadLicenseePermission);
             document.body.appendChild(hasReadCreditPermission);
+            document.body.appendChild(hasHeadlineInfoPermission);
 
             const container = shallow(<DataGrid {...props} />);
             const form = shallow(container.instance().renderForm(param));

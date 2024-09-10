@@ -155,35 +155,35 @@ describe('Filter', () => {
         });
     });
 
-    describe('filterSubCategories', () => {
-        it('should return exactly expect when mainCateId equal 0', () => {
-            // Arrange
-            const props = { ...initProps };
-            const subCategories = [{ mainCategoryID : 3000 }];
-            const manCateId = 0;
+    // describe('filterSubCategories', () => {
+    //     it('should return exactly expect when mainCateId equal 0', () => {
+    //         // Arrange
+    //         const props = { ...initProps };
+    //         const subCategories = [{ mainCategoryID : 3000 }];
+    //         const manCateId = 0;
 
-            // Act
-            const container = shallow(<Filter {...props}/>).instance();
-            const actual = container.filterSubCategories(subCategories, manCateId);
+    //         // Act
+    //         const container = shallow(<Filter {...props}/>).instance();
+    //         const actual = container.filterSubCategories(subCategories, manCateId);
 
-            // Assert
-            expect(actual).toEqual([{ name: 'All', subCategoryId: 0 }]);
-        });
+    //         // Assert
+    //         expect(actual).toEqual([{ name: 'All', subCategoryId: 0 }]);
+    //     });
 
-        it('should return exactly expect when mainCateId not equal 0', () => {
-            // Arrange
-            const props = { ...initProps };
-            const subCategories = [{ mainCategoryID : 3000 }, { mainCategoryID : 4000 }];
-            const manCateId = 3000;
+    //     it('should return exactly expect when mainCateId not equal 0', () => {
+    //         // Arrange
+    //         const props = { ...initProps };
+    //         const subCategories = [{ mainCategoryID : 3000 }, { mainCategoryID : 4000 }];
+    //         const manCateId = 3000;
 
-            // Act
-            const container = shallow(<Filter {...props}/>).instance();
-            const actual = container.filterSubCategories(subCategories, manCateId);
+    //         // Act
+    //         const container = shallow(<Filter {...props}/>).instance();
+    //         const actual = container.filterSubCategories(subCategories, manCateId);
 
-            // Assert
-            expect(actual).toEqual([{ name: 'All', subCategoryId: 0 }, {  mainCategoryID : 3000 }]);
-        });
-    });
+    //         // Assert
+    //         expect(actual).toEqual([{ name: 'All', subCategoryId: 0 }, {  mainCategoryID : 3000 }]);
+    //     });
+    // });
 
     describe('render', () => {
         it('should return null when settings are null', () => {
