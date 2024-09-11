@@ -46,14 +46,14 @@
             await ProcessActionableNotifications(actionableNotifications);
         }
 
-        private static (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
+        public static (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
         {
             var empty = notifications.Where(n => string.IsNullOrWhiteSpace(n.Content) && string.IsNullOrWhiteSpace(n.FileName));
             var actionable = notifications.Except(empty).ToList();
             return (empty, actionable);
         }
 
-        private async Task ProcessEmptyNotifications(IEnumerable<AnnouncementNotification> emptyNotifications)
+        public async Task ProcessEmptyNotifications(IEnumerable<AnnouncementNotification> emptyNotifications)
         {
             if (emptyNotifications.Any())
             {
@@ -61,7 +61,7 @@
             }
         }
 
-        private async Task ProcessActionableNotifications(IEnumerable<AnnouncementNotification> notifications)
+        public async Task ProcessActionableNotifications(IEnumerable<AnnouncementNotification> notifications)
         {
             if (notifications.Any())
             {
@@ -73,7 +73,7 @@
 
         #region Send announcement
 
-        private async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
+        public async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
         {
             await Task.WhenAll(
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications),
@@ -81,7 +81,7 @@
             );
         }
 
-        private async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        public async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
         {
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
@@ -112,7 +112,7 @@
             }
         }
 
-        private static IEnumerable<AnnouncementNotificationUpdateResult> ConvertSendMessageResultToUpdateStatusResult(
+        public static IEnumerable<AnnouncementNotificationUpdateResult> ConvertSendMessageResultToUpdateStatusResult(
             IEnumerable<AnnouncementNotification> notifications, IEnumerable<SendNotificationResult> sendResults
             )
         {
@@ -136,7 +136,7 @@
             return results;
         }
 
-        private static string GetErrorImagesResult(IList<string> errorImages)
+        public static string GetErrorImagesResult(IList<string> errorImages)
         {
             string result = string.Empty;
             if (errorImages is not null && errorImages.Count > 0)
@@ -151,7 +151,7 @@
 
         #region Retry Images Only
 
-        private async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
+        public async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
         {
             await Task.WhenAll(
                 RetryImageByChannelAsync(BotChannel.Letstalk, notifications),
@@ -159,7 +159,7 @@
             );
         }
 
-        private async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        public async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
         {
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
@@ -191,7 +191,7 @@
             }
         }
 
-        private async Task HandleUpdateResultAnnouncement(IEnumerable<AnnouncementNotificationUpdateResult> updatedResults)
+        public async Task HandleUpdateResultAnnouncement(IEnumerable<AnnouncementNotificationUpdateResult> updatedResults)
         {
             if (!updatedResults.Any())
             {
@@ -204,7 +204,7 @@
 
         #region Update Bot Removed Groups
 
-        private async Task UpdateBotRemovedGroup(IEnumerable<AnnouncementNotification> botRemovedNotifications)
+        public async Task UpdateBotRemovedGroup(IEnumerable<AnnouncementNotification> botRemovedNotifications)
         {
             if (botRemovedNotifications.Any())
             {
@@ -227,7 +227,7 @@
 
         #region Update status with content and fileName is empty
 
-        private async Task UpdateEmptyContentFileName(IEnumerable<AnnouncementNotification> notifications)
+        public async Task UpdateEmptyContentFileName(IEnumerable<AnnouncementNotification> notifications)
         {
             if (notifications.Any())
             {
@@ -248,7 +248,7 @@
 
         #endregion Update status with content and fileName is null
 
-        private async Task UpdateRecipientStatus(IEnumerable<AnnouncementNotificationUpdateResult> sentResults)
+        public async Task UpdateRecipientStatus(IEnumerable<AnnouncementNotificationUpdateResult> sentResults)
         {
             var command = new UpdateAnnouncementNotificationStatusCommand
             {
@@ -258,7 +258,7 @@
             await baseService.ExecuteNonQueryAsync(command);
         }
 
-        private async Task<IEnumerable<AnnouncementNotification>> GetAnnouncementNotificationAsync()
+        public async Task<IEnumerable<AnnouncementNotification>> GetAnnouncementNotificationAsync()
         {
             var notifications = await baseService.GetDataAsync<AnnouncementNotification>(new GetAnnouncementNotificationToSendCriteria());
             foreach (var item in notifications)
@@ -283,7 +283,7 @@
             return notifications;
         }
 
-        private static void MappingUpdateStatusErrorMessage(AnnouncementNotificationUpdateResult result, SendNotificationResult matchedResult)
+        public static void MappingUpdateStatusErrorMessage(AnnouncementNotificationUpdateResult result, SendNotificationResult matchedResult)
         {
             if (matchedResult.IsSuccessful)
             {
