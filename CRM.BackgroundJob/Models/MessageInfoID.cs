@@ -33,5 +33,8 @@
 
         [XMLName("MatchId")]
         public int MatchId { get; set; }
+
+        [XMLName("CreatorName")]
+        public string CreatorName { get; set; }
     }
 }
