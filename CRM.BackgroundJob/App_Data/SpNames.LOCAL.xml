@@ -130,8 +130,8 @@
         <Setting Key="Acc_CRM_ArchivedAccount_AutoFBInfoUpd" SpName="Acc_CRM_ArchivedAccount_AutoFBInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="VoidBetID">
-        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_GetMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" DbName="DBACC.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_GetMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_GetMessage_xtest" DbName="DBMSG.bodb_Message.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage_xtest" DbName="DBACC.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="AbnormalBet">
