@@ -46,7 +46,8 @@
             await ProcessActionableNotifications(actionableNotifications);
         }
 
-        protected internal static (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
+        protected internal static (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable)
+        PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
         {
             var empty = notifications.Where(n => string.IsNullOrWhiteSpace(n.Content) && string.IsNullOrWhiteSpace(n.FileName));
             var actionable = notifications.Except(empty).ToList();
