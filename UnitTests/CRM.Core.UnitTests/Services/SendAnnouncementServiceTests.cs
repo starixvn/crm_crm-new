@@ -5,10 +5,12 @@
     using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.Core.Constants;
     using CRM.Core.Criteria.Announcement;
     using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
+    using CRM.Core.UnitTests.Testable;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using NSubstitute;
@@ -27,7 +29,11 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var noti = fixture.Create<IEnumerable<AnnouncementNotification>>();
+            var noti = fixture.Create<List<AnnouncementNotification>>();
+            noti[0].Content = null;
+            noti[0].FileName = null;
+            var empty = noti.Where(n => string.IsNullOrWhiteSpace(n.Content) && string.IsNullOrWhiteSpace(n.FileName));
+            var actionable = noti.Except(empty).ToList();
             var service = GetService();
             baseService.GetDataAsync<AnnouncementNotification>(Arg.Any<GetAnnouncementNotificationToSendCriteria>()).Returns(noti);
 
@@ -35,8 +41,8 @@
             await service.ScanSendAndUpateAnnouncementNotification();
 
             // Assert
-            _ = service.Received().ProcessEmptyNotifications(Arg.Any<IEnumerable<AnnouncementNotification>>());
-            _ = service.Received().ProcessActionableNotifications(Arg.Any<IEnumerable<AnnouncementNotification>>());
+            await service.Received().Public_ProcessEmptyNotifications(empty);
+            await service.Received().Public_ProcessActionableNotifications(actionable);    
         }
 
         [Fact]
@@ -50,7 +56,7 @@
             var service = GetService();
 
             // Act
-            var actual = SendAnnouncementService.PartitionNotifications(notifications);
+            var actual = SendAnnouncementServiceTestable.Public_PartitionNotifications(notifications);
 
             // Assert
             Assert.Equal(empty, actual.empty);
@@ -66,10 +72,10 @@
             var service = GetService();
 
             // Act
-            await service.ProcessEmptyNotifications(emptyNotifications);
+            await service.Public_ProcessEmptyNotifications(emptyNotifications);
 
             // Assert
-            await service.Received().UpdateEmptyContentFileName(emptyNotifications);
+            await service.Received().Public_UpdateEmptyContentFileName(emptyNotifications);
         }
 
         [Fact]
@@ -84,12 +90,12 @@
             var service = GetService();
 
             // Act
-            await service.ProcessActionableNotifications(notifications);
+            await service.Public_ProcessActionableNotifications(notifications);
 
             // Assert
-            await service.Received().UpdateBotRemovedGroup(updateBot);
-            await service.Received().RetryImagesOnlyAsync(retryImages);
-            await service.Received().SendAnnouncementAsync(sendAnnouncement);
+            await service.Received().Public_UpdateBotRemovedGroup(updateBot);
+            await service.Received().Public_RetryImagesOnlyAsync(retryImages);
+            await service.Received().Public_SendAnnouncementAsync(sendAnnouncement);
         }
 
         [Fact]
@@ -101,11 +107,11 @@
             var service = GetService();
 
             // Act
-            await service.SendAnnouncementAsync(notifications);
+            await service.Public_SendAnnouncementAsync(notifications);
 
             // Assert
-            await service.Received().SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications);
-            await service.Received().SendAnnouncementNotificationToBotServiceAsync(BotChannel.Telegram, notifications);
+            await service.Received().Public_SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications);
+            await service.Received().Public_SendAnnouncementNotificationToBotServiceAsync(BotChannel.Telegram, notifications);
         }
 
         [Fact]
@@ -113,16 +119,31 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var notifications = fixture.Create<IEnumerable<AnnouncementNotification>>();
-            var send = fixture.Create<IEnumerable<SendNotificationResult>>();
+            var notifications = new List<AnnouncementNotification>
+            {
+                new() { ChannelId = BotChannel.Letstalk, AnnouncementId = 1, ConversationId = "1", NotificationId = 1, ConversationGroupId = 1 }
+            };
+            var send = fixture.Create<List<SendNotificationResult>>();
+            send[0].AnnouncementId = 1;
+            send[0].ConversationId = "1";
+            var results = new List<AnnouncementNotificationUpdateResult>();
+            var result = new AnnouncementNotificationUpdateResult
+            {
+                NotificationId = notifications[0].NotificationId,
+                ConversationGroupId = notifications[0].ConversationGroupId,
+                IsOnlyRetryImage = send[0].IsOnlyRetryImage,
+                ErrImages = SendAnnouncementServiceTestable.Public_GetErrorImagesResult(send[0].ErrImages)
+            };
+            results.Add(result);
+
             var service = GetService();
             chatbotService.SendMultipleFormattedMessageAndAttachmentAsync(BotChannel.Letstalk, Arg.Any<IEnumerable<AnnouncementNotification>>()).Returns(send);
 
             // Act
-            await service.SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications);
+            await service.Public_SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications);
 
             // Assert
-            _ = service.Received().UpdateRecipientStatus(Arg.Any<IEnumerable<AnnouncementNotificationUpdateResult>>());
+            await service.Received().Public_UpdateRecipientStatus(results);
         }
 
         [Fact]
@@ -136,11 +157,10 @@
             chatbotService.SendMultipleFormattedMessageAndAttachmentAsync(BotChannel.Letstalk, Arg.Any<IEnumerable<AnnouncementNotification>>()).Throws(exception);
 
             // Act
-            await service.SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications);
+            await service.Public_SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications);
 
             // Assert
-            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
-            _ = service.Received().UpdateRecipientStatus(Arg.Any<IEnumerable<AnnouncementNotificationUpdateResult>>());
+            await logService.Received().ErrorAsync(Arg.Any<Exception>());
         }
 
         [Fact]
@@ -155,10 +175,9 @@
             {
                 new (){ AnnouncementId = 1, ConversationId = "1", IsOnlyRetryImage = true, ErrImages = new List<string>(){"err.pdf"} }
             };
-            var service = GetService();
 
             // Act
-            var actual = SendAnnouncementService.ConvertSendMessageResultToUpdateStatusResult(notifications, sendResults);
+            var actual = SendAnnouncementServiceTestable.Public_ConvertSendMessageResultToUpdateStatusResult(notifications, sendResults);
 
             // Assert
             Assert.Equal("err.pdf", actual.FirstOrDefault().ErrImages);
@@ -172,10 +191,9 @@
             {
                 "test.png/err.pdf"
             };
-            var service = GetService();
 
             // Act
-            var actual = SendAnnouncementService.GetErrorImagesResult(errorImages);
+            var actual = SendAnnouncementServiceTestable.Public_GetErrorImagesResult(errorImages);
 
             // Assert
             Assert.Equal("err.pdf", actual);
@@ -190,11 +208,11 @@
             var service = GetService();
 
             // Act
-            await service.RetryImagesOnlyAsync(notifications);
+            await service.Public_RetryImagesOnlyAsync(notifications);
 
             // Assert
-            await service.Received().RetryImageByChannelAsync(BotChannel.Letstalk, notifications);
-            await service.Received().RetryImageByChannelAsync(BotChannel.Telegram, notifications);
+            await service.Received().Public_RetryImageByChannelAsync(BotChannel.Letstalk, notifications);
+            await service.Received().Public_RetryImageByChannelAsync(BotChannel.Telegram, notifications);
         }
 
         [Fact]
@@ -202,16 +220,31 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var notifications = fixture.Create<IEnumerable<AnnouncementNotification>>();
-            var send = fixture.Create<IEnumerable<SendNotificationResult>>();
+            var notifications = new List<AnnouncementNotification>
+            {
+                new() { ChannelId = BotChannel.Letstalk, AnnouncementId = 1, ConversationId = "1", NotificationId = 1, ConversationGroupId = 1 }
+            };
+            var send = fixture.Create<List<SendNotificationResult>>();
+            send[0].AnnouncementId = 1;
+            send[0].ConversationId = "1";
+            var results = new List<AnnouncementNotificationUpdateResult>();
+            var result = new AnnouncementNotificationUpdateResult
+            {
+                NotificationId = notifications[0].NotificationId,
+                ConversationGroupId = notifications[0].ConversationGroupId,
+                IsOnlyRetryImage = send[0].IsOnlyRetryImage,
+                ErrImages = SendAnnouncementServiceTestable.Public_GetErrorImagesResult(send[0].ErrImages)
+            };
+            results.Add(result);
+
             var service = GetService();
             chatbotService.SendImageOnlyAsync(BotChannel.Letstalk, Arg.Any<IEnumerable<AnnouncementNotification>>()).Returns(send);
 
             // Act
-            await service.RetryImageByChannelAsync(BotChannel.Letstalk, notifications);
+            await service.Public_RetryImageByChannelAsync(BotChannel.Letstalk, notifications);
 
             // Assert
-            _ = service.Received().HandleUpdateResultAnnouncement(Arg.Any<IEnumerable<AnnouncementNotificationUpdateResult>>());
+            await service.Received().Public_HandleUpdateResultAnnouncement(results);
         }
 
         [Fact]
@@ -225,11 +258,10 @@
             chatbotService.SendImageOnlyAsync(BotChannel.Letstalk, Arg.Any<IEnumerable<AnnouncementNotification>>()).Throws(exception);
 
             // Act
-            await service.RetryImageByChannelAsync(BotChannel.Letstalk, notifications);
+            await service.Public_RetryImageByChannelAsync(BotChannel.Letstalk, notifications);
 
             // Assert
-            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
-            _ = service.Received().UpdateRecipientStatus(Arg.Any<IEnumerable<AnnouncementNotificationUpdateResult>>());
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());         
         }
 
         [Fact]
@@ -241,10 +273,10 @@
             var service = GetService();
 
             // Act
-            await service.HandleUpdateResultAnnouncement(updatedResults);
+            await service.Public_HandleUpdateResultAnnouncement(updatedResults);
 
             // Assert
-            await service.Received().UpdateRecipientStatus(updatedResults);
+            await service.Received().Public_UpdateRecipientStatus(updatedResults);
         }
 
         [Fact]
@@ -255,7 +287,7 @@
             var service = GetService();
 
             // Act
-            await service.HandleUpdateResultAnnouncement(updatedResults);
+            await service.Public_HandleUpdateResultAnnouncement(updatedResults);
 
             // Assert
             await logService.ErrorMessageAsync(JsonConvert.SerializeObject(updatedResults));
@@ -270,10 +302,7 @@
             var service = GetService();
 
             // Act
-            await service.UpdateBotRemovedGroup(botRemovedNotifications);
-
-            // Assert
-            _ = service.Received().UpdateRecipientStatus(Arg.Any<IEnumerable<AnnouncementNotificationUpdateResult>>());
+            await service.Public_UpdateBotRemovedGroup(botRemovedNotifications);
         }
 
         [Fact]
@@ -285,10 +314,7 @@
             var service = GetService();
 
             // Act
-            await service.UpdateEmptyContentFileName(notifications);
-
-            // Assert
-            _ = service.Received().UpdateRecipientStatus(Arg.Any<IEnumerable<AnnouncementNotificationUpdateResult>>());
+            await service.Public_UpdateEmptyContentFileName(notifications);
         }
 
         [Fact]
@@ -300,10 +326,10 @@
             var service = GetService();
 
             // Act
-            await service.UpdateRecipientStatus(sentResults);
+            await service.Public_UpdateRecipientStatus(sentResults);
 
             // Assert
-            await baseService.Received(1).ExecuteNonQueryAsync(Arg.Any<UpdateAnnouncementNotificationStatusCommand>());
+            await baseService.Received().ExecuteNonQueryAsync(Arg.Any<UpdateAnnouncementNotificationStatusCommand>());
         }
 
         [Fact]
@@ -318,21 +344,123 @@
             baseService.GetDataAsync<AnnouncementNotification>(Arg.Any<GetAnnouncementNotificationToSendCriteria>()).Returns(notifications);
 
             // Act
-            var actual = await service.GetAnnouncementNotificationAsync();
+            var actual = await service.Public_GetAnnouncementNotificationAsync();
 
             // Assert
             Assert.Equal("1/test01", actual.FirstOrDefault().Images[0]);
             Assert.Equal("1/eTest01", actual.FirstOrDefault().RetryImages[0]);
         }
 
+        [Fact]
+        public void MappingUpdateStatusErrorMessage_WhenCalled_Sent()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var matchedResult = new SendNotificationResult
+            {
+                IsSuccessful = true,
+                IsBotBlocked = false,
+                IgnoredRetry = true
+            };
+            var result = fixture.Create<AnnouncementNotificationUpdateResult>();
+
+            // Act
+            SendAnnouncementServiceTestable.Public_MappingUpdateStatusErrorMessage(result, matchedResult);
+
+            // Assert
+            Assert.Equal(SendNotificationStatuses.Sent, result.Status);
+            Assert.Equal(string.Empty, result.ErrMsg);
+        }
+
+        [Fact]
+        public void MappingUpdateStatusErrorMessage_WhenCalled_Retrying()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var matchedResult = new SendNotificationResult
+            {
+                IsSuccessful = false,
+                IsBotBlocked = false,
+                IgnoredRetry = false
+            };
+            var result = fixture.Create<AnnouncementNotificationUpdateResult>();
+
+            // Act
+            SendAnnouncementServiceTestable.Public_MappingUpdateStatusErrorMessage(result, matchedResult);
+
+            // Assert
+            Assert.Equal(SendNotificationStatuses.Retrying, result.Status);
+            Assert.Equal(matchedResult.ErrMsg, result.ErrMsg);
+        }
+
+        [Fact]
+        public void MappingUpdateStatusErrorMessage_WhenCalled_Error()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var matchedResult = new SendNotificationResult
+            {
+                IsSuccessful = false,
+                IsBotBlocked = false,
+                IgnoredRetry = true
+            };
+            var result = fixture.Create<AnnouncementNotificationUpdateResult>();
+
+            // Act
+            SendAnnouncementServiceTestable.Public_MappingUpdateStatusErrorMessage(result, matchedResult);
+
+            // Assert
+            Assert.Equal(SendNotificationStatuses.Error, result.Status);
+            Assert.Equal(matchedResult.ErrMsg, result.ErrMsg);
+        }
+
+        [Fact]
+        public void MappingUpdateStatusErrorMessage_WhenCalled_BotBlocked()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var matchedResult = new SendNotificationResult
+            {
+                IsSuccessful = true,
+                IsBotBlocked = true,
+                IgnoredRetry = true
+            };
+            var result = fixture.Create<AnnouncementNotificationUpdateResult>();
+
+            // Act
+            SendAnnouncementServiceTestable.Public_MappingUpdateStatusErrorMessage(result, matchedResult);
+
+            // Assert
+            Assert.Equal(SendNotificationStatuses.BotBlocked, result.Status);
+            Assert.Equal(string.Empty, result.ErrMsg);
+        }
+
+        [Fact]
+        public void DividedBatchToSendAnnouncement_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            var batches = new List<List<AnnouncementNotification>>();
+            var notifications = new List<AnnouncementNotification>
+            {
+                new() { AnnouncementId = 1, Content = "" }
+            };
+            batches.Add(notifications);
+
+            // Act
+            var actual = SendAnnouncementServiceTestable.Public_DividedBatchToSendAnnouncement(notifications);
+
+            // Assert
+            Assert.Equal(batches, actual);
+        }
+
         #region Helpers
-        private SendAnnouncementService GetService()
+        private SendAnnouncementServiceTestable GetService()
         {
             baseService = Substitute.For<IBaseService>();
             logService = Substitute.For<ICRMLogService>();
             configuration = Substitute.For<IConfiguration>();
             chatbotService = Substitute.For<IChatBotSendMessageService>();
-            return Substitute.For<SendAnnouncementService>(baseService, logService, configuration, chatbotService);
+            return Substitute.For<SendAnnouncementServiceTestable>(baseService, logService, configuration, chatbotService);
         }
         #endregion Helpers
     }
