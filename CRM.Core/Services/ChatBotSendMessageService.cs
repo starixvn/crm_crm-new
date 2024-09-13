@@ -8,6 +8,7 @@
     using CRM.Core.Models.BotServices;
     using CRM.Core.Models.BotServices.Announcement;
     using Fanex.Caching;
+    using Newtonsoft.Json;
 
     public interface IChatBotSendMessageService
     {
@@ -22,9 +23,12 @@
 
     public class ChatBotSendMessageService : BotServiceHttpClientBase, IChatBotSendMessageService
     {
-        public ChatBotSendMessageService(BotServiceSettings botSettings, IHttpClientFactory httpClientFactory, ICacheService cacheService)
+        private readonly ICRMLogService logService;
+
+        public ChatBotSendMessageService(ICRMLogService logService, BotServiceSettings botSettings, IHttpClientFactory httpClientFactory, ICacheService cacheService)
             : base(botSettings, httpClientFactory, cacheService)
         {
+            this.logService = logService;
         }
 
         public async Task<IEnumerable<SendNotificationResult>> SendMultipleFormattedMessageAndAttachmentAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
@@ -53,6 +57,7 @@
             var apiConfig = GetApiConfig(botChannel);
 
             var results = await PostAsync<SendResult>(apiConfig.SendSingleMessagePath, notification);
+            await logService.InfoMessageAsync(JsonConvert.SerializeObject(results));
             return results;
         }
 

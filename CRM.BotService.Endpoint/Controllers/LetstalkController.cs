@@ -128,6 +128,7 @@
         public async Task<IActionResult> SendSingleMessage([FromBody] NotificationMessage notification)
         {
             var result = await SendLetstalkService(notification);
+            logService.LogInformation("Single message sent result: " + JsonConvert.SerializeObject(result));
             return Ok(result);
         }
 
@@ -203,6 +204,7 @@
             };
 
             var sendResult = await letstalkClientService(notification.BotId).PushPersonalAsync(notification.ConversationId, outGoingMsg);
+            logService.LogInformation("SendLetstalkPersonal: outout=" + JsonConvert.SerializeObject(sendResult) + "   input=" + JsonConvert.SerializeObject(notification));
 
             result.SentTime = DateTimeOffset.UtcNow.DateTime;
             result.ErrorCode = sendResult.IsSuccess && !sendResult.BlockList.Any() ? 0 : 1;
