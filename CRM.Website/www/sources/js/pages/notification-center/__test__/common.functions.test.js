@@ -57,12 +57,12 @@ describe('commonFunctions', () => {
                     mapLabel: "content_en"
                 },
                 {
-                    name: "Simplified Chinese",
-                    mapLabel: "content_cs"
-                },
-                {
                     name: "Traditional Chinese",
                     mapLabel: "content_ch"
+                },
+                {
+                    name: "Simplified Chinese",
+                    mapLabel: "content_cs"
                 },
                 {
                     name: "New Simplified Chinese",
