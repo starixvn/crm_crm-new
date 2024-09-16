@@ -7,5 +7,6 @@
         public const string vi_VN = "vi-VN";
         public const string th_TH = "th-TH";
         public const string zh_TW = "zh-TW";
+        public const string zh_CHS = "zh-CHS";
     }
 }
