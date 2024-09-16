@@ -347,7 +347,8 @@ export class DataGrid extends Component {
         const languages = [
             { code: 'en', title: 'English' },
             { code: 'cs', title: 'Simplified Chinese' },
-            { code: 'ch', title: 'Traditional Chinese' }
+            { code: 'ch', title: 'Traditional Chinese' },
+            { code: 'zhcn', title: 'New Simplified Chinese' }
         ];
 
         return (
