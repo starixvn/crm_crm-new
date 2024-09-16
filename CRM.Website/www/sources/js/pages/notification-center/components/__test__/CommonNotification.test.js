@@ -405,7 +405,8 @@ describe('CommonNotification', () => {
             const expected = {
                 content_ch: 'TraditionalChineseContentRequired',
                 content_cs: 'SimplifiedChineseContentRequired',
-                content_en: 'EnglishContentRequired'
+                content_en: 'EnglishContentRequired',
+                content_zhcn: 'NewSimplifiedChineseContentRequired',
             }
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
 
@@ -450,12 +451,14 @@ describe('CommonNotification', () => {
                 subject: 'test',
                 content_en: 'test',
                 content_cs: 'test',
-                content_ch: 'test'
+                content_ch: 'test',
+                content_zhcn: 'test'
             };
             const expected = {
                 content_ch: 'RemoveSignAtTC',
                 content_cs: 'RemoveSignAtSC',
                 content_en: 'RemoveSignAtEnglish',
+                content_zhcn: 'RemoveSignAtNSC',
             }
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
 
@@ -472,8 +475,8 @@ describe('CommonNotification', () => {
             //Arrange
             const props = {...initProps};
             const state =  { isFirstCheck: true };
-            const errors = {content_en: 'err', content_cs: 'err', content_ch: 'err'}
-            const expected = 'invalid-content_en invalid-content_cs invalid-content_ch';
+            const errors = {content_en: 'err', content_cs: 'err', content_ch: 'err', content_zhcn: 'err'}
+            const expected = 'invalid-content_en invalid-content_cs invalid-content_ch invalid-content_zhcn';
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
             container.setState(state);
 

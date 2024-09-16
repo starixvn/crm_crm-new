@@ -31,6 +31,7 @@
                 NewContentEN = "",
                 NewContentCH = "",
                 NewContentCS = "",
+                NewContentZHCN = "",
                 UpdaterID = 1
             };
 
