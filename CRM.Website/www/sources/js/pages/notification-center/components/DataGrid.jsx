@@ -346,8 +346,8 @@ export class DataGrid extends Component {
     renderMapOstContent = item => {
         const languages = [
             { code: 'en', title: 'English' },
-            { code: 'cs', title: 'Simplified Chinese' },
             { code: 'ch', title: 'Traditional Chinese' },
+            { code: 'cs', title: 'Simplified Chinese' },
             { code: 'zhcn', title: 'New Simplified Chinese' }
         ];
 

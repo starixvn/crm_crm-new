@@ -17,27 +17,16 @@ export const statusOptionCSD = [
 
 export const languageOptions = isOstUser => {
     const commonOptions = [
-        {
-            name: "English",
-            mapLabel: "content_en"
-        },
-        {
-            name: "Simplified Chinese",
-            mapLabel: "content_cs"
-        }
+        { name: "English", mapLabel: "content_en" },
+        { name: "Simplified Chinese", mapLabel: "content_cs" }
     ];
 
     if (isOstUser) {
         return [
-            ...commonOptions,
-            {
-                name: "Traditional Chinese",
-                mapLabel: "content_ch"
-            },
-            {
-                name: "New Simplified Chinese",
-                mapLabel: "content_zhcn"
-            }
+            { name: "English", mapLabel: "content_en" },
+            { name: "Traditional Chinese", mapLabel: "content_ch" },
+            { name: "Simplified Chinese", mapLabel: "content_cs" },
+            { name: "New Simplified Chinese", mapLabel: "content_zhcn" }
         ];
     } else {
         return commonOptions;
