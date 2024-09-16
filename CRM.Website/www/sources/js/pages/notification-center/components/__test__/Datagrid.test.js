@@ -692,6 +692,7 @@ describe('DataGrid', () => {
                 content_en: 'content_en',
                 content_cs: 'content_cs',
                 content_ch: 'content_ch',
+                content_zhcn: 'content_zhcn',
             };
             const container = shallow(<DataGrid {...props} />).instance();
             container.contentBlock = jest.fn();
@@ -717,6 +718,7 @@ describe('DataGrid', () => {
             content_en: 'content_en',
             content_cs: 'content_cs',
             content_ch: 'content_ch',
+            content_zhcn: 'content_zhcn',
         };
 
         it('should render exactly when click text-session', () => {
