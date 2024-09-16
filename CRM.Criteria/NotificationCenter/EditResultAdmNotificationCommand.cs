@@ -16,6 +16,8 @@
 
         public string NewContentCS { get; set; }
 
+        public string NewContentZHCN { get; set; }
+
         public int UpdaterID { get; set; }
 
         public override string GetSettingKey() => "MNC_Notification_AdmUpdNoti";

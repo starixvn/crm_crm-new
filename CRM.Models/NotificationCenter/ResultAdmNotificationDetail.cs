@@ -18,6 +18,8 @@
 
         public string Content_cs { get; set; }
 
+        public string Content_zhcn { get; set; }
+
         public string Status { get; set; }
 
         public string Subject { get; set; }

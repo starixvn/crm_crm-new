@@ -17,5 +17,7 @@
         public string RefValueCH { get; set;}
 
         public string RefValueCS { get; set;}
+
+        public string RefValueZhcn { get; set; }
     }
 }

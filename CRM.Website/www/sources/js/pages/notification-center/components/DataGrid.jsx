@@ -363,7 +363,7 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) => {
-        const isExistContent = item.content_en || item.content_cs || item.content_ch;
+        const isExistContent = item.content_en || item.content_cs || item.content_ch || item.content_zhcn;
 
         return (
             <Row key={item.notificationID+'-'+index}>

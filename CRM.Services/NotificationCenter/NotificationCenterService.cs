@@ -84,7 +84,8 @@
                 NewSubject = param.NewSubject,
                 NewContentEN = param.NewContentEN,
                 NewContentCH = param.NewContentCH,
-                NewContentCS = param.NewContentCS
+                NewContentCS = param.NewContentCS,
+                NewContentZHCN = param.NewContentZHCN
             };
             return await baseService.ExecuteNonQueryAsync(command);
         }

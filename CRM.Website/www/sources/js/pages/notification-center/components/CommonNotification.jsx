@@ -52,7 +52,7 @@ export class CommonNotification extends Component {
     };
 
     getParams = status => {
-        const { content_en, content_cs, content_ch, subject } = this.formik.values;
+        const { content_en, content_cs, content_ch, content_zhcn, subject } = this.formik.values;
         const params = {
             notificationId: this.props.actionParam.notificationId,
             newStatus: status,
@@ -60,6 +60,7 @@ export class CommonNotification extends Component {
             newContentEN: content_en,
             newContentCS: content_cs,
             newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
+            newContentZHCN: this.props.actionParam.isOstUser ? content_zhcn : null,
             subject: subject
         };
         return params;
@@ -197,7 +198,7 @@ export class CommonNotification extends Component {
     validateFormik = values => {
         const errors = {};
         const { isOstUser } = this.props.actionParam;
-        const { subject, content_en, content_cs, content_ch } = values;
+        const { subject, content_en, content_cs, content_ch, content_zhcn } = values;
 
         if (!subject && !isOstUser) {
             errors.subject = LangHelper.getResource('SubjectRequired');
@@ -227,6 +228,14 @@ export class CommonNotification extends Component {
             errors.content_ch = LangHelper.getResource('RemoveSignAtTC');
         }
 
+        if (!content_zhcn && isOstUser) {
+            errors.content_zhcn = LangHelper.getResource('NewSimplifiedChineseContentRequired');
+        }
+
+        if (content_zhcn && isOstUser && !content_zhcn.includes('@@')) {
+            errors.content_zhcn = LangHelper.getResource('RemoveSignAtNSC');
+        }
+
         return errors;
     };
 
@@ -241,6 +250,9 @@ export class CommonNotification extends Component {
             }
             if (errors.content_ch) {
                 invalidCss.push('invalid-content_ch');
+            }
+            if (errors.content_zhcn) {
+                invalidCss.push('invalid-content_zhcn');
             }
         }    
         return invalidCss.join(' ');
@@ -487,6 +499,7 @@ export class CommonNotification extends Component {
             content_en: data.content_en,
             content_cs: data.content_cs,
             content_ch: isOstUser ? data.content_ch : null,
+            content_zhcn: isOstUser ? data.content_zhcn : null
         };
         return (
             <Formik
