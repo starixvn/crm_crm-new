@@ -5,6 +5,7 @@
     using CRM.BackgroundJob.Core.Enumerables;
     using CRM.BackgroundJob.Core.Models.BotServices;
     using CRM.BackgroundJob.Core.Services;
+    using Newtonsoft.Json;
 
     public interface IBotHealthCheckService
     {
@@ -38,9 +39,9 @@
             };
 
             var sentResult = await chatBotSendMessageService.SendSinglePlaintexMessageAsync(BotChannel.Letstalk, notificationMsg);
-
             if (sentResult is not null && !sentResult.IsSuccessful)
             {
+                await logService.InfoMessageAsync(JsonConvert.SerializeObject(sentResult));
                 await logService.ErrorMessageAsync($"Letstalk service unhealthy, the result error: {sentResult.ErrorMessage}");
             }
         }

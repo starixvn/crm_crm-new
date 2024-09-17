@@ -23,7 +23,8 @@ describe('Filter', () => {
 
     const initProps = {
         allSettings: {
-            subCategories: { id: 1, value: 'test' },
+            subCategories: [{ id: 1, value: 'test' }],
+            subProducts: [{parentId: 1, id: 1, value: 'sb'}],
             periodTypes: [{ id: 1, name: 'Daily' }],
             statuses: [{ statusId: 2, name: 'closed' }],
             responses: [{ id: 2, value: 'Neutral' }],
