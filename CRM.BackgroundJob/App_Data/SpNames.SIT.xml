@@ -161,7 +161,7 @@
         <Setting Key="Dot_Admin_message_new_insert" SpName="Dot_Admin_message_new_insert" DbName="DBONUSER.ON_USER.wsv_nap" />
     </Function>
     <Function Name="AutoFB MessageNotificationCenter">
-        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo_xtest" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_Import" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_Import_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo" DbName="DBMSG.bodb_Message.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_Import" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
 </Functions>
