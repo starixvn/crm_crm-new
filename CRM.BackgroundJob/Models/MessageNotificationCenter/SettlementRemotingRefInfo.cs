@@ -18,6 +18,6 @@
 
         public string RefValueCS { get; set;}
 
-        public string RefValueZhcn { get; set; }
+        public string RefValueZHCN { get; set; }
     }
 }

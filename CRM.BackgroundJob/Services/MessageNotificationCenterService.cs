@@ -135,7 +135,7 @@
                         item.RefValueEN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.en_US);
                         item.RefValueCH = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_TW);
                         item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
-                        item.RefValueZhcn = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CHS);
+                        item.RefValueZHCN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CHS);
                     }
                     await generateResultAmendmentService.InsertGenResultAmendmentAsync(Environment, settlementGen);
                 }

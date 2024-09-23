@@ -130,7 +130,7 @@
                 item.RefValueEN = refLanguage;
                 item.RefValueCH = refLanguage;
                 item.RefValueCS = refLanguage;
-                item.RefValueZhcn = refLanguage;
+                item.RefValueZHCN = refLanguage;
             }
             generateResultAmendmentService.GetPrepareGenNotificationAsync(Arg.Any<string>()).Returns(settlementRemotingRefInfo);
             systemSettingService.GetSystemSettingNotificationAsync(Arg.Any<string>()).Returns(serviceFlag);
