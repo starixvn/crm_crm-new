@@ -1,9 +1,5 @@
 ﻿namespace CRM.BotService.Core.Services.EventHandler
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Enum;
@@ -18,6 +14,10 @@
     using Microsoft.AspNetCore.Http;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
 
     public interface ILetstalkEventHandler
     {
@@ -46,7 +46,7 @@
         public async Task ReceiveAsync(HttpRequest request, int botId)
         {
             CheckArgumentHelper.CheckValidBot(botConfigs, botId);
-
+            logService.LogInformation($"======Receive Letstalk event: botId={botId}, listBot={JsonConvert.SerializeObject(botConfigs)}");
             string requestJson;
             var botConfig = botConfigs.Find(config => config.BotAccountId == botId);
             if (botConfig is not null)
@@ -57,7 +57,7 @@
                 }
 
                 var rawData = JwtHelper.Decode(botConfig.SecureKey, requestJson.Trim());
-                logService.LogInformation(rawData);
+                logService.LogInformation($"=======Letstalk event data: {rawData}");
                 var data = JObject.Parse(rawData);
                 var hookEvent = data.ToObject<HookEvent>();
 
