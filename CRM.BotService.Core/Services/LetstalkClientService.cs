@@ -1,13 +1,5 @@
 ﻿namespace CRM.BotService.Core.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Extensions.Letstalk;
     using CRM.BotService.Core.Models.Letstalk;
@@ -17,6 +9,15 @@
     using CRM.Core.Enumerables;
     using Fanex.Caching;
     using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class LetstalkClientService : ILetstalkClientService
     {
@@ -284,6 +285,10 @@
             }
             var client = clientFactory.CreateClient(NamedHttpClients.ProxiedClient);
             using var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await cacheService.RemoveAsync(LetstalkCacheKey);
+            }
             response.EnsureSuccessStatusCode();
             var responseData = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<T>(responseData);
