@@ -1,14 +1,13 @@
 ﻿namespace CRM.Core.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Net.Http;
-    using System.Threading.Tasks;
     using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Models.BotServices.Announcement;
     using Fanex.Caching;
-    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading.Tasks;
 
     public interface IChatBotSendMessageService
     {
@@ -41,7 +40,6 @@
             return results;
         }
 
-            await logService.InfoMessageAsync(JsonConvert.SerializeObject(results));
         private ApiConfig GetApiConfig(BotChannel botChannel) =>
             botSettings.ApiConfigs.Find(x => x.Channel == botChannel) ?? throw new ArgumentException($"Missing config for bot service type {botChannel}");
     }

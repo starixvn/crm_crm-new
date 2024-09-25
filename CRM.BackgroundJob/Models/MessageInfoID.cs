@@ -1,7 +1,7 @@
 ﻿namespace CRM.BackgroundJob.Models
 {
-    using System;
     using CRM.BackgroundJob.Core.Extensions.Xml;
+    using System;
 
     [Serializable]
     [XmlName("r")]
@@ -34,7 +34,7 @@
         [XmlName("MatchId")]
         public int MatchId { get; set; }
 
-        [XMLName("CreatorName")]
+        [XmlName("CreatorName")]
         public string CreatorName { get; set; }
     }
 }

@@ -1,9 +1,5 @@
 ﻿namespace CRM.Controllers.UnitTests.Report.Statistics
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Constants;
     using CRM.Core.Services;
@@ -11,13 +7,16 @@
     using CRM.Models.Feedback;
     using CRM.Models.Report.FeedbackStatistic;
     using CRM.Models.Setting;
-    using CRM.Repositories;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
     using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Xunit;
 
     public class FeedbackStatisticControllerTests

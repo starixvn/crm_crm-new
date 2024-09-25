@@ -1,12 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using CRM.BackgroundJob.Core.Extensions.Xml;
     using CRM.BackgroundJob.Core.Models;
     using Fanex.CRM.BackgroundJob.Constants;
@@ -15,6 +8,13 @@
     using Fanex.CRM.BackgroundJob.Services;
     using Fanex.RemotingRef;
     using Microsoft.AspNetCore.Hosting;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
 
     public interface ICommonFeedback
     {
@@ -137,12 +137,6 @@
         {
             var teamName = remotingRefService.GetTeamName(teamId, languageCode, string.Empty);
             return teamName;
-        }
-
-        public string GetTeamName3rd(string teamId, string languageCode)
-        {
-            var teamName3rd = remotingRefService.GetTeamName3rd(teamId, languageCode, string.Empty);
-            return teamName3rd;
         }
 
         public string GetTeamName3rd(string teamId, string languageCode)
