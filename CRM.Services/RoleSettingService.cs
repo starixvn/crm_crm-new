@@ -34,6 +34,10 @@ namespace CRM.Services
                     roleName = ViewResources.Headline;
                     break;
 
+                case RoleIdConstants.Account:
+                    roleName = ViewResources.Account;
+                    break;
+
                 default:
                     roleName = ViewResources.Guest;
                     break;

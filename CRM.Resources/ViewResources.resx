@@ -642,4 +642,7 @@
   <data name="MncAffectedTicketFileName" xml:space="preserve">
     <value>Message_Notification_Center_Affected_Tickets_{0}</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
 </root>

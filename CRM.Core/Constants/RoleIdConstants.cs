@@ -18,5 +18,7 @@
         public const int CRMGuest = 7004;
 
         public const int Headline = 7006;
+
+        public const int Account = -1;
     }
 }
