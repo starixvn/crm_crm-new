@@ -32,6 +32,8 @@ WORKDIR "/src/CRM.Website"
 RUN dotnet publish -r linux-x64 --self-contained false -o /app
 
 FROM hub.nexdev.net/nexus/aspnet6_crm_website AS base
+RUN apk add libgdiplus --repository http://dl-.alpinelinux.org/alpine/edge/testing/ 
+RUN apk add ttf-freefont libssl1.1 
 
 WORKDIR /app
 
