@@ -5,6 +5,7 @@ namespace CRM.Services
 {
     public static class RoleSettingService
     {
+        #pragma warning disable S1541
         public static string GetRoleName(int roleId)
         {
             string roleName = roleId switch
@@ -19,5 +20,6 @@ namespace CRM.Services
             };
             return roleName;
         }
+        #pragma warning restore S1541
     }
 }
