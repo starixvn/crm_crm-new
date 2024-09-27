@@ -5,7 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import * as commonFunc from '../../common.functions';
 import Site from '@jsroot/common/site';
 
-describe('ContentTab', () => {
+describe('Content', () => {
     beforeAll(() =>{
         jest.useFakeTimers();
         Site.resolveClientUrl = jest.fn();
