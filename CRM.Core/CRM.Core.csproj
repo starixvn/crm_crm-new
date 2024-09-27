@@ -22,6 +22,9 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
     </ItemGroup>
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
+	</ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
     </ItemGroup>
