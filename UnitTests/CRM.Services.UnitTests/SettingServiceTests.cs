@@ -6,8 +6,11 @@
     using AutoFixture;
     using CRM.Core.Constants;
     using CRM.Core.Services;
+    using CRM.Criteria.InformHeadline;
+    using CRM.Criteria.PicAndHeadline;
     using CRM.Criteria.Setting;
     using CRM.Models;
+    using CRM.Models.AdminTool.SettingLog;
     using CRM.Models.Setting;
     using CRM.Resources;
     using NSubstitute;
@@ -60,6 +63,110 @@
             Assert.Equal(expectedOrder, actual);
             // Assert
             Assert.Equal(2, criteria.Active);
+        }
+
+        [Fact]
+        public async Task GetMainSettingAsync_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            int expected = 2;
+            var service = GetService();
+            var allSettings = new List<Setting>
+            {
+                new() { Id = 1, SettingName = "Main", SettingId = 1 },
+                new() { Id = 2, SettingName = "Main", SettingId = 2 },
+                new() { Id = 3, SettingName = "Sup", SettingId = 3 },
+            };
+            baseService.GetDataAsync<Setting>(Arg.Any<GetSettingCriteria>()).Returns(allSettings);
+
+            // Act
+            var actual = await service.GetMainSettingAsync();
+
+            // Assert
+            Assert.Equal(expected, actual.Where(x => x.SettingName == "Main").ToList().FirstOrDefault().ChildSettings.Count);
+        }
+
+        [Fact]
+        public async Task GetSettingByTypes_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            int expected = 3;
+            var service = GetService();
+            var allSettings = new List<Setting>
+            {
+                new() { Id = 1, SettingName = "Main", SettingId = 1, SettingSource = "source" },
+                new() { Id = 2, SettingName = "Main", SettingId = 2, SettingSource = "source"  },
+                new() { Id = 3, SettingName = "Sup", SettingId = 3, SettingSource = "source"  },
+            };
+            var relations = new List<Setting>
+            {
+                new() { Id = 1, SettingName = "Main", SettingId = 1, ParentID = 1 },
+                new() { Id = 2, SettingName = "Main", SettingId = 2, ParentID = 1  },
+                new() { Id = 3, SettingName = "Sup", SettingId = 3, ParentID = 1  },
+            };
+            baseService.GetDataAsync<Setting>(Arg.Any<GetAllSettingRelationCriteria>()).Returns(relations);
+            baseService.GetDataAsync<Setting>(Arg.Any<GetSettingCriteria>()).Returns(allSettings);
+
+            // Act
+            var actual = await service.GetSettingByTypes("Main");
+
+            // Assert
+            Assert.Equal(expected, actual.Where(x => x.SettingName == "Main").ToList().FirstOrDefault().ChildSettings.Count);
+        }
+
+        [Fact]
+        public async Task GetRolesByPicAsync_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            var expected = new List<Setting>();
+            var service = GetService();
+            baseService.GetDataAsync<Setting>(Arg.Any<GetRoleByPicType>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetRolesByPicAsync(1);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetSiteByIdAsync_WhenHaveSites_ReturnExpected()
+        {
+            // Arrange
+            var expected = new SiteSetting
+            {
+                Id = 1,
+                AliasName = Constants.Credit,
+                Name = "SiteSetting",
+                IsActive = false
+            };
+            var siteInfo = new List<SiteInfo>
+            {
+                new() { Id = 1, Name = "SiteSetting" }
+            };
+            var service = GetService();
+            baseService.GetDataAsync<SiteInfo>(Arg.Any<GetAllSiteCriteria>()).Returns(siteInfo);
+
+            // Act
+            var actual = await service.GetSiteByIdAsync(1);
+
+            // Assert
+            Assert.Equal(expected.AliasName, actual.AliasName);
+        }
+
+        [Fact]
+        public async Task GetSiteByIdAsync_WhenNotHaveSite_ReturnExpected()
+        {
+            // Arrange
+            var siteInfo = new List<SiteInfo>();
+            var service = GetService();
+            baseService.GetDataAsync<SiteInfo>(Arg.Any<GetAllSiteCriteria>()).Returns(siteInfo);
+
+            // Act
+            var actual = await service.GetSiteByIdAsync(1);
+
+            // Assert
+            Assert.Equal(ViewResources.Symbol_NotApply, actual.Name);
         }
 
         [Fact]
@@ -312,7 +419,8 @@
         public async Task GetStatusAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<FeedbackStatus>>();
+            var expected = fixture.Create<IList<FeedbackStatus>>();
+            expected[0].StatusId = (int)Core.Enumerables.FeedbackStatus.Closed;
             var criteria = fixture.Create<GetAllStatusCriteria>();
             var service = GetService();
             baseService.GetDataAsync<FeedbackStatus>(Arg.Do<GetAllStatusCriteria>(x => criteria = x)).Returns(expected);
@@ -428,12 +536,33 @@
         }
 
         [Fact]
+        public async Task GetSystemSiteAsync_WhenCalled_ReturnExpectedSettings()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<Models.PicAndHeadline.SiteInfo>>();
+            var service = GetService();
+            var param = new GetSystemSiteCriteria();
+            baseService.GetDataAsync<Models.PicAndHeadline.SiteInfo>(Arg.Any<GetSystemSiteCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetSystemSiteAsync(param);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public async Task GetSettingMappingAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<SettingMapping>>();
+            var allSettings = new List<Setting>
+            {
+                new() { Id = 1, SettingName = "1,2", SettingId = 1, SettingSource = null }
+            };
             var criteria = new GetSourceSettingMappingCriteria();
             var service = GetService();
+            baseService.GetDataAsync<Setting>(Arg.Any<GetSettingCriteria>()).Returns(allSettings);
             baseService.GetDataAsync<SettingMapping>(Arg.Do<GetSourceSettingMappingCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
@@ -466,6 +595,71 @@
             // Assert
             Assert.Equal(expected.FirstOrDefault().Name, actual.FirstOrDefault().Name);
             Assert.Equal(expected.LastOrDefault().Name, actual.LastOrDefault().Name);
+        }
+
+        [Fact]
+        public async Task GetAllSitesWithGroupInformHeadlineAsync_WhenCalled_ReturnExpectedSiteInfos()
+        {
+            // Arrange
+            var siteInfos = new List<SiteInfo> {
+                new SiteInfo {Id = 1, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 2, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 3, IsLicensee = false, IsActive = true}
+            };
+            var expected = new List<SiteInfo> {
+                new SiteInfo {Id = 1, IsLicensee = true, Name = "Credit", IsActive = true},
+                new SiteInfo {Id = 2, IsLicensee = true, Name = "Licensee", IsActive = true}
+            };
+            var service = GetService();
+            baseService.GetDataAsync<SiteInfo>(Arg.Any<GetSiteOnInformHeadlineCriteria>()).Returns(siteInfos);
+
+            // Act
+            var actual = await service.GetAllSitesWithGroupInformHeadlineAsync();
+
+            // Assert
+            Assert.Equal(expected.FirstOrDefault().Name, actual.FirstOrDefault().Name);
+        }
+
+        [Fact]
+        public async Task GetAllSitesGroupByIsLicenseeAsync_WhenCalled_ReturnExpectedSiteInfos()
+        {
+            // Arrange
+            var siteInfos = new List<SiteInfo> {
+                new SiteInfo {Id = 1, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 2, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 3, IsLicensee = false, IsActive = true}
+            };
+            var expected = new List<SiteInfo> {
+                new SiteInfo {Id = 1, IsLicensee = true, Name = "Credit", IsActive = true},
+                new SiteInfo {Id = 2, IsLicensee = true, Name = "Licensee", IsActive = true}
+            };
+            var service = GetService();
+            baseService.GetDataAsync<SiteInfo>(Arg.Any<GetAllSiteCriteria>()).Returns(siteInfos);
+
+            // Act
+            var actual = await service.GetAllSitesGroupByIsLicenseeAsync();
+
+            // Assert
+            Assert.Equal(expected.FirstOrDefault().Name, actual.FirstOrDefault().Name);
+        }
+
+        [Fact]
+        public async Task GetAllSitesLicenseeInactive_WhenCalled_ReturnExpectedSiteInfos()
+        {
+            // Arrange
+            var siteInfos = new List<SiteInfo> {
+                new SiteInfo {Id = 1, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 2, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 3, IsLicensee = false, IsActive = false}
+            };
+            var service = GetService();
+            baseService.GetDataAsync<SiteInfo>(Arg.Any<GetAllSiteCriteria>()).Returns(siteInfos);
+
+            // Act
+            var actual = await service.GetAllSitesLicenseeInactive();
+
+            // Assert
+            Assert.Equal(siteInfos.Where(x => !x.IsActive && x.IsLicensee), actual);
         }
 
         [Fact]
@@ -550,6 +744,143 @@
             Assert.Equal(expected[1].SettingValue, actual[1].SettingValue);
             Assert.Equal(expected[2].SettingId, actual[2].SettingId);
             Assert.Equal(expected[2].SettingValue, actual[2].SettingValue);
+        }
+
+        [Fact]
+        public void GetAllPeriodTypes_WhenCalled_ReturnExpectedSettings()
+        {
+            // Arrange
+            var expected = new List<Setting>
+            {
+                new Setting{ Id = PeriodTypeConstants.Daily, Name = ViewResources.Daily },
+                new Setting{ Id = PeriodTypeConstants.Weekly, Name = ViewResources.Weekly },
+                new Setting{ Id = PeriodTypeConstants.Monthly, Name = ViewResources.Monthly },
+                new Setting{ Id = PeriodTypeConstants.Yearly, Name = ViewResources.Yearly }
+            };
+            var service = GetService();
+
+            // Act
+            var actual = service.GetAllPeriodTypes().ToList();
+
+            // Assert
+            Assert.Equal(expected.Count, actual.Count);
+            Assert.Equal(expected[0].Id, actual[0].Id);
+            Assert.Equal(expected[0].Name, actual[0].Name);
+            Assert.Equal(expected[1].Id, actual[1].Id);
+            Assert.Equal(expected[1].Name, actual[1].Name);
+            Assert.Equal(expected[2].Id, actual[2].Id);
+            Assert.Equal(expected[2].Name, actual[2].Name);
+            Assert.Equal(expected[3].Id, actual[3].Id);
+            Assert.Equal(expected[3].Name, actual[3].Name);
+        }
+
+        [Theory]
+        [InlineData(1, "Daily")]
+        [InlineData(2, "Weekly")]
+        [InlineData(3, "Monthly")]
+        [InlineData(4, "Yearly")]
+        public void GetPeriodTypeName_WhenCalled_ReturnExpectedSettings(int periodType, string expected)
+        {
+            // Act
+            var actual = SettingService.GetPeriodTypeName(periodType);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetAllMainSubCategoriesAsync_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            var mainCategories = new List<Setting>
+            {
+                new() { MainCategoryID = 1, Name = "MainCategoryID" }
+            };
+            var subCategories = new List<Setting>
+            {
+                new() { MainCategoryID = 1, Name = "SubCategoryID" }
+            };
+            var mainCriteria = new GetAllMainCategoryCriteria();
+            var subCriteria = new GetAllSubCategoryCriteria();
+            var service = GetService();
+            baseService.GetDataAsync<Setting>(Arg.Do<GetAllMainCategoryCriteria>(x => mainCriteria = x)).Returns(mainCategories);
+            baseService.GetDataAsync<Setting>(Arg.Do<GetAllSubCategoryCriteria>(x => subCriteria = x)).Returns(subCategories);
+
+            // Act
+            var actual = await service.GetAllMainSubCategoriesAsync();
+
+            // Assert
+            Assert.Equal(subCategories, actual.FirstOrDefault().ChildSettings);
+        }
+
+        [Fact]
+        public async Task GetMainCategoryWithSubCategoryAsync_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            var mainCategories = new List<Setting>
+            {
+                new() { SettingId = 1, Name = "MainCategoryID" }
+            };
+            var subCategories = new List<Setting>
+            {
+                new() { MainCategoryID = 1, Name = "SubCategoryID" }
+            };
+            var mainCriteria = new GetSettingCriteria();
+            var subCriteria = new GetAllSubCategoryCriteria();
+            var service = GetService();
+            baseService.GetDataAsync<Setting>(Arg.Do<GetSettingCriteria>(x => mainCriteria = x)).Returns(mainCategories);
+            baseService.GetDataAsync<Setting>(Arg.Do<GetAllSubCategoryCriteria>(x => subCriteria = x)).Returns(subCategories);
+
+            // Act
+            var actual = await service.GetMainCategoryWithSubCategoryAsync();
+
+            // Assert
+            Assert.Equal(subCategories, actual.FirstOrDefault().ChildSettings);
+        }
+
+        [Fact]
+        public async Task GetStations_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<Station>>();
+            var service = GetService();
+            baseService.GetDataAsync<Station>(Arg.Any<GetAllStationCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetStations();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetAllLogActionAsync_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<BaseModel>>();
+            var service = GetService();
+            baseService.GetDataAsync<BaseModel>(Arg.Any<GetAllActionCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetAllLogActionAsync(1);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetSettingRelationConfirmAsync_WhenCalled_ReturnExpected()
+        {
+            // Arrange
+            var param = fixture.Create<GetSettingRelationConfirm>();
+            var service = GetService();
+            baseService.GetDataEntityAsync<int>(Arg.Any<GetSettingRelationConfirmCriteria>()).Returns(1);
+
+            // Act
+            var actual = await service.GetSettingRelationConfirmAsync(param);
+
+            // Assert
+            Assert.Equal(1, actual);
         }
 
         #region Helpers
