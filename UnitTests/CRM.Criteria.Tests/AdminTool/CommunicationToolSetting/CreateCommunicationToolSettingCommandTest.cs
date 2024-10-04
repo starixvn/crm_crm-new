@@ -1,6 +1,8 @@
 ﻿namespace CRM.Criteria.Tests.AdminTool.CommunicationToolSetting
 {
+    using System.Collections.Generic;
     using CRM.Criteria.AdminTool.CommunicationToolSetting;
+    using CRM.Models;
     using Xunit;
 
     public class CreateCommunicationToolSettingCommandTest
@@ -35,6 +37,25 @@
 
             // Assert
             Assert.True(actual);
+        }
+
+        [Fact]
+        public void CustomerXml_HaveData_ReturnAsExpected()
+        {
+            // Arrange
+            var customers = new List<BaseModel> {
+                new() { Id = 1, Name = "Name" }
+            };
+            var expected = "<ROOT><Cust CustID='1' Username='Name' /></ROOT>";
+
+            // Act
+            var command = new CreateCommunicationToolSettingCommand
+            {
+                Customers = customers
+            };
+
+            // Assert
+            Assert.Equal(expected, command.CustomerXml);
         }
     }
 }

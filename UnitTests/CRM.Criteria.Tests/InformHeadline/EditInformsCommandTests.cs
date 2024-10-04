@@ -48,5 +48,24 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void ContentXml_HaveData_ReturnAsExpected()
+        {
+            // Arrange
+            var informs = new List<EditInform> {
+                new() { HeadlineId = 1, GroupId = 1, InformHeadlineStatusId = 1, Remark = "Remark", Extension = 1, ProductStatus = 1 }
+            };
+            var expected = "<Content><Headline HeadlineID='1' GroupID='1' StatusID='1' Remark='Remark' Extension='1' ProductStatus='1'/></Content>";
+
+            // Act
+            var command = new EditInformsCommand
+            {
+                Informs = informs
+            };
+
+            // Assert
+            Assert.Equal(expected, command.ContentXml);
+        }
     }
 }
