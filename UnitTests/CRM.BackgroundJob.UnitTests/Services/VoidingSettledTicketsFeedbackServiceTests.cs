@@ -905,7 +905,8 @@
                 LeagueId = 1,
                 HomeId = 1,
                 AwayId = 1,
-                ProductId = 1
+                ProductId = 1,
+                VendorMatchId = "1"
             };
             var ticketDescTemplate = fixture.Create<VoidingSettledTicketDescriptionTemplate>();
             const string line = "-------------------------------------------------------- {0}";
@@ -938,7 +939,8 @@
                 LeagueId = 1,
                 HomeId = 1,
                 AwayId = 1,
-                ProductId = 1
+                ProductId = 1,
+                VendorMatchId = "1"
             };
             var ticketDescTemplate = fixture.Create<VoidingSettledTicketDescriptionTemplate>();
             const string line = "-------------------------------------------------------- {0}";
@@ -971,7 +973,8 @@
                 LeagueId = 1,
                 HomeId = 1,
                 AwayId = 1,
-                ProductId = 1
+                ProductId = 1,
+                VendorMatchId = "1"
             };
             var ticketDescTemplate = fixture.Create<VoidingSettledTicketDescriptionTemplate>();
             const string line = "-------------------------------------------------------- {0}";
