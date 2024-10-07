@@ -19,5 +19,6 @@ namespace CRM.BackgroundJob.Models.VoidingSettledTickets
         public DateTime Eventdate { get; set; }
         public DateTime Race_time { get; set; }
         public int ProductId { get; set; }
+        public string VendorMatchId { get; set; }
     }
 }

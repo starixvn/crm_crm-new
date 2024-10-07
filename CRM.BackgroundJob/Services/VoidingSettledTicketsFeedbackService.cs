@@ -38,6 +38,7 @@
         private readonly int[] MixParlayMatchIds = { 9, 29, 2799, 10449, 11099 };
 
         private readonly int EventType2 = 2;
+        private readonly int EventType3 = 3;
         private readonly int EventType5 = 5;
         private readonly int SportType180 = 180;
         private readonly int SportType186 = 186;
@@ -560,6 +561,7 @@
             const string line = "-------------------------------------------------------- {0}";
             var ticketDescTemplate = commonFeedback.GetFeedbackTemplates<VoidingSettledTicketDescriptionTemplate>(descTemplateXml);
             var EventdateGMT4Format = eventDetail.Eventdate.ToString(DefaultValue.FortmatddmmmyyyyDash);
+
             if (productName == "Sportsbook" && eventDetail.EventType == EventType2)
             {
                 stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
@@ -573,21 +575,35 @@
                 productName != "Virtual Sports 4" && productName != "Virtual Sports 5") return stringBuilder.ToString();
 #pragma warning restore S1067
 #pragma warning restore S121
-            stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
-            string league = leagueName;
-            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase)
-                || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase)
-                || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
-            {
-                league = sportName;
-            }
-            if (productName.Equals("Virtual Sports 5", StringComparison.OrdinalIgnoreCase))
-            {
-                league = commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
-            }
-            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, BackgroundJobConstants.Break);
 
+            stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
+            string league = GetLeagueName(productName, leagueName, sportName, eventDetail);
+
+            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) && eventDetail.EventType == EventType3)
+            {
+                stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2EventType3, EventdateGMT4Format, sportName, kO_time, league, eventDetail.VendorMatchId, BackgroundJobConstants.Break);
+                return stringBuilder.ToString();
+            }
+            
+            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, matchCode, BackgroundJobConstants.Break);
+            
             return stringBuilder.ToString();
+        }
+
+        protected string GetLeagueName(string productName, string leagueName, string sportName, AutoVoidingEventDetails eventDetail)
+        {
+            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) ||
+                productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) ||
+                productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
+            {
+                return sportName;
+            }
+            else if (productName.Equals("Virtual Sports 5", StringComparison.OrdinalIgnoreCase))
+            {
+                return commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
+            }
+
+            return leagueName;
         }
     }
 }
