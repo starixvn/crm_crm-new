@@ -7,13 +7,13 @@
         League: {3} ({6}){7}
         Match: {4} - vs - {5}{7}
     </SportsbookVirtualSports2>
-    <SportsbookVirtualSports2EventType3>
+    <SportsbookVirtualSports2Racing>
         Date: {0}{5}
         Sport: {1}{5}
         Event Start Time: {2}{5}
         League: {3}{5}
         Match: {4}{5}
-    </SportsbookVirtualSports2EventType3>
+    </SportsbookVirtualSports2Racing>
     <VirtualSports>
         Date: {0}{4}
         Sport: {1}{4}

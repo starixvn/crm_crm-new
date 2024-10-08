@@ -6,7 +6,7 @@
     public class VoidingSettledTicketDescriptionTemplate
     {
         public string SportsbookVirtualSports2 { get; set; }
-        public string SportsbookVirtualSports2EventType3 { get; set; }
+        public string SportsbookVirtualSports2Racing { get; set; }
         public string VirtualSports { get; set; }
         public string VirtualSports181185 { get; set; }
         public string NumberGames { get; set; }

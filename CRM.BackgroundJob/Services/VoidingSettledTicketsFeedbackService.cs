@@ -581,7 +581,7 @@
 
             if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) && eventDetail.EventType == EventType3)
             {
-                stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2EventType3, EventdateGMT4Format, sportName, kO_time, league, eventDetail.VendorMatchId, BackgroundJobConstants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2Racing, EventdateGMT4Format, sportName, kO_time, league, eventDetail.VendorMatchId, BackgroundJobConstants.Break);
                 return stringBuilder.ToString();
             }
             
