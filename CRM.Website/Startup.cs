@@ -1,10 +1,5 @@
 ﻿namespace CRM.Website
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Threading.Tasks;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
@@ -38,6 +33,11 @@
     using ONEbook.UM.Transport;
     using Sentry;
     using StackExchange.Redis;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Threading.Tasks;
 
     [ExcludeFromCodeCoverage]
     public class Startup
@@ -196,6 +196,12 @@
 
         private void ConfigDataProtection(IServiceCollection services)
         {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetSection("Fanex.Caching.Redis:ConnectionString").Value;
+                options.InstanceName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value + ":Session:2";
+            });
+
             string aplicationName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value;
             services.AddDataProtection()
                 .SetApplicationName(aplicationName)
