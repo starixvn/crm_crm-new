@@ -1,9 +1,5 @@
 ﻿namespace CRM.BotService.Endpoint
 {
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Text;
-    using System.Threading;
     using CRM.BotService.Core.Extensions;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services;
@@ -26,6 +22,10 @@
     using Microsoft.IdentityModel.Tokens;
     using Sentry;
     using StackExchange.Redis;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Text;
+    using System.Threading;
 
     [ExcludeFromCodeCoverage]
     public class Startup
@@ -99,6 +99,12 @@
 
         private void ConfigDataProtection(IServiceCollection services)
         {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetSection("Fanex.Caching.Redis:ConnectionString").Value;
+                options.InstanceName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value + ":Session";
+            });
+
             string aplicationName = Configuration.GetSection("Fanex.Caching.Redis:ApplicationName").Value;
             services.AddDataProtection()
                 .SetApplicationName(aplicationName)
