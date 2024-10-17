@@ -1,4 +1,14 @@
+ARG CI_REGISTRY_IMAGE
+
+FROM $CI_REGISTRY_IMAGE:builder as deps
+
+RUN mkdir -p /src/packages
+
 FROM hub.nexdev.net/base/dotnet/core/sdk:6.0-alpine AS builder
+
+ENV NUGET_PACKAGES=/src/packages
+
+COPY --from=deps $NUGET_PACKAGES/. $NUGET_PACKAGES/
 
 WORKDIR /src
 
@@ -12,7 +22,9 @@ COPY ["CRM.Services/CRM.Services.csproj", "CRM.Services/"]
 COPY ["CRM.Criteria/CRM.Criteria.csproj", "CRM.Criteria/"]
 COPY ["CRM.ViewModel/CRM.ViewModels.csproj", "CRM.ViewModel/"]
 
-RUN dotnet restore "CRM.Website/CRM.Website.csproj"
+RUN dotnet nuget add source https://nuget.nexdev.net/api/v2
+
+RUN dotnet restore -v n -r linux-x64 "CRM.Website/CRM.Website.csproj"
 
 COPY . .
 WORKDIR "/src/CRM.Website"
