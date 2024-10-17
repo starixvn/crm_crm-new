@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
     using NLog;
     using NLog.Web;
     using System;
@@ -38,6 +39,12 @@
 
             return WebHost.CreateDefaultBuilder(args)
                     .UseNLog()
+                    .ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        config.AddJsonFile("appsettings.json",
+                            optional: true,
+                            reloadOnChange: false);
+                    })
                     .UseUrls($"http://*:5000")
                     .UseStartup<Startup>();
         }
