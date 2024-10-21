@@ -1,15 +1,16 @@
 ﻿namespace CRM.Core.Services
 {
+    using CRM.Core.Models.BotServices;
+    using Fanex.Caching;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using System;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Net.Http.Json;
     using System.Text;
     using System.Threading.Tasks;
-    using CRM.Core.Models.BotServices;
-    using Fanex.Caching;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
 
     public class BotServiceHttpClientBase
     {
@@ -32,6 +33,12 @@
 
             using (var response = await httpClient.PostAsJsonAsync($"{botSettings.ServiceUrl}{url}", data))
             {
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    await cacheService.RemoveAsync(JwtTokenCacheKey);
+                    return await PostAsync<T>(url, data);
+                }
+
                 response.EnsureSuccessStatusCode();
                 var responseData = await response.Content.ReadAsStringAsync();
                 var results = JsonConvert.DeserializeObject<T>(responseData);
