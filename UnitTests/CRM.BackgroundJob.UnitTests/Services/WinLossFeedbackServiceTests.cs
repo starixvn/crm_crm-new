@@ -679,6 +679,9 @@
                 }
             };
             commonFeedback.GetFeedbackTemplates<FeedbackTemplate>(Arg.Any<string>()).Returns(template);
+            service.Protected("GetTransformedProductName", winlimit, "en-US").Returns("ProductNameUS");
+            service.Protected("GetTransformedProductName", winlimit, "zh-CN").Returns("ProductNameSC");
+            service.Protected("GetTransformedProductName", winlimit, "vi-VN").Returns("ProductNameYN");
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "en-US").Returns("ProductNameUS");
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "zh-CN").Returns("ProductNameSC");
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("ProductNameYN");

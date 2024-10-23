@@ -22,7 +22,6 @@
     public class FeedbackStatisticControllerTests
     {
         private readonly IFixture fixture = new Fixture();
-        private IFeedbackRepository feedbackRepository;
         private IFeedbackService feedbackService;
         private ICommonService commonService;
         private ISettingService settingService;
@@ -48,7 +47,7 @@
             var controller = GetController();
             commonService.ConvertClientFromTimeToServerTime(Arg.Any<DateTime>()).Returns(fromDateServer);
             commonService.ConvertClientToTimeToServerTime(Arg.Any<DateTime>()).Returns(toDateServer);
-            feedbackRepository.GetFeedbackStatisticAsync(param).Returns(feedbackStatistic);
+            feedbackService.GetFeedbackStatisticAsync(param).Returns(feedbackStatistic);
 
             // Act
             var result = await controller.GetFeedbackStatistic(param);
@@ -71,7 +70,7 @@
             fixture.Customize<GetFeedbackStatisticDetailCriteria>(x => x.With(b => b.PageIndex, 1).With(b => b.PageSize, 100));
             var param = fixture.Create<GetFeedbackStatisticDetailCriteria>();
             var controller = GetController();
-            feedbackService.GetFeedbackStatisticAsyncDetail(param).Returns(feedbackDetail);
+            feedbackService.GetFeedbackStatisticDetailAsync(param).Returns(feedbackDetail);
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
             var feedbacksOrder = feedbackDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
@@ -108,7 +107,7 @@
             var controller = GetController();
             commonService.ConvertClientFromTimeToServerTime(Arg.Any<DateTime>()).Returns(fromDateServer);
             commonService.ConvertClientToTimeToServerTime(Arg.Any<DateTime>()).Returns(toDateServer);
-            feedbackRepository.GetFeedbackStatisticAsync(param).Returns(feedbackStatistic);
+            feedbackService.GetFeedbackStatisticAsync(param).Returns(feedbackStatistic);
 
             // Act
             var result = await controller.ExportExcel(param);
@@ -134,7 +133,7 @@
             var toDateFormat = param.ToDate.ToString("MMddyyyy");
             string fileName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
             var controller = GetController();
-            feedbackService.GetFeedbackStatisticAsyncDetail(param).Returns(feedbackDetail);
+            feedbackService.GetFeedbackStatisticDetailAsync(param).Returns(feedbackDetail);
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
@@ -150,14 +149,13 @@
 
         private FeedbackStatisticController GetController()
         {
-            feedbackRepository = Substitute.For<IFeedbackRepository>();
             feedbackService = Substitute.For<IFeedbackService>();
             commonService = Substitute.For<ICommonService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             permissionService = Substitute.For<IPermissionService>();
 
-            return new FeedbackStatisticController(feedbackRepository, feedbackService, commonService, settingService, excelService, permissionService);
+            return new FeedbackStatisticController(feedbackService, commonService, settingService, excelService, permissionService);
         }
 
         #endregion Helpers

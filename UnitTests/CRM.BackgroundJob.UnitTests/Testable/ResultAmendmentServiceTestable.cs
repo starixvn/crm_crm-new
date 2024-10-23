@@ -184,63 +184,63 @@
             bool isVipCust)
         {
             return base.GetAmendmentSolutionTemplateYNSC(
-             amendment,
-             amendmentSolTemplate,
-             messageContent,
-             isVipCust);
+            amendment,
+            amendmentSolTemplate,
+            messageContent,
+            isVipCust);
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateYnSportBook(
-          AmendmentAutoFeedbackInfor amendment,
-          AmendmentSolutionTemplate amendmentSolTemplate,
-          IEnumerable<Message> messageContent,
-          string sportNameYN,
-          string homeNameYN,
-          string awayNameYN,
-          string leagueNameYN)
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentSolutionTemplate amendmentSolTemplate,
+            IEnumerable<Message> messageContent,
+            string sportNameYN,
+            string homeNameYN,
+            string awayNameYN,
+            string leagueNameYN)
         {
             return base.GetAmendmentSolutionTemplateYnSportBook(
-               amendment,
-               amendmentSolTemplate,
-               messageContent,
-               sportNameYN,
-               homeNameYN,
-               awayNameYN,
-               leagueNameYN);
+            amendment,
+            amendmentSolTemplate,
+            messageContent,
+            sportNameYN,
+            homeNameYN,
+            awayNameYN,
+            leagueNameYN);
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateYnScVirtualSport(
-          string affectedName,
-          AmendmentSolutionTemplate amendmentSolTemplate,
-          bool isVipCust,
-          string sportNameYN,
-          string sportNameSC)
+            string affectedName,
+            AmendmentSolutionTemplate amendmentSolTemplate,
+            bool isVipCust,
+            string sportNameYN,
+            string sportNameSC)
         {
             return base.GetAmendmentSolutionTemplateYnScVirtualSport(
-           affectedName,
-           amendmentSolTemplate,
-           isVipCust,
-           sportNameYN,
-           sportNameSC);
+            affectedName,
+            amendmentSolTemplate,
+            isVipCust,
+            sportNameYN,
+            sportNameSC);
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateYnScNumberGame(
-          string MatchCode,
-          string affectedName,
-          AmendmentSolutionTemplate amendmentSolTemplate,
-          bool isVipCust,
-          string leagueNameYN,
-          string Eventdate,
-          string leagueNameSC)
+            string MatchCode,
+            string affectedName,
+            AmendmentSolutionTemplate amendmentSolTemplate,
+            bool isVipCust,
+            string leagueNameYN,
+            string Eventdate,
+            string leagueNameSC)
         {
             return base.GetAmendmentSolutionTemplateYnScNumberGame(
-           MatchCode,
-           affectedName,
-           amendmentSolTemplate,
-           isVipCust,
-           leagueNameYN,
-           Eventdate,
-           leagueNameSC);
+            MatchCode,
+            affectedName,
+            amendmentSolTemplate,
+            isVipCust,
+            leagueNameYN,
+            Eventdate,
+            leagueNameSC);
         }
     }
 }

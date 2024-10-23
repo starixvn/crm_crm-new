@@ -10,7 +10,6 @@
     using CRM.Criteria.Remark;
     using CRM.Models.Remark;
     using CRM.Models.RemarkNew;
-    using CRM.Repositories;
     using CRM.Services.Remark;
     using NSubstitute;
     using Xunit;
@@ -19,22 +18,29 @@
     {
         private readonly IFixture fixture = new Fixture();
         private IBaseService baseService;
-        private IRemarkRepository remarkRepository;
 
         [Fact]
         public async Task GetRemarkAsync_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
             var remarks = fixture.Create<RemarkInfo>();
+            var remarkRaws = new List<RemarkRaw>
+            {
+                new() { CustId = 1, IsSpecial = true, Remark = "test\ntest"},
+                new() { CustId = 2, IsSpecial = false, Remark = "test\ntest"},
+            };
             var param = fixture.Create<GetRemarkCriteria>();
             var service = GetService();
-            remarkRepository.GetRemarkAsync(param).Returns(remarks);
+            baseService.GetDataAsync<RemarkRaw>(Arg.Do<GetRemarkCriteria>(x => param = x)).Returns(remarkRaws);
+            var normalRemarks = new List<string> { "test<br/>test" };
+            var specialRemarks = new List<string> { "test<br/>test" };
 
             // Act
             var actual = await service.GetRemarkAsync(param);
 
             //Assert
-            Assert.Equal(remarks, actual);
+            Assert.Equal(normalRemarks, actual.NormalRemarks);
+            Assert.Equal(specialRemarks, actual.SpecialRemarks);
         }
 
         [Fact]
@@ -184,9 +190,8 @@
         private RemarkService GetService()
         {
             baseService = Substitute.For<IBaseService>();
-            remarkRepository = Substitute.For<IRemarkRepository>();
 
-            return new RemarkService(baseService, remarkRepository);
+            return new RemarkService(baseService);
         }
         #endregion Helpers
     }

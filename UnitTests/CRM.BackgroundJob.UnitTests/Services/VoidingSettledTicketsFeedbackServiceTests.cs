@@ -915,8 +915,8 @@
             commonFeedback.GetTeamName(eventDetail.HomeId.ToString(), Language.en_US).Returns("homeName");
             commonFeedback.GetTeamName(eventDetail.AwayId.ToString(), Language.en_US).Returns("awayName");
             commonFeedback.GetProductName(Arg.Any<string>(), Language.en_US).Returns("Virtual Sports");
-            service.Protected("GetDescriptionSportBook", eventDetail, Arg.Any<string>(),
-                Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("");
+            //service.Protected("GetDescriptionSportBook", eventDetail, Arg.Any<string>(),
+            //    Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("");
             stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
             stringBuilder.Append(ticketDescTemplate.VirtualSports);
 
@@ -949,8 +949,8 @@
             commonFeedback.GetTeamName(eventDetail.HomeId.ToString(), Language.en_US).Returns("homeName");
             commonFeedback.GetTeamName(eventDetail.AwayId.ToString(), Language.en_US).Returns("awayName");
             commonFeedback.GetProductName(Arg.Any<string>(), Language.en_US).Returns("Virtual Sports");
-            service.Protected("GetDescriptionSportBook", eventDetail, Arg.Any<string>(),
-                Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("");
+            //service.Protected("GetDescriptionSportBook", eventDetail, Arg.Any<string>(),
+            //    Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("");
             stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
             stringBuilder.Append(ticketDescTemplate.VirtualSports181185);
 
@@ -983,8 +983,8 @@
             commonFeedback.GetTeamName(eventDetail.HomeId.ToString(), Language.en_US).Returns("homeName");
             commonFeedback.GetTeamName(eventDetail.AwayId.ToString(), Language.en_US).Returns("awayName");
             commonFeedback.GetProductName(Arg.Any<string>(), Language.en_US).Returns("Number Game");
-            service.Protected("GetDescriptionSportBook", eventDetail, Arg.Any<string>(),
-                Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("");
+            //service.Protected("GetDescriptionSportBook", eventDetail, Arg.Any<string>(),
+            //    Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("");
             stringBuilder.AppendFormat(line, BackgroundJobConstants.Break);
             stringBuilder.Append(ticketDescTemplate.NumberGames);
 

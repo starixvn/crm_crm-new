@@ -405,7 +405,7 @@
             var service = GetService();
 
             // Act
-            await service.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "lastSeqEnvName", 1, "lastSubmitTimeEnvName", "maxLastSubmitTime", Constants.ServiceName_AmendmentNotiFB);
+            await service.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "lastSeqEnvName", 1, "lastSubmitTimeEnvName", "maxLastSubmitTime", BackgroundJobConstants.ServiceName_AmendmentNotiFB);
 
             // Assert
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
