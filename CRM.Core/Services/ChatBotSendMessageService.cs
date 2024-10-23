@@ -18,12 +18,10 @@
 
     public class ChatBotSendMessageService : BotServiceHttpClientBase, IChatBotSendMessageService
     {
-        private readonly ICRMLogService logService;
 
-        public ChatBotSendMessageService(ICRMLogService logService, BotServiceSettings botSettings, IHttpClientFactory httpClientFactory, ICacheService cacheService)
+        public ChatBotSendMessageService(BotServiceSettings botSettings, IHttpClientFactory httpClientFactory, ICacheService cacheService)
             : base(botSettings, httpClientFactory, cacheService)
         {
-            this.logService = logService;
         }
 
         public async Task<IEnumerable<SendNotificationResult>> SendMultipleFormattedMessageAndAttachmentAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
