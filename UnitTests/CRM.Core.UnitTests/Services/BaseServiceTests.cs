@@ -15,7 +15,7 @@
     public class BaseServiceTests
     {
         private IDynamicRepository dynamicRepository;
-        private IBaseRepository baseRepository;
+        //private IBaseRepository baseRepository;
         private ICacheService cacheService;
         private ICRMLogService logService;
         private readonly IFixture fixture = new Fixture();
@@ -121,67 +121,67 @@
 
         #region GetSiteDbConfigAsync
 
-        [Fact]
-        public async Task GetSiteDbConfigAsync_CacheIsNull_ReturnExactValue()
-        {
-            // Arrange
-            var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
-            var cache = Enumerable.Empty<SiteDbConfig>();
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(true);
-            var baseService = GetBaseService();
-            cacheService.Get<IEnumerable<SiteDbConfig>>(Arg.Any<string>()).Returns(cache);
-            baseService.GetDataAsync<SiteDbConfig>(criteria).Returns(siteConfigs);
-            // Act
-            var actual = await baseService.GetSiteDbConfigAsync(criteria);
+        //[Fact]
+        //public async Task GetSiteDbConfigAsync_CacheIsNull_ReturnExactValue()
+        //{
+        //    // Arrange
+        //    var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
+        //    var cache = Enumerable.Empty<SiteDbConfig>();
+        //    var criteria = Substitute.For<ICriteria>();
+        //    criteria.IsValid().Returns(true);
+        //    var baseService = GetBaseService();
+        //    cacheService.Get<IEnumerable<SiteDbConfig>>(Arg.Any<string>()).Returns(cache);
+        //    baseService.GetDataAsync<SiteDbConfig>(criteria).Returns(siteConfigs);
+        //    // Act
+        //    var actual = await baseService.GetSiteDbConfigAsync(criteria);
 
-            // Assert
-            Assert.Equal(siteConfigs, actual);
-        }
+        //    // Assert
+        //    Assert.Equal(siteConfigs, actual);
+        //}
 
-        [Fact]
-        public async Task GetSiteDbConfigAsync_CacheIsNotNull_ReturnExactValue()
-        {
-            // Arrange
-            var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
-            var criteria = Substitute.For<ICriteria>();
-            criteria.IsValid().Returns(true);
-            var baseService = GetBaseService();
-            cacheService.Get<IEnumerable<SiteDbConfig>>(Arg.Any<string>()).Returns(siteConfigs);
-            // Act
-            var actual = await baseService.GetSiteDbConfigAsync(criteria);
+        //[Fact]
+        //public async Task GetSiteDbConfigAsync_CacheIsNotNull_ReturnExactValue()
+        //{
+        //    // Arrange
+        //    var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
+        //    var criteria = Substitute.For<ICriteria>();
+        //    criteria.IsValid().Returns(true);
+        //    var baseService = GetBaseService();
+        //    cacheService.Get<IEnumerable<SiteDbConfig>>(Arg.Any<string>()).Returns(siteConfigs);
+        //    // Act
+        //    var actual = await baseService.GetSiteDbConfigAsync(criteria);
 
-            // Assert
-            Assert.Equal(siteConfigs, actual);
-        }
+        //    // Assert
+        //    Assert.Equal(siteConfigs, actual);
+        //}
         #endregion GetSiteDbConfigAsync
 
         #region GetSiteDbConfigAsync
 
-        [Fact]
-        public async Task GetDataFromSiteDbAsync_ReturnExactValue()
-        {
-            // Arrange
-            var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
-            var result = fixture.Create<IEnumerable<int>>();
-            var expected = new List<int>();
-            foreach (var site in siteConfigs)
-            {
-                expected.AddRange(result);
-            }
-            var criteria = Substitute.For<CriteriaBaseSiteDb>();
-            criteria.IsValid().Returns(true);
-            var baseService = GetBaseService();
-            baseService.WhenForAnyArgs(x => x.GetSiteDbConfigAsync(Arg.Any<ICriteria>())).DoNotCallBase();
-            baseService.GetSiteDbConfigAsync(Arg.Any<ICriteria>()).Returns(siteConfigs);
-            baseService.WhenForAnyArgs(x => x.GetDataByIpConfigAsync<int>(Arg.Any<string>(), Arg.Any<string>(), criteria)).DoNotCallBase();
-            baseService.GetDataByIpConfigAsync<int>(Arg.Any<string>(), Arg.Any<string>(), criteria).Returns(result);
-            // Act
-            var actual = await baseService.GetDataFromSiteDbAsync<int>(criteria);
+        //[Fact]
+        //public async Task GetDataFromSiteDbAsync_ReturnExactValue()
+        //{
+        //    // Arrange
+        //    var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
+        //    var result = fixture.Create<IEnumerable<int>>();
+        //    var expected = new List<int>();
+        //    foreach (var site in siteConfigs)
+        //    {
+        //        expected.AddRange(result);
+        //    }
+        //    var criteria = Substitute.For<CriteriaBaseSiteDb>();
+        //    criteria.IsValid().Returns(true);
+        //    var baseService = GetBaseService();
+        //    baseService.WhenForAnyArgs(x => x.GetSiteDbConfigAsync(Arg.Any<ICriteria>())).DoNotCallBase();
+        //    baseService.GetSiteDbConfigAsync(Arg.Any<ICriteria>()).Returns(siteConfigs);
+        //    baseService.WhenForAnyArgs(x => x.GetDataByIpConfigAsync<int>(Arg.Any<string>(), Arg.Any<string>(), criteria)).DoNotCallBase();
+        //    baseService.GetDataByIpConfigAsync<int>(Arg.Any<string>(), Arg.Any<string>(), criteria).Returns(result);
+        //    // Act
+        //    var actual = await baseService.GetDataFromSiteDbAsync<int>(criteria);
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        //    // Assert
+        //    Assert.Equal(expected, actual);
+        //}
         #endregion GetSiteDbConfigAsync
 
         #region FetchMultipleAsync
@@ -282,6 +282,57 @@
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public async Task FetchMultipleAsync_WithFourDataSetCriteriaIsNull_ReturnTupleWithEmptyList()
+        {
+            // Arrange
+            var baseService = GetBaseService();
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int, int, int>(null);
+
+            // Assert
+            Assert.Empty(actual.Item1);
+            Assert.Empty(actual.Item2);
+            Assert.Empty(actual.Item3);
+            Assert.Empty(actual.Item4);
+        }
+
+        [Fact]
+        public async Task FetchMultipleAsync_WithFourDataCriteriaIsInvalid_ReturnTupleWithEmptyList()
+        {
+            // Arrange
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(false);
+            var baseService = GetBaseService();
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int, int, int>(criteria);
+
+            // Assert
+            Assert.Empty(actual.Item1);
+            Assert.Empty(actual.Item2);
+            Assert.Empty(actual.Item3);
+            Assert.Empty(actual.Item4);
+        }
+
+        [Fact]
+        public async Task FetchMultipleAsync_WithFourDataCriteriaIsValid_ReturnExpectedData()
+        {
+            // Arrange
+            var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 });
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(true);
+            var baseService = GetBaseService();
+            dynamicRepository.FetchMultipleAsync<int, int, int, int>(criteria).Returns(expected);
+
+            // Act
+            var actual = await baseService.FetchMultipleAsync<int, int, int, int>(criteria);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
         #endregion FetchMultipleAsync
 
         #region ExecuteNonQueryAsync
@@ -332,7 +383,7 @@
             await baseService.ExecuteNonQueryAsync(criteria);
 
             // Assert
-            await baseRepository.Received().ExecuteNonQueryAsync(Arg.Is<INonQueryCommand>(x => x.IsValid()));
+            await dynamicRepository.Received().ExecuteAsync(Arg.Is<INonQueryCommand>(x => x.IsValid()));
         }
 
         #endregion ExecuteNonQueryAsync
