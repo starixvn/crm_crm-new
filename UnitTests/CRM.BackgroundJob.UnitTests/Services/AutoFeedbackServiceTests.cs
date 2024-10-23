@@ -4,21 +4,22 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.AbnormalBet;
+    using CRM.BackgroundJob.Criteria.AutoFbMessageNotificationCenter;
     using CRM.BackgroundJob.Criteria.RefundSettledTicket;
     using CRM.BackgroundJob.Criteria.VoidingBetID;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.AbnormalBet;
+    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.LicenseeInfo;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.RefundSettledTicket;
-    using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
@@ -26,8 +27,6 @@
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
-    using CRM.BackgroundJob.Criteria.AutoFbMessageNotificationCenter;
-    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
     public class AutoFeedbackServiceTests
     {
@@ -35,7 +34,7 @@
         private IJobRunningChecker jobRunningChecker;
         private ISystemSettingService systemSettingService;
         private IWinLossFeedbackService winLossService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private ITOControlFeedbackService tOControlFeedbackService;
         private IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private ISynchronizeLicenseeService licenseeService;
@@ -994,7 +993,7 @@
             await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
 
             // Assert
-            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AmendmentNotiFB);
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), BackgroundJobConstants.ServiceName_AmendmentNotiFB);
         }
 
         [Fact]
@@ -1039,7 +1038,7 @@
 
             // Assert
             logService.Received().LogInformation("Update  status and return serive result amendment.");
-            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AmendmentNotiFB);
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), BackgroundJobConstants.ServiceName_AmendmentNotiFB);
         }
 
         [Fact]
@@ -1288,7 +1287,7 @@
             // Arrange
             var setting = new SystemSettingInfo { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoMessageNotificationCenter, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.MessageNotificationCenterExecuteJobAsync();
@@ -1307,9 +1306,9 @@
             var command = fixture.Create<ImportMessageNotificationCenterCommand>();
             var valueTupe = new ValueTuple<CommandResult, ImportMessageNotificationCenterCommand>(commandResult, command);
             var service = GetService();
-            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoMessageNotificationCenter, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             autoFbMessageNotificationCenterService.GetMsgInfoMessageNotificationAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(messageInfoID);
-            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, Constants.DefaultEnvironment).Returns(valueTupe);
+            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.MessageNotificationCenterExecuteJobAsync();
@@ -1329,9 +1328,9 @@
             var command = fixture.Create<ImportMessageNotificationCenterCommand>();
             var valueTupe = new ValueTuple<CommandResult, ImportMessageNotificationCenterCommand>(commandResult, command);
             var service = GetService();
-            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoMessageNotificationCenter, Constants.DefaultEnvironment).Returns(setting);
+            systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoMessageNotificationCenter, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             autoFbMessageNotificationCenterService.GetMsgInfoMessageNotificationAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(messageInfoID);
-            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, Constants.DefaultEnvironment).Returns(valueTupe);
+            autoFbMessageNotificationCenterService.ImportMessageNotificationAsync(messageInfoID, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
 
             // Act
             await service.MessageNotificationCenterExecuteJobAsync();
@@ -1354,7 +1353,7 @@
             jobRunningChecker = Substitute.For<IJobRunningChecker>();
             systemSettingService = Substitute.For<ISystemSettingService>();
             winLossService = Substitute.For<IWinLossFeedbackService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             tOControlFeedbackService = Substitute.For<ITOControlFeedbackService>();
             problemsAccountFeedbackService = Substitute.For<IProblemsAccountFeedbackService>();
             amendmentNotiFbService = Substitute.For<IAmendmentNotiFbService>();

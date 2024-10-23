@@ -2,21 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
-    using CRM.BackgroundJob.Criteria.ChatBot_CTO;
     using CRM.BackgroundJob.Models.ChatBot;
-    using CRM.BackgroundJob.Models.ChatBotCTO;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Constants;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Constants;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
     using NSubstitute;
     using Xunit;
+    using Fanex.CRM.BackgroundJob.Constants;
 
     public class ChatBotArchivingDAServiceTests
     {
@@ -53,7 +50,7 @@
 
 
             // Act
-            var actual = await service.ImportArchivedAccountsAsync(archivingDAInfors, Constants.DefaultEnvironment);
+            var actual = await service.ImportArchivedAccountsAsync(archivingDAInfors, BackgroundJobConstants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);

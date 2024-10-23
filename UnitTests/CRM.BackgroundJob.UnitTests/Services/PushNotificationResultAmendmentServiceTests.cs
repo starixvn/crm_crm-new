@@ -1,16 +1,15 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
-    using AutoFixture;
-    using CRM.BackgroundJob.Criteria.CaptureSettlementData;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using CRM.BackgroundJob.Services;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
-    using NSubstitute;
-    using Xunit;
+    using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
+    using CRM.BackgroundJob.Services;
+    using NSubstitute;
+    using Xunit;
 
     public class PushNotificationResultAmendmentServiceTests
     {

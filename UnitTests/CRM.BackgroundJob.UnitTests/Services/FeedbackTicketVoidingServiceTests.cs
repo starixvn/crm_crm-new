@@ -2,15 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.AutoFeedback;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.AbnormalBet;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -23,7 +22,7 @@
     {
         private IBaseService baseService;
         private IMessageService messageService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private IConfiguration configuration;
 
         private readonly IFixture fixture = new Fixture();
@@ -294,7 +293,7 @@
         {
             baseService = Substitute.For<IBaseService>();
             messageService = Substitute.For<IMessageService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             configuration = Substitute.For<IConfiguration>();
             return new FeedbackTicketVoidingService(baseService, messageService, logService, configuration);
         }

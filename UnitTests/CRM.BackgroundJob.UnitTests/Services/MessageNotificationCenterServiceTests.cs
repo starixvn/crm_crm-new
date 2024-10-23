@@ -8,8 +8,8 @@
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.BotService.Client.Core.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Configuration;
@@ -18,7 +18,7 @@
 
     public class MessageNotificationCenterServiceTests
     {
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private IConfiguration configuration;
         private ICommonFeedback commonFeedback;
         private ICaptureSettlementDataService captureSettlementDataService;
@@ -457,7 +457,7 @@
                     new() { DisplayName = "MMM", ConversationId = "2", IsOnlySendTest = false}
                 }
             };
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             configuration = Substitute.For<IConfiguration>();
             commonFeedback = Substitute.For<ICommonFeedback>();
             captureSettlementDataService = Substitute.For<ICaptureSettlementDataService>();

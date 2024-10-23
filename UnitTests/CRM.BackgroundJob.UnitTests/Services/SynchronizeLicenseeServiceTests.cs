@@ -2,15 +2,15 @@
 
 namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.SynchronizeLicensee;
     using CRM.BackgroundJob.Models.LicenseeInfo;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using NSubstitute;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Xunit;
 
     public class SynchronizeLicenseeServiceTests

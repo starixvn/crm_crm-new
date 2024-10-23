@@ -5,7 +5,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Workers;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
     using NSubstitute;
@@ -16,7 +16,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
     {
         private IChatBotJobService chatBotJobService;
         private IMaintenanceService maintenanceService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private List<JobSetting> appSettings;
 
         [Fact]
@@ -47,7 +47,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             appJobSettings.Value.Returns(appSettings);
             chatBotJobService = Substitute.For<IChatBotJobService>();
             maintenanceService = Substitute.For<IMaintenanceService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
 
             return new AutoChatbotWorker(chatBotJobService, maintenanceService, appJobSettings, logService);
         }

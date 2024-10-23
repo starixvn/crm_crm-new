@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
@@ -18,7 +18,7 @@
             ISettingService settingService,
             IMessageService messageService,
             ICustomerService customerService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             IFeedbackTicketVoidingService ticketVoidingService,
             ICommonFeedback commonFeedback)
             : base(appSettings,

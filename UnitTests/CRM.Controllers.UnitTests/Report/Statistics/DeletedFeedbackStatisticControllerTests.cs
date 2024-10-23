@@ -9,9 +9,9 @@
     using CRM.Criteria.Report.DeletedFeedbackStatisticsCriteria;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Setting;
-    using CRM.Repositories;
     using CRM.Resources;
     using CRM.Services;
+    using CRM.Services.Feedback;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -19,7 +19,7 @@
     public class DeletedFeedbackStatisticControllerTests
     {
         private readonly IFixture fixture = new Fixture();
-        private IFeedbackRepository feedbackRepository;
+        private IFeedbackService feedbackService;
         private ICommonService commonService;
         private ISettingService settingService;
         private IExportExcelService excelService;
@@ -36,7 +36,7 @@
             var deletedFeedbacks = fixture.Create<IEnumerable<DeletedFeedbackStatistic>>();
             var param = fixture.Create<DeletedFeedbackStatisticsCriteria>();
             var controller = GetController();
-            feedbackRepository.GetDeletedFeedbackStatisticAsync(param).Returns(deletedFeedbacks);
+            feedbackService.GetDeletedFeedbackStatisticAsync(param).Returns(deletedFeedbacks);
             var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
             var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
                      new DeletedFeedbackByHandler
@@ -69,7 +69,7 @@
             var param = fixture.Create<DeletedFeedbackStatisticsCriteria>();
             var fileName = $"{ViewResources.DeletedFeedbacStatistickReport_Title}.xlsx";
             var controller = GetController();
-            feedbackRepository.GetDeletedFeedbackStatisticAsync(param).Returns(deletedFeedbacks);
+            feedbackService.GetDeletedFeedbackStatisticAsync(param).Returns(deletedFeedbacks);
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
@@ -85,12 +85,12 @@
 
         private DeletedFeedbackStatisticsController GetController()
         {
-            feedbackRepository = Substitute.For<IFeedbackRepository>();
+            feedbackService = Substitute.For<IFeedbackService>();
             commonService = Substitute.For<ICommonService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             
-            return new DeletedFeedbackStatisticsController(feedbackRepository, commonService, settingService, excelService);
+            return new DeletedFeedbackStatisticsController(feedbackService, commonService, settingService, excelService);
         }
 
         #endregion Helpers

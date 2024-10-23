@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
@@ -17,7 +17,7 @@
             IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             ICommonFeedback commonFeedback,
             IVoidingSettledTicketsService voidingSettledTicketsService,
             IFeedbackTransactionService feedbackTransaction)

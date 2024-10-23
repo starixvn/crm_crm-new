@@ -4,13 +4,13 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.RefundSettledTicket;
     using CRM.BackgroundJob.Criteria.VoidingBetID;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.RefundSettledTicket;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using NSubstitute;
     using Xunit;
 

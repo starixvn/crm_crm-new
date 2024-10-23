@@ -2,21 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Linq;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
     using Fanex.CRM.BackgroundJob.Constants;
-    using Fanex.CRM.BackgroundJob.Models;
     using NSubstitute;
     using Xunit;
-    using CRM.Core.Extensions.XML;
-    using CRM.BackgroundJob.Models.AbnormalBet;
 
     public class ChatBotResultAmendmentServiceTests
     {

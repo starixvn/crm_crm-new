@@ -4,22 +4,22 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Extensions.Xml;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Criteria.VoidingSettledTickets;
-    using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
+    using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using NSubstitute;
     using Xunit;
 
     public class VoidingSettledTicketsServiceTests
     {
         private IBaseService baseService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
 
         [Fact]
         public async Task GetMessageVoidSettledAsync_WhenCalled_ReturnExpectedMessages()
@@ -220,7 +220,7 @@
         private VoidingSettledTicketsService GetVoidingSettledService()
         {
             baseService = Substitute.For<IBaseService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             return new VoidingSettledTicketsService(baseService, logService);
         }
 

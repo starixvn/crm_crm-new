@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.ChatBot;
     using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
     using CRM.BackgroundJob.Criteria.ChatBot_CTO;
@@ -19,8 +21,6 @@
     using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Models;
@@ -32,7 +32,7 @@
 
     public class ChatBotJobServiceTests
     {
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private ISystemSettingService systemSettingService;
         private IChatBotTicketVoidingService ticketVoidingService;
         private ISendNotificationService sendNotificationService;
@@ -351,7 +351,7 @@
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_ResultAmendment, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync(1,1).Returns(voidingMesssageSettled);
-            baseService.GetSiteDbConfigAsync(new GetSiteDbConfigCriteria()).Returns(siteDbConfigs);
+            baseService.GetSiteDbConfigAsync().Returns(siteDbConfigs);
             chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMesssageSettled.Item2, siteDbConfigs.First().SiteDBGroupID).Returns(settledTicket);
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
@@ -492,7 +492,7 @@
 
         private ChatBotJobService GetService()
         {
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             systemSettingService = Substitute.For<ISystemSettingService>();
             ticketVoidingService = Substitute.For<IChatBotTicketVoidingService>();
             sendNotificationService = Substitute.For<ISendNotificationService>();

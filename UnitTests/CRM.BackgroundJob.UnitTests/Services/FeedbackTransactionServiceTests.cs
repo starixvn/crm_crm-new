@@ -9,8 +9,8 @@ using CRM.BackgroundJob.Models.ProblemsAccount;
 using CRM.BackgroundJob.Models.TurnoverControll;
 using CRM.BackgroundJob.Models.WinLossLimit;
 using CRM.BackgroundJob.Services;
-using CRM.Core.Models;
-using CRM.Core.Services;
+using CRM.BackgroundJob.Core.Models;
+using CRM.BackgroundJob.Core.Services;
 using Fanex.CRM.BackgroundJob.Models;
 using NSubstitute;
 using Xunit;
@@ -225,10 +225,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             const string expected = "<ROOT><r logid='1' custid='1' matchid='1' profileID='1' hl='1' hlname='1' related='1' profileName='1' maxTO='1' " +
                                         "houseTO='1' totalTO='1' outstanding='1' bettype='1' level='1'/></ROOT>";
-            var criteria = new InsertTOControl_AutoFeedbackInfoCommand();
+            var criteria = new InsertTOControlAutoFeedbackInfoCommand();
             var TOInforReturn = new List<TOControlFeedbackInfor>();
             var service = GetFeedbackTransactionService();
-            baseService.GetDataAsync<TOControlFeedbackInfor>(Arg.Do<InsertTOControl_AutoFeedbackInfoCommand>(x => criteria = x)).Returns(TOInforReturn);
+            baseService.GetDataAsync<TOControlFeedbackInfor>(Arg.Do<InsertTOControlAutoFeedbackInfoCommand>(x => criteria = x)).Returns(TOInforReturn);
 
             // Act
             await service.ImportTOControllFeedbackInfoAsync(headlines, custOutStandings, custNotifications );
@@ -279,10 +279,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             const string expected = "<ROOT><r logid='1' custid='1' matchid='1' profileID='1' hl='1' hlname='1' related='1' profileName='1' maxTO='1' " +
                                         "houseTO='1' totalTO='1' outstanding='0' bettype='1' level='1'/></ROOT>";
-            var criteria = new InsertTOControl_AutoFeedbackInfoCommand();
+            var criteria = new InsertTOControlAutoFeedbackInfoCommand();
             var TOInforReturn = new List<TOControlFeedbackInfor>();
             var service = GetFeedbackTransactionService();
-            baseService.GetDataAsync<TOControlFeedbackInfor>(Arg.Do<InsertTOControl_AutoFeedbackInfoCommand>(x => criteria = x)).Returns(TOInforReturn);
+            baseService.GetDataAsync<TOControlFeedbackInfor>(Arg.Do<InsertTOControlAutoFeedbackInfoCommand>(x => criteria = x)).Returns(TOInforReturn);
 
             // Act
             await service.ImportTOControllFeedbackInfoAsync(headlines, custOutStandings, custNotifications);

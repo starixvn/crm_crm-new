@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
@@ -17,7 +17,7 @@
             ISettingService settingService,
             ISystemSettingService systemSettingService,
             ICustomerService customerService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             IFeedbackTransactionService transactionService,
             ICommonFeedback commonFeedback)
             : base(appSettings,

@@ -19,7 +19,6 @@
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.Setting;
-    using CRM.Repositories;
     using CRM.Services.Feedback;
     using Fanex.Data.Repository;
     using NSubstitute;
@@ -32,7 +31,6 @@
         private IBaseService baseService;
         private ISettingService settingService;
         private ICommonService commonService;
-        private IFeedbackRepository feedbackRepository;
 
         #region GetCustomerFeedbackByIdAsync
 
@@ -40,6 +38,7 @@
         public async Task GetCustomerFeedbackByIdAsync_FeedbackIsNotExist_ReturnNull()
         {
             // Arrange
+            var param = fixture.Create<GetCustomerNewManualFeedbackByIdCriteria>();
             var feedbacks = new List<CustomerFeedback>();
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var latestFeedbackCommunicationTools = fixture.Create<IEnumerable<LatestFeedbackCommunicationTool>>();
@@ -51,11 +50,11 @@
                 FeedbackCommunicationTool = latestFeedbackCommunicationTools,
                 RelatedCustomerPermission = relatedCustomers
             };
+            var tupe = (feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers);
             var service = GetService();
 
             dynamicRepository.GetAsync<bool>(Arg.Any<CheckFeedbackIDIsNewCriteria>()).Returns(true);
-            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerNewManualFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
-            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
+            baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(Arg.Do<GetCustomerNewManualFeedbackByIdCriteria>(x => param = x)).Returns(tupe);
 
             // Act
             var actual = await service.GetCustomerFeedbackByIdAsync(1);
@@ -70,6 +69,7 @@
         public async Task GetCustomerFeedbackByIdAsync_FeedbackIsExist_ReturnAsExpectedResult()
         {
             // Arrange
+            var param = fixture.Create<GetCustomerNewManualFeedbackByIdCriteria>();
             var date = fixture.Create<DateTime>();
             var clientdate = fixture.Create<DateTime>();
             var feedbacks = new List<CustomerFeedback>
@@ -92,11 +92,11 @@
                 FeedbackCommunicationTool = latestFeedbackCommunicationTools,
                 RelatedCustomerPermission = relatedCustomers
             };
+            var tupe = (feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers);
             var service = GetService();
 
             dynamicRepository.GetAsync<bool>(Arg.Any<CheckFeedbackIDIsNewCriteria>()).Returns(true);
-            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerNewManualFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
-            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
+            baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(Arg.Do<GetCustomerNewManualFeedbackByIdCriteria>(x => param = x)).Returns(tupe);
 
             settingService.GetSiteByIdAsync(1).Returns(site);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
@@ -125,6 +125,7 @@
             var date = fixture.Create<DateTime>();
             var clientdate = fixture.Create<DateTime>();
             var param = fixture.Create<GetLatestFeedbackCriteria>();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var statuses = new List<FeedbackStatus>
             {
                 new FeedbackStatus { StatusId = 100, Name = "Pending" }
@@ -142,8 +143,9 @@
                     ResolutionDate = date, SolveDate = date, CreateDate = date
                 }
             };
+            var tupe = (feedbacks, settings);
             var service = GetService();
-            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetLatestFeedbackCriteria>(x => param = x)).Returns(feedbacks);
+            baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(Arg.Do<GetLatestFeedbackCriteria>(x => param = x)).Returns(tupe);
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 
@@ -226,6 +228,7 @@
             var clientdate = fixture.Create<DateTime>();
             var param = fixture.Create<GetDeletedFeedbackParam>();
             var criteria = new GetDeletedFeedbackCriteria();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var statuses = new List<FeedbackStatus>
             {
                 new FeedbackStatus { StatusId = 100, Name = "Pending" }
@@ -243,8 +246,9 @@
                     ResolutionDate = date, SolveDate = date, CreateDate = date
                 }
             };
+            var tupe = (feedbacks, settings);
             var service = GetService();
-            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetDeletedFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+            baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(Arg.Do<GetDeletedFeedbackCriteria>(x => criteria = x)).Returns(tupe);
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 
@@ -271,12 +275,13 @@
         }
 
         [Fact]
-        public async Task GetFeedbackStatisticAsyncDetail_WhenCalled_ReturnAsExpectedResult()
+        public async Task GetFeedbackStatisticDetailAsync_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
             var date = fixture.Create<DateTime>();
             var param = fixture.Create<GetFeedbackStatisticDetailCriteria>();
             var criteria = new GetFeedbackStatisticDetailCriteria();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var statuses = new List<FeedbackStatus>
             {
                 new FeedbackStatus { StatusId = 100, Name = "Pending" }
@@ -294,12 +299,13 @@
                     ResolutionDate = date, SolveDate = date, CreateDate = date
                 }
             };
+            var tupe = (feedbacks, settings);
             var service = GetService();
-            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetFeedbackStatisticDetailCriteria>(x => criteria = x)).Returns(feedbacks);
+            baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(Arg.Do<GetFeedbackStatisticDetailCriteria>(x => criteria = x)).Returns(tupe);
             settingService.GetStatusAsync(ViewTypeConstants.All).Returns(statuses);
 
             // Act
-            var actual = await service.GetFeedbackStatisticAsyncDetail(param);
+            var actual = await service.GetFeedbackStatisticDetailAsync(param);
 
             // Assert
             Assert.Equal(feedbacks, actual);
@@ -370,8 +376,10 @@
             // Arrange
             var service = GetService();
             var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
+            var tupe = (feedbacks, settings);
             var criteria = new ManageFeedbackCriteria();
-            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<ManageFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+            baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(Arg.Do<ManageFeedbackCriteria>(x => criteria = x)).Returns(tupe);
 
             // Act
             var actual = await service.GetManageFeedbackAsync(criteria);
@@ -388,9 +396,8 @@
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             commonService = Substitute.For<ICommonService>();
-            feedbackRepository = Substitute.For<IFeedbackRepository>();
 
-            return new FeedbackService(dynamicRepository, baseService, settingService, commonService, feedbackRepository);
+            return new FeedbackService(dynamicRepository, baseService, settingService, commonService);
         }
 
         #endregion Helpers

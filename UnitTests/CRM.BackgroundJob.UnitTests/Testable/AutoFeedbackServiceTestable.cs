@@ -1,16 +1,16 @@
 ﻿
 namespace CRM.BackgroundJob.UnitTests.Testable
 {
+    using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models.AbnormalBet;
-    using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
-    using System.Threading.Tasks;
 
     public class AutoFeedbackServiceTestable : AutoFeedbackService
     {
@@ -19,7 +19,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             IJobRunningChecker jobRunningChecker,
             ISystemSettingService systemSettingService,
             IWinLossFeedbackService winLossService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             ITOControlFeedbackService turnoverService,
             IAmendmentNotiFbService amendmentNotiFbService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,

@@ -1,23 +1,22 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Testable
 {
-    using CRM.BackgroundJob.Models.ProblemsAccount;
-    using System.Threading.Tasks;
     using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
+    using CRM.BackgroundJob.Models.ArchivingDA;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
-    using CRM.BackgroundJob.Models.ArchivingDA;
-    using System.Collections.Generic;
-    using Fanex.CRM.BackgroundJob.Criteria;
 
     public class ArchivingDAServiceTestable : ArchivingDAService
     {
         public ArchivingDAServiceTestable(IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             IFeedbackTransactionService transactionService,
             ICommonFeedback commonFeedback)
         : base(appSettings,

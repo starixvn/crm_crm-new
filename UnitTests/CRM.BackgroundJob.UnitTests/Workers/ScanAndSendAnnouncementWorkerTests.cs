@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Workers;
-    using CRM.Core.Services;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using ONEbook.UM.Services;
@@ -14,7 +14,7 @@
     {
         private ISendAnnouncementService sendAnnouncementService;
         private IMaintenanceService maintenanceService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private List<JobSetting> appSettings;
 
         [Fact]
@@ -45,7 +45,7 @@
             appJobSettings.Value.Returns(appSettings);
             sendAnnouncementService = Substitute.For<ISendAnnouncementService>();
             maintenanceService = Substitute.For<IMaintenanceService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
 
             return new ScanAndSendAnnouncementWorker(sendAnnouncementService, maintenanceService, appJobSettings, logService);
         }

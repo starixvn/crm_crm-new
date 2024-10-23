@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
@@ -18,7 +18,7 @@
             IBaseService baseService,
             ISettingService settingService,
             ICustomerService customerService,
-            ICRMLogService logService,
+            ICrmLogService logService,
             ICommonFeedback commonFeedback,
             IFeedbackTransactionService transactionService)
         : base(appSettings,

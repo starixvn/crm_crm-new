@@ -11,8 +11,8 @@
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -26,7 +26,7 @@
         private AppJobSettings appSettings;
         private IBaseService baseService;
         private ISettingService settingService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private ICommonFeedback commonFeedback;
         private IVoidingSettledTicketsService voidingSettledTicketsService;
         private IFeedbackTransactionService feedbackTransaction;
@@ -1054,7 +1054,7 @@
             appJobSettings.Value.Returns(appSettings);
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             voidingSettledTicketsService = Substitute.For<IVoidingSettledTicketsService>();
             commonFeedback = Substitute.For<ICommonFeedback>();
             feedbackTransaction = Substitute.For<IFeedbackTransactionService>();

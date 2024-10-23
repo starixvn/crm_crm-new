@@ -3,9 +3,9 @@ namespace CRM.BackgroundJob.UnitTests.Workers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Workers;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
     using NSubstitute;
@@ -16,7 +16,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
     {
         private IAutoFeedbackService autoFeedbackService;
         private IMaintenanceService maintenanceService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private List<JobSetting> appSettings;
 
         [Fact]
@@ -47,7 +47,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             appJobSettings.Value.Returns(appSettings);
             autoFeedbackService = Substitute.For<IAutoFeedbackService>();
             maintenanceService = Substitute.For<IMaintenanceService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
 
             return new AutoFbVoidingAbnormalBetWorker(autoFeedbackService, maintenanceService, appJobSettings, logService);
         }

@@ -9,8 +9,8 @@
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -25,7 +25,7 @@
         private IBaseService baseService;
         private ISettingService settingService;
         private ICustomerService customerService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private ICommonFeedback commonFeedback;
         private IFeedbackTransactionService transactionService;
         private readonly IFixture fixture = new Fixture();
@@ -55,7 +55,7 @@
             await service.CreateFeedbackForAmendmentNotiFbAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
-            await commonFeedback.EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), JobStatus.Completed, Constants.ServiceName_AmendmentNotiFB);
+            await commonFeedback.EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), JobStatus.Completed, BackgroundJobConstants.ServiceName_AmendmentNotiFB);
             logService.Received(1).LogInformation(Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateResultAmendmentFeedbackCreditAsync",
@@ -195,7 +195,7 @@
                Arg.Any<int>(),
                Arg.Any<string>(),
                Arg.Any<string>(),
-               Constants.ServiceName_AmendmentNotiFB
+               BackgroundJobConstants.ServiceName_AmendmentNotiFB
           );
         }
 
@@ -217,7 +217,7 @@
                 Arg.Any<int>(),
                 Arg.Any<string>(),
                 Arg.Any<string>(),
-                Constants.ServiceName_AmendmentNotiFB
+                BackgroundJobConstants.ServiceName_AmendmentNotiFB
            );
         }
 
@@ -1803,7 +1803,7 @@
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             customerService = Substitute.For<ICustomerService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             transactionService = Substitute.For<IFeedbackTransactionService>();
             commonFeedback = Substitute.For<ICommonFeedback>();
 

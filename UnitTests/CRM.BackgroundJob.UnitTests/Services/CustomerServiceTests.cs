@@ -1,25 +1,26 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Services;
+    using CRM.BackgroundJob.Criteria.TurnoverControll;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Models.WinLossLimit;
-    using Microsoft.Extensions.Configuration;
-    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
-    using Fanex.CRM.BackgroundJob.Repositories;
     using Fanex.CRM.BackgroundJob.Services;
+    using Fanex.Data.Repository;
+    using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
-    using CRM.BackgroundJob.Models.TurnoverControll;
-    using CRM.BackgroundJob.Criteria.TurnoverControll;
-    using Fanex.CRM.BackgroundJob.Constants;
 
     public class CustomerServiceTests
     {
-        private ICustomerRepository repository;
+        private IDynamicRepository dynamicRepository;
         private IBaseService baseService;
         private IConfiguration configuration;
 
@@ -29,18 +30,18 @@
         public async Task GetCustomerInfoAsync_WhenCalled_ReturnExpectedCustomer()
         {
             // Arrange
-            var expected = fixture.Create<CustomerInfo>();
+            var expected = fixture.Create<(IEnumerable<CustomerInfo>, IEnumerable<int>)>();
             var username = fixture.Create<string>();
             var isGuest = fixture.Create<bool>();
             var criteria = new GetCustomerInfoByUsernameCriteria();
             var service = GetService();
-            repository.GetCustomerInfoByUsernameAsync(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => criteria = x)).Returns(expected);
+            dynamicRepository.FetchMultipleAsync<CustomerInfo, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await service.GetCustomerInfoAsync(username, isGuest);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Item1.FirstOrDefault(), actual);
             Assert.Equal(username, criteria.Username);
             Assert.Equal(isGuest, criteria.IsGuest);
             Assert.Equal(BackgroundJobConstants.UserRole, criteria.UserRole);
@@ -156,11 +157,11 @@
 
         private CustomerService GetService()
         {
-            repository = Substitute.For<ICustomerRepository>();
+            dynamicRepository = Substitute.For<IDynamicRepository>();
             baseService = Substitute.For<IBaseService>();
             configuration = Substitute.For<IConfiguration>();
 
-            return new CustomerService(repository, baseService, configuration);
+            return new CustomerService(dynamicRepository, baseService, configuration);
         }
 
         #endregion Helpers

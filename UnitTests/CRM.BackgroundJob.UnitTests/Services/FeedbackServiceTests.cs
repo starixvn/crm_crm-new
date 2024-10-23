@@ -11,8 +11,8 @@
     using CRM.BackgroundJob.Models.MixParlay;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -28,7 +28,7 @@
         private ISettingService settingService;
         private IMessageService messageService;
         private ICustomerService customerService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private IFeedbackTicketVoidingService ticketVoidingService;
         private ICommonFeedback commonFeedback;
         private readonly IFixture fixture = new Fixture();
@@ -1181,7 +1181,7 @@
             settingService = Substitute.For<ISettingService>();
             messageService = Substitute.For<IMessageService>();
             customerService = Substitute.For<ICustomerService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             ticketVoidingService = Substitute.For<IFeedbackTicketVoidingService>();
             commonFeedback = Substitute.For<ICommonFeedback>();
 

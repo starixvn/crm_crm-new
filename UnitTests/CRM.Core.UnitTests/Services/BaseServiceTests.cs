@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Models;
-    using CRM.Core.Repositories;
     using CRM.Core.Services;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -343,10 +342,10 @@
         private BaseService GetBaseService()
         {
             dynamicRepository = Substitute.For<IDynamicRepository>();
-            baseRepository = Substitute.For<IBaseRepository>();
+            //baseRepository = Substitute.For<IBaseRepository>();
             cacheService = Substitute.For<ICacheService>();
             logService = Substitute.For<ICRMLogService>();
-            var service = Substitute.ForPartsOf<BaseService>(dynamicRepository, baseRepository, cacheService, logService);
+            var service = Substitute.ForPartsOf<BaseService>(dynamicRepository);
 
             return service;
         }

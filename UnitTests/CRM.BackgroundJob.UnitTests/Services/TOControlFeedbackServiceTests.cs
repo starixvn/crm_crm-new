@@ -6,12 +6,12 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Models;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -27,7 +27,7 @@
         private ISettingService settingService;
         private ISystemSettingService systemSettingService;
         private ICustomerService customerService;
-        private ICRMLogService logService;
+        private ICrmLogService logService;
         private IFeedbackTransactionService transactionService;
         private ICommonFeedback commonFeedback;
         private readonly IFixture fixture = new Fixture();
@@ -727,7 +727,7 @@
             settingService = Substitute.For<ISettingService>();
             systemSettingService = Substitute.For<ISystemSettingService>();
             customerService = Substitute.For<ICustomerService>();
-            logService = Substitute.For<ICRMLogService>();
+            logService = Substitute.For<ICrmLogService>();
             transactionService = Substitute.For<IFeedbackTransactionService>();
             commonFeedback = Substitute.For<ICommonFeedback>();
 

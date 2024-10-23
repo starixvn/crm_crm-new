@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.GenerateResultAmendment;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Services;
     using NSubstitute;
     using Xunit;
 
