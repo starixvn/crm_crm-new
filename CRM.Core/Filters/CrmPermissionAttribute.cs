@@ -16,7 +16,9 @@
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class CrmPermissionAttribute : Attribute, IAsyncAuthorizationFilter
     {
+        #pragma warning disable S1450
         private IPermissionService permissionService;
+        #pragma warning restore S1450
         private readonly INapSession napSession;
         private readonly ILogger logger;
 

@@ -39,7 +39,7 @@
 
             return WebHost.CreateDefaultBuilder(args)
                     .UseNLog()
-                    .ConfigureAppConfiguration((hostingContext, config) =>
+                    .ConfigureAppConfiguration((_, config) =>
                     {
                         config.AddJsonFile("appsettings.json",
                             optional: true,

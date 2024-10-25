@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using CRM.BackgroundJob.Core.Models;
     using System.Diagnostics.CodeAnalysis;
     using CRM.BackgroundJob.Core.Models.BotServices;
     using CRM.BackgroundJob.Core.Repositories;
@@ -38,7 +37,7 @@
     using Sentry;
     using StackExchange.Redis;
 
-    [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage(Justification = "Configures application startup")]
     public class Startup
     {
         private readonly ConnectionMultiplexer Redis;

@@ -2,7 +2,6 @@
 {
     using System;
     using CRM.BackgroundJob.Core.Criteria;
-    using Fanex.Data.Repository;
 
     public class GetSessionByDateCriteria : SiteDbBaseCriteria
     {

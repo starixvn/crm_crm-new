@@ -25,7 +25,10 @@
         private readonly string BaseImageUrl;
         private const string formatImageUrl = "{0}{1}/{2}";
         private const byte BatchSize = 10;
-        private const string EmptyContentFileNameAnn = "The notification is EMPTY because the language setting of this headline was changed after confirming to send announcement.<br>Please send a new announcement for this headline.";
+        private const string EmptyContentFileNameAnn =
+            "The notification is EMPTY because the language setting of this headline " +
+            "was changed after confirming to send announcement.<br>" +
+            "Please send a new announcement for this headline.";
 
         public SendAnnouncementService(IBaseService baseService,
             ICrmLogService logService,

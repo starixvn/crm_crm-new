@@ -39,7 +39,7 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage(Justification = "Configures application startup")]
     public class Startup
     {
         private readonly ConnectionMultiplexer Redis;

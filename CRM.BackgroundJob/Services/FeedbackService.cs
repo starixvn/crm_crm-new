@@ -1039,7 +1039,9 @@
             }
             else
             {
-                stringBuilder.AppendFormat(solutionTempate.SolutionCreditENSC, message.Content_en, message.Content_cs, stringBuilderAffected, BackgroundJobConstants.LineBreak, BackgroundJobConstants.Break);
+                stringBuilder.AppendFormat(solutionTempate.SolutionCreditENSC, message.Content_en, message.Content_cs, stringBuilderAffected,
+                    BackgroundJobConstants.LineBreak, BackgroundJobConstants.Break
+                );
             }
             return stringBuilder.ToString();
         }

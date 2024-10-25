@@ -17,8 +17,10 @@
 
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria, string serverIp = "");
 
+        #pragma warning disable S2436
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>>
             FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria, string serverIp = "");
+        #pragma warning restore S2436
 
         Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command, string serverIp = "");
     }
@@ -72,6 +74,7 @@
             return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>(new List<TFirst>(), new List<TSecond>(), new List<TThird>());
         }
 
+        #pragma warning disable S2436
         public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>)>
             FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria, string serverIp = "")
         {
@@ -83,30 +86,24 @@
             return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>(
                 new List<TFirst>(), new List<TSecond>(), new List<TThird>(), new List<TFour>());
         }
+        #pragma warning restore S2436
 
         public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command, string serverIp = "")
         {
-            try
+            var commandResult = new CommandResult();
+            if (command != null && command.IsValid())
             {
-                var commandResult = new CommandResult();
-                if (command != null && command.IsValid())
+                await dynamicRepository.ExecuteAsync(command);
+
+                var properties = command.ToPropertyDictionary();
+                if (properties.ContainsKey("ErrCode"))
                 {
-                    await dynamicRepository.ExecuteAsync(command);
-
-                    var properties = command.ToPropertyDictionary();
-                    if (properties.ContainsKey("ErrCode"))
-                    {
-                        commandResult.Code = int.Parse(properties["ErrCode"].ToString());
-                        commandResult.Message = properties["ErrMsg"] != null ? properties["ErrMsg"].ToString() : string.Empty;
-                    }
+                    commandResult.Code = int.Parse(properties["ErrCode"].ToString());
+                    commandResult.Message = properties["ErrMsg"] != null ? properties["ErrMsg"].ToString() : string.Empty;
                 }
+            }
 
-                return commandResult;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return commandResult;
         }
     }
 }

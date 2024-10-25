@@ -551,11 +551,11 @@
             return stringBuilder.ToString();
         }
 
-#pragma warning disable S1541, S1067, S121
+#pragma warning disable S1541, S1067, S121, S107
 
         protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
           string kO_time, string leagueName, string homeName, string sportName, string awayName, string matchCode)
-#pragma warning restore S1541, S1067, S121
+#pragma warning restore S1541, S1067, S121, S107
         {
             var stringBuilder = new StringBuilder();
             const string line = "-------------------------------------------------------- {0}";
@@ -602,8 +602,7 @@
             {
                 return commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
             }
-
-            return leagueName;
+            else return leagueName;
         }
     }
 }

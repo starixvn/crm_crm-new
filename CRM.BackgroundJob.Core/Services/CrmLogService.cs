@@ -9,11 +9,11 @@ namespace CRM.BackgroundJob.Core.Services
 {
     public interface ICrmLogService
     {
-        Task ErrorAsync(Exception exception);
-
         Task ErrorMessageAsync(string error);
 
         Task InfoMessageAsync(string info);
+
+        Task ErrorAsync(Exception exception);
 
         Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
 
@@ -35,15 +35,6 @@ namespace CRM.BackgroundJob.Core.Services
             this.logger = logger;
         }
 
-        public async Task ErrorAsync(Exception exception)
-        {
-            var logMessage = new LogMessage(exception.Message)
-                       .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
-                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
-                       .ToString();
-            await logger.ErrorAsync(logMessage);
-        }
-
         public async Task ErrorMessageAsync(string error)
         {
             await logger.ErrorAsync(error);
@@ -52,6 +43,15 @@ namespace CRM.BackgroundJob.Core.Services
         public async Task InfoMessageAsync(string info)
         {
             await logger.InfoAsync(info);
+        }
+
+        public async Task ErrorAsync(Exception exception)
+        {
+            var logMessage = new LogMessage(exception.Message)
+                       .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
+                       .ToString();
+            await logger.ErrorAsync(logMessage);
         }
 
         public async Task ErrorAsync(CommandResult commandResult, ICriteria criteria)
