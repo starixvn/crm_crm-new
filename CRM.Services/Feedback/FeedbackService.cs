@@ -109,7 +109,7 @@
             return feedback;
         }
 
-        private async Task<CustomerFeedbackModel> GetCustomerFeedbackDataByIdAsync(ICriteria criteria)
+        public async Task<CustomerFeedbackModel> GetCustomerFeedbackDataByIdAsync(ICriteria criteria)
         {
             var (customerFeedback, fbCommunicationTools, fbSettingRelations, relatedCustomerPermission) = await baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(criteria);
             var customerFeedbackModel = new CustomerFeedbackModel

@@ -22,6 +22,7 @@
     using CRM.Services.Feedback;
     using Fanex.Data.Repository;
     using NSubstitute;
+    using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
     using Xunit;
 
     public class FeedbackServiceTests
@@ -117,6 +118,44 @@
         }
 
         #endregion GetCustomerFeedbackByIdAsync
+
+        [Fact] public async Task GetCustomerFeedbackDataByIdAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var param = fixture.Create<GetCustomerNewManualFeedbackByIdCriteria>();
+            var date = fixture.Create<DateTime>();
+            var clientdate = fixture.Create<DateTime>();
+            var feedbacks = new List<CustomerFeedback>
+            {
+                new CustomerFeedback
+                {
+                    FeedbackId = 1, SiteId = 1, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                }
+            };
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
+            var latestFeedbackCommunicationTools = fixture.Create<IEnumerable<LatestFeedbackCommunicationTool>>();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
+            var site = fixture.Create<SiteSetting>();
+            var feedbackId = fixture.Create<int>();
+            var customerFeedbackModel = new CustomerFeedbackModel
+            {
+                CustomerFeedback = feedbacks,
+                FeedbackSettingRelation = settings,
+                FeedbackCommunicationTool = latestFeedbackCommunicationTools,
+                RelatedCustomerPermission = relatedCustomers
+            };
+            var tupe = (feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers);
+            var service = GetService();
+
+            baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(Arg.Do<GetCustomerNewManualFeedbackByIdCriteria>(x => param = x)).Returns(tupe);
+
+            // Act
+            var actual = await service.GetCustomerFeedbackDataByIdAsync(param);
+
+            // Assert
+            Assert.Equal(customerFeedbackModel.CustomerFeedback, actual.CustomerFeedback);
+        }
 
         [Fact]
         public async Task GetLatestFeedbackAsync_WhenCalled_ReturnAsExpectedResult()
