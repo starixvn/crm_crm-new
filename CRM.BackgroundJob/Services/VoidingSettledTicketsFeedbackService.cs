@@ -602,7 +602,10 @@
             {
                 return commonFeedback.GetLeagueName3rd(eventDetail.LeagueId.ToString(), Language.en_US);
             }
-            else return leagueName;
+            else
+            {
+                return leagueName;
+            }
         }
     }
 }
