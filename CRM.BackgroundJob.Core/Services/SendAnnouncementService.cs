@@ -50,14 +50,7 @@
             await ProcessActionableNotifications(actionableNotifications);
         }
 
-        private static (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
-        {
-            var empty = notifications.Where(n => string.IsNullOrWhiteSpace(n.Content) && string.IsNullOrWhiteSpace(n.FileName));
-            var actionable = notifications.Except(empty).ToList();
-            return (empty, actionable);
-        }
-
-        private async Task ProcessEmptyNotifications(IEnumerable<AnnouncementNotification> emptyNotifications)
+        protected internal async Task ProcessEmptyNotifications(IEnumerable<AnnouncementNotification> emptyNotifications)
         {
             if (emptyNotifications.Any())
             {
@@ -65,7 +58,14 @@
             }
         }
 
-        private async Task ProcessActionableNotifications(IEnumerable<AnnouncementNotification> notifications)
+        protected internal static (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var empty = notifications.Where(n => string.IsNullOrWhiteSpace(n.Content) && string.IsNullOrWhiteSpace(n.FileName));
+            var actionable = notifications.Except(empty).ToList();
+            return (empty, actionable);
+        }
+
+        protected internal async Task ProcessActionableNotifications(IEnumerable<AnnouncementNotification> notifications)
         {
             if (notifications.Any())
             {
@@ -77,7 +77,7 @@
 
         #region Send announcement
 
-        private async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
+        protected internal async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
         {
             await Task.WhenAll(
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications),
@@ -85,7 +85,7 @@
             );
         }
 
-        private async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        protected internal async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
         {
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
@@ -116,7 +116,7 @@
             }
         }
 
-        private static IEnumerable<AnnouncementNotificationUpdateResult> ConvertSendMessageResultToUpdateStatusResult(
+        protected internal static IEnumerable<AnnouncementNotificationUpdateResult> ConvertSendMessageResultToUpdateStatusResult(
             IEnumerable<AnnouncementNotification> notifications, IEnumerable<SendNotificationResult> sendResults
             )
         {
@@ -140,7 +140,7 @@
             return results;
         }
 
-        private static string GetErrorImagesResult(IList<string> errorImages)
+        protected internal static string GetErrorImagesResult(IList<string> errorImages)
         {
             string result = string.Empty;
             if (errorImages is not null && errorImages.Count > 0)
@@ -155,7 +155,7 @@
 
         #region Retry Images Only
 
-        private async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
+        protected internal async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
         {
             await Task.WhenAll(
                 RetryImageByChannelAsync(BotChannel.Letstalk, notifications),
@@ -163,7 +163,7 @@
             );
         }
 
-        private async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        protected internal async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
         {
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
@@ -195,7 +195,7 @@
             }
         }
 
-        private async Task HandleUpdateResultAnnouncement(IEnumerable<AnnouncementNotificationUpdateResult> updatedResults)
+        protected internal async Task HandleUpdateResultAnnouncement(IEnumerable<AnnouncementNotificationUpdateResult> updatedResults)
         {
             if (!updatedResults.Any())
             {
@@ -206,32 +206,9 @@
 
         #endregion Retry Images Only
 
-        #region Update Bot Removed Groups
-
-        private async Task UpdateBotRemovedGroup(IEnumerable<AnnouncementNotification> botRemovedNotifications)
-        {
-            if (botRemovedNotifications.Any())
-            {
-                var updateStatusResult = new List<AnnouncementNotificationUpdateResult>();
-                foreach (var item in botRemovedNotifications)
-                {
-                    updateStatusResult.Add(new AnnouncementNotificationUpdateResult
-                    {
-                        NotificationId = item.NotificationId,
-                        ConversationGroupId = item.ConversationGroupId,
-                        Status = "Error",
-                        ErrMsg = "The Chatbot has been removed by users."
-                    });
-                }
-                await UpdateRecipientStatus(updateStatusResult);
-            }
-        }
-
-        #endregion Update Bot Removed Groups
-
         #region Update status with content and fileName is empty
 
-        private async Task UpdateEmptyContentFileName(IEnumerable<AnnouncementNotification> notifications)
+        protected internal async Task UpdateEmptyContentFileName(IEnumerable<AnnouncementNotification> notifications)
         {
             if (notifications.Any())
             {
@@ -252,7 +229,30 @@
 
         #endregion Update status with content and fileName is empty
 
-        private async Task UpdateRecipientStatus(IEnumerable<AnnouncementNotificationUpdateResult> sentResults)
+        #region Update Bot Removed Groups
+
+        protected internal async Task UpdateBotRemovedGroup(IEnumerable<AnnouncementNotification> botRemovedNotifications)
+        {
+            if (botRemovedNotifications.Any())
+            {
+                var updateStatusResult = new List<AnnouncementNotificationUpdateResult>();
+                foreach (var item in botRemovedNotifications)
+                {
+                    updateStatusResult.Add(new AnnouncementNotificationUpdateResult
+                    {
+                        NotificationId = item.NotificationId,
+                        ConversationGroupId = item.ConversationGroupId,
+                        Status = "Error",
+                        ErrMsg = "The Chatbot has been removed by users."
+                    });
+                }
+                await UpdateRecipientStatus(updateStatusResult);
+            }
+        }
+
+        #endregion Update Bot Removed Groups
+
+        protected internal async Task UpdateRecipientStatus(IEnumerable<AnnouncementNotificationUpdateResult> sentResults)
         {
             var command = new UpdateAnnouncementNotificationStatusCommand
             {
@@ -262,7 +262,7 @@
             await baseService.ExecuteNonQueryAsync(command);
         }
 
-        private async Task<IEnumerable<AnnouncementNotification>> GetAnnouncementNotificationAsync()
+        protected internal async Task<IEnumerable<AnnouncementNotification>> GetAnnouncementNotificationAsync()
         {
             var notifications = await baseService.GetDataAsync<AnnouncementNotification>(new GetAnnouncementNotificationToSendCriteria());
             foreach (var item in notifications)
@@ -287,7 +287,18 @@
             return notifications;
         }
 
-        private static void MappingUpdateStatusErrorMessage(AnnouncementNotificationUpdateResult result, SendNotificationResult matchedResult)
+        protected internal static IEnumerable<IEnumerable<AnnouncementNotification>> DividedBatchToSendAnnouncement(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var batches = new List<List<AnnouncementNotification>>();
+            int totalBatch = (int)Math.Ceiling((double)notifications.Count() / BatchSize);
+            for (int i = 0; i < totalBatch; i++)
+            {
+                batches.Add(notifications.Skip(i * BatchSize).Take(BatchSize).ToList());
+            }
+            return batches;
+        }
+
+        protected internal static void MappingUpdateStatusErrorMessage(AnnouncementNotificationUpdateResult result, SendNotificationResult matchedResult)
         {
             if (matchedResult.IsSuccessful)
             {
@@ -312,17 +323,6 @@
                 result.Status = SendNotificationStatuses.BotBlocked;
                 result.ErrMsg = string.Empty;
             }
-        }
-
-        private static IEnumerable<IEnumerable<AnnouncementNotification>> DividedBatchToSendAnnouncement(IEnumerable<AnnouncementNotification> notifications)
-        {
-            var batches = new List<List<AnnouncementNotification>>();
-            int totalBatch = (int)Math.Ceiling((double)notifications.Count() / BatchSize);
-            for (int i = 0; i < totalBatch; i++)
-            {
-                batches.Add(notifications.Skip(i * BatchSize).Take(BatchSize).ToList());
-            }
-            return batches;
         }
     }
 }
