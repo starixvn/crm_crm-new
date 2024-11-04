@@ -73,6 +73,10 @@
         <Setting Key="Acc_CRM_Chatbot_ArchivedAccounts_Sel" SpName="Acc_CRM_Chatbot_ArchivedAccounts_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Chatbot_ArchivedAccounts_Import" SpName="Acc_CRM_Chatbot_ArchivedAccounts_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
+    <Function Name="Chatbot RebateRetention">
+        <Setting Key="Acc_CRM_Chatbot_RebateRetention_Sel" SpName="Acc_CRM_Chatbot_RebateRetention_Sel" DbName="DBAGE.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_Chatbot_RebateRetention_Import" SpName="Acc_CRM_Chatbot_RebateRetention_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
+    </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
