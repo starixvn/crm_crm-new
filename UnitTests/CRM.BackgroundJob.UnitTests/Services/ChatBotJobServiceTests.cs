@@ -42,6 +42,7 @@
         private IChatBotProblemAccountService chatBotProblemAccountService;
         private IChatBotResultAmendmentService chatBotResultAmendmentService;
         private IChatBotArchivingDAService chatBotArchivingDAService;
+        private IChatBotRebateRetentionService chatBotRebateRetentionService;
         private IBaseService baseService;
 
         private readonly IFixture fixture = new Fixture();
@@ -502,6 +503,7 @@
             chatBotProblemAccountService = Substitute.For<IChatBotProblemAccountService>();
             chatBotResultAmendmentService = Substitute.For<IChatBotResultAmendmentService>();
             chatBotArchivingDAService = Substitute.For<IChatBotArchivingDAService>();
+            chatBotRebateRetentionService = Substitute.For<IChatBotRebateRetentionService>();
             baseService = Substitute.For<IBaseService>();
             return new ChatBotJobService(logService,
                 systemSettingService,
@@ -513,6 +515,7 @@
                 chatBotProblemAccountService,
                 chatBotResultAmendmentService,
                 chatBotArchivingDAService,
+                chatBotRebateRetentionService,
                 baseService);
         }
 

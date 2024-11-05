@@ -192,6 +192,7 @@
             services.AddSingleton<BotServiceHttpClientBase>();
             services.AddSingleton<ISendNotificationService, SendNotificationService>();
             services.AddSingleton<IChatBotSendMessageService, ChatBotSendMessageService>();
+            services.AddSingleton<IChatBotRebateRetentionService, ChatBotRebateRetentionService>();
         }
 
         private static void AddWorker(IServiceCollection services)

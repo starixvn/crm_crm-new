@@ -28,6 +28,8 @@
         Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
 
         Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
+
+        Task PullMessageRebateRetentionAsync();
     }
 
     public class ChatBotJobService : IChatBotJobService
@@ -41,6 +43,7 @@
         private readonly IChatBotProblemAccountService chatBotProblemAccountService;
         private readonly IChatBotResultAmendmentService chatBotResultAmendmentService;
         private readonly IChatBotArchivingDAService chatBotArchivingDAService;
+        private readonly IChatBotRebateRetentionService chatBotRebateRetentionService;
         private readonly IBaseService baseService;
         private readonly string Environment;
 
@@ -59,6 +62,7 @@
             IChatBotProblemAccountService chatBotProblemAccountService,
             IChatBotResultAmendmentService chatBotResultAmendmentService,
             IChatBotArchivingDAService chatBotArchivingDAService,
+            IChatBotRebateRetentionService chatBotRebateRetentionService,
             IBaseService baseService
             )
 #pragma warning restore S107 // Methods should not have too many parameters
@@ -72,6 +76,7 @@
             this.chatBotProblemAccountService = chatBotProblemAccountService;
             this.chatBotResultAmendmentService = chatBotResultAmendmentService;
             this.chatBotArchivingDAService = chatBotArchivingDAService;
+            this.chatBotRebateRetentionService = chatBotRebateRetentionService;
             this.baseService = baseService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
@@ -282,6 +287,35 @@
             }
             catch (Exception ex)
             {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task PullMessageRebateRetentionAsync()
+        {
+            try
+            {
+                AbnormalBetSystemSetting rrSetting = await systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_RebateRetention, Environment);
+                if (!rrSetting.ServiceFlag)
+                {
+                    logService.LogInformation("Chat Bot Rebate Retention Service is shutdown.");
+                    return;
+                }
+                var (rrMessages, newLogSIDs) = await chatBotRebateRetentionService.GetRebateRetentionInfoAsync(rrSetting.LastLogSId);
+                var (commandResult, command) = await chatBotRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs);
+                if (commandResult.IsSuccessful)
+                {
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                    await logService.ErrorAsync(commandResult, command);
+                }
+            }
+            catch (Exception ex)
+            {
+
                 await logService.ErrorAsync(ex);
             }
         }
