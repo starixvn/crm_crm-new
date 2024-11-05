@@ -9,6 +9,7 @@
         public const string PullMessageProblemAccountForChatBot = "PullMessageProblemAccountForChatBot";
         public const string PullMessageResultAmendmentForChatBot = "PullMessageResultAmendmentForChatBot";
         public const string PullMessageArchivingDAForChatBot = "PullMessageArchivingDAForChatBot";
+        public const string PullMessageRebateRetentionForChatBot = "PullMessageRebateRetentionForChatBot";
         public const string ScanAndSendLetstalkNotification = "ScanAndSendLetstalkNotification";
         public const string ScanAndSendAnnouncement = "ScanAndSendAnnouncement";
         public const string MonitorLetstalkService = "MonitorLetstalkService";

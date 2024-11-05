@@ -31,6 +31,7 @@
         public const string ServiceName_ChatBot_ProblemAccounts = "ChatBot - ProblemAccounts";
         public const string ServiceName_ChatBot_ResultAmendment = "ChatBot - ResultAmendment";
         public const string ServiceName_ChatBot_ArchivedAccounts = "ChatBot - ArchivedAccounts";
+        public const string ServiceName_ChatBot_RebateRetention = "ChatBot - RebateRetention";
 
         public const string ServiceName_WinLimitFB = "WinLimitFB";
         public const string ServiceName_TOControlFB = "TOControlFB";
