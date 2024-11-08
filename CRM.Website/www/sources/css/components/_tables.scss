@@ -11,6 +11,20 @@
         cursor: pointer;
     }
 }
+.table-title-v2 {
+    border: 1px solid $border-table-grey;
+    border-bottom-width: 0;
+    height: 32px;
+    padding: 7px 12px;
+    border-radius: 3px 3px 0 0;
+    background: #f9fafe;
+    color: #333;
+    font-weight: bold;
+    u{
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
 .table-container{
     overflow: auto;
     .body-content {
