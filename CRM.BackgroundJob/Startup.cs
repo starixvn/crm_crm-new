@@ -211,6 +211,7 @@
             services.AddHostedService<AutoChatbotCTOWoker>();
             services.AddHostedService<AutoChatbotProblemAccountWorker>();
             services.AddHostedService<AutoChatbotResultAmendmentWoker>();
+            services.AddHostedService<AutoChatbotRebateRetentionWorker>();
             services.AddHostedService<ScanAndSendLetstalkNotificationWorker>();
             services.AddHostedService<ScanAndSendAnnouncementWorker>();
             services.AddHostedService<SynchronizeNewLicenseeWorker>();
