@@ -1,7 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Core.Extensions.Xml;
     using CRM.BackgroundJob.Core.Models;
@@ -11,9 +10,9 @@
 
     public interface IChatBotRebateRetentionService
     {
-        Task<(IEnumerable<ChatBotRebateRetentionInfo>, IEnumerable<string>)> GetRebateRetentionInfoAsync(string lastLogSid);
+        Task<(IEnumerable<ChatBotRebateRetentionInfo>, string)> GetRebateRetentionInfoAsync(string lastLogSid);
 
-        Task<(CommandResult, ImportRebateRetentionCommand)> ImportRebateRetentionCommand(IEnumerable<ChatBotRebateRetentionInfo> rrMessages, IEnumerable<string> newLogSIDs);
+        Task<(CommandResult, ImportRebateRetentionCommand)> ImportRebateRetentionCommand(IEnumerable<ChatBotRebateRetentionInfo> rrMessages, string newLogSIDs);
     }
 
     public class ChatBotRebateRetentionService : IChatBotRebateRetentionService
@@ -25,21 +24,22 @@
             this.baseService = baseService;
         }
 
-        public async Task<(IEnumerable<ChatBotRebateRetentionInfo>, IEnumerable<string>)> GetRebateRetentionInfoAsync(string lastLogSid)
+        public async Task<(IEnumerable<ChatBotRebateRetentionInfo>, string)> GetRebateRetentionInfoAsync(string lastLogSid)
         {
             var criteria = new GetRebateRetentionInfoCriteria
             {
                 LastLogSID = lastLogSid
             };
-            return await baseService.FetchMultipleAsync<ChatBotRebateRetentionInfo, string>(criteria);
+            var result = await baseService.GetDataAsync<ChatBotRebateRetentionInfo>(criteria);
+            return (result, criteria.NewLogSID);
         }
 
-        public async Task<(CommandResult, ImportRebateRetentionCommand)> ImportRebateRetentionCommand(IEnumerable<ChatBotRebateRetentionInfo> rrMessages, IEnumerable<string> newLogSIDs)
+        public async Task<(CommandResult, ImportRebateRetentionCommand)> ImportRebateRetentionCommand(IEnumerable<ChatBotRebateRetentionInfo> rrMessages, string newLogSIDs)
         {
             var command = new ImportRebateRetentionCommand
             {
                 XmlData = rrMessages.ToXML("root").ToString(),
-                NewLogSID = newLogSIDs.FirstOrDefault()
+                NewLogSID = newLogSIDs
             };
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
             return (commandResult, command);
