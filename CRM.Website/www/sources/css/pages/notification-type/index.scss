@@ -2,6 +2,16 @@
     .modal-dialog {
         max-width: 600px;
     }
+    .modal-header {
+        background: #1D3557 !important;
+    }
+}
+
+.notification-type .table-container .table > thead > tr > th {
+    background: #2B4E80;
+    color: #FFFFFF;
+    font-weight: 700;
+    line-height: 17.7px;
 }
 
 .medium-desktops{

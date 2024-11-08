@@ -130,7 +130,7 @@ export class Filter extends Component {
         const { isHost } = this.props;
 
         return (
-            <Form className="form-filter" onSubmit={this.submitHandler}>
+            <Form className="form-filter-v2" onSubmit={this.submitHandler}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="notificationTypeName">{LangHelper.getResource('NotificationType')}</Form.Label>
@@ -179,7 +179,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
 
-                    <Form.Group style={{width: '150px'}}>
+                    <Form.Group>
                         <Button className="mr-4" variant="primary" size="sm"
                             onClick={this.submitHandler}
                         >
