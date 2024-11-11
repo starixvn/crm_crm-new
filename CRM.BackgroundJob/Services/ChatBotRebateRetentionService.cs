@@ -39,7 +39,8 @@
             var command = new ImportRebateRetentionCommand
             {
                 XmlData = rrMessages.ToXML("root").ToString(),
-                NewLogSID = newLogSIDs
+                NewLogSID = newLogSIDs,
+                Environment = environment
             };
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
             return (commandResult, command);
