@@ -1,66 +1,73 @@
-.medium-desktops {
-    &> :not(.show-left-panel) {
-        .notification-list {
-            .form-group {
-                width: 230px !important;
+// .medium-desktops {
+//     &> :not(.show-left-panel) {
+//         .notification-list {
+//             .form-group {
+//                 width: 230px !important;
 
-                &:nth-child(3) {
-                    width: 240px !important;
+//                 &:nth-child(3) {
+//                     width: 240px !important;
 
-                    .form-label {
-                        width: 45px !important;
-                    }
+//                     .form-label {
+//                         width: 45px !important;
+//                     }
 
-                    .react-datepicker-wrapper-container,
-                    .messageId {
-                        width: calc(100% - 0.5rem - 45px) !important;
-                    }
-                }
-            }
-        }
-    }
+//                     .react-datepicker-wrapper-container,
+//                     .messageId {
+//                         width: calc(100% - 0.5rem - 45px) !important;
+//                     }
+//                 }
+//             }
+//         }
+//     }
 
-    &>.show-left-panel {
-        .notification-list {
-            .form-row {
-                .form-group {
-                    &:nth-child(2) {
-                        .form-label {
-                            width: 100px !important;
-                        }
+//     &>.show-left-panel {
+//         .notification-list {
+//             .form-row {
+//                 .form-group {
+//                     &:nth-child(2) {
+//                         .form-label {
+//                             width: 100px !important;
+//                         }
 
-                        .form-control-wrapper,
-                        .announcementId {
-                            width: calc(100% - 0.5rem - 100px) !important;
-                        }
-                    }
-                }
-            }
-        }
-    }
+//                         .form-control-wrapper,
+//                         .announcementId {
+//                             width: calc(100% - 0.5rem - 100px) !important;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+// @media only screen and (max-width:1810px) and (min-width: 1500px){
+//     .show-left-panel{
+//         .notification-list{
+//             .show-filter{
+//                 .form-group {
+//                     &:nth-child(3) {
+//                         margin-right: 300px !important;
+//                     }
+
+//                     &:nth-child(5) {
+//                         .form-label {
+//                             width: 110px !important;
+//                         }
+
+//                         .form-control-wrapper{
+//                             width: calc(100% - 0.5rem - 110px) !important;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+.medium-desktops > :not(.show-left-panel) .notification-list .form-group {
+    width: 250px;
 }
-
-
-@media only screen and (max-width:1810px) and (min-width: 1500px){
-    .show-left-panel{
-        .notification-list{
-            .show-filter{
-                .form-group {
-                    &:nth-child(3) {
-                        margin-right: 300px !important;
-                    }
-
-                    &:nth-child(5) {
-                        .form-label {
-                            width: 110px !important;
-                        }
-
-                        .form-control-wrapper{
-                            width: calc(100% - 0.5rem - 110px) !important;
-                        }
-                    }
-                }
-            }
-        }
-    }
+.medium-desktops > .show-left-panel .notification-list .form-group {
+    width: 230px;
 }

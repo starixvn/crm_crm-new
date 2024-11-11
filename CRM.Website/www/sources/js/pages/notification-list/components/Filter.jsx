@@ -267,7 +267,7 @@ export class Filter extends Component {
 
     render() {
         return (
-            <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={e => this.submitHandler(e)}>
+            <Form className={`form-filter-v2 ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={e => this.submitHandler(e)}>
                 <Form.Row bsPrefix='form-row' className={this.state.showFilter ? '' : 'form-row-filter'}>
                     <Form.Group >
                         <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>
@@ -293,8 +293,8 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group style={{width: '300px'}}>
-                        <Form.Label style={{width: '80px'}}>{LangHelper.getResource('Date')}</Form.Label>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('Date')}</Form.Label>
                         <div className='react-datepicker-wrapper-container form-control-wrapper'>
                             <DatePicker disabled={this.isDisabledDateParam()}
                                 dropdownMode="select"
@@ -343,11 +343,13 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <div className='btn-submit' style={{width: '70px', marginBottom: '0.7rem'}}>
-                            <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
-                                {LangHelper.getResource('Submit')}
-                            </Button>
-                        </div>
+                        <Form.Group>
+                            <div className='btn-submit'>
+                                <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+                                    {LangHelper.getResource('Submit')}
+                                </Button>
+                            </div>
+                        </Form.Group>
                     }
                 </Form.Row>
                 {
@@ -385,8 +387,8 @@ export class Filter extends Component {
                                 onPaste={this.handlePasteId}
                             />
                         </Form.Group>
-                        <Form.Group style={{width: '300px'}}>
-                            <Form.Label style={{width: '80px'}}>{LangHelper.getResource('MessageID')}</Form.Label>
+                        <Form.Group>
+                            <Form.Label>{LangHelper.getResource('MessageID')}</Form.Label>
                             <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none messageId' name='messageId'
                                 value={this.state.filter.messageId}
                                 onChange={e => this.handleChangeFilterControl(e)}
@@ -417,11 +419,13 @@ export class Filter extends Component {
                         </Form.Group>
                         {
                             this.state.showFilter &&
-                            <div className='btn-submit' style={{width: '70px', marginBottom: '0.7rem'}}>
-                                <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
-                                    {LangHelper.getResource('Submit')}
-                                </Button>
-                            </div>
+                            <Form.Group>
+                                <div className='btn-submit'>
+                                    <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+                                        {LangHelper.getResource('Submit')}
+                                    </Button>
+                                </div>
+                            </Form.Group>
                         }
                     </Form.Row>
                 }

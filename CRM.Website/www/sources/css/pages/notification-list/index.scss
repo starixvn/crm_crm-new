@@ -54,6 +54,31 @@
             cursor: pointer;
         }
     }
+
+    .form-filter-v2 {
+        position: relative;
+
+        .react-select__indicators {
+            display: none;
+        }
+
+        ::placeholder, .react-select__placeholder {
+            font-size: smaller !important;
+        }
+ 
+        .icon-toggle {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
+        }
+    }
     
     .link-click {
         cursor: pointer;
@@ -221,9 +246,20 @@
     .Select-arrow-zone {
         display: none;
     }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+    }
 }
 
 .notification-list-modal{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .notification-content {
         white-space: pre-line;
         word-break: break-word;
