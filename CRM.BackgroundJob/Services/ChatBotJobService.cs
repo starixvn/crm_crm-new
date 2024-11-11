@@ -302,7 +302,7 @@
                     return;
                 }
                 var (rrMessages, newLogSIDs) = await chatBotRebateRetentionService.GetRebateRetentionInfoAsync(rrSetting.LastLogSId);
-                var (commandResult, command) = await chatBotRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs);
+                var (commandResult, command) = await chatBotRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs, Environment);
                 if (commandResult.IsSuccessful)
                 {
                     await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
