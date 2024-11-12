@@ -351,84 +351,84 @@ export class Filter extends Component {
                             </div>
                         </Form.Group>
                     }
-                </Form.Row>
-                {
-                    this.state.showFilter &&
-                    <Form.Row>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('NotificationID')}</Form.Label>
-                            <div className='form-control-wrapper d-flex align-items-center notification-id-container'>
-                                <Form.Control
-                                    className={`shadow-none ${this.props.invalidParams.isInvalidNotificationIdLower ?
-                                        'invalid-input' : 'valid-input'} notification-id-input`}
-                                    as='input' type='text' pattern='[0-9]*' size='sm'
-                                    name='notificationIdLower'
-                                    placeholder='From'
-                                    value={this.state.filter.notificationIdLower}
-                                    onChange={e => this.handleChangeFilterControl(e)}
-                                />
-                                <div className='notification-concate text-center'>-</div>
-                                <Form.Control
-                                    className={`shadow-none ${this.props.invalidParams.isInvalidNotificationIdUpper ?
-                                        'invalid-input' : 'valid-input'} notification-id-input`}
-                                    as='input' type='text' pattern='[0-9]*' size='sm'
-                                    name='notificationIdUpper'
-                                    placeholder='To'
-                                    value={this.state.filter.notificationIdUpper}
-                                    onChange={e => this.handleChangeFilterControl(e)}
-                                />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('AnnouncementId')}</Form.Label>
-                            <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none announcementId' name='announcementId'
-                                value={this.state.filter.announcementId}
-                                onChange={e => this.handleChangeFilterControl(e)}
-                                onPaste={this.handlePasteId}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('MessageID')}</Form.Label>
-                            <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none messageId' name='messageId'
-                                value={this.state.filter.messageId}
-                                onChange={e => this.handleChangeFilterControl(e)}
-                                onPaste={this.handlePasteId}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('Content')}</Form.Label>
-                            <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
-                                value={this.state.filter.content}
-                                autoComplete='off'
-                                onChange={e => this.handleChange(e)}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('Status')}</Form.Label>
-                            <div className='form-control-wrapper'>
-                                <MultipleSelect
-                                    dataSource={this.state.statusOptions}
-                                    keyField='id'
-                                    valueField='name'
-                                    statusField='checked'
-                                    isSubmited={false}
-                                    isAllTextShown
-                                    onChange={(currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)}
-                                />
-                            </div>
-                        </Form.Group>
-                        {
-                            this.state.showFilter &&
+                    {
+                        this.state.showFilter &&
+                        <>
                             <Form.Group>
-                                <div className='btn-submit'>
-                                    <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
-                                        {LangHelper.getResource('Submit')}
-                                    </Button>
+                                <Form.Label>{LangHelper.getResource('NotificationID')}</Form.Label>
+                                <div className='form-control-wrapper d-flex align-items-center notification-id-container'>
+                                    <Form.Control
+                                        className={`shadow-none ${this.props.invalidParams.isInvalidNotificationIdLower ?
+                                            'invalid-input' : 'valid-input'} notification-id-input`}
+                                        as='input' type='text' pattern='[0-9]*' size='sm'
+                                        name='notificationIdLower'
+                                        placeholder='From'
+                                        value={this.state.filter.notificationIdLower}
+                                        onChange={e => this.handleChangeFilterControl(e)}
+                                    />
+                                    <div className='notification-concate text-center'>-</div>
+                                    <Form.Control
+                                        className={`shadow-none ${this.props.invalidParams.isInvalidNotificationIdUpper ?
+                                            'invalid-input' : 'valid-input'} notification-id-input`}
+                                        as='input' type='text' pattern='[0-9]*' size='sm'
+                                        name='notificationIdUpper'
+                                        placeholder='To'
+                                        value={this.state.filter.notificationIdUpper}
+                                        onChange={e => this.handleChangeFilterControl(e)}
+                                    />
                                 </div>
                             </Form.Group>
-                        }
-                    </Form.Row>
-                }
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('AnnouncementId')}</Form.Label>
+                                <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none announcementId' name='announcementId'
+                                    value={this.state.filter.announcementId}
+                                    onChange={e => this.handleChangeFilterControl(e)}
+                                    onPaste={this.handlePasteId}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('MessageID')}</Form.Label>
+                                <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none messageId' name='messageId'
+                                    value={this.state.filter.messageId}
+                                    onChange={e => this.handleChangeFilterControl(e)}
+                                    onPaste={this.handlePasteId}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('Content')}</Form.Label>
+                                <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
+                                    value={this.state.filter.content}
+                                    autoComplete='off'
+                                    onChange={e => this.handleChange(e)}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('Status')}</Form.Label>
+                                <div className='form-control-wrapper'>
+                                    <MultipleSelect
+                                        dataSource={this.state.statusOptions}
+                                        keyField='id'
+                                        valueField='name'
+                                        statusField='checked'
+                                        isSubmited={false}
+                                        isAllTextShown
+                                        onChange={(currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)}
+                                    />
+                                </div>
+                            </Form.Group>
+                            {
+                                this.state.showFilter &&
+                                <Form.Group>
+                                    <div className='btn-submit'>
+                                        <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+                                            {LangHelper.getResource('Submit')}
+                                        </Button>
+                                    </div>
+                                </Form.Group>
+                            }
+                        </>
+                    }
+                </Form.Row>
                 {
                     this.state.showFilter
                         ? <span className="fa fa-caret-up icon-toggle fa-sm" onClick={() => this.handleToggleFilter(false)} />
