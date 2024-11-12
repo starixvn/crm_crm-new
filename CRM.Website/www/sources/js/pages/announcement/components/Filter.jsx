@@ -124,7 +124,7 @@ export class Filter extends Component {
     render() {
         const {announcementId, fromDate, toDate, title} = this.state;
         return (
-            <Form className='form-filter' onSubmit={e => this.handleSubmit(e)}>
+            <Form className='form-filter-v2' onSubmit={e => this.handleSubmit(e)}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='announcement-num'>
                         <Form.Label htmlFor="announcementId">{LangHelper.getResource('AnnouncementId')}</Form.Label>
@@ -160,8 +160,6 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                             <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
                             <div className='react-datepicker-wrapper-container'>
@@ -190,13 +188,13 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group>
-                        <Button variant="primary" type="submit" size="sm" className='mr-3' onClick={this.handleSubmit}>
+                    <Form.Group style={{width: '250px'}}>
+                        <Button variant="primary" type="submit" size="sm" className='mr-4' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                         {
                             this.props.isHost &&
-                            <Button variant="primary" size="sm" onClick={() => this.handleOpenNewAnnouncement()}>
+                            <Button style={{width: 'auto'}} variant="primary" size="sm" onClick={() => this.handleOpenNewAnnouncement()}>
                                 {LangHelper.getResource('NewAnnouncement')}
                             </Button>
                         }
