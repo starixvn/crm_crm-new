@@ -34,7 +34,7 @@
 .form-filter-v2 {
     background-color: #FFFFFF !important;
     border-radius: 5px 5px 5px 5px;
-    padding: 0.5rem 1rem 1rem 1rem !important;
+    padding: 0.5rem 1rem 0.5rem 1rem !important;
     border: 1px solid #CCCCCC;
     margin-bottom: 1rem;
 
@@ -46,6 +46,7 @@
             width: 200px;
             margin-bottom: 0;
             margin-right: 0 !important;
+            padding-bottom: 5px;
 
             .form-label {
                 width: 100%;
