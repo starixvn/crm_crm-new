@@ -163,7 +163,7 @@ export class DataGrid extends Component {
 
         return (
             <>
-                <div className='table-title d-flex justify-content-between align-items-center ha'>
+                <div className='table-title-v2 d-flex justify-content-between align-items-center ha'>
                     <span>Deleted Feedback</span>
                     {
                         gridData.data.length > 0 && this.renderExportExcelText()

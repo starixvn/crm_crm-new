@@ -1,6 +1,50 @@
 @import '../../../abstracts/variables';
 
 .deleted-feedback{
+    .form-filter-v2 {
+        max-width: 1200px;
+
+        .form-username {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .username-width {
+                width: 65%;
+            }
+
+            .cusType-width {
+                width: 30%;
+            }
+        }
+
+        .form-com-cus {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .communication-width {
+                width: 50%;
+            }
+
+            .customer-width {
+                width: 45%;
+            }
+        }
+
+        .large-width {
+            width: 360px;
+        }
+    }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
+    }
+
     .form-filter {
         max-width: 1200px;
 
@@ -47,7 +91,7 @@
         }
     }
 
-    .table-title, .page-container, .table-container{
+    .table-title, .table-title-v2, .page-container, .table-container{
         max-width: 1200px !important;
     }
 
@@ -75,6 +119,10 @@
 .edit-feedback-modal-dialog {
     .modal-dialog {
         min-width: 1200px !important;
+
+        .modal-header {
+            background: #1D3557 !important;
+        }
 
         .modal-content {
             .panel-group {
