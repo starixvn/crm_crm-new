@@ -128,10 +128,10 @@ export class Filter extends Component {
         const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
 
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit} action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
+                    <Form.Group className='large-width'>
                         <Form.Label htmlFor="runningNumber">{LangHelper.getResource('RunningNumber')}</Form.Label>
                         <Form.Control type="text" size="sm"
                             value={runningNumber}
@@ -171,26 +171,28 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
+                    <Form.Group className='large-width'>
                         <Form.Label htmlFor="username">{LangHelper.getResource('Username')}</Form.Label>
-                        <Form.Control type="text" size="sm"
-                            disabled={this.props.currentCustomer}
-                            value={username}
-                            name="username" id="username"
-                            className="shadow-none username-width" autoComplete="on"
-                            onChange={this.handleChange}
-                        />
-                        <Form.Control as="select" size="sm"
-                            disabled={this.props.currentCustomer}
-                            name="isGuest" id="isGuest"
-                            className="shadow-none response-width"
-                            value={isGuest}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
-                            }
-                        </Form.Control>
+                        <div className="form-username">
+                            <Form.Control type="text" size="sm"
+                                disabled={this.props.currentCustomer}
+                                value={username}
+                                name="username" id="username"
+                                className="shadow-none username-width" autoComplete="on"
+                                onChange={this.handleChange}
+                            />
+                            <Form.Control as="select" size="sm"
+                                disabled={this.props.currentCustomer}
+                                name="isGuest" id="isGuest"
+                                className="shadow-none response-width"
+                                value={isGuest}
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                }
+                            </Form.Control>
+                        </div>
                     </Form.Group>
                     <Form.Group className='sm-width'>
                         <Form.Label htmlFor="isReviewed">{LangHelper.getResource('IsReviewed')}</Form.Label>
@@ -219,7 +221,7 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
+                    <Form.Group className='large-width'>
                         <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="mainCategoryId" id="mainCategoryId"
@@ -231,7 +233,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group className='subCategory-width'>
+                    <Form.Group style={{width: '440px'}} className='subCategory-width'>
                         <Form.Label htmlFor="subCategoryId">{LangHelper.getResource('SubCategory')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="subCategoryId"
@@ -245,30 +247,34 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
-                        <Form.Label htmlFor="communicationId">{LangHelper.getResource('Communication')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="communicationId" id="communicationId"
-                            className='select-options-sm mr-2'
-                            value={communicationId}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                communicationOptions.map((value, key) => this.renderOptions(value.name, value.id, key))
-                            }
-                        </Form.Control>
-                        <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="statusId" id="statusId"
-                            className='select-options-sm'
-                            value={statusId}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                statuesFilterDelete.map((value, key) => this.renderOptions(value.name, value.statusId, key))
-                            }
-                        </Form.Control>
-                    </Form.Group>
+                    <div className='form-com-tus large-width'>
+                        <Form.Group className='form-communication'>
+                            <Form.Label htmlFor="communicationId">{LangHelper.getResource('Communication')}</Form.Label>
+                            <Form.Control as="select" size="sm"
+                                name="communicationId" id="communicationId"
+                                className='select-options-sm mr-2'
+                                value={communicationId}
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    communicationOptions.map((value, key) => this.renderOptions(value.name, value.id, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group className='form-status'>
+                            <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                            <Form.Control as="select" size="sm"
+                                name="statusId" id="statusId"
+                                className='select-options-sm'
+                                value={statusId}
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    statuesFilterDelete.map((value, key) => this.renderOptions(value.name, value.statusId, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                    </div>
                     <Form.Group className='sm-width'>
                         <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
                         <Form.Control type="text" size="sm" value={handler}
@@ -287,7 +293,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group style={{width: '65px'}}>
+                    <Form.Group>
                         <Button id='btn-submit-manage-fb' variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
                             <UnderlineButton.submitButton />
                         </Button>

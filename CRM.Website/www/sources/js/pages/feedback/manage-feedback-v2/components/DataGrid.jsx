@@ -291,7 +291,7 @@ export class DataGrid extends Component {
     renderTableTitle = gridDataFeedbacks => {
         const isClickableEditMultiple = Array.from(this.state.checkedItems.values()).includes(true);
         return (
-            <div className='table-title d-flex justify-content-between align-items-center'>
+            <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                 {
                      this.props.isHost ?
                      <div>

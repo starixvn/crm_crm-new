@@ -3,58 +3,49 @@
 @import '../../../abstracts/variables';
 
 .manage-feedback{
-    .form-filter, .table-title, .page-container{
+    .form-filter-v2, .table-title, .table-title-v2, .page-container{
         max-width: 1250px !important;
     }
 
-    .form-filter {
-        .form-row {
-            .sm-width{
-                width: 260px !important;
+    .form-filter-v2 {
+        .form-username {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .username-width {
+                width: 65%;
             }
 
-            .lg-width{
-                width: 260px !important;
-                .form-label{
-                    width: 145px !important;
-                }
-            }
-    
-            .subCategory-width{
-                width: 533px !important;
-            }
-    
-            .label-status{
-                width: 50px !important;
-            }
-
-            &>.form-group:nth-child(2){
-                margin-left: 20px;
-            }
-    
-            .form-group {
-                width: 360px;
-                .username-width{
-                    width: 148px;
-                }
-    
-                .response-width{
-                    width: 100px;
-                    margin-left: 5px;
-                }
-    
-                .select-options, .react-datepicker-wrapper-container input{
-                    width: 130px;
-                }
-                .select-options-sm{
-                    width: 95px;
-                }
-
-                #responseId{
-                    width: 150px;
-                }
+            .response-width {
+                width: 30%;
             }
         }
+
+        .form-com-tus {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .form-communication {
+                width: 50%;
+            }
+            .form-status {
+                width: 45%;
+            }
+        }
+
+        .large-width {
+            width: 360px;
+        }
+    }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
     }
 
     .header-content .table > thead > tr > th {
@@ -158,6 +149,10 @@
     .modal-dialog {
         max-width: 987px;
 
+        .modal-header {
+            background: #1D3557 !important;
+        }
+
         .modal-content {
             .panel-group{
                 border: 1px solid #b1b1b1;
@@ -202,6 +197,10 @@
 .edit-multiple-log {
     .modal-dialog {
         max-width: 987px;
+
+        .modal-header {
+            background: #1D3557 !important;
+        }
 
         .modal-content {
             .panel-group {
@@ -280,20 +279,26 @@
     }
 }
 
-.medium-desktops .show-left-panel{
-    .manage-feedback, .form-filter{
-        .form-group{
-            margin-bottom: 9px;
-        }
-        .form-row:last-child {
-            .lg-width{
-                width: 195px !important;
-            }
-        }
-    }
-}
+// .medium-desktops .show-left-panel{
+//     .manage-feedback, .form-filter{
+//         .form-group{
+//             margin-bottom: 9px;
+//         }
+//         .form-row:last-child {
+//             .lg-width{
+//                 width: 195px !important;
+//             }
+//         }
+//     }
+// }
 
 #view-category-classification [class$="inner"]{
     max-width: 400px;
     text-align: left;
+}
+
+.edit-no-of-inquiry-modal-dialog {
+    .modal-header {
+        background: #1D3557 !important;
+    }
 }
