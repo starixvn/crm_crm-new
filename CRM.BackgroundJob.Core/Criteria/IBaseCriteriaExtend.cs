@@ -1,11 +1,9 @@
 ﻿namespace CRM.BackgroundJob.Core.Criteria
 {
-    public interface IBaseCriteriaExtend
+    using Fanex.Data.Repository;
+
+    public interface IBaseCriteriaExtend : ICriteria
     {
-        string GetSettingKey();
-
-        bool IsValid();
-
         int SiteDBGroupID { get; set; }
     }
 }

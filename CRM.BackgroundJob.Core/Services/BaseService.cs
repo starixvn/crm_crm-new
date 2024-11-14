@@ -91,8 +91,9 @@
         {
             try
             {
-                (var sqlRunner, var dbCommand) = CreateNewDbcommand(ipConfig, connectionAlias, criteria);
-                return await sqlRunner.QueryAsync<T>(dbCommand);
+                return await dynamicRepository.FetchAsync<T>(criteria, ipConfig);
+                //(var sqlRunner, var dbCommand) = CreateNewDbcommand(ipConfig, connectionAlias, criteria);
+                //return await sqlRunner.QueryAsync<T>(dbCommand);
             }
             catch (Exception ex)
             {
