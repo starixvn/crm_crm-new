@@ -297,7 +297,7 @@ export class DataGrid extends Component {
 
     renderTitle = (gridData, fromDateFormat, toFormat) => {
         return (
-            <div className='table-title d-flex justify-content-between align-items-center'>
+            <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                 <span>{`Credit Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
                 {
                     gridData.length > 0 && this.renderCustomButtonDailyLog()
@@ -308,7 +308,7 @@ export class DataGrid extends Component {
 
     renderTitleLicensee = (licenseeReport, fromDateFormat, toFormat) => {
         return (
-            <div className='table-title d-flex justify-content-between align-items-center'>
+            <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                 <span>{`Licensee Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
                 {
                     licenseeReport.length > 0 && this.renderCustomButtonLicensee()

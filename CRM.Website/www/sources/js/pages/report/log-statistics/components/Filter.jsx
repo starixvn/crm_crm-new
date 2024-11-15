@@ -142,7 +142,7 @@ export class Filter extends Component {
     render() {
         const { fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions } = this.state;
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='form-width'>
@@ -184,9 +184,8 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group className='form-width'>
+
+                    <Form.Group style={{width: '270px'}} className='form-width'>
                         <Form.Label htmlFor="mainCategoryIds">{LangHelper.getResource('MainCategory')}</Form.Label>
                         <div className='form-control-wrapper mainCategory-width'>
                             <MultipleSelect
@@ -224,6 +223,45 @@ export class Filter extends Component {
                         </Button>
                     </Form.Group>
                 </Form.Row>
+                {/* <Form.Row bsPrefix='form-row'>
+                    <Form.Group className='form-width'>
+                        <Form.Label htmlFor="mainCategoryIds">{LangHelper.getResource('MainCategory')}</Form.Label>
+                        <div className='form-control-wrapper mainCategory-width'>
+                            <MultipleSelect
+                                valueField='value'
+                                dataSource={mainCategoryOptions}
+                                keyField='id'
+                                maxDisplayItemCount={0}
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.handleChangeDropdown('mainCategoryIds', selectedItemsKey);
+                                }}
+                                hasSearchBox
+                                isNAOption
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className='label-width' htmlFor="communicationId">{LangHelper.getResource('CommunicationType')}</Form.Label>
+                        <div className='form-control-wrapper'>
+                            <MultipleSelect
+                                valueField='value'
+                                dataSource={communicationToolOptions}
+                                keyField='id'
+                                maxDisplayItemCount={0}
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.handleChangeDropdown('communicationIds', selectedItemsKey);
+                                }}
+                                hasSearchBox
+                                isNAOption
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group className="submit">
+                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                            <UnderlineButton.submitButton />
+                        </Button>
+                    </Form.Group>
+                </Form.Row> */}
             </Form>
         );
     }

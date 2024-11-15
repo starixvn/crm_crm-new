@@ -17,6 +17,14 @@
         }
     }
 
+    .fix-table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
+    }
+
     .parent-level-0 {
         height: 29px;
 
@@ -71,6 +79,7 @@
 
                     td:last-child {
                         background: #F0EDC4 !important;
+                        color: #0054a6 !important;
                     }
                 }
             }
@@ -91,7 +100,7 @@
             }
 
 
-            .table-title {
+            .table-title-v2 {
                 border-right: 0;
             }
         }
@@ -107,7 +116,7 @@
 
     .details {
         .fix-table-container {
-            .table-title {
+            .table-title-v2 {
                 border-right: 0;
             }
 
@@ -166,6 +175,9 @@
 }
 
 .chart-modal-dialog-log-statistics{
+    .modal-header {
+        background: #1D3557 !important;
+    }
     .modal-content{
         .recharts-default-legend{
             li{
