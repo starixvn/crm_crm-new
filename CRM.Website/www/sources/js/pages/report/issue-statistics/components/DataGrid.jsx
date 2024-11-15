@@ -129,7 +129,7 @@ export class DataGrid extends Component {
 
     renderTitle = gridData =>{
         return (
-            <div className='table-title d-flex justify-content-between align-items-center'>
+            <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                 <span>{gridData.name}</span>
                 {
                     gridData.childReports.length > 0 &&
