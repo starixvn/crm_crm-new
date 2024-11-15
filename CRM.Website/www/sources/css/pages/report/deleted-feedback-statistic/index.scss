@@ -48,7 +48,7 @@
         }
     }
     
-    .table-title {
+    .table-title-v2 {
         max-width: 1250px;
     }
     
@@ -60,6 +60,14 @@
         cursor: pointer;
         color: #0255a5;
         text-decoration: none;
+    }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
     }
 }
 
