@@ -161,7 +161,7 @@ export class Filter extends Component {
                     </Button>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group className='width-90'>
+                    <Form.Group className='width-duration'>
                         <Form.Label htmlFor="day">{LangHelper.getResource('FromDuration')}</Form.Label>
                     </Form.Group>
                     <Form.Group className='width-320 duration'>
@@ -196,7 +196,7 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group className='width-90'>
+                    <Form.Group className='width-duration'>
                         <Form.Label htmlFor="day">{LangHelper.getResource('ToDuration')}</Form.Label>
                     </Form.Group>
                     <Form.Group className='width-320 duration'>

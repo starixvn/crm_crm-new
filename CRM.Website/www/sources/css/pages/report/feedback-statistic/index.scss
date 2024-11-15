@@ -1,6 +1,13 @@
 @import '../../../abstracts/variables';
 .feedback-statistic{
     .form-filter {
+        background-color: #FFFFFF !important;
+        border-radius: 5px 5px 5px 5px;
+        border: 1px solid #CCCCCC;
+        margin-bottom: 1rem;
+	    font-family: Open Sans, sans-serif;
+        font-weight: 600;
+
         .react-datepicker__input-container input{
             width: 100% !important;
         }
@@ -9,8 +16,8 @@
             width: 163px !important;
         }
     
-        .width-90{
-            width: 90px !important;
+        .width-duration{
+            width: 117px !important;
         }
     
         .width-320{
@@ -41,6 +48,14 @@
             }
         }
 
+        .table > thead > tr > th {
+            background: #2B4E80;
+            color: #FFFFFF;
+            font-weight: 700;
+            line-height: 17.7px;
+            font-family: Open Sans, sans-serif;
+        }
+    
         .header-content, .body-content, .footer-content {
             border: 0 !important;
         }
@@ -139,11 +154,23 @@
     width: 1200px;
     max-height: 900px;
 
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .table-container, .fix-table-container{
         max-height: 875px !important;
 
         .body-content{
             max-height: 715px !important;
+        }
+
+        .table > thead > tr > th {
+            background: #2B4E80;
+            color: #FFFFFF;
+            font-weight: 700;
+            line-height: 17.7px;
+            font-family: Open Sans, sans-serif;
         }
     }
 
