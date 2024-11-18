@@ -272,8 +272,8 @@ export class DataGrid extends Component {
                     { dynamicReports.data.childReports.length > 0 && this.renderToolBox() }
                 </div>
                 <Table
-                    width={1200}
-                    autoWidth={false}
+                    //width={1200}
+                    autoWidth
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}

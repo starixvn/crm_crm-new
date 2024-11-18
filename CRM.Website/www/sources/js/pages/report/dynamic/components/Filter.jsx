@@ -437,7 +437,7 @@ export class Filter extends Component {
         const siteOptions = changeSiteSetting(allSettings.sites, 'childSites', 'childSites');
 
         return (
-            <Form className="form-filter" onSubmit={this.handleSubmit}>
+            <Form className="form-filter-v2" onSubmit={this.handleSubmit}>
                 {
                     showFilter &&
                     <React.Fragment>
@@ -469,9 +469,7 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group>
                                 <Form.Label htmlFor="response" className="col-auto col-form-label">{LangHelper.getResource('Response')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
@@ -520,9 +518,7 @@ export class Filter extends Component {
                                     />
                                 </div>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group>
                                 <Form.Label htmlFor="handler" className="col-auto col-form-label">{LangHelper.getResource('Handler')}</Form.Label>
                                 <Form.Control type="text" size="sm" className="shadow-none"
@@ -565,9 +561,7 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group>
                                 <Form.Label htmlFor="extension" className="col-auto col-form-label">{LangHelper.getResource('Extension')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
@@ -604,9 +598,7 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group className="form-group-subject">
                                 <Form.Label htmlFor="subject" className="col-auto col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
                                 <div style={{ width: '100%' }}>
@@ -622,6 +614,158 @@ export class Filter extends Component {
                                 <Button type="submit" className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></Button>
                             </Form.Group>
                         </Form.Row>
+
+                        {/* <Form.Row>
+                            <Form.Group>
+                                <Form.Label htmlFor="response" className="col-auto col-form-label">{LangHelper.getResource('Response')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="responseId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.responses.map((item, key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="product" className="col-auto col-form-label">{LangHelper.getResource('Product')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="productId"
+                                    value={productId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        productOptions.map((item, key) => this.renderItems(item.name, item.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="sub-product" className="col-auto col-form-label">{LangHelper.getResource('SubProduct')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="subProductId"
+                                    value={subProductId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        subProductOptions.map((item, key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group className="group-tool">
+                                <Form.Label htmlFor="site" className="col-auto col-form-label col-label-tool">{LangHelper.getResource('Site')}</Form.Label>
+                                <div className="form-control-wrapper">
+                                    <SelectWithSearch className='basic-single'
+                                        maxWidth="140%"
+                                        value={siteId}
+                                        OnChangeValue={this.handleChangeSite}
+                                        options={siteOptions}
+                                        isSelectAll
+                                    />
+                                </div>
+                            </Form.Group>
+                        </Form.Row> */}
+
+                        {/* <Form.Row>
+                            <Form.Group>
+                                <Form.Label htmlFor="handler" className="col-auto col-form-label">{LangHelper.getResource('Handler')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none"
+                                    autoComplete="off"
+                                    name="handler"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="reviewer" className="col-auto col-form-label">{LangHelper.getResource('Reviewer')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none"
+                                    autoComplete="off"
+                                    name="reviewer"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="role" className="col-auto col-form-label">{LangHelper.getResource('Role')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="roleId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.roles.map((item, key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group className="group-tool">
+                                <Form.Label htmlFor="communicationTool" className="col-auto col-form-label col-label-tool">
+                                    {LangHelper.getResource('CommunicationTool')}
+                                </Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="communicationId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.communicationTools.map((item, key) => this.renderItems(item.name, item.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                        </Form.Row> */}
+
+                        {/* <Form.Row>
+                            <Form.Group>
+                                <Form.Label htmlFor="extension" className="col-auto col-form-label">{LangHelper.getResource('Extension')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="extensionId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.extensions.map((item, key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="main-category" className="col-auto col-form-label">{LangHelper.getResource('MainCategory')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="mainCategoryId"
+                                    value={mainCategoryId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        mainCategoryOptions.map((item, key) => this.renderItems(item.name, item.mainCategoryID, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="sub-category" className="col-auto col-form-label">{LangHelper.getResource('SubCategory')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="subCategoryId"
+                                    value={subCategoryId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        subCategoryOptions.map((item, key) => this.renderItems(item.name, item.subCategoryId, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                        </Form.Row> */}
+
+                        {/* <Form.Row>
+                            <Form.Group className="form-group-subject">
+                                <Form.Label htmlFor="subject" className="col-auto col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
+                                <div style={{ width: '100%' }}>
+                                    <AutoComplete
+                                        value={this.state.subject}
+                                        options={this.props.feedbackSubjectTemplates} displayField="subject"
+                                        onChange={value => this.handleChangeSubject(value.subject || value)}
+                                        onInputChange={this.handleGetFeedbackSubjectTemplates}
+                                    />
+                                </div>
+                            </Form.Group>
+                            <Form.Group>
+                                <Button type="submit" className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></Button>
+                            </Form.Group>
+                        </Form.Row> */}
                     </React.Fragment>
                 }
                 {
