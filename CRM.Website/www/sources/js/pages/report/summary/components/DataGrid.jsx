@@ -219,7 +219,7 @@ export class DataGrid extends Component {
 
         return (
             <div className='table'>
-                <div style={{ width:totalWidth }} className='table-title d-flex justify-content-between align-items-center'>
+                <div style={{ width:totalWidth }} className='table-title-v2 d-flex justify-content-between align-items-center'>
                     <span>{reportTitle}</span>
                     {
                         categorySummaries.length > 0 && this.renderCustomButtonReport()
