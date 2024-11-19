@@ -38,7 +38,11 @@
 
         string GetMatchCode(string matchCode, string languageCode);
 
-        string GetMatchCodeVirtualSportFormat(string matchCode, string languageCode);
+        string GetMatchCodeFormat(string matchCode, string language);
+
+        string GetMatchCodeVirtualSport(string matchCode, string languageCode);
+
+        string GetMatchCodeVirtualSportFormat(string matchCode, string language);
 
         string GetCategogyName(string categoryId, string languageCode);
 
@@ -73,8 +77,6 @@
            string lastSubmitTimeEnvName,
            string maxLastSubmitTime,
            string serviceName);
-
-        string GetMatchCodeFormat(string matchCode, string language);
 
         Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, string isSyncArchivedAccount);
 
