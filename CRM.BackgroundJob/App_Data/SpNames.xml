@@ -102,7 +102,7 @@
     <Function Name="Result Amendment">
         <Setting Key="Acc_CRM_AmendmentNoti_SystemSettingSel" SpName="Acc_CRM_AmendmentNoti_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AmendmentNotificationSel" SpName="Acc_CRM_AmendmentNotificationSel" DbName="DBEXT.bodb02.wsv_nap" />
-        <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
