@@ -519,6 +519,9 @@
             var getTeamNameFunc = eventDetail.EventType == EventType5
                             ? new Func<string, string, string>(commonFeedback.GetTeamName3rd)
                             : new Func<string, string, string>(commonFeedback.GetTeamName);
+            var getMatchCodeFunc = eventDetail.EventType == EventType5
+                            ? new Func<string, string, string>(commonFeedback.GetMatchCodeVirtualSport)
+                            : new Func<string, string, string>(commonFeedback.GetMatchCode);
             var homeName = getTeamNameFunc(eventDetail.HomeId.ToString(), Language.en_US);
             var awayName = getTeamNameFunc(eventDetail.AwayId.ToString(), Language.en_US);
 
@@ -526,7 +529,7 @@
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var kO_time = eventDetail.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
             var race_time = eventDetail.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
-            var matchCode = commonFeedback.GetMatchCode(eventDetail.MatchCode, Language.en_US);
+            var matchCode = getMatchCodeFunc(eventDetail.MatchCode, Language.en_US);
             var numberGameEnGame = eventDetail.Sporttype == SportType161 ? leagueName : sportName;
             var productName = commonFeedback.GetProductName(eventDetail.ProductId.ToString(), Language.en_US);
             stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName, matchCode));
