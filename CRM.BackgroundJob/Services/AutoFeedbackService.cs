@@ -42,6 +42,8 @@
         Task AbnormalBetsExecuteJobAsync();
 
         Task MessageNotificationCenterExecuteJobAsync();
+
+        Task RebateRetentionExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -63,6 +65,7 @@
         private readonly IVoidingBetIDService voidingBetIDService;
         private readonly IAbnormalBetService abnormalBetService;
         private readonly IAutoFbMessageNotificationCenterService autoFbMessageNotificationService;
+        private readonly IAutoFbRebateRetentionService autoFbRebateRetentionService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = BackgroundJobConstants.DefaultEnvironment;
@@ -88,6 +91,7 @@
             IVoidingBetIDService voidingBetIDService,
             IAbnormalBetService abnormalBetService,
             IAutoFbMessageNotificationCenterService autoFbMessageNotificationService,
+            IAutoFbRebateRetentionService autoFbRebateRetentionService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -108,6 +112,7 @@
             this.voidingBetIDService = voidingBetIDService;
             this.abnormalBetService = abnormalBetService;
             this.autoFbMessageNotificationService = autoFbMessageNotificationService;
+            this.autoFbRebateRetentionService = autoFbRebateRetentionService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -641,6 +646,37 @@
                 }
                 var message = await autoFbMessageNotificationService.GetMsgInfoMessageNotificationAsync(systemSettingInfo.LastMsgTargetId, systemSettingInfo.BatchSize);
                 var (commandResult, command) = await autoFbMessageNotificationService.ImportMessageNotificationAsync(message, Environment);
+                if (commandResult.IsSuccessful)
+                {
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                    await logService.ErrorAsync(commandResult, command);
+                }
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task RebateRetentionExecuteJobAsync()
+        {
+            try
+            {
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(
+                    BackgroundJobConstants.ServiceName_AutoRebateRetention, Environment);
+
+                if (!systemSettingInfo.ServiceFlag)
+                {
+                    logService.LogInformation("Service AutoFeedback RebateRetention is shutdown.");
+                    return;
+                }
+                var (rrMessages, newLogSIDs) = await autoFbRebateRetentionService.GetRebateRetentionInfoAsync(systemSettingInfo.LastLogSId);
+                var (commandResult, command) = await autoFbRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs, Environment);
+
                 if (commandResult.IsSuccessful)
                 {
                     await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
