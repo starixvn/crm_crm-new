@@ -38,6 +38,8 @@
 
         string GetMatchCode(string matchCode, string languageCode);
 
+        string GetMatchCodeVirtualSportFormat(string matchCode, string languageCode);
+
         string GetCategogyName(string categoryId, string languageCode);
 
         string GetResourceCricketName(string resourceCricketId, string languageCode);
@@ -154,6 +156,12 @@
         public string GetMatchCode(string matchCode, string languageCode)
         {
             var betTypeName = remotingRefService.GetBetRadarMatchCodeFormat(matchCode, languageCode);
+            return betTypeName;
+        }
+
+        public string GetMatchCodeVirtualSport(string matchCode, string languageCode)
+        {
+            var betTypeName = remotingRefService.GetVirtualSportMatchCodeFormat(matchCode, "VYVS_MatchCode", languageCode);
             return betTypeName;
         }
 
@@ -295,7 +303,7 @@
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }
 
-        public string GetMatchCodeFormat(string matchCode, string language)
+        public static string FormatMatchCode(string matchCode, string language, Func<string, string, string> getMatchCodeFunc)
         {
             var MatchCodeReplace = matchCode;
             if (!string.IsNullOrEmpty(matchCode))
@@ -305,11 +313,21 @@
                 var matchCodeRegexId = regex.Cast<Match>().Select(m => m.Groups[1].Value).ToList();
                 foreach (var matchCodeId in matchCodeRegexId)
                 {
-                    var matchCodeName = GetMatchCode(matchCodeId, language);
+                    var matchCodeName = getMatchCodeFunc(matchCodeId, language);
                     MatchCodeReplace = MatchCodeReplace.Replace(matchCodeId, matchCodeName);
                 }
             }
             return MatchCodeReplace;
+        }
+
+        public string GetMatchCodeFormat(string matchCode, string language)
+        {
+            return FormatMatchCode(matchCode, language, GetMatchCode);
+        }
+
+        public string GetMatchCodeVirtualSportFormat(string matchCode, string language)
+        {
+            return FormatMatchCode(matchCode, language, GetMatchCodeVirtualSport);
         }
 
         public async Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, string isSyncArchivedAccount)
