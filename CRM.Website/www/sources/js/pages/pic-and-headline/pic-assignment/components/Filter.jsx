@@ -196,7 +196,7 @@ export class Filter extends Component {
         const { isHost } = this.props;
 
         return (
-            <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={this.handleSubmit}>
+            <Form className={`form-filter-v2 ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('Site')}</Form.Label>
@@ -268,13 +268,13 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <Form.Group style={{width: '189px'}}>
+                        <Form.Group style={{width: '210px'}}>
                             <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
                                 {LangHelper.getResource('Submit')}
                             </Button>
                             {
                                 isHost &&
-                                <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                <Button style={{width: '100px'}} className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
                                     {LangHelper.getResource('AssignPIC')}
                                 </Button>
                             }
@@ -341,13 +341,13 @@ export class Filter extends Component {
                         </Form.Group>
                         {
                             this.state.showFilter &&
-                            <Form.Group style={{width: '189px'}}>
+                            <Form.Group style={{width: '210px'}}>
                                 <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
                                 {
                                     isHost &&
-                                    <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                    <Button style={{width: '100px'}} className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
                                         {LangHelper.getResource('AssignPIC')}
                                     </Button>
                                 }

@@ -2,7 +2,7 @@
 @import './responsive';
 
 .pic-assignment{
-    .form-filter{
+    .form-filter-v2{
         position: relative;
 
         .toggle-filter {
@@ -33,9 +33,12 @@
 
     #form-checkbox{
         width: 600px !important;
+        margin-top: 26px;
+
         .filter-checkbox {
             display: flex;
             align-items: center;
+            height: 100%;
     
             &-text {
                 margin: 0 15px 0 5px;
@@ -86,6 +89,14 @@
             .table td {
                 word-break: break-word;
             }
+
+            table > thead > tr > th {
+                background: #2B4E80;
+                color: #FFFFFF;
+                font-weight: 700;
+                line-height: 17.7px;
+                font-family: Open Sans, sans-serif;
+            }
         }
     }
     
@@ -127,6 +138,10 @@
 }
 
 .assign-pic-modal{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .modal-backdrop {
         z-index: 1050 !important;
     }
