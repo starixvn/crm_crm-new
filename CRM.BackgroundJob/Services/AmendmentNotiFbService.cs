@@ -8,6 +8,7 @@
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -390,6 +391,7 @@
             var kO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
             var startTimeOutright = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Fortmatddmmmyyyyhhmmtt);
             var race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
+            logService.LogInformation($"Amendment: {JsonConvert.SerializeObject(amendment)}");
             logService.LogInformation($"MatchCode: {amendment.MatchCode}");
             var matchCodeReplace = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.en_US);
             logService.LogInformation($"matchCodeReplace: {matchCodeReplace}");
