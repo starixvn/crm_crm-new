@@ -189,6 +189,7 @@
             services.AddSingleton<IGenerateLapNotificationService, GenerateLapNotificationService>();
             services.AddSingleton<ISendNotificationCenterService, SendNotificationCenterService>();
             services.AddSingleton<IAutoFbMessageNotificationCenterService, AutoFbMessageNotificationCenterService>();
+            services.AddSingleton<IAutoFbRebateRetentionService, AutoFbRebateRetentionService>();
             services.AddSingleton<BotServiceHttpClientBase>();
             services.AddSingleton<ISendNotificationService, SendNotificationService>();
             services.AddSingleton<IChatBotSendMessageService, ChatBotSendMessageService>();
@@ -220,6 +221,7 @@
             services.AddHostedService<AutoChatbotArchivingDAWoker>();
             services.AddHostedService<LetstalkHealthCheckWorker>();
             services.AddHostedService<AutoFbRefundSettledTicketWoker>();
+            services.AddHostedService<AutoFbRebateRetentionWorker>();
 
             services.AddHostedService<MncCaptureSettlementDataWorker>();
             services.AddHostedService<MncGenerateResultAmendmentWorker>();
