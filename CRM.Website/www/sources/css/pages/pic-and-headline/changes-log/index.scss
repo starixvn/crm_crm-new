@@ -31,8 +31,8 @@
             height: 26px;
         }
         .active{
-            background-color:#466ab6 !important;
-            border-color:#466ab6;
+            background-color:#2B4E80 !important;
+            border-color:#2B4E80;
             color:#fff !important;
         }
 
@@ -41,7 +41,7 @@
             color: #fff;
 
             &:hover{
-                background-color:#2d5ab9 !important;
+                background-color:#2B4E80 !important;
                 color:#fff !important;
             }
         }
@@ -52,6 +52,14 @@
     }
 
     .table-container, .fix-table-container {
+        .table > thead > tr > th {
+            background: #2B4E80;
+            color: #FFFFFF;
+            font-weight: 700;
+            line-height: 17.7px;
+            font-family: Open Sans, sans-serif;
+        }
+    
         .body-content table tbody{
             tr td{                
                 word-break: break-word;

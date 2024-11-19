@@ -71,7 +71,7 @@ export class PicFilter extends Component {
         const { picName, displayName, fromDate, toDate, editBy } = this.state;
 
         return (
-            <Form className='form-filter form-filter-pic' onSubmit={this.handleSubmit} action="javascript:void(0)">
+            <Form className='form-filter-v2 form-filter-pic' onSubmit={this.handleSubmit} action="javascript:void(0)">
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="picName">{LangHelper.getResource('PIC')}</Form.Label>
