@@ -32,6 +32,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             IVoidingBetIDService voidingBetIDService,
             IAbnormalBetService abnormalBetService,
             IAutoFbMessageNotificationCenterService autoFbMessageNotificationCenterService,
+            IAutoFbRebateRetentionService autoFbRebateRetentionService,
             IConfiguration configuration
             )
             : base(appSettings,
@@ -51,6 +52,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 voidingBetIDService,
                 abnormalBetService,
                 autoFbMessageNotificationCenterService,
+                autoFbRebateRetentionService,
                 configuration)
         {
 
