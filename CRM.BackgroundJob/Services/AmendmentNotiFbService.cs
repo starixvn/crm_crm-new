@@ -390,7 +390,9 @@
             var kO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
             var startTimeOutright = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Fortmatddmmmyyyyhhmmtt);
             var race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
+            logService.LogInformation($"MatchCode: {amendment.MatchCode}");
             var matchCodeReplace = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.en_US);
+            logService.LogInformation($"matchCodeReplace: {matchCodeReplace}");
 
             var virtualSports = GetAmendmentDescriptionVirtualSports(
                 amendment, amendmentDescTemplate, sportName,
