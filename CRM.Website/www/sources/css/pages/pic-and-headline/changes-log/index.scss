@@ -23,6 +23,7 @@
     }
 
     .nav-tabs{
+        border-bottom: 0px !important;
         a{
             border-radius: 0;
             font-size: 12px;
@@ -47,7 +48,7 @@
         }
     }
 
-    .table-title, .page-container, .table-container, .fix-table-container{
+    .form-filter-v2, .table-title-v2, .page-container, .table-container, .fix-table-container{
         max-width: 1500px !important;
     }
 
