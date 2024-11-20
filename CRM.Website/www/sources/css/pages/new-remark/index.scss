@@ -5,20 +5,16 @@
         padding: 0 !important;
     }
     
-    .form-filter {
-        min-width: 960px;
+    .form-filter-v2 {
 
-        .form-group-date{
-            width: 242px;
-            .react-datepicker-wrapper-container{
-                width: 137px;
-
-                input{
-                    width: 100% !important;
-                }
+        .react-datepicker-wrapper-container > div {
+            height: calc(1.5em + 0.5rem);
+            
+            .react-datepicker-wrapper {
+                height: 100%;
             }
         }
-    
+
         .react-datepicker-popper{
             z-index: 999 !important;
         }
@@ -31,6 +27,14 @@
     
     .link-click:hover {
         color: $draft-color !important;
+    }
+
+    .table-new-remarks .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
     }
 
     .table-new-remarks .body-content{
@@ -88,6 +92,10 @@
 }
 
 .new-remark-modal, .edit-remark-modal {
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .modal-lg, .modal-xl {
         max-width: 900px;
 
