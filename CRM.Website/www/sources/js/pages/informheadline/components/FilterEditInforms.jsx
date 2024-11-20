@@ -108,10 +108,150 @@ export class FilterEditInforms extends PureComponent {
         });
 
         return(
-            <Form noValidate onSubmit={handleSubmit} className="form-filter form-filter-edit-inform">
+            <Form noValidate onSubmit={handleSubmit} className="form-filter-v2 form-filter-edit-inform">
                 <FormikErrorMessage  isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
 
-                <Form.Group as={Row}>
+                <Form.Row className='input-edit'>
+                    <Form.Control type="text" size="sm" className="shadow-none input-excel"
+                            autoComplete="off"
+                            name="title"
+                            placeholder="Title"
+                            isInvalid={touched.title && errors.title}
+                            defaultValue={detail.title}
+                            onChange={event => {
+                                setFieldValue('title', event.target.value);
+                            }}
+                        />
+                    {
+                        (informData && informData.length > 0) && (
+                            <ExcelIcon
+                                handleExportExcel={() => this.handleExportExcel(values)}
+                            />
+                        )
+                    }
+                </Form.Row>
+
+                <Form.Row>
+                    <Form.Group>
+                        <Form.Label>
+                            {LangHelper.getResource('Currency')}
+                        </Form.Label>
+
+                        <MultipleSelect
+                            isInvalid={touched.currencies && errors.currencies}
+                            dataSource={filterCurrencies}
+                            keyField='id' valueField='name'
+                            maxDisplayItemCount={3}
+                            hasAllOption={filterCurrencies.length > 0}
+                            isAllTextShown={filterCurrencies.length > 0}
+                            hasSearchBox
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('currencies', selectedItemsKey);
+                            }}
+                        />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>
+                            {LangHelper.getResource('Position')}
+                        </Form.Label>
+
+                        <MultipleSelect
+                            isInvalid={touched.levels && errors.levels}
+                            dataSource={filterLevels}
+                            keyField='id' valueField='name'
+                            hasAllOption={filterLevels.length > 0}
+                            isAllTextShown={filterLevels.length > 0}
+                            hasSearchBox
+                            maxDisplayItemCount={2}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('levels', selectedItemsKey);
+                            }}
+                        />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>
+                            {LangHelper.getResource('Site')}
+                        </Form.Label>
+
+                        <MultipleSelect
+                            isInvalid={touched.sites && errors.sites}
+                            dataSource={siteOptions}
+                            keyField='id' valueField='name'
+                            hasAllOption={siteOptions.length > 0}
+                            isAllTextShown={siteOptions.length > 0}
+                            maxDisplayItemCount={1}
+                            hasSearchBox
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('sites', selectedItemsKey);
+                            }}
+                        />
+                    </Form.Group>
+                    
+                    <Form.Group>
+                        <Form.Label>
+                            {LangHelper.getResource('VIP')}
+                        </Form.Label>
+
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                            name="isVip"
+                            defaultValue={detail.isVip}
+                            key={detail.isVip}
+                            onChange={handleChange}
+                        >
+                            {
+                                allIsVip.map((value, key) => this.renderOptions(value.name, value.id, key))
+                            }
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group style={{width: '100px'}}>
+                        <Button variant="primary" size="sm"
+                            type="submit"
+                            onClick={() => {setFieldValue('submit',false)}}
+                        >
+                            {LangHelper.getResource('Search')}
+                        </Button>
+                    </Form.Group>
+                </Form.Row>
+
+                <Form.Row>
+                    <Form.Group className='direct-account'>
+                        <Form.Label className="col-form-label">
+                            {LangHelper.getResource('DirectAccount')}
+                        </Form.Label>
+
+                        <Form.Check type="checkbox" className="check-btn"
+                            checked={values.isHeadline}
+                            onChange={event => setFieldValue('isHeadline', event.target.checked)}
+                        />
+
+                        <Form.Label className="col-form-label" style={{paddingLeft:'2px'}}>
+                            {LangHelper.getResource('Headline')}
+                        </Form.Label>
+
+                        <Form.Check type="checkbox" className="check-btn"
+                            checked={values.isNoGroup}
+                            onChange={event => setFieldValue('isNoGroup', event.target.checked)}
+                        />
+
+                        <Form.Label className="col-form-label" style={{paddingLeft:'2px'}}>
+                            {LangHelper.getResource('WithoutAnyGroup')}
+                        </Form.Label>
+
+                        <Form.Check type="checkbox" className="check-btn"
+                            checked={values.excludeIgnoredAccounts}
+                            onChange={event => setFieldValue('excludeIgnoredAccounts', event.target.checked)}
+                        />
+
+                        <Form.Label className="col-form-label" style={{paddingLeft:'2px'}}>
+                            {LangHelper.getResource('ExcludeIgnoredAccounts')}
+                        </Form.Label>
+                    </Form.Group>
+                </Form.Row>
+
+                {/* <Form.Group as={Row}>
                     <Col sm="12" md="12" className="group-input-excel">
                         <Form.Control type="text" size="sm" className="shadow-none input-excel"
                             autoComplete="off"
@@ -131,9 +271,9 @@ export class FilterEditInforms extends PureComponent {
                         )
                     }
                     </Col>
-                </Form.Group>
+                </Form.Group> */}
 
-                <Form.Group as={Row}>
+                {/* <Form.Group as={Row}>
                     <Form.Label className="col-form-label" style={{paddingLeft:'15px'}}>
                         {LangHelper.getResource('Currency')}
                     </Form.Label>
@@ -217,9 +357,9 @@ export class FilterEditInforms extends PureComponent {
                         </Button>
                     </Col>
 
-                </Form.Group>
+                </Form.Group> */}
 
-                <Form.Group as={Row} style={{alignItems:'center'}}>
+                {/* <Form.Group as={Row} style={{alignItems:'center'}}>
                     <Form.Label className="col-form-label" style={{paddingLeft:'15px'}}>
                         {LangHelper.getResource('DirectAccount')}
                     </Form.Label>
@@ -250,7 +390,7 @@ export class FilterEditInforms extends PureComponent {
                     <Form.Label className="col-form-label" style={{paddingLeft:'2px'}}>
                         {LangHelper.getResource('ExcludeIgnoredAccounts')}
                     </Form.Label>
-                </Form.Group>
+                </Form.Group> */}
             </Form>
         );
     };
