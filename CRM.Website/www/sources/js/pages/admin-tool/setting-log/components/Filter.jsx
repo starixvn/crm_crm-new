@@ -99,7 +99,7 @@ export class Filter extends Component {
 
         const actionLogs = [...all, ...this.props.actionLogs];
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit} action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
