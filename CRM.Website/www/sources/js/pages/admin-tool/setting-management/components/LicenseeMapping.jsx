@@ -187,9 +187,9 @@ export class LicenseeMapping extends PureComponent {
                             message={cancelLicenseeMappingResult.message || LangHelper.getResource('UpdateLicenseeMappingSuccessful')}
                         />
                     }
-                     <Form className='form-filter'>
+                     <Form className='form-filter-v2'>
                         <Form.Row bsPrefix='form-row'>
-                            <Form.Group>
+                            <Form.Group className='setting-group'>
                                 <Form.Label>
                                     {LangHelper.getResource('Setting')}
                                 </Form.Label>
@@ -198,6 +198,8 @@ export class LicenseeMapping extends PureComponent {
                                     className="shadow-none mr-4" autoComplete="off"
                                     onChange={event => this.setState({setting: event.target.value})}
                                 />
+                            </Form.Group>
+                            <Form.Group>
                                 <Button variant="primary" className='btnSearch' size="sm" onClick={this.handleSearch}>
                                     {LangHelper.getResource('Search')}
                                 </Button>

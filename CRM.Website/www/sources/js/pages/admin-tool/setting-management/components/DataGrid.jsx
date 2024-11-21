@@ -102,7 +102,7 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='justify-content-between align-items-center table-title d-flex' style={{width: 1000}}>
+                <div className='justify-content-between align-items-center table-title-v2 d-flex' style={{width: 1000}}>
                     <span>{`${LangHelper.getResource('SettingManagementTitle')} ${gridParams.settingName}`}</span>
                 </div>
                 <Table
