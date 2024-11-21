@@ -1,11 +1,17 @@
 .feedback-subject{
-    .form-filter {
+    .form-filter-v2 {
         max-width: 920px !important;
+
         .form-row {
-            .form-group {
-                .form-control {
-                    width: 100%;
-                }
+            column-gap: 20px !important;
+            padding-top: 5px;
+
+            .auto-complete {
+                width: 260px !important;
+            }
+
+            .btn {
+                height: 26px;
             }
         }
     }
@@ -13,9 +19,21 @@
     .page-container{
         max-width: 920px !important;
     }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
+    }
 }
 
 .feedback-subject-modal, .confirm-cancel-popup-edit{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .modal-dialog{
         max-width: 600px !important;
     }
