@@ -102,26 +102,28 @@ export class Update extends Component {
                             <span className='bold'>{this.props.updatePopup.parentName}</span>
                         </Form.Label>
                     </Form.Group>
-                    <div className='filter-relation'>
-                        <Form.Label className='label-subSetting' column sm="3" md="3"  htmlFor="subSetting">
-                            {LangHelper.getResource('SubSetting')}
-                        </Form.Label>
-                        <Col sm="5" md="5">
-                            <Form.Control as="select" size="sm" style={{width: 200}}
-                                name="subSettingName" id="subSettingName"
-                                value={this.state.subSettingName}
-                                onChange={this.onChangeSubSetting}
-                            >
-                                {
-                                    subSettingOptions.map((value, key) => <option key={key} value={value.settingName}>{value.settingName}</option>)
-                                }
-                            </Form.Control>
-                        </Col>
-                        <Col sm="4" md="4">
-                            <Button variant="primary" size="sm" onClick={this.handleSearch}>
-                                <UnderlineButton.searchButton />
-                        </Button>
-                        </Col>
+                    <div className='form-filter-v2'>
+                        <Form.Row>
+                            <Form.Group className='sub-group'>
+                                <Form.Label className='label-subSetting' htmlFor="subSetting">
+                                    {LangHelper.getResource('SubSetting')}
+                                </Form.Label>
+                                <Form.Control as="select" size="sm" style={{width: 200}}
+                                    name="subSettingName" id="subSettingName"
+                                    value={this.state.subSettingName}
+                                    onChange={this.onChangeSubSetting}
+                                >
+                                    {
+                                        subSettingOptions.map((value, key) => <option key={key} value={value.settingName}>{value.settingName}</option>)
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group>
+                                <Button variant="primary" size="sm" onClick={this.handleSearch}>
+                                    <UnderlineButton.searchButton />
+                                </Button>
+                            </Form.Group>
+                        </Form.Row>
                     </div>
                     <Table
                         width={630}
