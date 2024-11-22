@@ -1,18 +1,20 @@
 .category-classification {
-    .form-filter {
-        max-width: 1200px !important;
-        .form-row {
-            .form-group {
-                width: 320px;
-            }
-            .category-classification {
-                width: 80px !important; 
-            }    
+    .form-filter-v2 {
+        .form-group {
+            width: 260px !important;
         }
     }
     
-    .page-container, .table-title{
+    .page-container, .table-title-v2, .form-filter-v2{
         max-width: 1200px !important;
+    }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
     }
 
     table {
@@ -51,5 +53,11 @@
         width: 83%;
         min-width: 950px;
         margin-left: 101px;
+    }
+}
+
+.sweet-alert-modal, .category-classification-modal {
+    .modal-header {
+        background: #1D3557 !important;
     }
 }

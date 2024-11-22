@@ -189,7 +189,7 @@ export class Filter extends Component {
 
     render() {
         return (
-            <Form className="form-filter">
+            <Form className="form-filter-v2">
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label className="category-classification">{LangHelper.getResource('Category')}</Form.Label>
@@ -231,12 +231,14 @@ export class Filter extends Component {
                             onChange={this.handleChangeRemark}
                         />
                     </Form.Group>
-                    <Button className="mr-4" variant="primary"
-                        size="sm" type="submit"
-                        onClick={this.handleSubmit}
-                    >
-                        <UnderlineButton.submitButton />
-                    </Button>
+                    <Form.Group>
+                        <Button variant="primary"
+                            size="sm" type="submit"
+                            onClick={this.handleSubmit}
+                        >
+                            <UnderlineButton.submitButton />
+                        </Button>
+                    </Form.Group>
                 </Form.Row>
             </Form>
         );
