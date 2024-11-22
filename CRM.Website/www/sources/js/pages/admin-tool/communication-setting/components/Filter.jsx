@@ -182,7 +182,7 @@ export class Filter extends Component {
 
     render() {
         return (
-            <Form className="form-filter">
+            <Form className="form-filter-v2">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
@@ -229,12 +229,14 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                 </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group controlId="formBasicCheckbox" style={{width: '360px'}}>
-                        <Form.Check className="mr-5" type="checkbox" label={LangHelper.getResource('DisableCatSubCatfilters')}
+                <Form.Row bsPrefix='form-row' style={{'margin-top': '10px'}}>
+                    <Form.Group controlId="formBasicCheckbox">
+                        <Form.Check type="checkbox" label={LangHelper.getResource('DisableCatSubCatfilters')}
                             checked={this.state.filter.isDisableCategorySubCategory}
                             onChange={this.isDisableCatelogy}
                         />
+                    </Form.Group>
+                    <Form.Group>
                         <Button className="mr-4" variant="primary" size="sm"
                             disabled={!this.state.filter.isDisableCategorySubCategory && (this.state.filter.mainCategoriesTypes.length === 0
                                 || this.state.filter.subCategoriesTypes.length === 0)}
