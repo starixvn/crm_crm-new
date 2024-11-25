@@ -140,37 +140,6 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group className='sm-width'>
-                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
-                        <div className='react-datepicker-wrapper-container'>
-                            <DatePicker
-                                dropdownMode="select"
-                                showMonthDropdown
-                                useShortMonthInDropdown
-                                showYearDropdown
-                                selected={fromDate}
-                                maxDate={new Date(this.maxFromDate)}
-                                onChange={value => this.handleChangeFromDate(value)}
-                            />
-                        </div>
-                    </Form.Group>
-                    <Form.Group className='lg-width'>
-                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
-                        <div className='react-datepicker-wrapper-container'>
-                            <DatePicker
-                                dropdownMode="select"
-                                selected={toDate}
-                                showMonthDropdown
-                                useShortMonthInDropdown
-                                showYearDropdown
-                                minDate={new Date(this.minToDate)}
-                                maxDate={new Date(this.maxToDate)}
-                                onChange={value => this.handleChangeToDate(value)}
-                            />
-                        </div>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
                     <Form.Group className='large-width'>
                         <Form.Label htmlFor="username">{LangHelper.getResource('Username')}</Form.Label>
                         <div className="form-username">
@@ -194,7 +163,36 @@ export class Filter extends Component {
                             </Form.Control>
                         </div>
                     </Form.Group>
-                    <Form.Group className='sm-width'>
+                    <Form.Group>
+                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                dropdownMode="select"
+                                showMonthDropdown
+                                useShortMonthInDropdown
+                                showYearDropdown
+                                selected={fromDate}
+                                maxDate={new Date(this.maxFromDate)}
+                                onChange={value => this.handleChangeFromDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                dropdownMode="select"
+                                selected={toDate}
+                                showMonthDropdown
+                                useShortMonthInDropdown
+                                showYearDropdown
+                                minDate={new Date(this.minToDate)}
+                                maxDate={new Date(this.maxToDate)}
+                                onChange={value => this.handleChangeToDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
                         <Form.Label htmlFor="isReviewed">{LangHelper.getResource('IsReviewed')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="isReviewed" id="isReviewed"
@@ -207,7 +205,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group className='lg-width'>
+                    <Form.Group>
                         <Form.Label htmlFor="responseId">{LangHelper.getResource('CustomerResponse')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="responseId" id="responseId"
@@ -219,8 +217,6 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
                     <Form.Group className='large-width'>
                         <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
                         <Form.Control as="select" size="sm"
@@ -233,7 +229,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{width: '440px'}} className='subCategory-width'>
+                    <Form.Group className='large-width'>
                         <Form.Label htmlFor="subCategoryId">{LangHelper.getResource('SubCategory')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="subCategoryId"
@@ -244,38 +240,34 @@ export class Filter extends Component {
                                 subCategoryOptions.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
                             }
                         </Form.Control>
+                    </Form.Group> 
+                    <Form.Group>
+                        <Form.Label htmlFor="communicationId">{LangHelper.getResource('Communication')}</Form.Label>
+                        <Form.Control as="select" size="sm"
+                            name="communicationId" id="communicationId"
+                            className='select-options-sm mr-2'
+                            value={communicationId}
+                            onChange={this.handleChange}
+                        >
+                            {
+                                communicationOptions.map((value, key) => this.renderOptions(value.name, value.id, key))
+                            }
+                        </Form.Control>
                     </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <div className='form-com-tus large-width'>
-                        <Form.Group className='form-communication'>
-                            <Form.Label htmlFor="communicationId">{LangHelper.getResource('Communication')}</Form.Label>
-                            <Form.Control as="select" size="sm"
-                                name="communicationId" id="communicationId"
-                                className='select-options-sm mr-2'
-                                value={communicationId}
-                                onChange={this.handleChange}
-                            >
-                                {
-                                    communicationOptions.map((value, key) => this.renderOptions(value.name, value.id, key))
-                                }
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group className='form-status'>
-                            <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                            <Form.Control as="select" size="sm"
-                                name="statusId" id="statusId"
-                                className='select-options-sm'
-                                value={statusId}
-                                onChange={this.handleChange}
-                            >
-                                {
-                                    statuesFilterDelete.map((value, key) => this.renderOptions(value.name, value.statusId, key))
-                                }
-                            </Form.Control>
-                        </Form.Group>
-                    </div>
-                    <Form.Group className='sm-width'>
+                    <Form.Group className='form-status'>
+                        <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                        <Form.Control as="select" size="sm"
+                            name="statusId" id="statusId"
+                            className='select-options-sm'
+                            value={statusId}
+                            onChange={this.handleChange}
+                        >
+                            {
+                                statuesFilterDelete.map((value, key) => this.renderOptions(value.name, value.statusId, key))
+                            }
+                        </Form.Control>
+                    </Form.Group>        
+                    <Form.Group>
                         <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
                         <Form.Control type="text" size="sm" value={handler}
                             id="handler"
@@ -285,7 +277,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group className='lg-width'>
+                    <Form.Group>
                         <Form.Label htmlFor="reviewer">{LangHelper.getResource('Reviewer')}</Form.Label>
                         <Form.Control type="text" size="sm" value={reviewer}
                             name="reviewer" autoComplete="on"

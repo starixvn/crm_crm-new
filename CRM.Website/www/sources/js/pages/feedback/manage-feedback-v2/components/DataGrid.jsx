@@ -334,8 +334,9 @@ export class DataGrid extends Component {
             <Fragment>
                 {this.renderTableTitle(gridDataFeedbacks)}
                 <Table
-                    width={1250}
-                    autoWidth={false}
+                    minWidth={960}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    autoWidth
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
@@ -343,6 +344,7 @@ export class DataGrid extends Component {
                     body={this.buildBody(isHost)}
                     containerPadding={0}
                     shouldResetScrollPosition={false}
+                    adjustedHeight={10}
                 />
             </Fragment>
         );
