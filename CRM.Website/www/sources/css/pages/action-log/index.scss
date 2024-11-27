@@ -1,10 +1,19 @@
 .action-log{
-    .form-filter, .table-title, .page-container, .table-container{
-        max-width: 1200px !important;
-    }
-    
     .react-datepicker-wrapper input{
         width: 100% !important;
+    }
+
+    .react-datepicker-wrapper-container .react-datepicker-wrapper {
+        display: block;
+        height: 26px;
+    }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
     }
     
     .grid-blue{

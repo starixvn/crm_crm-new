@@ -116,12 +116,13 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='justify-content-between table-title d-flex align-items-center'>
+                <div className='justify-content-between table-title-v2 d-flex align-items-center'>
                     <span>{LangHelper.getResource('CustomerActivityLogs')}</span>
                 </div>
                 <Table
-                    autoWidth={false}
-                    width={1200}
+                    minWidth={960}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    autoWidth
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     isPaging

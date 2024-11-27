@@ -83,7 +83,7 @@ export class Filter extends Component {
             return null;
         }
         return (
-            <Form className="form-filter" onSubmit={this.handleSubmit} action="javascript:void(0)">
+            <Form className="form-filter-v2" onSubmit={this.handleSubmit} action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
@@ -138,9 +138,9 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <div className="form-group-button mb-3">
+                    <Form.Group>
                         <Button id='btn-submit-activity' type="submit" variant="primary" size="sm"><UnderlineButton.submitButton /></Button>
-                    </div>
+                    </Form.Group>
                 </Form.Row>
             </Form>
         );
