@@ -15,20 +15,30 @@
     font-family: Open Sans, sans-serif;
 }
 
-.medium-desktops{
-    &> :not(.show-left-panel){
-        .notification-type{
-            .form-group{
-                width: 250px;
-            }
-        }
-    }
-
-    &> .show-left-panel{
-        .notification-type{
-            .form-group{
-                width: 230px;
+@media screen and (max-width: 1559px){
+    .show-left-panel {
+        .notification-type {
+            .btn {
+                margin-top: 10px !important;
             }
         }
     }
 }
+
+// .medium-desktops{
+//     &> :not(.show-left-panel){
+//         .notification-type{
+//             .form-group{
+//                 width: 250px;
+//             }
+//         }
+//     }
+
+//     &> .show-left-panel{
+//         .notification-type{
+//             .form-group{
+//                 width: 230px;
+//             }
+//         }
+//     }
+// }

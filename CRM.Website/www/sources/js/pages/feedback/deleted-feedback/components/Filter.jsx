@@ -178,8 +178,6 @@ export class Filter extends Component {
                                 />
                             </div>
                         </Form.Group>
-                    </Form.Row>
-                    <Form.Row bsPrefix='form-row'>
                         <Form.Group className='large-width'>
                             <Form.Label>
                                 {LangHelper.getResource('MainCategory')}
@@ -193,7 +191,7 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '440px'}}>
+                        <Form.Group className='large-width'>
                             <Form.Label>
                             {LangHelper.getResource('SubCategory')}
                             </Form.Label>
@@ -207,37 +205,33 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                    </Form.Row>
-                    <Form.Row bsPrefix='form-row'>
-                        <div className='form-com-cus large-width'>
-                            <Form.Group className='communication-width'>
-                                <Form.Label>
-                                    {LangHelper.getResource('Communication')}
-                                </Form.Label>
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="communicationId"
-                                    onChange={this.handleChange}
-                                >
-                                    {
-                                        communications.map((value, key) => this.renderOptions(value.name, value.id, key))
-                                    }
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group className='customer-width'>
-                                <Form.Label>
-                                    {LangHelper.getResource('CustomerResponse')}
-                                </Form.Label>
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="responseId"
-                                    onChange={this.handleChange}
-                                >
-                                    {
-                                        customerResponses.map((value, key) => this.renderOptions(value.value, value.id, key))
-                                    }
-                                </Form.Control>
-                            </Form.Group>
-                        </div>
-                        <Form.Group>
+                        <Form.Group className='communication-width'>
+                            <Form.Label>
+                                {LangHelper.getResource('Communication')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="communicationId"
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    communications.map((value, key) => this.renderOptions(value.name, value.id, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group className='customer-width'>
+                            <Form.Label>
+                                {LangHelper.getResource('CustomerResponse')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="responseId"
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    customerResponses.map((value, key) => this.renderOptions(value.value, value.id, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group className='review-width'>
                             <Form.Label>
                                 {LangHelper.getResource('Is Reviewed')}
                             </Form.Label>

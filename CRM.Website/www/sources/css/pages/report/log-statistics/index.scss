@@ -1,19 +1,11 @@
 .log-statistics {
-    .form-filter {
-        .react-datepicker__input-container input {
-            width: 100% !important;
+    .form-filter-v2 {
+        .large-width {
+            width: 270px;
         }
-
-        .label-width {
-            width: 120px !important;
-        }
-
-        .form-width {
-            width: 350px !important;
-        }
-
-        .mainCategory-width {
-            width: 245px !important;
+        .react-datepicker-wrapper-container .react-datepicker-wrapper {
+            display: block;
+            height: 26px;
         }
     }
 
@@ -183,6 +175,41 @@
             li{
                 width: 310px;
             }
+        }
+    }
+}
+
+.show-left-panel {
+    .log-statistics {
+        .form-filter-v2 {
+            .large-width {
+                width: 200px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1800px){
+    .show-left-panel {
+        .log-statistics {
+            .btn {
+                margin-top: 10px !important;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1270px) and (max-width: 1510px){
+    .show-left-panel {
+        .log-statistics {
+            .btn {
+                margin-top: 26px !important;
+            }
+        }
+    }
+    .log-statistics {
+        .btn {
+            margin-top: 10px !important;
         }
     }
 }

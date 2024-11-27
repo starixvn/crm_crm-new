@@ -124,3 +124,18 @@
         }
     }
 }
+
+@media screen and (max-width: 1330px){
+    .show-left-panel {
+        .deleted-feedback-statistic {
+            .btn {
+                margin-top: 10px !important;
+            }
+        }
+    }
+    .deleted-feedback-statistic {
+        .btn {
+            margin-top: 26px !important;
+        }
+    }
+}

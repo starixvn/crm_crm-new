@@ -479,9 +479,9 @@ export class DataGrid extends Component {
         return (
             <div className='pic-assignment-container'>
                 <Table
-                    maxWidth={isRenderCommunication ? calMaxWidth : 1350}
+                    maxWidth={calMaxWidth}
                     shouldUseMaxWidth
-                    width={isRenderCommunication ? document.getElementById('right-row-container').clientWidth : 1350}
+                    width={document.getElementById('right-row-container').clientWidth}
                     autoWidth={false}
                     title={title}
                     isFixColumn

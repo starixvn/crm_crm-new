@@ -260,7 +260,7 @@ export class Filter extends Component {
                                 </Form.Group>
                             }
 
-                            <Form.Group style={{width: '270px'}} className='form-group-main-category'>
+                            <Form.Group className='form-group-main-category large-width'>
                                 <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
                                 <Form.Control as="select" size="sm" name="mainCategoryId" id="mainCategoryId"
                                     value={mainCategoryId} onChange={this.handleChangeMainCategory}

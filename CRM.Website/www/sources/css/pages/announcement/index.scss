@@ -824,3 +824,28 @@
     background: #1D3557 !important;
   }
 }
+
+@media screen and (max-width: 1489px){
+  .show-left-panel {
+      .announcement {
+          .btn {
+              margin-top: 26px !important;
+          }
+      }
+  }
+  .announcement {
+    .btn {
+        margin-top: 10px !important;
+    }
+  }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1849px){
+  .show-left-panel {
+      .announcement {
+          .btn {
+              margin-top: 10px !important;
+          }
+      }
+  }
+}

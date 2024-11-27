@@ -1,47 +1,11 @@
 .issue-statistics{
-    .form-filter {
-        position: relative;
-        min-width: 890px;
-        
-        .react-datepicker-popper{
-            z-index: 9999 !important;
+    .form-filter-v2 {
+        .large-width {
+            width: 270px;
         }
-        
-        .react-datepicker-wrapper-container {
-            .react-datepicker__input-container {
-                height: 100%;
-        
-                input {
-                    width: 100% !important;
-                    height: 100%;
-                }
-            }
-        }
-    
-        .form-group-date-picker{
-            width: 250.5px !important;
-        }
-        
-        .month-datepicker{
-            .react-datepicker__month-container{
-                width: 180px !important;
-    
-                .react-datepicker__month-wrapper{
-                    padding-top: 7px !important;
-                }
-            }
-        }
-    
-        .form-group-main-category{
-            width: 373px !important;
-        }
-    
-        .form-group-sub-category{
-            width: 351px !important;
-        }
-    
-        .ml-1{
-            margin-left: 10px !important;
+        .react-datepicker-wrapper-container .react-datepicker-wrapper {
+            display: block;
+            height: 26px;
         }
     }
     
@@ -128,6 +92,41 @@
     
         li{
             width: 180px;
+        }
+    }
+}
+
+.show-left-panel {
+    .issue-statistics {
+        .form-filter-v2 {
+            .large-width {
+                width: 200px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1800px){
+    .show-left-panel {
+        .issue-statistics {
+            .btn {
+                margin-top: 10px !important;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1270px) and (max-width: 1510px){
+    .show-left-panel {
+        .issue-statistics {
+            .btn {
+                margin-top: 26px !important;
+            }
+        }
+    }
+    .issue-statistics {
+        .btn {
+            margin-top: 10px !important;
         }
     }
 }
