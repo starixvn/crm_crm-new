@@ -1,12 +1,20 @@
 @import '../../abstracts/variables';
 
 .communication-log{
-    max-width: 1300px;
     .table-container table tr{
         &:hover td{
             background-color: #E2FFFF !important;
         }
     }
+
+    .table-container .table > thead > tr > th {
+        background: #2B4E80;
+        color: #FFFFFF;
+        font-weight: 700;
+        line-height: 17.7px;
+        font-family: Open Sans, sans-serif;
+    }
+
     .pending{
         background-color: #f0edc4;
     }
@@ -32,12 +40,17 @@
         margin-bottom: 1rem;
     }
     
-    .react-datepicker-wrapper input{
-        width: 100% !important;
+    .react-datepicker-wrapper-container .react-datepicker-wrapper {
+        display: block;
+        height: 26px;
     }
 }
 
 .communication-modal-dialog {
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .modal-dialog {
         min-width: 1015px !important;
 
@@ -100,7 +113,7 @@
                         font-size: 14px;
                         color: #0789d1;
                         position: absolute;
-                        right: 0;
+                        right: 15px;
                     }
 
                     .ref-ticket-input {
@@ -123,4 +136,10 @@
 #view-category-classification [class$="inner"]{
     max-width: 400px;
     text-align: left;
+}
+
+.edit-no-of-inquiry-modal-dialog {
+    .modal-header {
+        background: #1D3557 !important;
+    }
 }
