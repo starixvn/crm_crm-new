@@ -264,7 +264,7 @@ export class DataGridCommunication extends Component {
 
         return (
             <div className='communication-log-grid'>
-            <div className='d-flex table-title align-items-center justify-content-between'>
+            <div className='d-flex table-title-v2 align-items-center justify-content-between'>
                 <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
             </div>
 
