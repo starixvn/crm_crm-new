@@ -311,19 +311,16 @@
 }
 
 @media screen and (min-width: 1680px) and (max-width: 1879px) {
-    .show-left-panel{
-        .manage-feedback {
-            .form-filter-v2 {
-                .btn {
-                    margin-top: 26px !important;
+    .row-content {
+        & > div {
+            &> :not(.show-left-panel) {
+                .manage-feedback {
+                    &> .form-filter-v2 {
+                        .btn {
+                            margin-top: 10px !important;
+                        }
+                    }
                 }
-            }
-        }
-    }
-    .manage-feedback {
-        .form-filter-v2 {
-            .btn {
-                margin-top: 10px !important;
             }
         }
     }
