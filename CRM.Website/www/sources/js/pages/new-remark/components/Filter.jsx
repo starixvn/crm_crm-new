@@ -272,7 +272,7 @@ export class Filter extends Component {
                             onChange={this.handleChangeCheckbox}
                         />
                     </Form.Group>
-                    <Form.Group style={{width: '300px'}}>
+                    <Form.Group className='related-pic'>
                         <Form.Label htmlFor="relatedToPICs">
                             {LangHelper.getResource('RelatedToPICs')}
                         </Form.Label>

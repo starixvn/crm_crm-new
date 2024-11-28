@@ -6,7 +6,9 @@
     }
     
     .form-filter-v2 {
-
+        .related-pic {
+            width: 300px;
+        }
         .react-datepicker-wrapper-container > div {
             height: calc(1.5em + 0.5rem);
             
@@ -181,6 +183,22 @@
 
             .btn-submit{
                 margin-left: 15px !important;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1400px){
+    .row-content {
+        & > div {
+            &> .show-left-panel {
+                .new-remark {
+                    &> .form-filter-v2 {
+                        .related-pic {
+                            width: 250px;
+                        }
+                    }
+                }
             }
         }
     }

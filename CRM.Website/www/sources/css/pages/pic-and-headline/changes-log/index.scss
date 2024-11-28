@@ -1,24 +1,31 @@
 .change-logs{
-    .form-filter {
-        max-width: 1500px !important;
+    // .form-filter {
+    //     max-width: 1500px !important;
 
-        .form-label{
-            width: 100px !important;
-        }
+    //     .form-label{
+    //         width: 100px !important;
+    //     }
 
-        .form-group {
-            width: 250px;
-        }
-        .react-datepicker-wrapper-container, .form-control{
-            width: calc(100% - 0.5rem - 100px) !important;
-        }
+    //     .form-group {
+    //         width: 250px;
+    //     }
+    //     .react-datepicker-wrapper-container, .form-control{
+    //         width: calc(100% - 0.5rem - 100px) !important;
+    //     }
 
-        .react-datepicker__input-container input {
-            width: 100% !important;
-        }
+    //     .react-datepicker__input-container input {
+    //         width: 100% !important;
+    //     }
     
-        .multiple-select-container, .form-control {
-            width: calc(100% - 0.5rem - 100px) !important;
+    //     .multiple-select-container, .form-control {
+    //         width: calc(100% - 0.5rem - 100px) !important;
+    //     }
+    // }
+
+    .form-filter-v2 {
+        .react-datepicker-wrapper-container .react-datepicker-wrapper {
+            display: block;
+            height: 26px;
         }
     }
 
@@ -48,9 +55,9 @@
         }
     }
 
-    .form-filter-v2, .table-title-v2, .page-container, .table-container, .fix-table-container{
-        max-width: 1500px !important;
-    }
+    // .form-filter-v2, .table-title-v2, .page-container, .table-container, .fix-table-container{
+    //     max-width: 1500px !important;
+    // }
 
     .table-container, .fix-table-container {
         .table > thead > tr > th {
@@ -136,6 +143,42 @@
 
                 .container-detail .col-value-detail:last-child{
                     border-right: 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1300px){
+    .row-content {
+        & > div {
+            &>:not(.show-left-panel) {
+                .change-logs {
+                    #controlled-tab-tabpane-headlineDA {
+                        .form-filter-v2 {
+                            .btn {
+                                margin-top: 10px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1669px){
+    .row-content {
+        & > div {
+            &>.show-left-panel {
+                .change-logs {
+                    #controlled-tab-tabpane-headlineDA, #controlled-tab-tabpane-pic {
+                        .form-filter-v2 {
+                            .btn {
+                                margin-top: 10px !important;
+                            }
+                        }
+                    }
                 }
             }
         }

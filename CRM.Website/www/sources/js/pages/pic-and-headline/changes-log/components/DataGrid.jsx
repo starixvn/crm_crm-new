@@ -226,8 +226,9 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('ChangesLog')}</span>
                 </div>
                 <Table
-                    width={1500}
-                    autoWidth={false}
+                    minWidth={960}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    autoWidth
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     isPaging

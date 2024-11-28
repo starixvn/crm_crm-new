@@ -117,16 +117,17 @@
 }
 
 @media screen and (min-width: 1270px) and (max-width: 1510px){
-    .show-left-panel {
-        .issue-statistics {
-            .btn {
-                margin-top: 26px !important;
+    .row-content {
+        & > div {
+            &> :not(.show-left-panel) {
+                .issue-statistics {
+                    &> .form-filter-v2 {
+                        .btn {
+                            margin-top: 10px !important;
+                        }
+                    }
+                }
             }
-        }
-    }
-    .issue-statistics {
-        .btn {
-            margin-top: 10px !important;
         }
     }
 }

@@ -450,8 +450,9 @@ export class PicDataGrid extends Component {
                 <Table
                     header={this.buildHeader()}
                     body={this.buildBody()}
-                    width={1500}
-                    autoWidth={false}
+                    minWidth={960}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    autoWidth
                     isPaging
                     adjustedHeight={10}
                     pageOption={pagingOption}
