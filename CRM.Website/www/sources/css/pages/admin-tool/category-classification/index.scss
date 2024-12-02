@@ -61,3 +61,19 @@
         background: #1D3557 !important;
     }
 }
+
+@media screen and (max-width: 1559px){
+    .row-content {
+        & > div {
+            &> .show-left-panel {
+                .category-classification {
+                    &> .form-filter-v2 {
+                        .btn {
+                            margin-top: 10px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

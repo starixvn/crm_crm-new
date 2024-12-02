@@ -320,7 +320,7 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{width: '230px'}}>
                         <Form.Label style={{visibility: 'hidden'}}>{LangHelper.getResource('Time')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="dateTypeSelect" id="dateTypeSelect"
