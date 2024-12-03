@@ -110,8 +110,10 @@
                 "LeagueID" => commonFeedback.GetLeagueName(id, languageCode),
                 "SportType" => commonFeedback.GetSportName(id, languageCode),
                 "TeamID" => commonFeedback.GetTeamName(id, languageCode),
-                "ResourceCricket" => commonFeedback.GetResourceCricketName(id, languageCode),
-                "ResultSettlement" => commonFeedback.GetResultSettlementName(id, languageCode),
+                "ResourceCricket" => commonFeedback.GetResourceByRefIdAndResourceId("ResourceCricket", id, languageCode),
+                "ResultSettlement" => commonFeedback.GetResourceByRefIdAndResourceId("ResultSettlement", id, languageCode),
+                "ResourceBasketball" => commonFeedback.GetResourceByRefIdAndResourceId("ResourceBasketball", id, languageCode),
+                "ResourceE-sports" => commonFeedback.GetResourceByRefIdAndResourceId("ResourceE-sports", id, languageCode),
                 _ => string.Empty
             };
         }
