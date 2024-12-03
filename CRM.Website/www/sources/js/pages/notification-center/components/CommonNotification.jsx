@@ -13,7 +13,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import { filterAndSortSites, languageOptions } from '../common.functions';
 import AffectedTicket from './AffectedTicket';
-import { UploadFiles } from './UploadFiles';
+import { FileUpload } from './FileUpload';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
 export class CommonNotification extends Component {
@@ -32,7 +32,9 @@ export class CommonNotification extends Component {
             activatePopup: { show: false },
             messageSuccessful: null,
             isFirstCheck: false,
-            collapseEvent: true
+            collapseEvent: true,
+            uploadedFiles: [],
+            invalidWidthHeight: [],
         }
 
         this.languages = languageOptions(this.props.actionParam.isOstUser);
@@ -323,6 +325,34 @@ export class CommonNotification extends Component {
         }
     };
 
+    setStateUploadFile = (uploadedFiles, fileNameRemove) => {
+        if (!fileNameRemove) {
+            uploadedFiles.forEach((file) => {
+                const maximumHeightWidth = 2560;
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const image = new Image();
+                    image.src = e.target.result;
+                    image.onload = () => {
+                        const {
+                            height,
+                            width
+                        } = image;
+                        if (height > maximumHeightWidth || width > maximumHeightWidth) {
+                            this.setState({ invalidWidthHeight: [...this.state.invalidWidthHeight, file] });
+                        }
+                    };
+                };
+            });
+        } else {
+            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove);
+            this.setState({ invalidWidthHeight });
+        }
+
+        this.setState({ uploadedFiles });
+    };
+
     renderForm = ({
         values,
         setFieldValue,
@@ -461,7 +491,10 @@ export class CommonNotification extends Component {
                                     //isInvalid={touched['language_'] && errors['language_' + item.settingId]}
                                     //onChange={handleChange}
                                 />
-                                <UploadFiles/>
+                                <FileUpload
+                                    uploadedFiles={this.state.uploadedFiles}
+                                    setStateUploadFile={this.setStateUploadFile}
+                                />
                             </div>
                         </div>
                         {

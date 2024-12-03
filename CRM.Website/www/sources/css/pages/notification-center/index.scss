@@ -528,6 +528,31 @@
                                     cursor: pointer;
                                 }
                             }
+
+                            [data-rbd-droppable-context-id="0"]:has([data-rbd-drag-handle-context-id="0"]) {
+                                margin: 0 10px;
+                                border-top: 1px solid #bbb;
+                                margin-top: 8px;
+
+                                [data-rbd-drag-handle-context-id="0"] {
+                                    margin-top: 10px !important;
+                                    margin-bottom: 0 !important;
+                                }
+                            }
+
+                            .list-file-image {
+                                display: flex;
+                                align-items: center;
+                  
+                                .text-color {
+                                  color: #3873e9;
+                                  margin: 0 4px !important;
+                                }
+                  
+                                .icon-delete {
+                                  padding-left: 4px;
+                                }
+                            }
                         }
                     }
                 }
