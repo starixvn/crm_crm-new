@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Col, Form, Tabs, Tab, Button, Collapse, Row } from 'react-bootstrap';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Formik } from 'formik';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
@@ -12,6 +13,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import { filterAndSortSites, languageOptions } from '../common.functions';
 import AffectedTicket from './AffectedTicket';
+import { UploadFiles } from './UploadFiles';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
 export class CommonNotification extends Component {
@@ -448,6 +450,18 @@ export class CommonNotification extends Component {
                                         }
                                     </Tabs>
                                 </Col>
+                            </div>
+                        </div>
+                        <div className="group-item">
+                            <div className="group-header">{LangHelper.getResource('Remark')}</div>
+                            <div className='group-remark'>
+                                <Form.Control as="textarea" value={''}
+                                    className="shadow-none form-control"
+                                    name={'language_'} id={'language_' } rows="8"
+                                    //isInvalid={touched['language_'] && errors['language_' + item.settingId]}
+                                    //onChange={handleChange}
+                                />
+                                <UploadFiles/>
                             </div>
                         </div>
                         {
