@@ -157,7 +157,7 @@
         <Setting Key="MNC_PushNotification_NotiUpd" SpName="MNC_PushNotification_NotiUpd" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_PushNotification_MsgUpd" SpName="MNC_PushNotification_MsgUpd" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="MNC_PushNotification_Complete" SpName="MNC_PushNotification_Complete" DbName="DBCRM.MessageNotification.wsv_nap" />
-        <Setting Key="MNC_ResultAmendment_PrepareGenLAP" SpName="MNC_ResultAmendment_PrepareGenLAP" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_ResultAmendment_PrepareGenLAP" SpName="MNC_ResultAmendment_PrepareGenLAP_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_GenNotificationLAP" SpName="MNC_ResultAmendment_GenNotificationLAP_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_Notification_AlertIns" SpName="MNC_Notification_AlertIns_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_Notification_AlertSel" SpName="MNC_Notification_AlertSel" DbName="DBCRM.MessageNotification.wsv_nap" />
