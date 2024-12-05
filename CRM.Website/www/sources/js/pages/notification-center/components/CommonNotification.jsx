@@ -35,14 +35,19 @@ export class CommonNotification extends Component {
             collapseEvent: true,
             uploadedFiles: [],
             invalidWidthHeight: [],
+            errorDrafts: {
+                invalidFileTypeDraft: [],
+                invalidFileSizeDraft: []
+            }
         }
 
         this.languages = languageOptions(this.props.actionParam.isOstUser);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.getAdmNotificationDetail();
         this.props.isEdit && this.props.setEditAdmNotification(null);
+        await this.changeStringToFile();
     };
 
     getAdmNotificationDetail = async () =>{
@@ -55,20 +60,21 @@ export class CommonNotification extends Component {
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
 
-    getParams = status => {
-        const { content_en, content_cs, content_ch, content_zhcn, subject } = this.formik.values;
-        const params = {
-            notificationId: this.props.actionParam.notificationId,
-            newStatus: status,
-            newSubject: subject,
-            newContentEN: content_en,
-            newContentCS: content_cs,
-            newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
-            newContentZHCN: this.props.actionParam.isOstUser ? content_zhcn : null,
-            subject: subject
-        };
-        return params;
-    };
+    // getParams = status => {
+    //     const { content_en, content_cs, content_ch, content_zhcn, subject, remark } = this.formik.values;
+    //     const params = {
+    //         notificationId: this.props.actionParam.notificationId,
+    //         newStatus: status,
+    //         newSubject: subject,
+    //         newContentEN: content_en,
+    //         newContentCS: content_cs,
+    //         newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
+    //         newContentZHCN: this.props.actionParam.isOstUser ? content_zhcn : null,
+    //         subject: subject,
+    //         remark: remark
+    //     };
+    //     return params;
+    // };
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
@@ -84,19 +90,22 @@ export class CommonNotification extends Component {
     };
 
     handleCreateNotification = async (params, message) => {
-        this.formik.setSubmitting(true);
-        await this.props.editAdmNotification(params).then(() => {
-            this.handleClosePopup();
-            if (this.props.editAdmNotificationResult.isSuccessful) {
-                this.setState({ messageSuccessful: message });
-                setTimeout(() => {
-                    this.props.setEditAdmNotification(null);
-                    this.props.navigate(Site.resolveClientUrl('NotificationCenter'), { state: this.getStateData() });
-                }, 3000);
-            } else {
-                this.formik.setSubmitting(false);
-            }
-        });
+        console.log('invalidWidthHeight', this.state.invalidWidthHeight);
+        console.log('errorDrafts', this.state.errorDrafts);
+        console.log('params', params);
+        // this.formik.setSubmitting(true);
+        // await this.props.editAdmNotification(params).then(() => {
+        //     this.handleClosePopup();
+        //     if (this.props.editAdmNotificationResult.isSuccessful) {
+        //         this.setState({ messageSuccessful: message });
+        //         setTimeout(() => {
+        //             this.props.setEditAdmNotification(null);
+        //             this.props.navigate(Site.resolveClientUrl('NotificationCenter'), { state: this.getStateData() });
+        //         }, 3000);
+        //     } else {
+        //         this.formik.setSubmitting(false);
+        //     }
+        // });
     };
 
     handleSaveDraft = async () => {
@@ -186,8 +195,10 @@ export class CommonNotification extends Component {
     };
 
     handleActive = popup => {
+        const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
+        console.log('excludeOldImage1', excludeOldImage);
         this.setState({isFirstCheck: true});
-        const errors = this.validateFormik(this.formik.values);
+        const errors = this.validateFormik(this.formik.values, excludeOldImage);
         if (Object.keys(errors).length === 0) {
             this.setState({[popup]: { show: true }});
         }
@@ -199,10 +210,11 @@ export class CommonNotification extends Component {
         }));
     };
 
-    validateFormik = values => {
+    validateFormik = (values, files) => {
         const errors = {};
         const { isOstUser } = this.props.actionParam;
         const { subject, content_en, content_cs, content_ch, content_zhcn } = values;
+        const { errorDrafts, invalidWidthHeight } = this.state;
 
         if (!subject && !isOstUser) {
             errors.subject = LangHelper.getResource('SubjectRequired');
@@ -240,6 +252,33 @@ export class CommonNotification extends Component {
             errors.content_zhcn = LangHelper.getResource('RemoveSignAtNSC');
         }
 
+        if (files) {
+            const invalidFileType = files.filter(x => !this.validFileType(x) || !this.validFileExtension(x));
+            if (invalidFileType.length > 0 || errorDrafts?.invalidFileTypeDraft.length > 0) {
+                errorDrafts?.invalidFileTypeDraft.map(item => invalidFileType.push(item));
+                const newInvalidFileType = [...new Set(invalidFileType)];
+                const nameFileError = newInvalidFileType.map(x => x.name).join(', ');
+                errors.imageFileType = LangHelper.formatString(LangHelper.getResource('ImageFileTypeError'), nameFileError);
+            }
+
+            const invalidFileSize = files.filter(x => !this.validFileSize(x));
+            if (invalidFileSize.length > 0 || errorDrafts?.invalidFileSizeDraft.length > 0) {
+                errorDrafts?.invalidFileSizeDraft.map(item => invalidFileSize.push(item));
+                const newInvalidFileSize = [...new Set(invalidFileSize)];
+                const nameFileError = newInvalidFileSize.map(x => x.name).join(', ');
+                errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
+            }
+        }
+    
+        if (invalidWidthHeight.length > 0) {
+            const uniqInvalidImage = [...new Set(invalidWidthHeight)];
+            const nameFileError = uniqInvalidImage.map(x => x.name);
+            const uniqErr = [...new Set(nameFileError)].join(', ');
+            if (uniqErr) {
+                errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), [...new Set(nameFileError)].join(', '));
+            }
+        }
+
         return errors;
     };
 
@@ -258,7 +297,7 @@ export class CommonNotification extends Component {
             if (errors.content_zhcn) {
                 invalidCss.push('invalid-content_zhcn');
             }
-        }    
+        }
         return invalidCss.join(' ');
     };
 
@@ -347,10 +386,195 @@ export class CommonNotification extends Component {
             });
         } else {
             const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove);
-            this.setState({ invalidWidthHeight });
+            const invalidFileSizeDraft = this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove);
+            const invalidFileTypeDraft = this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove);
+
+            this.setState({
+                invalidWidthHeight,
+                errorDrafts: {
+                    invalidFileSizeDraft: invalidFileSizeDraft,
+                    invalidFileTypeDraft: invalidFileTypeDraft
+                }
+            });
         }
 
         this.setState({ uploadedFiles });
+    };
+
+    changeStringToFile = async () => {
+        const id = this.props.actionParam.notificationId;
+        const { uploadedFiles } = this.state;
+        const maximumHeightWidth = 2560;
+        const urls = [];
+
+        if (uploadedFiles.length > 0) {
+            uploadedFiles.map(item => urls.push({
+                name: item.name,
+                key: item.key,
+                url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item.name}`)
+            }));
+
+            urls.forEach(async (item) => {
+                const response = await fetch(item.url);
+                const data = await response.blob();
+                const file = new File([data], item.name);
+                file.key = item.key;
+
+                const image = new Image();
+                image.src = item.url;
+                image.onload = () => {
+                    const {
+                        height,
+                        width
+                    } = image;
+
+                    if (height > maximumHeightWidth || width > maximumHeightWidth) {
+                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, item]});
+                    }
+                }
+
+                if (!this.validFileExtension(file)) {
+                    this.setState(prevState => ({
+                        errorDrafts: {
+                            ...prevState.errorDrafts,
+                            invalidFileTypeDraft: [...prevState.errorDrafts.invalidFileTypeDraft, file]
+                        }
+                    }));
+                }
+                if (!this.validFileSize(file)) {
+                    this.setState(prevState => ({
+                        errorDrafts: {
+                            ...prevState.errorDrafts,
+                            invalidFileSizeDraft: [...prevState.errorDrafts.invalidFileSizeDraft, file]
+                        }
+                    }));
+                }
+            });
+        }
+    };
+
+    validFileSize = file => {
+        const transformSize = Math.round(file.size / 1024).toFixed(2);
+        const maximumSize10MB = 10000;
+        if(transformSize > maximumSize10MB){
+            return false;
+        }
+        return true;
+    };
+    
+    validFileType = file => {
+        const fileTypes = ['image/jpeg', 'image/pjpeg', 'image/png'];
+        return fileTypes.includes(file.type);
+    };
+
+    validFileExtension = file => {
+        const validFileImgFormat = ["jpeg", "pjpeg", "jpg", "png"];
+        let extensionFile = file.name.split('.').pop();
+        return validFileImgFormat.includes(extensionFile);
+    };
+
+    getFileString = contents => {
+        const fileStrings = [];
+        const fileNames = contents[0].fileName && contents[0].fileName?.split('/');
+        fileNames && fileNames.length > 0 && fileNames.forEach(file => {
+            const fileString = {
+                name: file,
+                type: 'string'
+            };
+            fileStrings.push(fileString);
+        });
+
+        return fileStrings;
+    };
+
+    filterDuplicate = files => {
+        return files.reduce((acc, current) => {
+            const found = acc.find(item => item?.name === current?.name);
+            if (!found) {
+                acc.push(current);
+            }
+            return acc;
+        }, []);
+    };
+
+    getFileStringRemove = (oldFileName, uploadedFiles) => {
+        const fileStringRemove = [];
+        if (oldFileName.length > 0) {
+            oldFileName.forEach(item => {
+                if (!uploadedFiles.find(element => element.name === item.name)) {
+                    fileStringRemove.push(item);
+                }
+            })
+        }
+        return this.filterDuplicate(fileStringRemove);
+    };
+
+    filterFormStringFiles = uploadedFiles => {
+        const formFiles = uploadedFiles.filter(item => item.type !== 'string');
+        const fileStrings = uploadedFiles.filter(item => item.type === 'string');
+    
+        const filterFormFiles = this.filterDuplicate(formFiles);
+        const filterFileStrings = this.filterDuplicate(fileStrings);
+    
+        if (filterFileStrings.length > 0) {
+            const filterFormFileByString = filterFormFiles.filter(item => !filterFileStrings.find(x => x.name === item.name))
+            return filterFileStrings.concat(filterFormFileByString);
+        }
+        else return filterFormFiles;
+    };
+
+    getFileName = uploadedFiles => {
+        const arrFileName = [];
+        uploadedFiles.forEach(item => {
+            arrFileName.push(item.name);
+        });
+        return arrFileName.join('/');
+    };
+
+    getParams = status => {
+        const { content_en, content_cs, content_ch, content_zhcn, subject, remark } = this.formik.values;
+        const { uploadedFiles } = this.state;
+        const fileStringRemove = [];
+        const fileString = [];
+        const formFile = [];
+        let fileNames = [];
+
+        if (this.formik.values.oldFileName) {
+            const fileStringRemoves = getFileStringRemove(values.oldFileName, uploadedFiles);
+            if (fileStringRemoves.length > 0) {
+                fileStringRemoves.forEach(oldFile => {
+                    fileStringRemove.push(oldFile.name);
+                });
+            }
+        }
+
+        const filerDupFiles = this.filterFormStringFiles(uploadedFiles);
+        filerDupFiles.forEach(file => {
+            if (file.type === 'string') {
+                fileString.push(file.name);
+            } else {
+                formFile.push(file);
+            }
+        });
+
+        fileNames = this.getFileName(uploadedFiles);
+
+        const params = {
+            notificationId: this.props.actionParam.notificationId,
+            newStatus: status,
+            newSubject: subject,
+            newContentEN: content_en,
+            newContentCS: content_cs,
+            newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
+            newContentZHCN: this.props.actionParam.isOstUser ? content_zhcn : null,
+            subject: subject,
+            remark: remark,
+            fileStringRemove,
+            fileString,
+            formFile,
+            fileNames,
+        };
+        return params;
     };
 
     renderForm = ({
@@ -366,7 +590,7 @@ export class CommonNotification extends Component {
         const { isOstUser } = actionParam;
         const headerClass = isOstUser ? 'group-header required' : 'group-header';
         const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
-
+console.log('errors', errors);
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 {
@@ -485,11 +709,11 @@ export class CommonNotification extends Component {
                         <div className="group-item">
                             <div className="group-header">{LangHelper.getResource('Remark')}</div>
                             <div className='group-remark'>
-                                <Form.Control as="textarea" value={''}
+                                <Form.Control as="textarea"
                                     className="shadow-none form-control"
-                                    name={'language_'} id={'language_' } rows="8"
-                                    //isInvalid={touched['language_'] && errors['language_' + item.settingId]}
-                                    //onChange={handleChange}
+                                    name={'remark'} id={'remark' } rows="8"
+                                    value={values.remark}
+                                    onChange={event => setFieldValue('remark', event.target.value)}
                                 />
                                 <FileUpload
                                     uploadedFiles={this.state.uploadedFiles}
@@ -536,6 +760,7 @@ export class CommonNotification extends Component {
         if(!data) {
             return null;
         }
+        //const fileStrings = this.getFileString(contents);
         const initialValues = {
             notificationID: data.notificationID,
             messageID: data.messageID,
@@ -546,13 +771,19 @@ export class CommonNotification extends Component {
             content_en: data.content_en,
             content_cs: data.content_cs,
             content_ch: isOstUser ? data.content_ch : null,
-            content_zhcn: isOstUser ? data.content_zhcn : null
+            content_zhcn: isOstUser ? data.content_zhcn : null,
+            remark: data.remark,
+            imageFileType: '',
+            imageFileSize: '',
+            //oldFileName: fileStrings,
         };
+        const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
+
         return (
             <Formik
                 innerRef={p => (this.formik = p)}
                 initialValues={initialValues}
-                validate={values => this.validateFormik(values)}
+                validate={values => this.validateFormik(values, excludeOldImage)}
                 onSubmit={this.handleActive}
             >
                 {this.renderForm}

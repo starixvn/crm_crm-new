@@ -36,7 +36,6 @@ export class FileUpload extends Component {
         const { source, destination } = result;
         const { uploadedFiles } = this.props;
         const reorderedFiles = this.reorder(uploadedFiles, source.index, destination.index);
-        console.log('reorderedFiles', reorderedFiles);
         this.props.setStateUploadFile(reorderedFiles);
     };
 
