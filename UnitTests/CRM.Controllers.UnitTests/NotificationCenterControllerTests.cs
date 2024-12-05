@@ -12,6 +12,7 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.NotificationCenter;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -21,6 +22,8 @@
         private INotificationCenterService notificationCenterService;
         private IExportExcelService excelService;
         private IPermissionService permissionService;
+        private IWebHostEnvironment hostingEnvironment;
+
 
         private readonly Fixture fixture = new Fixture();
 
@@ -150,11 +153,13 @@
             notificationCenterService = Substitute.For<INotificationCenterService>();
             excelService = Substitute.For<IExportExcelService>();
             permissionService = Substitute.For<IPermissionService>();
+            hostingEnvironment = Substitute.For<IWebHostEnvironment>();
 
             return new NotificationCenterController(
                 notificationCenterService,
                 excelService,
-                permissionService
+                permissionService,
+                hostingEnvironment
             );
         }
         #endregion helper
