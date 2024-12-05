@@ -23,5 +23,9 @@
         public string Status { get; set; }
 
         public string Subject { get; set; }
+
+        public string Remark { get; set; }
+
+        public string Filename { get; set;}
     }
 }

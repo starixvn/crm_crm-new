@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.NotificationCenter
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
     using CRM.Core;
     using CRM.Core.Constants;
@@ -11,6 +12,8 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.NotificationCenter;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
@@ -20,16 +23,20 @@
         private readonly INotificationCenterService notificationCenterService;
         private readonly IExportExcelService excelService;
         private readonly IPermissionService permissionService;
+        private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly string pathImages = "www/dist/images/notification-center";
 
         public NotificationCenterController(
             INotificationCenterService notificationCenterService,
             IExportExcelService excelService,
-            IPermissionService permissionService
+            IPermissionService permissionService,
+            IWebHostEnvironment hostingEnvironment
         )
         {
             this.notificationCenterService = notificationCenterService;
             this.excelService = excelService;
             this.permissionService = permissionService;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         [HttpPost]
@@ -57,6 +64,17 @@
         public async Task<IActionResult> EditResultAdmNotification([FromBody] EditResultAdmNotification param)
         {
             CommandResult commandResult = await notificationCenterService.EditResultAdmNotificationAsync(param);
+            if (commandResult.IsSuccessful)
+            {
+                if (param.FormFile.Count > 0 && param.NotificationId > 0)
+                {
+                    await SaveFile(param.FormFile, param.NotificationId);
+                }
+                if (param.FileStringRemove.Count > 0)
+                {
+                    DeleteFile(param.FileStringRemove, param.NotificationId);
+                }
+            }
             return Json(commandResult);
         }
 
@@ -93,6 +111,54 @@
             var sitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             return (sitePermission, licenseeType);
+        }
+
+        private string GetPathFile(string folder, string fileName = "")
+        {
+            return Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
+        }
+
+        private string GetFileFolder(int notificationId)
+        {
+            var fileFolder = notificationId.ToString();
+            string path = GetPathFile(fileFolder);
+            var isExist = System.IO.File.Exists(path);
+            if (!isExist)
+            {
+                Directory.CreateDirectory(path);
+            }
+            return fileFolder;
+        }
+
+        private async Task SaveFile(IList<IFormFile> formFiles, int notificationId)
+        {
+            foreach (var file in formFiles)
+            {
+                var fileFolder = GetFileFolder(notificationId);
+                var pathFile = GetPathFile(fileFolder, file.FileName);
+                using (Stream stream = new FileStream(pathFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+        }
+
+        private void DeleteFile(IList<string> filesString, int notificationId)
+        {
+            foreach (var file in filesString)
+            {
+                var fileFolder = notificationId.ToString();
+                string filePath = GetPathFile(fileFolder, file);
+                var isExist = System.IO.File.Exists(filePath);
+                if (isExist)
+                {
+                    using (FileStream fileStream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+                    {
+                        fileStream.Close();
+                    }
+                    System.IO.File.Delete(filePath);
+                }
+            }
         }
     }
 }
