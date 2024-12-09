@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.NotificationCenter
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
@@ -61,21 +62,29 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Host)]
-        public async Task<IActionResult> EditResultAdmNotification([FromBody] EditResultAdmNotification param)
+        public async Task<IActionResult> EditResultAdmNotification([FromForm] EditResultAdmNotification param)
         {
-            CommandResult commandResult = await notificationCenterService.EditResultAdmNotificationAsync(param);
-            if (commandResult.IsSuccessful)
+            try
             {
-                if (param.FormFile.Count > 0 && param.NotificationId > 0)
+                CommandResult commandResult = await notificationCenterService.EditResultAdmNotificationAsync(param);
+                if (commandResult.IsSuccessful)
                 {
-                    await SaveFile(param.FormFile, param.NotificationId);
+                    if (param.FormFile.Count > 0 && param.NotificationId > 0)
+                    {
+                        await SaveFilesAsync(param.FormFile, param.NotificationId);
+                    }
+                    if (param.FileStringRemove.Count > 0)
+                    {
+                        DeleteFiles(param.FileStringRemove, param.NotificationId);
+                    }
                 }
-                if (param.FileStringRemove.Count > 0)
-                {
-                    DeleteFile(param.FileStringRemove, param.NotificationId);
-                }
+                return Json(commandResult);
             }
-            return Json(commandResult);
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         [HttpPost]
@@ -118,39 +127,40 @@
             return Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
         }
 
-        private string GetFileFolder(int notificationId)
+        private string EnsureFileFolderExists(int notificationId)
         {
-            var fileFolder = notificationId.ToString();
-            string path = GetPathFile(fileFolder);
-            var isExist = System.IO.File.Exists(path);
-            if (!isExist)
+            string fileFolder = notificationId.ToString();
+            string folderPath = GetPathFile(fileFolder);
+            var isExistFolderPath = Directory.Exists(folderPath);
+
+            if (!isExistFolderPath)
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(folderPath);
             }
             return fileFolder;
         }
 
-        private async Task SaveFile(IList<IFormFile> formFiles, int notificationId)
+        private async Task SaveFilesAsync(IList<IFormFile> formFiles, int notificationId)
         {
             foreach (var file in formFiles)
             {
-                var fileFolder = GetFileFolder(notificationId);
-                var pathFile = GetPathFile(fileFolder, file.FileName);
-                using (Stream stream = new FileStream(pathFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                string fileFolder = EnsureFileFolderExists(notificationId);
+                string filePath = GetPathFile(fileFolder, file.FileName);
+                using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
                     await file.CopyToAsync(stream);
                 }
             }
         }
 
-        private void DeleteFile(IList<string> filesString, int notificationId)
+        private void DeleteFiles(IList<string> fileNames, int notificationId)
         {
-            foreach (var file in filesString)
+            foreach (var file in fileNames)
             {
-                var fileFolder = notificationId.ToString();
+                string fileFolder = notificationId.ToString();
                 string filePath = GetPathFile(fileFolder, file);
-                var isExist = System.IO.File.Exists(filePath);
-                if (isExist)
+
+                if (System.IO.File.Exists(filePath))
                 {
                     using (FileStream fileStream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
