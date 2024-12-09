@@ -2,6 +2,8 @@
 {
     using CRM.Core.Enumerables;
     using Newtonsoft.Json;
+    using System;
+    using System.Text;
 
     public class OutgoingMessage
     {
@@ -38,6 +40,9 @@
 
         [JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
+
+        [JsonProperty(PropertyName = "“base64Text”")]
+        public string Base64Text => !string.IsNullOrWhiteSpace(Text) ? Convert.ToBase64String(Encoding.UTF8.GetBytes(Text)) : string.Empty;
     }
 
     public static class MulticastType
