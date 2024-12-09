@@ -20,6 +20,10 @@
 
         public int UpdaterID { get; set; }
 
+        public string Remark { get; set; }
+
+        public string Filename { get; set; }
+
         public override string GetSettingKey() => "MNC_Notification_AdmUpdNoti";
 
         public override bool IsValid() => true;
