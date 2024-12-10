@@ -76,18 +76,28 @@
 
         public async Task<CommandResult> EditResultAdmNotificationAsync(EditResultAdmNotification param)
         {
-            var command = new EditResultAdmNotificationCommand
+            try
             {
-                UpdaterID = napSession.UserId,
-                NotiID = param.NotificationId,
-                NewStatus = param.NewStatus,
-                NewSubject = param.NewSubject,
-                NewContentEN = param.NewContentEN,
-                NewContentCH = param.NewContentCH,
-                NewContentCS = param.NewContentCS,
-                NewContentZHCN = param.NewContentZHCN
-            };
-            return await baseService.ExecuteNonQueryAsync(command);
+                var command = new EditResultAdmNotificationCommand
+                {
+                    UpdaterID = napSession.UserId,
+                    NotiID = param.NotificationId,
+                    NewStatus = param.NewStatus,
+                    NewSubject = param.NewSubject,
+                    NewContentEN = param.NewContentEN,
+                    NewContentCH = param.NewContentCH,
+                    NewContentCS = param.NewContentCS,
+                    NewContentZHCN = param.NewContentZHCN,
+                    Remark = param.Remark,
+                    Filename = param.Filename
+                };
+                return await baseService.ExecuteNonQueryAsync(command);
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public async Task<CommandResult> EditResultAdmStatusAsync(EditResultAdmNotiStatus param)

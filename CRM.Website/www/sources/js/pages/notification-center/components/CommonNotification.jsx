@@ -16,6 +16,7 @@ import AffectedTicket from './AffectedTicket';
 import { FileUpload } from './FileUpload';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
+const MAXIMUM_HEIGHT_WIDTH = 2560;
 export class CommonNotification extends Component {
     constructor(props) {
         super(props);
@@ -56,25 +57,9 @@ export class CommonNotification extends Component {
         await this.props.getAdmNotificationById(notificationId).then(response => {
             const { notificationDetails, sites } = response.data;
             const notificationDetail = notificationDetails[0];
-            this.setState({data: notificationDetail, sites});
+            this.setState({data: notificationDetail, sites, uploadedFiles: this.getFileString(notificationDetail.filename)});
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
-
-    // getParams = status => {
-    //     const { content_en, content_cs, content_ch, content_zhcn, subject, remark } = this.formik.values;
-    //     const params = {
-    //         notificationId: this.props.actionParam.notificationId,
-    //         newStatus: status,
-    //         newSubject: subject,
-    //         newContentEN: content_en,
-    //         newContentCS: content_cs,
-    //         newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
-    //         newContentZHCN: this.props.actionParam.isOstUser ? content_zhcn : null,
-    //         subject: subject,
-    //         remark: remark
-    //     };
-    //     return params;
-    // };
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
@@ -93,19 +78,19 @@ export class CommonNotification extends Component {
         console.log('invalidWidthHeight', this.state.invalidWidthHeight);
         console.log('errorDrafts', this.state.errorDrafts);
         console.log('params', params);
-        // this.formik.setSubmitting(true);
-        // await this.props.editAdmNotification(params).then(() => {
-        //     this.handleClosePopup();
-        //     if (this.props.editAdmNotificationResult.isSuccessful) {
-        //         this.setState({ messageSuccessful: message });
-        //         setTimeout(() => {
-        //             this.props.setEditAdmNotification(null);
-        //             this.props.navigate(Site.resolveClientUrl('NotificationCenter'), { state: this.getStateData() });
-        //         }, 3000);
-        //     } else {
-        //         this.formik.setSubmitting(false);
-        //     }
-        // });
+        this.formik.setSubmitting(true);
+        await this.props.editAdmNotification(params).then(() => {
+            this.handleClosePopup();
+            if (this.props.editAdmNotificationResult.isSuccessful) {
+                this.setState({ messageSuccessful: message });
+                setTimeout(() => {
+                    this.props.setEditAdmNotification(null);
+                    this.props.navigate(Site.resolveClientUrl('NotificationCenter'), { state: this.getStateData() });
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
     };
 
     handleSaveDraft = async () => {
@@ -365,35 +350,32 @@ export class CommonNotification extends Component {
     };
 
     setStateUploadFile = (uploadedFiles, fileNameRemove) => {
+        console.log('uploadedFiles', uploadedFiles);
+        console.log('fileNameRemove', fileNameRemove);
+
         if (!fileNameRemove) {
             uploadedFiles.forEach((file) => {
-                const maximumHeightWidth = 2560;
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const image = new Image();
-                    image.src = e.target.result;
-                    image.onload = () => {
-                        const {
-                            height,
-                            width
-                        } = image;
-                        if (height > maximumHeightWidth || width > maximumHeightWidth) {
-                            this.setState({ invalidWidthHeight: [...this.state.invalidWidthHeight, file] });
-                        }
+                if(file.type !== 'string') {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (event) => {
+                        const image = new Image();
+                        image.src = event.target.result;
+                        image.onload = () => {
+                            const { height, width } = image;
+                            if (height > MAXIMUM_HEIGHT_WIDTH || width > MAXIMUM_HEIGHT_WIDTH) {
+                                this.setState({ invalidWidthHeight: [...this.state.invalidWidthHeight, file] });
+                            }
+                        };
                     };
-                };
+                }
             });
         } else {
-            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove);
-            const invalidFileSizeDraft = this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove);
-            const invalidFileTypeDraft = this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove);
-
             this.setState({
-                invalidWidthHeight,
+                invalidWidthHeight: this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove),
                 errorDrafts: {
-                    invalidFileSizeDraft: invalidFileSizeDraft,
-                    invalidFileTypeDraft: invalidFileTypeDraft
+                    invalidFileSizeDraft: this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove),
+                    invalidFileTypeDraft: this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove)
                 }
             });
         }
@@ -402,110 +384,89 @@ export class CommonNotification extends Component {
     };
 
     changeStringToFile = async () => {
-        const id = this.props.actionParam.notificationId;
+        const { notificationId: id } = this.props.actionParam;
         const { uploadedFiles } = this.state;
-        const maximumHeightWidth = 2560;
-        const urls = [];
 
-        if (uploadedFiles.length > 0) {
-            uploadedFiles.map(item => urls.push({
-                name: item.name,
-                key: item.key,
-                url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item.name}`)
-            }));
+        if (uploadedFiles.length === 0) return;
 
-            urls.forEach(async (item) => {
-                const response = await fetch(item.url);
-                const data = await response.blob();
-                const file = new File([data], item.name);
-                file.key = item.key;
+        const urls = uploadedFiles.map(item => ({
+            name: item.name,
+            key: item.key,
+            url: Site.resolveClientUrl(`www/dist/images/notification-center/${id}/${item.name}`)
+        }));
 
-                const image = new Image();
-                image.src = item.url;
-                image.onload = () => {
-                    const {
-                        height,
-                        width
-                    } = image;
+        for (const item of urls) {
+            const response = await fetch(item.url);
+            const data = await response.blob();
+            const file = new File([data], item.name);
+            file.key = item.key;
 
-                    if (height > maximumHeightWidth || width > maximumHeightWidth) {
-                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, item]});
+            const image = new Image();
+            image.src = item.url;
+            image.onload = () => {
+                const { height, width } = image;
+                if (height > MAXIMUM_HEIGHT_WIDTH || width > MAXIMUM_HEIGHT_WIDTH) {
+                    this.setState(prevState => ({
+                        invalidWidthHeight: [...prevState.invalidWidthHeight, item]
+                    }));
+                }
+            };
+
+            if (!this.validFileExtension(file)) {
+                this.setState(prevState => ({
+                    errorDrafts: {
+                        ...prevState.errorDrafts,
+                        invalidFileTypeDraft: [...prevState.errorDrafts.invalidFileTypeDraft, file]
                     }
-                }
+                }));
+            }
 
-                if (!this.validFileExtension(file)) {
-                    this.setState(prevState => ({
-                        errorDrafts: {
-                            ...prevState.errorDrafts,
-                            invalidFileTypeDraft: [...prevState.errorDrafts.invalidFileTypeDraft, file]
-                        }
-                    }));
-                }
-                if (!this.validFileSize(file)) {
-                    this.setState(prevState => ({
-                        errorDrafts: {
-                            ...prevState.errorDrafts,
-                            invalidFileSizeDraft: [...prevState.errorDrafts.invalidFileSizeDraft, file]
-                        }
-                    }));
-                }
-            });
-        }
+            if (!this.validFileSize(file)) {
+                this.setState(prevState => ({
+                    errorDrafts: {
+                        ...prevState.errorDrafts,
+                        invalidFileSizeDraft: [...prevState.errorDrafts.invalidFileSizeDraft, file]
+                    }
+                }));
+            }
+        }     
     };
 
     validFileSize = file => {
-        const transformSize = Math.round(file.size / 1024).toFixed(2);
-        const maximumSize10MB = 10000;
-        if(transformSize > maximumSize10MB){
-            return false;
-        }
-        return true;
+        const MAX_SIZE_MB = 10000;
+        const fileSizeKB = Math.round(file.size / 1024).toFixed(2);
+        return fileSizeKB <= MAX_SIZE_MB;
     };
     
     validFileType = file => {
-        const fileTypes = ['image/jpeg', 'image/pjpeg', 'image/png'];
-        return fileTypes.includes(file.type);
+        const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/pjpeg', 'image/png'];
+        return ALLOWED_FILE_TYPES.includes(file.type);
     };
 
-    validFileExtension = file => {
-        const validFileImgFormat = ["jpeg", "pjpeg", "jpg", "png"];
-        let extensionFile = file.name.split('.').pop();
-        return validFileImgFormat.includes(extensionFile);
+    validFileExtension = (file) => {
+        const VALID_EXTENSIONS = ['jpeg', 'pjpeg', 'jpg', 'png'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        return VALID_EXTENSIONS.includes(fileExtension);
     };
 
-    getFileString = contents => {
-        const fileStrings = [];
-        const fileNames = contents[0].fileName && contents[0].fileName?.split('/');
-        fileNames && fileNames.length > 0 && fileNames.forEach(file => {
-            const fileString = {
-                name: file,
-                type: 'string'
-            };
-            fileStrings.push(fileString);
-        });
-
-        return fileStrings;
+    getFileString = (filename) => {
+        if (!filename) return [];
+        return filename.split('/').map(file => ({ name: file, type: 'string' }));
     };
 
-    filterDuplicate = files => {
-        return files.reduce((acc, current) => {
-            const found = acc.find(item => item?.name === current?.name);
-            if (!found) {
-                acc.push(current);
+    filterDuplicate = (files) => {
+        return files.reduce((uniqueFiles, currentFile) => {
+            if (!uniqueFiles.some(file => file?.name === currentFile?.name)) {
+                uniqueFiles.push(currentFile);
             }
-            return acc;
+            return uniqueFiles;
         }, []);
     };
 
     getFileStringRemove = (oldFileName, uploadedFiles) => {
-        const fileStringRemove = [];
-        if (oldFileName.length > 0) {
-            oldFileName.forEach(item => {
-                if (!uploadedFiles.find(element => element.name === item.name)) {
-                    fileStringRemove.push(item);
-                }
-            })
-        }
+        const fileStringRemove = oldFileName.filter(item => 
+            !uploadedFiles.some(uploaded => uploaded.name === item.name)
+        );
         return this.filterDuplicate(fileStringRemove);
     };
 
@@ -513,68 +474,72 @@ export class CommonNotification extends Component {
         const formFiles = uploadedFiles.filter(item => item.type !== 'string');
         const fileStrings = uploadedFiles.filter(item => item.type === 'string');
     
-        const filterFormFiles = this.filterDuplicate(formFiles);
-        const filterFileStrings = this.filterDuplicate(fileStrings);
+        const uniqueFormFiles = this.filterDuplicate(formFiles);
+        const uniqueFileStrings = this.filterDuplicate(fileStrings);
     
-        if (filterFileStrings.length > 0) {
-            const filterFormFileByString = filterFormFiles.filter(item => !filterFileStrings.find(x => x.name === item.name))
-            return filterFileStrings.concat(filterFormFileByString);
+        if (uniqueFileStrings.length > 0) {
+            const filteredFormFiles = uniqueFormFiles.filter(
+                file => !uniqueFileStrings.some(stringFile => stringFile.name === file.name)
+            );
+            return [...uniqueFileStrings, ...filteredFormFiles];
         }
-        else return filterFormFiles;
+    
+        return uniqueFormFiles;
     };
 
     getFileName = uploadedFiles => {
-        const arrFileName = [];
-        uploadedFiles.forEach(item => {
-            arrFileName.push(item.name);
-        });
-        return arrFileName.join('/');
+        return uploadedFiles.map(file => file.name).join('/');
+    };
+    
+
+    handlePreviewImage = (event, notificationId, fileName) => {
+        event.preventDefault();
+        const url = Site.resolveClientUrl(`www/dist/images/notification-center/${notificationId}/${fileName}`);
+        window.open(url);
     };
 
     getParams = status => {
-        const { content_en, content_cs, content_ch, content_zhcn, subject, remark } = this.formik.values;
+        const { content_en, content_cs, content_ch, content_zhcn, subject, remark, oldFileName } = this.formik.values;
         const { uploadedFiles } = this.state;
-        const fileStringRemove = [];
-        const fileString = [];
-        const formFile = [];
-        let fileNames = [];
+        const { notificationId, isOstUser } = this.props.actionParam;
+        const formData = new FormData();
 
-        if (this.formik.values.oldFileName) {
-            const fileStringRemoves = getFileStringRemove(values.oldFileName, uploadedFiles);
+        if (oldFileName.length > 0) {
+            const fileStringRemoves = this.getFileStringRemove(oldFileName, uploadedFiles);
             if (fileStringRemoves.length > 0) {
                 fileStringRemoves.forEach(oldFile => {
-                    fileStringRemove.push(oldFile.name);
+                    formData.append('fileStringRemove', oldFile.name);
                 });
             }
         }
 
-        const filerDupFiles = this.filterFormStringFiles(uploadedFiles);
-        filerDupFiles.forEach(file => {
+        const filteredFiles = this.filterFormStringFiles(uploadedFiles);
+        filteredFiles.forEach(file => {
             if (file.type === 'string') {
-                fileString.push(file.name);
+                formData.append('fileString', file.name);
             } else {
-                formFile.push(file);
+                formData.append('formFile', file);
             }
         });
 
-        fileNames = this.getFileName(uploadedFiles);
-
         const params = {
-            notificationId: this.props.actionParam.notificationId,
+            notificationId,
             newStatus: status,
             newSubject: subject,
             newContentEN: content_en,
             newContentCS: content_cs,
-            newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
-            newContentZHCN: this.props.actionParam.isOstUser ? content_zhcn : null,
-            subject: subject,
-            remark: remark,
-            fileStringRemove,
-            fileString,
-            formFile,
-            fileNames,
+            newContentCH: isOstUser ? content_ch : null,
+            newContentZHCN: isOstUser ? content_zhcn : null,
+            subject,
+            remark: remark ?? '',
+            filename: this.getFileName(uploadedFiles),
         };
-        return params;
+
+        Object.entries(params).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+    
+        return formData;
     };
 
     renderForm = ({
@@ -590,7 +555,7 @@ export class CommonNotification extends Component {
         const { isOstUser } = actionParam;
         const headerClass = isOstUser ? 'group-header required' : 'group-header';
         const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
-console.log('errors', errors);
+
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 {
@@ -715,10 +680,27 @@ console.log('errors', errors);
                                     value={values.remark}
                                     onChange={event => setFieldValue('remark', event.target.value)}
                                 />
-                                <FileUpload
-                                    uploadedFiles={this.state.uploadedFiles}
-                                    setStateUploadFile={this.setStateUploadFile}
-                                />
+                                {
+                                    isEdit ? (
+                                        <FileUpload
+                                            uploadedFiles={this.state.uploadedFiles}
+                                            setStateUploadFile={this.setStateUploadFile}
+                                        />
+                                    ) : (
+                                        <div className={this.getFileString(values.filename).length > 0 ? 'content-border pb-2 cl-file' : ''}>
+                                            {
+                                                this.getFileString(values.filename).length > 0 && this.getFileString(values.filename).map((image, key) =>(
+                                                    <div key={key} className='d-flex image-section'>
+                                                        <span className='fa fa-file-image-o mr-2  pt-1'/>
+                                                            <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, values.notificationID ,image.name)}>
+                                                                {image.name}
+                                                            </span>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                         {
@@ -760,7 +742,8 @@ console.log('errors', errors);
         if(!data) {
             return null;
         }
-        //const fileStrings = this.getFileString(contents);
+        const fileStrings = this.getFileString(data.filename);
+        console.log('fileStrings', fileStrings);
         const initialValues = {
             notificationID: data.notificationID,
             messageID: data.messageID,
@@ -773,9 +756,10 @@ console.log('errors', errors);
             content_ch: isOstUser ? data.content_ch : null,
             content_zhcn: isOstUser ? data.content_zhcn : null,
             remark: data.remark,
+            filename: data.filename,
             imageFileType: '',
             imageFileSize: '',
-            //oldFileName: fileStrings,
+            oldFileName: this.getFileString(data.filename),
         };
         const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
 
