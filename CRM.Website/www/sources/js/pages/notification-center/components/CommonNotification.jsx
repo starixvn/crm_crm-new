@@ -237,7 +237,7 @@ export class CommonNotification extends Component {
             errors.content_zhcn = LangHelper.getResource('RemoveSignAtNSC');
         }
 
-        if (files) {
+        if (isOstUser && files) {
             const invalidFileType = files.filter(x => !this.validFileType(x) || !this.validFileExtension(x));
             if (invalidFileType.length > 0 || errorDrafts?.invalidFileTypeDraft.length > 0) {
                 errorDrafts?.invalidFileTypeDraft.map(item => invalidFileType.push(item));
@@ -255,7 +255,7 @@ export class CommonNotification extends Component {
             }
         }
     
-        if (invalidWidthHeight.length > 0) {
+        if (isOstUser && invalidWidthHeight.length > 0) {
             const uniqInvalidImage = [...new Set(invalidWidthHeight)];
             const nameFileError = uniqInvalidImage.map(x => x.name);
             const uniqErr = [...new Set(nameFileError)].join(', ');
@@ -451,7 +451,7 @@ export class CommonNotification extends Component {
 
     getFileString = (filename) => {
         if (!filename) return [];
-        return filename.split('/').map(file => ({ name: file, type: 'string' }));
+        return filename.split(',').map(file => ({ name: file, type: 'string' }));
     };
 
     filterDuplicate = (files) => {
@@ -488,7 +488,7 @@ export class CommonNotification extends Component {
     };
 
     getFileName = uploadedFiles => {
-        return uploadedFiles.map(file => file.name).join('/');
+        return uploadedFiles.map(file => file.name).join(',');
     };
     
 
@@ -531,8 +531,8 @@ export class CommonNotification extends Component {
             newContentCH: isOstUser ? content_ch : null,
             newContentZHCN: isOstUser ? content_zhcn : null,
             subject,
-            remark: remark ?? '',
-            filename: this.getFileName(uploadedFiles),
+            remark: isOstUser ? remark : null,
+            filename: isOstUser ? this.getFileName(uploadedFiles) : null,
         };
 
         Object.entries(params).forEach(([key, value]) => {
@@ -660,7 +660,7 @@ export class CommonNotification extends Component {
                                                         username={window.currentUsername}
                                                         onChange={value => isEdit ? setFieldValue([language.mapLabel], value) : null}
                                                         isRemoveToolbarForChatbot
-                                                        isRemoveAllToolbar={actionParam.isOstUser || !isEdit}
+                                                        isRemoveAllToolbar={isOstUser || !isEdit}
                                                         isInvalid={touched[language.mapLabel] && errors[language.mapLabel]}
                                                         isPaddingContent
                                                     />
@@ -672,7 +672,7 @@ export class CommonNotification extends Component {
                             </div>
                         </div>
                         <div className="group-item">
-                            <div className="group-header">{LangHelper.getResource('Remark')}</div>
+                            <div className="group-header">{LangHelper.getResource('Remarks')}</div>
                             <div className='group-remark'>
                                 <Form.Control as="textarea"
                                     className="shadow-none form-control"
@@ -681,24 +681,30 @@ export class CommonNotification extends Component {
                                     onChange={event => setFieldValue('remark', event.target.value)}
                                 />
                                 {
-                                    isEdit ? (
-                                        <FileUpload
-                                            uploadedFiles={this.state.uploadedFiles}
-                                            setStateUploadFile={this.setStateUploadFile}
-                                        />
-                                    ) : (
-                                        <div className={this.getFileString(values.filename).length > 0 ? 'content-border pb-2 cl-file' : ''}>
-                                            {
-                                                this.getFileString(values.filename).length > 0 && this.getFileString(values.filename).map((image, key) =>(
-                                                    <div key={key} className='d-flex image-section'>
-                                                        <span className='fa fa-file-image-o mr-2  pt-1'/>
-                                                            <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, values.notificationID ,image.name)}>
+                                    isOstUser && (
+                                        isEdit ? (
+                                            <FileUpload
+                                                id={values.notificationID}
+                                                uploadedFiles={this.state.uploadedFiles}
+                                                setStateUploadFile={this.setStateUploadFile}
+                                            />
+                                        ) : (
+                                            <div className={this.getFileString(values.filename).length > 0 ? 'content-border pb-2 cl-file' : ''}>
+                                                {this.getFileString(values.filename).length > 0 && 
+                                                    this.getFileString(values.filename).map((image, key) => (
+                                                        <div key={key} className="d-flex image-section">
+                                                            <span className="fa fa-file-image-o mr-2 pt-1" />
+                                                            <span 
+                                                                className="mr-2 text-color" 
+                                                                onClick={event => this.handlePreviewImage(event, values.notificationID, image.name)}
+                                                            >
                                                                 {image.name}
                                                             </span>
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        )
                                     )
                                 }
                             </div>
@@ -755,11 +761,11 @@ export class CommonNotification extends Component {
             content_cs: data.content_cs,
             content_ch: isOstUser ? data.content_ch : null,
             content_zhcn: isOstUser ? data.content_zhcn : null,
-            remark: data.remark,
-            filename: data.filename,
+            remark: isOstUser ? data.remark : null,
+            filename: isOstUser ? data.filename : null,
             imageFileType: '',
             imageFileSize: '',
-            oldFileName: this.getFileString(data.filename),
+            oldFileName: isOstUser ? this.getFileString(data.filename) : null,
         };
         const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
 
