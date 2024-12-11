@@ -64,27 +64,37 @@
         [CrmPermission(FunctionKey = FunctionKey.NotificationCenter, Policy = Policy.Host)]
         public async Task<IActionResult> EditResultAdmNotification([FromForm] EditResultAdmNotification param)
         {
-            try
-            {
-                CommandResult commandResult = await notificationCenterService.EditResultAdmNotificationAsync(param);
-                if (commandResult.IsSuccessful)
-                {
-                    if (param.FormFile.Count > 0 && param.NotificationId > 0)
-                    {
-                        await SaveFilesAsync(param.FormFile, param.NotificationId);
-                    }
-                    if (param.FileStringRemove.Count > 0)
-                    {
-                        DeleteFiles(param.FileStringRemove, param.NotificationId);
-                    }
-                }
-                return Json(commandResult);
-            }
-            catch (System.Exception ex)
-            {
 
-                throw ex;
+            if (param.FormFile.Count > 0 && param.NotificationId > 0)
+            {
+                await SaveFilesAsync(param.FormFile, param.NotificationId);
             }
+            if (param.FileStringRemove.Count > 0)
+            {
+                DeleteFiles(param.FileStringRemove, param.NotificationId);
+            }
+            return Ok();
+            //try
+            //{
+            //    CommandResult commandResult = await notificationCenterService.EditResultAdmNotificationAsync(param);
+            //    if (commandResult.IsSuccessful)
+            //    {
+            //        if (param.FormFile.Count > 0 && param.NotificationId > 0)
+            //        {
+            //            await SaveFilesAsync(param.FormFile, param.NotificationId);
+            //        }
+            //        if (param.FileStringRemove.Count > 0)
+            //        {
+            //            DeleteFiles(param.FileStringRemove, param.NotificationId);
+            //        }
+            //    }
+            //    return Json(commandResult);
+            //}
+            //catch (System.Exception ex)
+            //{
+
+            //    throw ex;
+            //}
         }
 
         [HttpPost]
