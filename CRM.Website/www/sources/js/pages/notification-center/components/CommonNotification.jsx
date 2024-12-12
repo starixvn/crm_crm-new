@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Col, Form, Tabs, Tab, Button, Collapse, Row } from 'react-bootstrap';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Formik } from 'formik';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
@@ -46,7 +45,7 @@ export class CommonNotification extends Component {
     }
 
     async componentDidMount() {
-        this.getAdmNotificationDetail();
+        await this.getAdmNotificationDetail();
         this.props.isEdit && this.props.setEditAdmNotification(null);
         await this.changeStringToFile();
     };
@@ -75,9 +74,6 @@ export class CommonNotification extends Component {
     };
 
     handleCreateNotification = async (params, message) => {
-        console.log('invalidWidthHeight', this.state.invalidWidthHeight);
-        console.log('errorDrafts', this.state.errorDrafts);
-        console.log('params', params);
         this.formik.setSubmitting(true);
         await this.props.editAdmNotification(params).then(() => {
             this.handleClosePopup();
@@ -96,6 +92,7 @@ export class CommonNotification extends Component {
     handleSaveDraft = async () => {
         const params = this.getParams('Draft');
         const message = LangHelper.getResource('UpdateNotificationSuccessfully');
+        this.formik.setErrors({});
         await this.handleCreateNotification(params, message);
     };
 
@@ -181,7 +178,6 @@ export class CommonNotification extends Component {
 
     handleActive = popup => {
         const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
-        console.log('excludeOldImage1', excludeOldImage);
         this.setState({isFirstCheck: true});
         const errors = this.validateFormik(this.formik.values, excludeOldImage);
         if (Object.keys(errors).length === 0) {
@@ -350,9 +346,6 @@ export class CommonNotification extends Component {
     };
 
     setStateUploadFile = (uploadedFiles, fileNameRemove) => {
-        console.log('uploadedFiles', uploadedFiles);
-        console.log('fileNameRemove', fileNameRemove);
-
         if (!fileNameRemove) {
             uploadedFiles.forEach((file) => {
                 if(file.type !== 'string') {
@@ -671,44 +664,47 @@ export class CommonNotification extends Component {
                                 </Col>
                             </div>
                         </div>
-                        <div className="group-item">
-                            <div className="group-header">{LangHelper.getResource('Remarks')}</div>
-                            <div className='group-remark'>
-                                <Form.Control as="textarea"
-                                    className="shadow-none form-control"
-                                    name={'remark'} id={'remark' } rows="8"
-                                    value={values.remark}
-                                    onChange={event => setFieldValue('remark', event.target.value)}
-                                />
-                                {
-                                    isOstUser && (
-                                        isEdit ? (
-                                            <FileUpload
-                                                id={values.notificationID}
-                                                uploadedFiles={this.state.uploadedFiles}
-                                                setStateUploadFile={this.setStateUploadFile}
-                                            />
-                                        ) : (
-                                            <div className={this.getFileString(values.filename).length > 0 ? 'content-border pb-2 cl-file' : ''}>
-                                                {this.getFileString(values.filename).length > 0 && 
-                                                    this.getFileString(values.filename).map((image, key) => (
-                                                        <div key={key} className="d-flex image-section">
-                                                            <span className="fa fa-file-image-o mr-2 pt-1" />
-                                                            <span 
-                                                                className="mr-2 text-color" 
-                                                                onClick={event => this.handlePreviewImage(event, values.notificationID, image.name)}
-                                                            >
-                                                                {image.name}
-                                                            </span>
-                                                        </div>
-                                                    ))
-                                                }
-                                            </div>
-                                        )
-                                    )
-                                }
-                            </div>
-                        </div>
+                        {
+                            isOstUser &&
+                            (
+                                <div className="group-item">
+                                    <div className="group-header">{LangHelper.getResource('Remarks')}</div>
+                                    <div className='group-remark'>
+                                        <Form.Control as="textarea"
+                                            className="shadow-none form-control"
+                                            name={'remark'} id={'remark' } rows="8"
+                                            value={values.remark}
+                                            onChange={event => setFieldValue('remark', event.target.value)}
+                                        />
+                                        {
+                                            isEdit ? (
+                                                <FileUpload
+                                                    id={values.notificationID}
+                                                    uploadedFiles={this.state.uploadedFiles}
+                                                    setStateUploadFile={this.setStateUploadFile}
+                                                />
+                                            ) : (
+                                                <div className={this.getFileString(values.filename).length > 0 ? 'content-border pb-2 cl-file' : ''}>
+                                                    {this.getFileString(values.filename).length > 0 && 
+                                                        this.getFileString(values.filename).map((image, key) => (
+                                                            <div key={key} className="d-flex image-section">
+                                                                <span className="fa fa-file-image-o mr-2 pt-1" />
+                                                                <span 
+                                                                    className="mr-2 text-color" 
+                                                                    onClick={event => this.handlePreviewImage(event, values.notificationID, image.name)}
+                                                                >
+                                                                    {image.name}
+                                                                </span>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            )
+                        }
                         {
                             isEdit && (
                                 <div className="group-btn">
@@ -748,8 +744,6 @@ export class CommonNotification extends Component {
         if(!data) {
             return null;
         }
-        const fileStrings = this.getFileString(data.filename);
-        console.log('fileStrings', fileStrings);
         const initialValues = {
             notificationID: data.notificationID,
             messageID: data.messageID,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import LangHelper from '@jsroot/common/langHelper';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import {Col, Form, Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import Site from '@jsroot/common/site';
 
 const portal = document.createElement("div");
@@ -49,7 +49,7 @@ export class FileUpload extends Component {
     handlePreviewImage = (event, fileName) => {
         event.stopPropagation();
         const url = fileName.type === 'string' ?
-                    Site.resolveClientUrl(`www/dist/images/announcement/${this.props.id}/${fileName.name}`) : 
+                    Site.resolveClientUrl(`www/dist/images/notification-center/${this.props.id}/${fileName.name}`) : 
                     URL.createObjectURL(fileName);
         window.open(url);
     };
