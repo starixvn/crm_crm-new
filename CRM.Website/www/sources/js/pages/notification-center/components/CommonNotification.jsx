@@ -444,7 +444,7 @@ export class CommonNotification extends Component {
 
     getFileString = (filename) => {
         if (!filename) return [];
-        return filename.split(',').map(file => ({ name: file, type: 'string' }));
+        return filename.split(',').map(file => ({ name: file.substring(file.lastIndexOf('/') + 1), type: 'string' }));
     };
 
     filterDuplicate = (files) => {
@@ -483,7 +483,6 @@ export class CommonNotification extends Component {
     getFileName = uploadedFiles => {
         return uploadedFiles.map(file => file.name).join(',');
     };
-    
 
     handlePreviewImage = (event, notificationId, fileName) => {
         event.preventDefault();
@@ -548,6 +547,7 @@ export class CommonNotification extends Component {
         const { isOstUser } = actionParam;
         const headerClass = isOstUser ? 'group-header required' : 'group-header';
         const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
+        const fileStrings = this.getFileString(values.filename);
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -684,9 +684,9 @@ export class CommonNotification extends Component {
                                                     setStateUploadFile={this.setStateUploadFile}
                                                 />
                                             ) : (
-                                                <div className={this.getFileString(values.filename).length > 0 ? 'content-border pb-2 cl-file' : ''}>
-                                                    {this.getFileString(values.filename).length > 0 && 
-                                                        this.getFileString(values.filename).map((image, key) => (
+                                                <div className={fileStrings.length > 0 ? 'content-border pb-2 cl-file' : ''}>
+                                                    {fileStrings.length > 0 && 
+                                                        fileStrings.map((image, key) => (
                                                             <div key={key} className="d-flex image-section">
                                                                 <span className="fa fa-file-image-o mr-2 pt-1" />
                                                                 <span 
