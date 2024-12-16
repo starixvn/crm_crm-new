@@ -9,6 +9,7 @@
     using CRM.Models.NotificationCenter;
     using CRM.Services.NotificationCenter;
     using Fanex.NAP.Client.Helpers.Web;
+    using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
 
@@ -16,6 +17,7 @@
     {
         private INapSession napSession;
         private IBaseService baseService;
+        private IConfiguration configuration;
         private readonly Fixture fixture = new Fixture();
 
         [Fact]
@@ -114,8 +116,9 @@
         {
             napSession = Substitute.For<INapSession>();
             baseService = Substitute.For<IBaseService>();
+            configuration = Substitute.For<IConfiguration>();
 
-            return new NotificationCenterService(napSession, baseService);
+            return new NotificationCenterService(napSession, baseService, configuration);
         }
         #endregion Helpers
     }
