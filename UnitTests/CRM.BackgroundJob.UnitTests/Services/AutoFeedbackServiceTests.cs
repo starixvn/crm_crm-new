@@ -48,6 +48,7 @@
         private IVoidingBetIDService voidingBetIDService;
         private IAbnormalBetService abnormalBetService;
         private IAutoFbMessageNotificationCenterService autoFbMessageNotificationCenterService;
+        private IAutoFbRebateRetentionService autoFbRebateRetentionService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -1367,6 +1368,7 @@
             voidingBetIDService = Substitute.For<IVoidingBetIDService>();
             abnormalBetService = Substitute.For<IAbnormalBetService>();
             autoFbMessageNotificationCenterService = Substitute.For<IAutoFbMessageNotificationCenterService>();
+            autoFbRebateRetentionService = Substitute.For<IAutoFbRebateRetentionService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -1385,6 +1387,7 @@
                 voidingBetIDService,
                 abnormalBetService,
                 autoFbMessageNotificationCenterService,
+                autoFbRebateRetentionService,
                 configuration);
         }
 
