@@ -1,6 +1,8 @@
 ﻿namespace CRM.Controllers.UnitTests
 {
     using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.NotificationCenter;
@@ -13,6 +15,7 @@
     using CRM.Services;
     using CRM.Services.NotificationCenter;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -75,13 +78,41 @@
         public async Task EditResultAdmNotification_WhenCalled_ExpectReturnsJson()
         {
             // Arrange
+            byte[] fileBytes = new byte[128];
+
+            IFormFile file = new FormFile(
+                baseStream: new MemoryStream(fileBytes),
+                baseStreamOffset: 0,
+                length: fileBytes.Length,
+                name: "myFile",
+                fileName: "myFile.txt");
+
+            var param = new EditResultAdmNotification
+            {
+                NotificationId = 1,
+                FormFile = new List<IFormFile> { file }
+            };
+            var clientIP = new DefaultHttpContext
+            {
+                Connection =
+                {
+                    RemoteIpAddress = new IPAddress(1)
+                }
+            };
             var controller = GetController();
-            var param = fixture.Create<EditResultAdmNotification>();
-            var expected = fixture.Create<CommandResult>();
+
+            controller.ControllerContext.HttpContext = clientIP;
+            var expected = new CommandResult
+            {
+                Code = 0,
+                Message = "OK",
+            };
             notificationCenterService.EditResultAdmNotificationAsync(param).Returns(expected);
 
             // Act
             var result = await controller.EditResultAdmNotification(param) as JsonResult;
+
+            // Assert
             Assert.Equal(expected, result.Value);
         }
 
