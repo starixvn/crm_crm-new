@@ -8,11 +8,13 @@
     using CRM.BackgroundJob.Core.Services;
     using CRM.BackgroundJob.Criteria.AbnormalBet;
     using CRM.BackgroundJob.Criteria.AutoFbMessageNotificationCenter;
+    using CRM.BackgroundJob.Criteria.AutoFbRebateRetention;
     using CRM.BackgroundJob.Criteria.RefundSettledTicket;
     using CRM.BackgroundJob.Criteria.VoidingBetID;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.AmendmentNotiFB;
+    using CRM.BackgroundJob.Models.ChatBotRebateRetention;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.LicenseeInfo;
     using CRM.BackgroundJob.Models.ProblemsAccount;
@@ -1340,6 +1342,68 @@
             await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
         #endregion MessageNotificationCenterExecuteJobAsync
+
+        #region RebateRetentionExecuteJobAsync
+        [Fact]
+        public async Task RebateRetentionExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoRebateRetention, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.RebateRetentionExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service AutoFeedback RebateRetention is shutdown.");
+        }
+
+        [Fact]
+        public async Task RebateRetentionExecuteJobAsync_ImportAbnormalBetsAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true, LastMsgTargetId = 1, BatchSize = 100, LastLogSId = "1" };
+            var rrMessages = fixture.Create<IEnumerable<ChatBotRebateRetentionInfo>>();
+            var newLogSIDs = "123";
+            var commandResult = new CommandResult { Code = 1 };
+            var command = fixture.Create<ImportAutoFbRebateRetentionCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportAutoFbRebateRetentionCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoRebateRetention, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
+            autoFbRebateRetentionService.GetRebateRetentionInfoAsync(setting.LastLogSId).Returns((rrMessages, newLogSIDs));
+            autoFbRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.RebateRetentionExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation(valueTupe.Item1.Message);
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+        [Fact]
+        public async Task RebateRetentionExecuteJobAsync_ExpectedScanAndSendMessageToBotEndpoint()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true, LastMsgTargetId = 1, BatchSize = 100, LastLogSId = "1" };
+            var rrMessages = fixture.Create<IEnumerable<ChatBotRebateRetentionInfo>>();
+            var newLogSIDs = "123";
+            var commandResult = new CommandResult { Code = 0 };
+            var command = fixture.Create<ImportAutoFbRebateRetentionCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportAutoFbRebateRetentionCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(BackgroundJobConstants.ServiceName_AutoRebateRetention, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
+            autoFbRebateRetentionService.GetRebateRetentionInfoAsync(setting.LastLogSId).Returns((rrMessages, newLogSIDs));
+            autoFbRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.RebateRetentionExecuteJobAsync();
+
+            // Assert
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
+        }
+        #endregion RebateRetentionExecuteJobAsync
 
         #region Helpers
 

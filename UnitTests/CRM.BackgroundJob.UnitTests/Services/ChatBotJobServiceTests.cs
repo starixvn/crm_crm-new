@@ -13,12 +13,14 @@
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Criteria.ChatBotCWL;
     using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
+    using CRM.BackgroundJob.Criteria.ChatBotRebateRetention;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.ChatBot;
     using CRM.BackgroundJob.Models.ChatBotCTO;
     using CRM.BackgroundJob.Models.ChatBotCWL;
     using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
+    using CRM.BackgroundJob.Models.ChatBotRebateRetention;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Services;
     using Fanex.CRM.BackgroundJob.Constants;
@@ -497,6 +499,66 @@
             chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
             // Act
             await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+        [Fact]
+        public async Task PullMessageRebateRetentionAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_RebateRetention, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.PullMessageRebateRetentionAsync();
+
+            // Assert
+            logService.Received().LogInformation("Chat Bot Rebate Retention Service is shutdown.");
+        }
+
+        [Fact]
+        public async Task PullMessageRebateRetentionAsync_ImportArchivedAccountsAsyncSuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true, LastLogId = 1, BatchSize = 3000, LastLogSId = "1" };
+            var command = fixture.Create<ImportRebateRetentionCommand>();
+            var commandResult = new CommandResult { Code = 0 };
+            var rrMessages = fixture.Create<IEnumerable<ChatBotRebateRetentionInfo>>();
+            var newLogSIDs = "123";
+            var rrInfo = (rrMessages, newLogSIDs);
+            var valueTupe = new ValueTuple<CommandResult, ImportRebateRetentionCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_RebateRetention, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
+            chatBotRebateRetentionService.GetRebateRetentionInfoAsync("1").Returns(rrInfo);
+            chatBotRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
+            // Act
+            await service.PullMessageRebateRetentionAsync();
+
+            // Assert
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
+        }
+
+        [Fact]
+        public async Task PullMessageRebateRetentionAsync_ImportArchivedAccountsAsyncIsFail_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true, LastLogId = 1, BatchSize = 3000, LastLogSId = "1" };
+            var command = fixture.Create<ImportRebateRetentionCommand>();
+            var commandResult = new CommandResult { Code = 1 };
+            var rrMessages = fixture.Create<IEnumerable<ChatBotRebateRetentionInfo>>();
+            var newLogSIDs = "123";
+            var rrInfo = (rrMessages, newLogSIDs);
+            var valueTupe = new ValueTuple<CommandResult, ImportRebateRetentionCommand>(commandResult, command);
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(BackgroundJobConstants.ServiceName_ChatBot_RebateRetention, BackgroundJobConstants.DefaultEnvironment).Returns(setting);
+            chatBotRebateRetentionService.GetRebateRetentionInfoAsync("1").Returns(rrInfo);
+            chatBotRebateRetentionService.ImportRebateRetentionCommand(rrMessages, newLogSIDs, BackgroundJobConstants.DefaultEnvironment).Returns(valueTupe);
+            // Act
+            await service.PullMessageRebateRetentionAsync();
 
             // Assert
             logService.Received(1).LogInformation(Arg.Any<string>());
