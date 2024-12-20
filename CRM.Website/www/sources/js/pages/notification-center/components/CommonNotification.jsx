@@ -496,23 +496,25 @@ export class CommonNotification extends Component {
         const { notificationId, isOstUser } = this.props.actionParam;
         const formData = new FormData();
 
-        if (oldFileName.length > 0) {
-            const fileStringRemoves = this.getFileStringRemove(oldFileName, uploadedFiles);
-            if (fileStringRemoves.length > 0) {
-                fileStringRemoves.forEach(oldFile => {
-                    formData.append('fileStringRemove', oldFile.name);
-                });
+        if (isOstUser) {
+            if (oldFileName.length > 0) {
+                const fileStringRemoves = this.getFileStringRemove(oldFileName, uploadedFiles);
+                if (fileStringRemoves.length > 0) {
+                    fileStringRemoves.forEach(oldFile => {
+                        formData.append('fileStringRemove', oldFile.name);
+                    });
+                }
             }
+    
+            const filteredFiles = this.filterFormStringFiles(uploadedFiles);
+            filteredFiles.forEach(file => {
+                if (file.type === 'string') {
+                    formData.append('fileString', file.name);
+                } else {
+                    formData.append('formFile', file);
+                }
+            });
         }
-
-        const filteredFiles = this.filterFormStringFiles(uploadedFiles);
-        filteredFiles.forEach(file => {
-            if (file.type === 'string') {
-                formData.append('fileString', file.name);
-            } else {
-                formData.append('formFile', file);
-            }
-        });
 
         const params = {
             notificationId,
