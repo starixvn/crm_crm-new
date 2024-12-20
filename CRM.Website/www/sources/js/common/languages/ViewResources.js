@@ -211,6 +211,7 @@
     ErrorOccuredWhileSendingTheNotificationToTheFollowingRecipient: 'Error occured while sending the notification to the following recipient',
     ExcludeIgnoredAccounts: 'Exclude ignored accounts',
     ExcludeTestAccounts: 'Exclude test accounts',
+    ExceedMaximum10ImageFiles: 'Exceed maximum 10 image files',
     Extension: 'Extension',
     ExtraInfo: 'Extra Info',
     Email: 'Email',

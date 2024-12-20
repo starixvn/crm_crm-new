@@ -195,7 +195,7 @@ export class CommonNotification extends Component {
         const errors = {};
         const { isOstUser } = this.props.actionParam;
         const { subject, content_en, content_cs, content_ch, content_zhcn } = values;
-        const { errorDrafts, invalidWidthHeight } = this.state;
+        const { errorDrafts, invalidWidthHeight, uploadedFiles } = this.state;
 
         if (!subject && !isOstUser) {
             errors.subject = LangHelper.getResource('SubjectRequired');
@@ -231,6 +231,10 @@ export class CommonNotification extends Component {
 
         if (content_zhcn && isOstUser && !content_zhcn.includes('@@')) {
             errors.content_zhcn = LangHelper.getResource('RemoveSignAtNSC');
+        }
+
+        if (isOstUser && uploadedFiles.length > 10) {
+            errors.maxImageFiles = LangHelper.getResource('ExceedMaximum10ImageFiles');
         }
 
         if (isOstUser && files) {
@@ -522,17 +526,17 @@ export class CommonNotification extends Component {
             newSubject: subject,
             newContentEN: content_en,
             newContentCS: content_cs,
-            newContentCH: isOstUser ? content_ch : null,
-            newContentZHCN: isOstUser ? content_zhcn : null,
+            newContentCH: isOstUser && content_ch ? content_ch : '',
+            newContentZHCN: isOstUser && content_zhcn ? content_zhcn : '',
             subject,
-            remark: isOstUser ? remark : null,
-            filename: isOstUser ? this.getFileName(uploadedFiles) : null,
+            remark: isOstUser && remark ? remark : '',
+            filename: isOstUser ? this.getFileName(uploadedFiles) : '',
         };
 
         Object.entries(params).forEach(([key, value]) => {
             formData.append(key, value);
         });
-    
+
         return formData;
     };
 
@@ -670,7 +674,7 @@ export class CommonNotification extends Component {
                             isOstUser &&
                             (
                                 <div className="group-item">
-                                    <div className="group-header">{LangHelper.getResource('Remarks')}</div>
+                                    <div className="group-header">{LangHelper.getResource('Remark')}</div>
                                     <div className='group-remark'>
                                         <Form.Control as="textarea"
                                             className="shadow-none form-control"
@@ -742,7 +746,6 @@ export class CommonNotification extends Component {
     render = () => {
         const { data } = this.state;
         const { isOstUser } = this.props.actionParam;
-
         if(!data) {
             return null;
         }
@@ -761,6 +764,7 @@ export class CommonNotification extends Component {
             filename: isOstUser ? data.filename : null,
             imageFileType: '',
             imageFileSize: '',
+            maxImageFiles: '',
             oldFileName: isOstUser ? this.getFileString(data.filename) : null,
         };
         const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
