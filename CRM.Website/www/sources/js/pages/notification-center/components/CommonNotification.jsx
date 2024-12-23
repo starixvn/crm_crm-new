@@ -523,12 +523,11 @@ export class CommonNotification extends Component {
         const params = {
             notificationId,
             newStatus: status,
-            newSubject: subject,
+            newSubject: isOstUser && subject ? subject : '',
             newContentEN: content_en,
             newContentCS: content_cs,
             newContentCH: isOstUser && content_ch ? content_ch : '',
             newContentZHCN: isOstUser && content_zhcn ? content_zhcn : '',
-            subject,
             remark: isOstUser && remark ? remark : '',
             filename: isOstUser ? this.getFileName(uploadedFiles) : '',
         };
