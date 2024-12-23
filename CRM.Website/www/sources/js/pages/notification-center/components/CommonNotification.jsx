@@ -194,7 +194,7 @@ export class CommonNotification extends Component {
     validateFormik = (values, files) => {
         const errors = {};
         const { isOstUser } = this.props.actionParam;
-        const { subject, content_en, content_cs, content_ch, content_zhcn } = values;
+        const { subject, content_en, content_cs, content_ch, content_zhcn, remark } = values;
         const { errorDrafts, invalidWidthHeight, uploadedFiles } = this.state;
 
         if (!subject && !isOstUser) {
@@ -231,6 +231,10 @@ export class CommonNotification extends Component {
 
         if (content_zhcn && isOstUser && !content_zhcn.includes('@@')) {
             errors.content_zhcn = LangHelper.getResource('RemoveSignAtNSC');
+        }
+
+        if (remark && remark.length > 1000) {
+            errors.remark = LangHelper.getResource('ExceedRemark1000Characters');
         }
 
         if (isOstUser && uploadedFiles.length > 10) {
@@ -679,6 +683,7 @@ export class CommonNotification extends Component {
                                             className="shadow-none form-control"
                                             name={'remark'} id={'remark' } rows="8"
                                             value={values.remark}
+                                            isInvalid={touched.remark && errors.remark}
                                             onChange={event => setFieldValue('remark', event.target.value)}
                                         />
                                         {

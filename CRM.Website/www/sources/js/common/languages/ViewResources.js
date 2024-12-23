@@ -212,6 +212,7 @@
     ExcludeIgnoredAccounts: 'Exclude ignored accounts',
     ExcludeTestAccounts: 'Exclude test accounts',
     ExceedMaximum10ImageFiles: 'Exceed maximum 10 image files',
+    ExceedRemark1000Characters: 'Remark no more than 1000 characters.',
     Extension: 'Extension',
     ExtraInfo: 'Extra Info',
     Email: 'Email',
