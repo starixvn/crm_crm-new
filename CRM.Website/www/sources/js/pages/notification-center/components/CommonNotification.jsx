@@ -523,7 +523,7 @@ export class CommonNotification extends Component {
         const params = {
             notificationId,
             newStatus: status,
-            newSubject: isOstUser && subject ? subject : '',
+            newSubject: subject ? subject : '',
             newContentEN: content_en,
             newContentCS: content_cs,
             newContentCH: isOstUser && content_ch ? content_ch : '',
