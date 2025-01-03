@@ -113,7 +113,7 @@
                 "ResourceCricket" => commonFeedback.GetResourceByRefIdAndResourceId("ResourceCricket", id, languageCode),
                 "ResultSettlement" => commonFeedback.GetResourceByRefIdAndResourceId("ResultSettlement", id, languageCode),
                 "ResourceBasketball" => commonFeedback.GetResourceByRefIdAndResourceId("ResourceBasketball", id, languageCode),
-                "ResourceE-Sports" => commonFeedback.GetResourceByRefIdAndResourceId("ResourceE-Sports", id, languageCode),
+                "ResourceESports" => commonFeedback.GetResourceByRefIdAndResourceId("ResourceESports", id, languageCode),
                 _ => string.Empty
             };
         }
