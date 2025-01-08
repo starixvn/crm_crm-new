@@ -41,8 +41,9 @@
         [JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
 
-        [JsonProperty(PropertyName = "“base64Text”")]
-        public string Base64Text => !string.IsNullOrWhiteSpace(Text) ? Convert.ToBase64String(Encoding.UTF8.GetBytes(Text)) : string.Empty;
+        [JsonProperty(PropertyName = "base64Text")]
+        public string Base64Text => !string.IsNullOrWhiteSpace(Text) && Type.Equals(MulticastType.Text, StringComparison.CurrentCultureIgnoreCase)
+            ? Convert.ToBase64String(Encoding.UTF8.GetBytes(Text)) : string.Empty;
     }
 
     public static class MulticastType
