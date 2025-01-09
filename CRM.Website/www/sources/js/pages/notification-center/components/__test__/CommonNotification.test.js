@@ -1057,7 +1057,6 @@ describe('CommonNotification', () => {
                 const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
                 container.formik = { 
                     values: {
-                        subject: 'test',
                         content_en: 'test',
                         content_cs: 'test',
                         content_ch: 'test',
@@ -1077,12 +1076,10 @@ describe('CommonNotification', () => {
                 //Assert
                 expect(formData.get('notificationId')).toBe('1');
                 expect(formData.get('newStatus')).toBe('sent');
-                expect(formData.get('newSubject')).toBe('test');
                 expect(formData.get('newContentEN')).toBe('test');
                 expect(formData.get('newContentCS')).toBe('test');
                 expect(formData.get('newContentCH')).toBe('test');
                 expect(formData.get('newContentZHCN')).toBe('test');
-                expect(formData.get('subject')).toBe('test');
                 expect(formData.get('remark')).toBe('test');
                 expect(formData.get('filename')).toBe('test.png,newFile.png');
                 expect(formData.get('fileStringRemove')).toBe('flower.png');
