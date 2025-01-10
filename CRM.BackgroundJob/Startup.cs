@@ -64,8 +64,6 @@
                     })
                });
 
-            services.AddFanexSql(Configuration);
-
             RefDataTypeContainer
             .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
             .FromApplication("CRM.BackgroundJob");
