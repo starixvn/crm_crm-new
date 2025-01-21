@@ -267,7 +267,7 @@ export class DataGrid extends Component {
         };
         return (
             <div>
-                <div className="table-title d-flex justify-content-between align-items-center">
+                <div className="table-title-v2 d-flex justify-content-between align-items-center">
                     { this.renderGenerateTitle() }
                     { dynamicReports.data.childReports.length > 0 && this.renderToolBox() }
                 </div>
