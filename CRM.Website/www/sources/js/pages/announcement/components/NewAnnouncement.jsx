@@ -676,7 +676,7 @@ export class NewAnnouncement extends Component {
                             <Button variant="primary" size="sm" onClick={this.handleConfirmInsertDialog}>
                                 {LangHelper.getResource('Push')}
                             </Button>,
-                            <Button className="btn-cancel" onClick={this.handleCloseConfirmInsertDialog}>
+                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirmInsertDialog}>
                                 {LangHelper.getResource('Cancel')}
                             </Button>
                         ]}

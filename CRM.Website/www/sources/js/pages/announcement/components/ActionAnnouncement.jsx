@@ -810,7 +810,7 @@ export class ActionAnnouncement extends Component {
                             <Button variant="primary" size="sm" onClick={() => this.handleConfirmActionDialog()}>
                                 {LangHelper.getResource('Push')}
                             </Button>,
-                            <Button className="btn-cancel" onClick={this.handleCloseConfirmEditDialog}>
+                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirmEditDialog}>
                                 {LangHelper.getResource('Cancel')}
                             </Button>
                         ]}
