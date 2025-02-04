@@ -20,7 +20,7 @@
 		<Setting Key="Acc_CRM_MessageAbnormalTicketsSel" SpName="Acc_CRM_MessageAbnormalTicketsSel" DbName="DBMSG.bodb_Message.wsv_nap" />
 		<Setting Key="Acc_CRM_AbnormalTicketsSel" SpName="Acc_CRM_AbnormalTicketsSel" DbName="DBACC.bodb02.wsv_nap" />
 		<Setting Key="Acc_CRM_GroupHeadlineSel" SpName="Acc_CRM_GroupHeadlineSel" DbName="DBACC.bodb02.wsv_nap" />
-		<Setting Key="Acc_CRM_GroupHeadlineVipSel" SpName="Acc_CRM_GroupHeadlineVipSel" DbName="DBEXT.bodb02.wsv_nap" />
+		<Setting Key="Acc_CRM_GroupHeadlineVipSel" SpName="Acc_CRM_GroupHeadlineVipSel" DbName="DBBET.bodb02.wsv_nap" />
 		<Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_AbnormalTicketsCheck" SpName="Acc_CRM_AbnormalTicketsCheck" DbName="DBTXN.bodb02.wsv_nap" />
@@ -57,7 +57,7 @@
 		<Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
 	</Function>
 	<Function Name="Chatbot Result Amendment">
-		<Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel" DbName="DBEXT.bodb02.wsv_nap" />
+		<Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel" DbName="DBBET.bodb02.wsv_nap" />
 		<Setting Key="Acc_CRM_Chatbot_Msg_Sel" SpName="Acc_CRM_Chatbot_Msg_Sel" DbName="DBMSG.bodb_Message.wsv_nap" />
 		<Setting Key="Acc_CRM_ChatBot_VoidingMsg_GetMessage" SpName="Acc_CRM_ChatBot_VoidingMsg_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
 		<Setting Key="Acc_CRM_VoidingMsg_GetMessage" SpName="Acc_CRM_VoidingMsg_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
@@ -91,7 +91,7 @@
 		<Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
 	</Function>
 	<Function Name="Turnover Controll">
-		<Setting Key="Acc_CRM_TOControl_CustOutstandingSel" SpName="Acc_CRM_TOControl_CustOutstandingSel" DbName="DBEXT.bodb02.wsv_nap" />
+		<Setting Key="Acc_CRM_TOControl_CustOutstandingSel" SpName="Acc_CRM_TOControl_CustOutstandingSel" DbName="DBBET.bodb02.wsv_nap" />
 		<Setting Key="Acc_CRM_TOControl_SystemSettingSel" SpName="Acc_CRM_TOControl_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoIns" SpName="Acc_CRM_TOControl_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoUpd" SpName="Acc_CRM_TOControl_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -105,7 +105,7 @@
 	</Function>
 	<Function Name="Result Amendment">
 		<Setting Key="Acc_CRM_AmendmentNoti_SystemSettingSel" SpName="Acc_CRM_AmendmentNoti_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
-		<Setting Key="Acc_CRM_AmendmentNotificationSel" SpName="Acc_CRM_AmendmentNotificationSel" DbName="DBEXT.bodb02.wsv_nap" />
+		<Setting Key="Acc_CRM_AmendmentNotificationSel" SpName="Acc_CRM_AmendmentNotificationSel" DbName="DBBET.bodb02.wsv_nap" />
 		<Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
