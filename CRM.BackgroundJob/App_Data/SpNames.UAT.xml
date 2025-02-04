@@ -20,15 +20,15 @@
         <Setting Key="Acc_CRM_MessageAbnormalTicketsSel" SpName="Acc_CRM_MessageAbnormalTicketsSel" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="Acc_CRM_AbnormalTicketsSel" SpName="Acc_CRM_AbnormalTicketsSel" DbName="DBACC.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_GroupHeadlineSel" SpName="Acc_CRM_GroupHeadlineSel" DbName="DBACC.bodb02.wsv_nap" />
-        <Setting Key="Acc_CRM_GroupHeadlineVipSel" SpName="Acc_CRM_GroupHeadlineVipSel" DbName="DBEXT.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_GroupHeadlineVipSel" SpName="Acc_CRM_GroupHeadlineVipSel" DbName="DBBET.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_NewAutoFeedback_GuestFeedbackIns_Multiple" SpName="Acc_CRM_NewAutoFeedback_GuestFeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_AbnormalTicketsCheck" SpName="Acc_CRM_AbnormalTicketsCheck" DbName="DBTXN.bodb02.wsv_nap.ReadOnly" />
-        <Setting Key="Acc_CRM_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.wsv_nap.ReadOnly" />
+        <Setting Key="Acc_CRM_AbnormalTicketsCheck" SpName="Acc_CRM_AbnormalTicketsCheck" DbName="DBTXN.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_AutoFB_SystemSetting_Sel" SpName="Acc_CRM_AutoFB_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AutoFB_RefundSettledTickets_GetMessage" SpName="Acc_CRM_AutoFB_RefundSettledTickets_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_RefundSettledTickets_Import" SpName="Acc_CRM_AutoFB_RefundSettledTickets_Import_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_RefundSettledTickets_Import" SpName="Acc_CRM_AutoFB_RefundSettledTickets_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Chatbot">
         <Setting Key="Acc_SiteDBConfigSel" SpName="Acc_SiteDBConfigSel" DbName="DBACC.bodb02.wsv_nap" />
@@ -41,12 +41,12 @@
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Import" SpName="Acc_CRM_Chatbot_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Chatbot_SystemSetting_Sel" SpName="Acc_CRM_Chatbot_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Upd" SpName="Acc_CRM_ChatBot_crmMessageImport_Upd" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.wsv_nap.ReadOnly" />
+        <Setting Key="Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_VoidByBetID_GetMessage" SpName="Acc_CRM_Chatbot_AbnormalBets_VoidByBetID_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
     </Function>
     <Function Name="Chatbot CWL">
         <Setting Key="Acc_CRM_Chatbot_CWL_Log_Sel" SpName="Acc_CRM_Chatbot_CWL_Log_Sel" DbName="DBCUST.CustDB.wsv_nap" />
-        <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Chatbot CTO">
         <Setting Key="Acc_Chatbot_TOControlSetting_Sel" SpName="Acc_Chatbot_TOControlSetting_Sel" DbName="DBCUST.CustDB.wsv_nap" />
@@ -58,13 +58,13 @@
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Chatbot Result Amendment">
-        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel_xpre" DbName="DBEXT.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel" DbName="DBBET.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_Chatbot_Msg_Sel" SpName="Acc_CRM_Chatbot_Msg_Sel" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_ChatBot_VoidingMsg_GetMessage" SpName="Acc_CRM_ChatBot_VoidingMsg_GetMessage_xpre" DbName="DBMSG.bodb_Message.wsv_nap" />
+        <Setting Key="Acc_CRM_ChatBot_VoidingMsg_GetMessage" SpName="Acc_CRM_ChatBot_VoidingMsg_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="Acc_CRM_VoidingMsg_GetMessage" SpName="Acc_CRM_VoidingMsg_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="Acc_CRM_VodingMessage_Ins" SpName="Acc_CRM_VodingMessage_Ins" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Import" SpName="Acc_CRM_Chatbot_ResultAmendment_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Chatbot_VodingMessage_Sel" SpName="Acc_CRM_Chatbot_VodingMessage_Sel_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_Chatbot_VodingMessage_Sel" SpName="Acc_CRM_Chatbot_VodingMessage_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_VodingMessage_Check" SpName="Acc_CRM_VodingMessage_Check" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_ChatBot_VodingMessage_GetSettledTickets" SpName="Acc_CRM_ChatBot_VodingMessage_GetSettledTickets" DbName="DBTXN.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_VodingMessage_GetSettledTickets" SpName="Acc_CRM_VodingMessage_GetSettledTickets" DbName="DBTXN.bodb02.wsv_nap" />
@@ -88,11 +88,11 @@
     </Function>
     <Function Name="WinLoss Limit">
         <Setting Key="Acc_CRM_CustWinLimitSel" SpName="Acc_CRM_CustWinLimitSel" DbName="DBCUST.CustDB.wsv_nap" />
-        <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Turnover Controll">
-        <Setting Key="Acc_CRM_TOControl_CustOutstandingSel" SpName="Acc_CRM_TOControl_CustOutstandingSel" DbName="DBEXT.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_TOControl_CustOutstandingSel" SpName="Acc_CRM_TOControl_CustOutstandingSel" DbName="DBBET.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_TOControl_SystemSettingSel" SpName="Acc_CRM_TOControl_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoIns" SpName="Acc_CRM_TOControl_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoUpd" SpName="Acc_CRM_TOControl_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -106,7 +106,7 @@
     </Function>
     <Function Name="Result Amendment">
         <Setting Key="Acc_CRM_AmendmentNoti_SystemSettingSel" SpName="Acc_CRM_AmendmentNoti_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_AmendmentNotificationSel" SpName="Acc_CRM_AmendmentNotificationSel" DbName="DBEXT.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_AmendmentNotificationSel" SpName="Acc_CRM_AmendmentNotificationSel" DbName="DBBET.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -118,8 +118,8 @@
     <Function Name="Voiding Settled Tickets">
         <Setting Key="Acc_CRM_FailVoidingMessageSel" SpName="Acc_CRM_FailVoidingMessageSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" SpName="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Ins" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Ins_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Ins" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Ins" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Voiding_SystemSettingSel" SpName="Acc_CRM_Voiding_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AutoVoidingMessageSel" SpName="Acc_CRM_AutoVoidingMessageSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AutoVoidingMessageUpd" SpName="Acc_CRM_AutoVoidingMessageUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -142,7 +142,7 @@
     <Function Name="AbnormalBet">
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" SpName="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" DbName="DBACC.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_GetMessage" SpName="Acc_CRM_AutoFB_AbnormalBets_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import_xpre" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="MessageNotificationCenter">
         <Setting Key="MNC_SettlResultHist_Initial" SpName="MNC_SettlResultHist_Initial" DbName="DBCRM.MessageNotification.wsv_nap" />

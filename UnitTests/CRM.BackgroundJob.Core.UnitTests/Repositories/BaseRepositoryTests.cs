@@ -20,7 +20,7 @@
             .Run();
 
             objectDb = Substitute.For<IObjectDb>();
-            ObjectDbFactory.Mock((key, time) => objectDb);
+            ObjectDbFactory.Mock((key, time, ip) => objectDb);
         }
 
         #region ExecuteNonQueryAsync
