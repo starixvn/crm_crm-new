@@ -746,11 +746,13 @@
             border-radius: 3px;
 
             .image-section {
+                align-items: center;
                 padding-bottom: 5px;
                 cursor: pointer;
 
                 .text-color {
                     color: #3873e9;
+                    margin: 0 4px !important;
                 }
             }
         }

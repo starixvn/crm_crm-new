@@ -698,8 +698,8 @@ export class CommonNotification extends Component {
                                                     {fileStrings.length > 0 && 
                                                         fileStrings.map((image, key) => (
                                                             <div key={key} className="d-flex image-section">
-                                                                <span className="fa fa-file-image-o mr-2 pt-1" />
-                                                                <span 
+                                                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-file-image.png')} />
+                                                                <span
                                                                     className="mr-2 text-color" 
                                                                     onClick={event => this.handlePreviewImage(event, values.notificationID, image.name)}
                                                                 >
