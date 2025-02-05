@@ -380,7 +380,7 @@
     </Function>
     <Function Name="MessageNotificationCenter">
         <Setting Key="MNC_Notification_AdmSelNoti" SpName="MNC_Notification_AdmSelNoti" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
-        <Setting Key="MNC_Notification_AdmSelNotiDetail" SpName="MNC_Notification_AdmSelNotiDetail" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
+        <Setting Key="MNC_Notification_AdmSelNotiDetail" SpName="MNC_Notification_AdmSelNotiDetail_xtest" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmUpdNoti" SpName="MNC_Notification_AdmUpdNoti_xtest" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmSelNotiTickets" SpName="MNC_Notification_AdmSelNotiTickets" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmUpdNotiSts" SpName="MNC_Notification_AdmUpdNotiSts" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
