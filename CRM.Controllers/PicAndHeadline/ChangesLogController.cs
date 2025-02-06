@@ -38,10 +38,6 @@
         {
             criteria.ToDate = criteria.ToDate.AddHours(EndHour).AddMinutes(EndMinuteSecond).AddSeconds(EndMinuteSecond);
             var picInfo = await baseService.GetDataAsync<ChangePicLogInfo>(criteria);
-            if (criteria.TotalRows > 0)
-            {
-                picInfo = picInfo.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            }
             return Json(new { picInfo, totals = criteria.TotalRows });
         }
 
