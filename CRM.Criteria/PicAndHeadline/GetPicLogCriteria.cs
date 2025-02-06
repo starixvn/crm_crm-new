@@ -16,9 +16,8 @@
 
         public string DisplayName { get; set; }
 
-        [SpParam(Ignored = true)]
         public int PageIndex { get; set; }
-        [SpParam(Ignored = true)]
+
         public int PageSize { get; set; }
 
         public int TotalRows { get; set; }
