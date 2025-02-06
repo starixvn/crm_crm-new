@@ -474,6 +474,117 @@
                     }
                 }
 
+                .group-remark {
+                    padding: 10px 12px 10px 12px;
+                    border-top: 1px solid #bbb;
+
+                    .group-upload-file {
+                        margin-top: 8px;
+                        border-radius: 3px;
+                        border: 1px solid #bbb;
+                        background: #f5f5f5;
+                        color: black;
+
+                        label {
+                            padding: 8px 12px;
+                        }
+
+                        .upload-file {
+                            border-radius: 3px;
+                            border-top: 1px solid #bbb;
+                            padding: 8px 12px;
+                            background: #f5f5f5;
+                            border-top-right-radius: 0px;
+                            border-top-left-radius: 0px;
+
+                            .text-choose-file {
+                                color: #3c5b9b;
+                                text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.25);
+                                font-size: 12px;
+                                font-weight: 700;
+                            }
+                            
+                            .file-upload-label {
+                                padding: 5px 16px;
+                                border-radius: 3px;
+                                border: 1px solid #3c5b9b;
+                                background: #ebeff6;
+                                margin-bottom: 0;
+
+                                #file-btn {
+                                    position: absolute;
+                                    width: 107px;
+                                    height: 23px;
+                                    left: 10px;
+                                    right: 845px;
+                                    left: 32px;
+                                    margin: 0;
+                                    opacity: 0;
+                                    font-size: 23px;
+                                    cursor: pointer;
+                                }
+                            }
+
+                            [data-rbd-droppable-context-id] {
+                                .form-group {
+                                  &:not(:last-child) {
+                                    margin-bottom: 6px;
+                                  }
+
+                                  &:last-child {
+                                    margin-bottom: 0;
+                                  }
+                      
+                                  &:first-child {
+                                    border-top: 1px solid #bbb;
+                                    margin-top: 8px;
+                                    padding-top: 8px;
+                                  }
+                      
+                                  .list-file-image {
+                                    display: flex;
+                                    align-items: center;
+                      
+                                    .text-color {
+                                      color: #3873e9;
+                                      margin: 0 4px !important;
+                                    }
+                      
+                                    .icon-delete {
+                                      padding-left: 4px;
+                                    }
+                                  }
+                                }
+                            }
+
+                            // [data-rbd-droppable-context-id="0"]:has([data-rbd-drag-handle-context-id="0"]) {
+                            //     margin: 0 10px;
+                            //     border-top: 1px solid #bbb;
+                            //     margin-top: 8px;
+
+                            //     [data-rbd-drag-handle-context-id="0"] {
+                            //         margin-top: 10px !important;
+                            //         margin-bottom: 0 !important;
+                            //     }
+                            // }
+
+                            .list-file-image {
+                                display: flex;
+                                align-items: center;
+                  
+                                .text-color {
+                                  color: #3873e9;
+                                  margin: 0 4px !important;
+                                }
+                  
+                                .icon-delete {
+                                  padding-left: 4px;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 .info-subject {
                     display: flex;
                     padding: 10px 12px 0px 12px;
@@ -622,6 +733,29 @@
 
     .modal-header {
         background: #1D3557 !important;
+    }
+
+    .modal-body {
+        .cl-file {
+            background-color: #f5f5f5;
+        }
+        .content-border {
+            margin-top: 12px;
+            padding: 12px;
+            border: 1px solid #bbb;
+            border-radius: 3px;
+
+            .image-section {
+                align-items: center;
+                padding-bottom: 5px;
+                cursor: pointer;
+
+                .text-color {
+                    color: #3873e9;
+                    margin: 0 4px !important;
+                }
+            }
+        }
     }
 }
 

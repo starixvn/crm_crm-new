@@ -508,6 +508,7 @@
             return stringBuilder.ToString();
         }
 
+#pragma warning disable S1541
         protected internal virtual string GetVoidingSettledTicketDescriptionByProduct(AutoVoidingEventDetails eventDetail,
             VoidingSettledTicketDescriptionTemplate ticketDescTemplate,
             string site)
@@ -553,6 +554,7 @@
 
             return stringBuilder.ToString();
         }
+#pragma warning restore S1541
 
 #pragma warning disable S1541, S1067, S121, S107
 

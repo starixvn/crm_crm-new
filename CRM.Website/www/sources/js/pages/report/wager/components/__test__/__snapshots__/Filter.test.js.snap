@@ -27,7 +27,7 @@ exports[`Filter render filter component 1`] = `
         id="year"
         onChange={[Function]}
         size="sm"
-        value={2024}
+        value={2025}
       >
         <option
           key="2011"
@@ -112,6 +112,12 @@ exports[`Filter render filter component 1`] = `
           value={2024}
         >
           2024
+        </option>
+        <option
+          key="2025"
+          value={2025}
+        >
+          2025
         </option>
       </FormControl>
     </FormGroup>

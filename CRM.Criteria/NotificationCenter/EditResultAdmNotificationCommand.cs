@@ -1,6 +1,7 @@
 ﻿namespace CRM.Criteria.NotificationCenter
 {
     using CRM.Core.Models;
+    using Fanex.Data;
 
     public class EditResultAdmNotificationCommand : BaseNonQueryCommand
     {
@@ -19,6 +20,11 @@
         public string NewContentZHCN { get; set; }
 
         public int UpdaterID { get; set; }
+
+        public string Remark { get; set; }
+
+        [SpParam(AllowNull = true)]
+        public string Filename { get; set; }
 
         public override string GetSettingKey() => "MNC_Notification_AdmUpdNoti";
 

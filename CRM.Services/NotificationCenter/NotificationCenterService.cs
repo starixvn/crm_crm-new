@@ -1,6 +1,7 @@
 ﻿namespace CRM.Services.NotificationCenter
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Models;
@@ -8,6 +9,7 @@
     using CRM.Criteria.NotificationCenter;
     using CRM.Models.NotificationCenter;
     using Fanex.NAP.Client.Helpers.Web;
+    using Microsoft.Extensions.Configuration;
 
     public interface INotificationCenterService
     {
@@ -26,14 +28,18 @@
     {
         private readonly INapSession napSession;
         private readonly IBaseService baseService;
+        private readonly string BaseNotiCenterImgUrl;
+        private const string formatImageUrl = "{0}{1}/{2}";
 
         public NotificationCenterService(
             INapSession napSession,
-            IBaseService baseService
+            IBaseService baseService,
+            IConfiguration configuration
         )
         {
             this.napSession = napSession;
             this.baseService = baseService;
+            BaseNotiCenterImgUrl = configuration.GetValue<string>("BaseNotiCenterImgUrl");
         }
 
         public async Task<(IEnumerable<ResultAdmNotification> notifications, IEnumerable<ResultAdmSite> allSite)> GetResultAdmNotificationAsync(GetResultAdmNotification param)
@@ -76,6 +82,11 @@
 
         public async Task<CommandResult> EditResultAdmNotificationAsync(EditResultAdmNotification param)
         {
+            if (!string.IsNullOrEmpty(param.Filename))
+            {
+                param.Filename = FormatImageUrls(param.Filename, param.NotificationId);
+            }
+
             var command = new EditResultAdmNotificationCommand
             {
                 UpdaterID = napSession.UserId,
@@ -85,7 +96,9 @@
                 NewContentEN = param.NewContentEN,
                 NewContentCH = param.NewContentCH,
                 NewContentCS = param.NewContentCS,
-                NewContentZHCN = param.NewContentZHCN
+                NewContentZHCN = param.NewContentZHCN,
+                Remark = param.Remark,
+                Filename = param.Filename
             };
             return await baseService.ExecuteNonQueryAsync(command);
         }
@@ -110,6 +123,13 @@
                 LicenseeType = licenseeType
             };
             return await baseService.GetDataAsync<AdmSiteTicket>(criteria);
+        }
+
+        private string FormatImageUrls(string filenames, int notificationId)
+        {
+            return string.Join(",", filenames.Split(",")
+                        .Select(img => string.Format(formatImageUrl, BaseNotiCenterImgUrl, notificationId, img))
+                        .ToList());
         }
     }
 }

@@ -12,8 +12,10 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import { filterAndSortSites, languageOptions } from '../common.functions';
 import AffectedTicket from './AffectedTicket';
+import { FileUpload } from './FileUpload';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
+const MAXIMUM_HEIGHT_WIDTH = 2560;
 export class CommonNotification extends Component {
     constructor(props) {
         super(props);
@@ -30,15 +32,22 @@ export class CommonNotification extends Component {
             activatePopup: { show: false },
             messageSuccessful: null,
             isFirstCheck: false,
-            collapseEvent: true
+            collapseEvent: true,
+            uploadedFiles: [],
+            invalidWidthHeight: [],
+            errorDrafts: {
+                invalidFileTypeDraft: [],
+                invalidFileSizeDraft: []
+            }
         }
 
         this.languages = languageOptions(this.props.actionParam.isOstUser);
     }
 
-    componentDidMount() {
-        this.getAdmNotificationDetail();
+    async componentDidMount() {
+        await this.getAdmNotificationDetail();
         this.props.isEdit && this.props.setEditAdmNotification(null);
+        await this.changeStringToFile();
     };
 
     getAdmNotificationDetail = async () =>{
@@ -47,23 +56,8 @@ export class CommonNotification extends Component {
         await this.props.getAdmNotificationById(notificationId).then(response => {
             const { notificationDetails, sites } = response.data;
             const notificationDetail = notificationDetails[0];
-            this.setState({data: notificationDetail, sites});
+            this.setState({data: notificationDetail, sites, uploadedFiles: this.getFileString(notificationDetail.filename)});
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
-    };
-
-    getParams = status => {
-        const { content_en, content_cs, content_ch, content_zhcn, subject } = this.formik.values;
-        const params = {
-            notificationId: this.props.actionParam.notificationId,
-            newStatus: status,
-            newSubject: subject,
-            newContentEN: content_en,
-            newContentCS: content_cs,
-            newContentCH: this.props.actionParam.isOstUser ? content_ch : null,
-            newContentZHCN: this.props.actionParam.isOstUser ? content_zhcn : null,
-            subject: subject
-        };
-        return params;
     };
 
     handleChangeTab = selected =>{
@@ -98,6 +92,7 @@ export class CommonNotification extends Component {
     handleSaveDraft = async () => {
         const params = this.getParams('Draft');
         const message = LangHelper.getResource('UpdateNotificationSuccessfully');
+        this.formik.setErrors({});
         await this.handleCreateNotification(params, message);
     };
 
@@ -182,8 +177,9 @@ export class CommonNotification extends Component {
     };
 
     handleActive = popup => {
+        const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
         this.setState({isFirstCheck: true});
-        const errors = this.validateFormik(this.formik.values);
+        const errors = this.validateFormik(this.formik.values, excludeOldImage);
         if (Object.keys(errors).length === 0) {
             this.setState({[popup]: { show: true }});
         }
@@ -195,10 +191,11 @@ export class CommonNotification extends Component {
         }));
     };
 
-    validateFormik = values => {
+    validateFormik = (values, files) => {
         const errors = {};
         const { isOstUser } = this.props.actionParam;
-        const { subject, content_en, content_cs, content_ch, content_zhcn } = values;
+        const { subject, content_en, content_cs, content_ch, content_zhcn, remark } = values;
+        const { errorDrafts, invalidWidthHeight, uploadedFiles } = this.state;
 
         if (!subject && !isOstUser) {
             errors.subject = LangHelper.getResource('SubjectRequired');
@@ -236,6 +233,41 @@ export class CommonNotification extends Component {
             errors.content_zhcn = LangHelper.getResource('RemoveSignAtNSC');
         }
 
+        if (remark && remark.length > 1000) {
+            errors.remark = LangHelper.getResource('ExceedRemark1000Characters');
+        }
+
+        if (isOstUser && uploadedFiles.length > 10) {
+            errors.maxImageFiles = LangHelper.getResource('ExceedMaximum10ImageFiles');
+        }
+
+        if (isOstUser && files) {
+            const invalidFileType = files.filter(x => !this.validFileType(x) || !this.validFileExtension(x));
+            if (invalidFileType.length > 0 || errorDrafts?.invalidFileTypeDraft.length > 0) {
+                errorDrafts?.invalidFileTypeDraft.map(item => invalidFileType.push(item));
+                const newInvalidFileType = [...new Set(invalidFileType)];
+                const nameFileError = newInvalidFileType.map(x => x.name).join(', ');
+                errors.imageFileType = LangHelper.formatString(LangHelper.getResource('ImageFileTypeError'), nameFileError);
+            }
+
+            const invalidFileSize = files.filter(x => !this.validFileSize(x));
+            if (invalidFileSize.length > 0 || errorDrafts?.invalidFileSizeDraft.length > 0) {
+                errorDrafts?.invalidFileSizeDraft.map(item => invalidFileSize.push(item));
+                const newInvalidFileSize = [...new Set(invalidFileSize)];
+                const nameFileError = newInvalidFileSize.map(x => x.name).join(', ');
+                errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
+            }
+        }
+    
+        if (isOstUser && invalidWidthHeight.length > 0) {
+            const uniqInvalidImage = [...new Set(invalidWidthHeight)];
+            const nameFileError = uniqInvalidImage.map(x => x.name);
+            const uniqErr = [...new Set(nameFileError)].join(', ');
+            if (uniqErr) {
+                errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), [...new Set(nameFileError)].join(', '));
+            }
+        }
+
         return errors;
     };
 
@@ -254,7 +286,7 @@ export class CommonNotification extends Component {
             if (errors.content_zhcn) {
                 invalidCss.push('invalid-content_zhcn');
             }
-        }    
+        }
         return invalidCss.join(' ');
     };
 
@@ -321,6 +353,196 @@ export class CommonNotification extends Component {
         }
     };
 
+    setStateUploadFile = (uploadedFiles, fileNameRemove) => {
+        if (!fileNameRemove) {
+            uploadedFiles.forEach((file) => {
+                if(file.type !== 'string') {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (event) => {
+                        const image = new Image();
+                        image.src = event.target.result;
+                        image.onload = () => {
+                            const { height, width } = image;
+                            if (height > MAXIMUM_HEIGHT_WIDTH || width > MAXIMUM_HEIGHT_WIDTH) {
+                                this.setState({ invalidWidthHeight: [...this.state.invalidWidthHeight, file] });
+                            }
+                        };
+                    };
+                }
+            });
+        } else {
+            this.setState({
+                invalidWidthHeight: this.state.invalidWidthHeight.filter(x => x.name !== fileNameRemove),
+                errorDrafts: {
+                    invalidFileSizeDraft: this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove),
+                    invalidFileTypeDraft: this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove)
+                }
+            });
+        }
+
+        this.setState({ uploadedFiles });
+    };
+
+    changeStringToFile = async () => {
+        const { notificationId: id } = this.props.actionParam;
+        const { uploadedFiles } = this.state;
+
+        if (uploadedFiles.length === 0) return;
+
+        const urls = uploadedFiles.map(item => ({
+            name: item.name,
+            key: item.key,
+            url: Site.resolveClientUrl(`www/dist/images/notification-center/${id}/${item.name}`)
+        }));
+
+        for (const item of urls) {
+            const response = await fetch(item.url);
+            const data = await response.blob();
+            const file = new File([data], item.name);
+            file.key = item.key;
+
+            const image = new Image();
+            image.src = item.url;
+            image.onload = () => {
+                const { height, width } = image;
+                if (height > MAXIMUM_HEIGHT_WIDTH || width > MAXIMUM_HEIGHT_WIDTH) {
+                    this.setState(prevState => ({
+                        invalidWidthHeight: [...prevState.invalidWidthHeight, item]
+                    }));
+                }
+            };
+
+            if (!this.validFileExtension(file)) {
+                this.setState(prevState => ({
+                    errorDrafts: {
+                        ...prevState.errorDrafts,
+                        invalidFileTypeDraft: [...prevState.errorDrafts.invalidFileTypeDraft, file]
+                    }
+                }));
+            }
+
+            if (!this.validFileSize(file)) {
+                this.setState(prevState => ({
+                    errorDrafts: {
+                        ...prevState.errorDrafts,
+                        invalidFileSizeDraft: [...prevState.errorDrafts.invalidFileSizeDraft, file]
+                    }
+                }));
+            }
+        }     
+    };
+
+    validFileSize = file => {
+        const MAX_SIZE_MB = 10000;
+        const fileSizeKB = Math.round(file.size / 1024).toFixed(2);
+        return fileSizeKB <= MAX_SIZE_MB;
+    };
+    
+    validFileType = file => {
+        const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/pjpeg', 'image/png'];
+        return ALLOWED_FILE_TYPES.includes(file.type);
+    };
+
+    validFileExtension = (file) => {
+        const VALID_EXTENSIONS = ['jpeg', 'pjpeg', 'jpg', 'png'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        return VALID_EXTENSIONS.includes(fileExtension);
+    };
+
+    getFileString = (filename) => {
+        if (!filename) return [];
+        return filename.split(',').map(file => ({ name: file.substring(file.lastIndexOf('/') + 1), type: 'string' }));
+    };
+
+    filterDuplicate = (files) => {
+        return files.reduce((uniqueFiles, currentFile) => {
+            if (!uniqueFiles.some(file => file?.name === currentFile?.name)) {
+                uniqueFiles.push(currentFile);
+            }
+            return uniqueFiles;
+        }, []);
+    };
+
+    getFileStringRemove = (oldFileName, uploadedFiles) => {
+        const fileStringRemove = oldFileName.filter(item => 
+            !uploadedFiles.some(uploaded => uploaded.name === item.name)
+        );
+        return this.filterDuplicate(fileStringRemove);
+    };
+
+    filterFormStringFiles = uploadedFiles => {
+        const formFiles = uploadedFiles.filter(item => item.type !== 'string');
+        const fileStrings = uploadedFiles.filter(item => item.type === 'string');
+    
+        const uniqueFormFiles = this.filterDuplicate(formFiles);
+        const uniqueFileStrings = this.filterDuplicate(fileStrings);
+    
+        if (uniqueFileStrings.length > 0) {
+            const filteredFormFiles = uniqueFormFiles.filter(
+                file => !uniqueFileStrings.some(stringFile => stringFile.name === file.name)
+            );
+            return [...uniqueFileStrings, ...filteredFormFiles];
+        }
+    
+        return uniqueFormFiles;
+    };
+
+    getFileName = uploadedFiles => {
+        return uploadedFiles.map(file => file.name).join(',');
+    };
+
+    handlePreviewImage = (event, notificationId, fileName) => {
+        event.preventDefault();
+        const url = Site.resolveClientUrl(`www/dist/images/notification-center/${notificationId}/${fileName}`);
+        window.open(url);
+    };
+
+    getParams = status => {
+        const { content_en, content_cs, content_ch, content_zhcn, subject, remark, oldFileName } = this.formik.values;
+        const { uploadedFiles } = this.state;
+        const { notificationId, isOstUser } = this.props.actionParam;
+        const formData = new FormData();
+
+        if (isOstUser) {
+            if (oldFileName.length > 0) {
+                const fileStringRemoves = this.getFileStringRemove(oldFileName, uploadedFiles);
+                if (fileStringRemoves.length > 0) {
+                    fileStringRemoves.forEach(oldFile => {
+                        formData.append('fileStringRemove', oldFile.name);
+                    });
+                }
+            }
+    
+            const filteredFiles = this.filterFormStringFiles(uploadedFiles);
+            filteredFiles.forEach(file => {
+                if (file.type === 'string') {
+                    formData.append('fileString', file.name);
+                } else {
+                    formData.append('formFile', file);
+                }
+            });
+        }
+
+        const params = {
+            notificationId,
+            newStatus: status,
+            newSubject: subject ? subject : '',
+            newContentEN: content_en,
+            newContentCS: content_cs,
+            newContentCH: isOstUser && content_ch ? content_ch : '',
+            newContentZHCN: isOstUser && content_zhcn ? content_zhcn : '',
+            remark: isOstUser && remark ? remark : '',
+            filename: isOstUser ? this.getFileName(uploadedFiles) : '',
+        };
+
+        Object.entries(params).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+        return formData;
+    };
+
     renderForm = ({
         values,
         setFieldValue,
@@ -334,6 +556,7 @@ export class CommonNotification extends Component {
         const { isOstUser } = actionParam;
         const headerClass = isOstUser ? 'group-header required' : 'group-header';
         const resourceKey = isOstUser ? 'Content' : 'SubjectAndContent';
+        const fileStrings = this.getFileString(values.filename);
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -439,7 +662,7 @@ export class CommonNotification extends Component {
                                                         username={window.currentUsername}
                                                         onChange={value => isEdit ? setFieldValue([language.mapLabel], value) : null}
                                                         isRemoveToolbarForChatbot
-                                                        isRemoveAllToolbar={actionParam.isOstUser || !isEdit}
+                                                        isRemoveAllToolbar={isOstUser || !isEdit}
                                                         isInvalid={touched[language.mapLabel] && errors[language.mapLabel]}
                                                         isPaddingContent
                                                     />
@@ -450,6 +673,48 @@ export class CommonNotification extends Component {
                                 </Col>
                             </div>
                         </div>
+                        {
+                            isOstUser &&
+                            (
+                                <div className="group-item">
+                                    <div className="group-header">{LangHelper.getResource('Remark')}</div>
+                                    <div className='group-remark'>
+                                        <Form.Control as="textarea"
+                                            className="shadow-none form-control"
+                                            name={'remark'} id={'remark' } rows="8"
+                                            value={values.remark}
+                                            isInvalid={touched.remark && errors.remark}
+                                            onChange={event => setFieldValue('remark', event.target.value)}
+                                        />
+                                        {
+                                            isEdit ? (
+                                                <FileUpload
+                                                    id={values.notificationID}
+                                                    uploadedFiles={this.state.uploadedFiles}
+                                                    setStateUploadFile={this.setStateUploadFile}
+                                                />
+                                            ) : (
+                                                <div className={fileStrings.length > 0 ? 'content-border pb-2 cl-file' : ''}>
+                                                    {fileStrings.length > 0 && 
+                                                        fileStrings.map((image, key) => (
+                                                            <div key={key} className="d-flex image-section">
+                                                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-file-image.png')} />
+                                                                <span
+                                                                    className="mr-2 text-color" 
+                                                                    onClick={event => this.handlePreviewImage(event, values.notificationID, image.name)}
+                                                                >
+                                                                    {image.name}
+                                                                </span>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            )
+                        }
                         {
                             isEdit && (
                                 <div className="group-btn">
@@ -485,7 +750,6 @@ export class CommonNotification extends Component {
     render = () => {
         const { data } = this.state;
         const { isOstUser } = this.props.actionParam;
-
         if(!data) {
             return null;
         }
@@ -499,13 +763,21 @@ export class CommonNotification extends Component {
             content_en: data.content_en,
             content_cs: data.content_cs,
             content_ch: isOstUser ? data.content_ch : null,
-            content_zhcn: isOstUser ? data.content_zhcn : null
+            content_zhcn: isOstUser ? data.content_zhcn : null,
+            remark: isOstUser ? data.remark : null,
+            filename: isOstUser ? data.filename : null,
+            imageFileType: '',
+            imageFileSize: '',
+            maxImageFiles: '',
+            oldFileName: isOstUser ? this.getFileString(data.filename) : null,
         };
+        const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
+
         return (
             <Formik
                 innerRef={p => (this.formik = p)}
                 initialValues={initialValues}
-                validate={values => this.validateFormik(values)}
+                validate={values => this.validateFormik(values, excludeOldImage)}
                 onSubmit={this.handleActive}
             >
                 {this.renderForm}

@@ -139,10 +139,10 @@ export class Content extends Component {
                                                             {
                                                                 this.getFileNames(language.mapLabel).length > 0 && this.getFileNames(language.mapLabel).map((image, key) =>(
                                                                     <div key={key} className='d-flex image-section'>
-                                                                        <span className='fa fa-file-image-o mr-2  pt-1'/>
-                                                                            <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image.name)}>
-                                                                                {image.name}
-                                                                            </span>
+                                                                        <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-file-image.png')} />
+                                                                        <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image.name)}>
+                                                                            {image.name}
+                                                                        </span>
                                                                     </div>
                                                                 ))
                                                             }

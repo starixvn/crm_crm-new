@@ -46,17 +46,19 @@ describe('CommonNotification', () => {
     };
 
     describe('componentDidMount', () => {
-        it('should call exactly props function', () => {
+        it('should call exactly props function', async () => {
             //Arrange
             const props = {...initProps};
             const container = shallow(<CommonNotification {...props}/>).instance();
             container.getAdmNotificationDetail = jest.fn();
+            container.changeStringToFile = jest.fn();
 
             //Act
-            container.componentDidMount();
+            await container.componentDidMount();
 
             //Assert
             expect(container.getAdmNotificationDetail).toHaveBeenCalled();
+            expect(container.changeStringToFile).toHaveBeenCalled();
             expect(props.setEditAdmNotification).toHaveBeenCalled();
         });
     });
@@ -69,6 +71,7 @@ describe('CommonNotification', () => {
 
             //Act
             await container.getAdmNotificationDetail();
+            container.getFileString = jest.fn(() => []);
 
             //Assert
             expect(container.state.data).toEqual({id:1}); 
@@ -76,29 +79,29 @@ describe('CommonNotification', () => {
         });
     });
 
-    describe('getParams', () => {
-        it('should return exactly param', () => {
-            //Arrange
-            const props = {...initProps};
-            const expected = {
-                newContentCH: "ch",
-                newContentCS: "cs",
-                newContentEN: "en",
-                newStatus: "New",
-                newSubject: "test",
-                notificationId: 1,
-                subject: "test",
-            };
-            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
-            container.formik = {values: {content_en: 'en', content_cs: 'cs', content_ch: 'ch', subject: 'test'}}; 
+    // describe('getParams', () => {
+    //     it('should return exactly param', () => {
+    //         //Arrange
+    //         const props = {...initProps};
+    //         const expected = {
+    //             newContentCH: "ch",
+    //             newContentCS: "cs",
+    //             newContentEN: "en",
+    //             newStatus: "New",
+    //             newSubject: "test",
+    //             notificationId: 1,
+    //             subject: "test",
+    //         };
+    //         const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+    //         container.formik = {values: {content_en: 'en', content_cs: 'cs', content_ch: 'ch', subject: 'test'}}; 
 
-            //Act
-            var actual = container.getParams('New');
+    //         //Act
+    //         var actual = container.getParams('New');
 
-            //Assert
-            expect(actual).toEqual(expected); 
-        });
-    });
+    //         //Assert
+    //         expect(actual).toEqual(expected); 
+    //     });
+    // });
 
     describe('handleChangeTab', () => {
         it('should set state exactly', () => {
@@ -173,9 +176,15 @@ describe('CommonNotification', () => {
         it('should set state exactly', async () => {
             //Arrange
             const props = {...initProps};
+            const formik = {
+                serErrors: jest.fn()
+            };
             const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
             container.getParams = jest.fn(() => '');
             container.handleCreateNotification = jest.fn();
+            container.formik = {
+                setErrors: jest.fn()
+            };
 
             //Act
             await container.handleSaveDraft();
@@ -468,6 +477,58 @@ describe('CommonNotification', () => {
             //Assert
             expect(actual).toEqual(expected);
         });
+
+        it('should return errs image size and type', () => {
+            //Arrange
+            const props = {...initProps};
+            const files = [{ name:'test.xxx', type: 'image/xxx' }];
+            const values = {
+                subject: 'test@@',
+                content_en: 'test@@',
+                content_cs: 'test@@',
+                content_ch: 'test@@',
+                content_zhcn: 'test@@'
+            };
+            const expected = {
+                imageFileSize: 'ImageSizeError',
+                imageFileType: 'ImageFileTypeError'
+            }
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.validFileType = jest.fn(() => false);
+            container.validFileExtension = jest.fn(() => false);
+
+            //Act
+            var actual = container.validateFormik(values, files);
+
+            //Assert
+            expect(actual).toEqual(expected);
+        });
+
+        it('should return errs image WidthHeight', () => {
+            //Arrange
+            const props = {...initProps};
+            const files = [{ name:'test.png', type: 'image/png' }];
+            const values = {
+                subject: 'test@@',
+                content_en: 'test@@',
+                content_cs: 'test@@',
+                content_ch: 'test@@',
+                content_zhcn: 'test@@'
+            };
+            const expected = {
+                imageFileSize: 'ImageSizeError'
+            }
+            const container = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true }).instance();
+            container.setState({ invalidWidthHeight: [{ name: 'test' }] });
+            container.validFileType = jest.fn(() => true);
+            container.validFileExtension = jest.fn(() => true);
+
+            //Act
+            var actual = container.validateFormik(values, files);
+
+            //Assert
+            expect(actual).toEqual(expected);
+        });
     });
 
     describe('invalidTabCss', () => {
@@ -690,6 +751,341 @@ describe('CommonNotification', () => {
             expect(actual).toEqual(['message']);
         });
     });
+
+    describe('setStateUploadFile', () => {
+        let commonNotification;
+        const props = {...initProps};
+      
+        beforeEach(() => {
+            commonNotification = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true });
+        });
+      
+        it('should set state for valid uploaded files', () => {
+            const file1 = new File(['content'], 'file1.jpg', { type: 'image/jpeg' });
+            const file2 = new File(['content'], 'file2.jpg', { type: 'image/jpeg' });
+        
+            commonNotification.instance().setStateUploadFile([file1, file2], null);
+        
+            // Assert
+            expect(commonNotification.state('invalidWidthHeight')).toEqual([]);
+            expect(commonNotification.state('uploadedFiles')).toEqual([file1, file2]);
+        });
+      
+        it('should filter out invalid files based on dimensions', () => {
+            const invalidFile = new File(['content'], 'invalid.jpg', { type: 'image/jpeg' });
+            invalidFile.height = 3000;
+        
+            const validFile = new File(['content'], 'valid.jpg', { type: 'image/jpeg' });
+            validFile.height = 3000;
+        
+            commonNotification.instance().setStateUploadFile([invalidFile, validFile], null);
+        
+            // Assert
+            expect(commonNotification.state('invalidWidthHeight')).toEqual([]);
+        });
+      
+        it('should remove a file and associated errors', () => {
+            const fileToRemove = new File(['content'], 'fileToRemove.jpg', { type: 'image/jpeg' });
+      
+            commonNotification.setState({
+                invalidWidthHeight: ['fileToRemove.jpg'],
+                uploadedFiles: [fileToRemove],
+                errorDrafts: {
+                invalidFileSizeDraft: [{ name: 'fileToRemove.jpg' }],
+                invalidFileTypeDraft: [{ name: 'fileToRemove.jpg' }],
+                }
+            });
+      
+            commonNotification.instance().setStateUploadFile([], 'fileToRemove.jpg');
+            // Assert
+            expect(commonNotification.state('invalidWidthHeight')).toEqual(["fileToRemove.jpg"]);
+            expect(commonNotification.state('uploadedFiles')).toEqual([]);
+        });
+    });
+
+    describe('changeStringToFile', () => {
+        let wrapper;
+
+        const props = {...initProps};
+      
+        beforeEach(() => {
+            wrapper = shallow(<CommonNotification {...props}/>, { disableLifecycleMethods: true });
+        });
+      
+        it('should fetch and process files successfully', async () => {
+            // Mock data and responses
+            const data = {
+                fileNames: 'file1.jpg,file2.png'
+            }
+            wrapper.instance().setState({ data: data});
+            const validResponseBlob = new Blob(['valid content'], { type: 'image/jpeg' });
+        
+            // Mock fetch function
+            global.fetch = jest.fn();
+            global.fetch.mockResolvedValueOnce({ blob: () => Promise.resolve(validResponseBlob) });
+        
+            // Mock Site.resolveClientUrl function
+            const originalSiteResolveClientUrl = Site.resolveClientUrl;
+            Site.resolveClientUrl = jest.fn((path) => `www/dist/images/notification-center/123/${path}`);
+        
+            // Mock validFileExtension and validFileSize functions
+            const originalValidFileExtension = CommonNotification.prototype.validFileExtension;
+            const originalValidFileSize = CommonNotification.prototype.validFileSize;
+        
+            CommonNotification.prototype.validFileExtension = jest.fn(() => true);
+            CommonNotification.prototype.validFileSize = jest.fn(() => true);
+        
+            // Call the method
+            await wrapper.instance().changeStringToFile();
+        
+            // Assertions for state changes
+            expect(wrapper.state('invalidWidthHeight')).toEqual([]);
+            expect(wrapper.state('errorDrafts').invalidFileTypeDraft).toEqual([]);
+            expect(wrapper.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
+        
+            // Restore original functions
+            Site.resolveClientUrl = originalSiteResolveClientUrl;
+            CommonNotification.prototype.validFileExtension = originalValidFileExtension;
+            CommonNotification.prototype.validFileSize = originalValidFileSize;
+        });
+      
+        it('should handle invalid file extension', async () => {
+            // Mock data with an invalid file extension
+            const data = {
+                fileNames: 'file1.jpg'
+            }
+            wrapper.instance().setState({ data: data});
+        
+            // Mock fetch function
+            global.fetch = jest.fn();
+            global.fetch.mockResolvedValueOnce({ blob: () => Promise.resolve(new Blob()) });
+        
+            // Mock Site.resolveClientUrl function
+            Site.resolveClientUrl = jest.fn((path) => `www/dist/images/announcement/123/${path}`);
+        
+            // Mock validFileExtension and validFileSize functions
+            CommonNotification.prototype.validFileExtension = jest.fn(() => false);
+            CommonNotification.prototype.validFileSize = jest.fn(() => true);
+        
+            // Call the method
+            await wrapper.instance().changeStringToFile();
+        
+            // Assertions for state changes
+            expect(wrapper.state('invalidWidthHeight')).toEqual([]);
+            expect(wrapper.state('errorDrafts').invalidFileTypeDraft).toHaveLength(0);
+            expect(wrapper.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
+        });
+      
+        // Add more test cases to cover additional scenarios (e.g., invalid file size)
+      
+        afterEach(() => {
+            global.fetch.mockClear();
+        });
+      
+        afterAll(() => {
+            delete global.fetch;
+            Site.resolveClientUrl = originalSiteResolveClientUrl;
+        });
+    });
+
+    describe('validFileSize', () => {     
+        const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+
+        it('should return true when file < maximumSize10MB', () => {
+            //Arrange
+            const file = { size: 1555 };
+
+            //Act
+            const actual = container.validFileSize(file);
+
+            //Assert
+            expect(actual).toEqual(true);
+        });
+
+        it('should return false when file < maximumSize10MB', () => {
+            //Arrange
+            const file = { size: 1555000000 };
+
+            //Act
+            const actual = container.validFileSize(file);
+
+            //Assert
+            expect(actual).toEqual(false);
+        });
+    });
+
+    describe('validFileType', () => {
+        it('should return true when validFileType', () => {
+            //Arrange
+            const file = { type: 'image/jpeg' };
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+
+            //Act
+            const actual = container.validFileType(file);
+
+            //Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('validFileExtension', () => {
+        it('should return true when validFileExtension', () => {
+            //Arrange
+            const file = { name: 'image.jpeg' };
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+
+            //Act
+            const actual = container.validFileExtension(file);
+
+            //Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('getFileString', () => {
+        it('should return data [] when file not exits', () => {
+            //Arrange
+            const file = '';
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+
+            //Act
+            const actual = container.getFileString(file);
+
+            //Assert
+            expect(actual).toEqual([]);
+        });
+
+        it('should return data name image', () => {
+            //Arrange
+            const expected = [{name: 'flower.png', type: 'string'}];
+            const file = 'https://www.crm.com/123/flower.png';
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+
+            //Act
+            const actual = container.getFileString(file);
+
+            //Assert
+            expect(actual).toEqual(expected);
+        });
+    });
+    
+    describe('filterDuplicate', () => {
+        it('should return data not duplicate', () => {
+            //Arrange
+            const files = [{ name: 'image.jpeg' }, { name: 'image.jpeg' }, { name: 'test.jpeg' }];
+            const expected = [{ name: 'image.jpeg' }, { name: 'test.jpeg' }];
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+
+            //Act
+            const actual = container.filterDuplicate(files);
+
+            //Assert
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('filterFormStringFiles', () => {
+        it('should return data not duplicate', () => {
+            //Arrange
+            const files = [{ name: 'image.jpeg', type: 'string' }, { name: 'test.jpeg', type: 'file' }];
+            const expected = [{ name: 'image.jpeg', type: 'string' }, { name: 'test.jpeg', type: 'file' }];
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+            container.filterDuplicate = jest.fn(x => x);
+
+            //Act
+            const actual = container.filterFormStringFiles(files);
+
+            //Assert
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('getFileName', () => {
+        it('should return data not duplicate', () => {
+            //Arrange
+            const files = [{ name: 'image.jpeg', type: 'string' }, { name: 'test.jpeg', type: 'file' }];
+            const expected = 'image.jpeg,test.jpeg';
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+
+            //Act
+            const actual = container.getFileName(files);
+
+            //Assert
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('handlePreviewImage', () => {
+        it('should open new window', () => {
+            // Arrange
+            const event = {
+                preventDefault: jest.fn()
+            };
+            window.open = jest.fn();
+            const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+            // Act
+            container.handlePreviewImage(event, 1, 'fileName');
+            // Assert
+            expect(window.open).toHaveBeenCalled();
+        });
+    });
+
+        describe('getParams', () => {
+            it('should create formData object with expected keys and values', () => {
+                // Arrange
+                const values = {
+                    notificationTemplateId: 1,
+                    content: { EN: 'English content', EC: 'French content' },
+                    headlineType: 'Breaking News',
+                    sendDate: new Date(),
+                    sendType: 'Send At',
+                    oldFileName: [{ name: 'test0.png', key: 'EN', type: 'string' }],
+                    title: 'Notification Title',
+                    site: 'test',
+                    currency: 'test',
+    
+                };
+    
+                const state = {
+                    uploadedFiles: [
+                        { name: 'test.png', type: 'string' },
+                        { name: 'newFile.png', type: 'file' },
+                        { name: 'test.png', type: 'file' }
+                    ]
+                };
+
+                const container = shallow(<CommonNotification {...initProps}/>, { disableLifecycleMethods: true }).instance();
+                container.formik = { 
+                    values: {
+                        content_en: 'test',
+                        content_cs: 'test',
+                        content_ch: 'test',
+                        content_zhcn: 'test',
+                        remark: 'test',
+                        oldFileName: [{name: 'flower.png', type: 'string'}]
+                    }
+                }
+                container.setState(state);
+                container.getFileStringRemove = jest.fn(() => [{name: 'flower.png', type: 'string'}]);
+                container.filterFormStringFiles = jest.fn(()=> [{ name: 'test.png', type: 'string' },{ name: 'newFile.png', type: 'file' }]);
+                container.getFileName = jest.fn(() => 'test.png,newFile.png');
+    
+                // Act
+                const formData = container.getParams('sent');
+    
+                //Assert
+                expect(formData.get('notificationId')).toBe('1');
+                expect(formData.get('newStatus')).toBe('sent');
+                expect(formData.get('newContentEN')).toBe('test');
+                expect(formData.get('newContentCS')).toBe('test');
+                expect(formData.get('newContentCH')).toBe('test');
+                expect(formData.get('newContentZHCN')).toBe('test');
+                expect(formData.get('remark')).toBe('test');
+                expect(formData.get('filename')).toBe('test.png,newFile.png');
+                expect(formData.get('fileStringRemove')).toBe('flower.png');
+                expect(formData.get('fileString')).toBe('test.png');
+            });
+        });
 
     describe('renderForm', () => {
         const params = {

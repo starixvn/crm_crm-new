@@ -1,54 +1,33 @@
-jest.mock('react-redux');
-jest.mock('redux');
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { ActionCreators } from '../../actions';
+import React from 'react';
+import DataGridWrapper from '../DataGrid';
+import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
+import configureMockStore from 'redux-mock-store';
 
-describe('connect ', () => {
-    let mapStateToProps, mapDispatchToProps;
-    const connectMock = jest.fn();
+describe('component with redux', () => {
+    // Arrange
+    const mockStore = configureMockStore();
+    const initialState = {
+        gridParams: {},
+        gridData: {}
+    };
 
-    beforeAll(() => {
-        connect.mockImplementation((mapStateToPropsFunc, mapDispatchToPropsFunc) => {
-            mapStateToProps = mapStateToPropsFunc;
-            mapDispatchToProps = mapDispatchToPropsFunc;
-            return connectMock;
-        });
-        require('../DataGrid').default;
+    const store = mockStore(initialState);
+    
+    // Action
+    const wrapper = shallow(<DataGridWrapper store={store} />);
+
+    // Assert
+    it('component render correctly', () => {
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
-    afterAll(() => {
-        jest.clearAllMocks();
-    });
-
-    it('props should be mapped correctly', () => {
-        // Arrange
-        const expected = {
-            gridParams: {},
-            gridData: {}
-        };
-        const state = {
-            gridParams: {},
-            gridData: {}
-        };
-
-        // Act
-        const actual = mapStateToProps(state);
-
-        // Assert
-        expect(actual).toEqual(expected);
-    });
-
-    it('bindActionCreators should be called with correct parameter', () => {
-        // Arrange
-        const mockBindAction = jest.fn();
-        bindActionCreators.mockImplementationOnce(mockBindAction);
-        const dispatch = {};
-
-        // Act
-        mapDispatchToProps(dispatch);
-
-        // Assert
-        expect(mockBindAction).toHaveBeenCalledWith(ActionCreators, dispatch);
+    it('component has correct props', () => {
+        expect(wrapper.props().children.props.gridParams).toEqual(
+            initialState.gridParams
+        );
+        expect(wrapper.props().children.props.gridData).toEqual(
+            initialState.gridData
+        );
     });
 });

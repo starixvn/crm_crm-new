@@ -1,6 +1,7 @@
 ﻿namespace CRM.Services.UnitTests
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Models;
@@ -9,6 +10,8 @@
     using CRM.Models.NotificationCenter;
     using CRM.Services.NotificationCenter;
     using Fanex.NAP.Client.Helpers.Web;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
 
@@ -16,6 +19,7 @@
     {
         private INapSession napSession;
         private IBaseService baseService;
+        private IConfiguration configuration;
         private readonly Fixture fixture = new Fixture();
 
         [Fact]
@@ -60,8 +64,21 @@
         public async Task EditResultAdmNotificationAsync_WhenCalled_ReturnExpected()
         {
             // Arrange
+            byte[] fileBytes = new byte[128];
+
+            IFormFile file = new FormFile(
+                baseStream: new MemoryStream(fileBytes),
+                baseStreamOffset: 0,
+                length: fileBytes.Length,
+                name: "myFile",
+                fileName: "myFile.txt");
+
             var service = GetService();
-            var param = fixture.Create<EditResultAdmNotification>();
+            var param = new EditResultAdmNotification
+            {
+                NotificationId = 1,
+                FormFile = new List<IFormFile> { file }
+            };
             var expected = fixture.Create<CommandResult>();
             var command = fixture.Create<EditResultAdmNotificationCommand>();
             baseService.ExecuteNonQueryAsync(Arg.Do<EditResultAdmNotificationCommand>(x => command = x)).Returns(expected);
@@ -114,8 +131,9 @@
         {
             napSession = Substitute.For<INapSession>();
             baseService = Substitute.For<IBaseService>();
+            configuration = Substitute.For<IConfiguration>();
 
-            return new NotificationCenterService(napSession, baseService);
+            return new NotificationCenterService(napSession, baseService, configuration);
         }
         #endregion Helpers
     }
