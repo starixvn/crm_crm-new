@@ -151,7 +151,7 @@
         <Setting Key="MNC_ResultAmendment_PrepareGen" SpName="MNC_ResultAmendment_PrepareGen_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_GenNotification" SpName="MNC_ResultAmendment_GenNotification_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_ResultAmendment_GetNotificationIDs" SpName="MNC_ResultAmendment_GetNotificationIDs" DbName="DBCRM.MessageNotification.wsv_nap" />
-        <Setting Key="MNC_ResultAmendment_JSParseResult" SpName="MNC_ResultAmendment_JSParseResult" DbName="DBCRM.MessageNotification.wsv_nap" />
+        <Setting Key="MNC_ResultAmendment_JSParseResult" SpName="MNC_ResultAmendment_JSParseResult_xtest" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_PushNotification_PrepareNoti" SpName="MNC_PushNotification_PrepareNoti" DbName="DBCRM.MessageNotification.wsv_nap" />
         <Setting Key="MNC_PushNotification_MsgIns" SpName="MNC_PushNotification_MsgIns" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="MNC_PushNotification_NotiUpd" SpName="MNC_PushNotification_NotiUpd" DbName="DBCRM.MessageNotification.wsv_nap" />
@@ -166,6 +166,6 @@
     </Function>
     <Function Name="AutoFB MessageNotificationCenter">
         <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_GetMsgInfo" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_Import" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_MessageNotificationCenter_Import" SpName="Acc_CRM_AutoFB_MessageNotificationCenter_Import_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
 </Functions>
