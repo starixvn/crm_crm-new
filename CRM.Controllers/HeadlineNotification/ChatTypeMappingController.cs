@@ -30,6 +30,7 @@
         private readonly IExportExcelService excelService;
         private readonly ILetstalkApiService letstalkClientService;
         private readonly ITelegramApiService telegramClientService;
+        private const string UploadAnnouncement = "Upload Announcement";
 
         public ChatTypeMappingController(
             INapSession napSession,
@@ -214,7 +215,8 @@
 
         public async Task<IActionResult> GetIgnoreNotificationType()
         {
-            var notificationTypes = await chatTypeMappingService.GetIgnoreNotificationTypeAsync();
+            var notificationTypes = (await chatTypeMappingService.GetIgnoreNotificationTypeAsync())
+                .Where(noti => noti.NotificationTypeName == UploadAnnouncement);
             return Json(notificationTypes);
         }
 
