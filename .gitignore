@@ -49,3 +49,4 @@ node_modules
 /CoverageReports
 *.cobertura.xml
 __snapshots__/
+*.orig
