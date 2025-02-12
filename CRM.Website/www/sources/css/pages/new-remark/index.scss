@@ -31,16 +31,6 @@
         color: $draft-color !important;
     }
 
-    .fix-table-container, .table-new-remarks {
-        .table > thead > tr > th {
-            background: #2B4E80;
-            color: #FFFFFF;
-            font-weight: 700;
-            line-height: 17.7px;
-            font-family: Open Sans, sans-serif;
-        }
-    }
-
     .table-new-remarks .body-content{
         overflow: unset !important; 
     }
@@ -61,13 +51,6 @@
                 .disable-edit{
                     pointer-events: none;
                 }
-            }
-            .table > thead > tr > th {
-                background: #2B4E80;
-                color: #FFFFFF;
-                font-weight: 700;
-                line-height: 17.7px;
-                font-family: Open Sans, sans-serif;
             }
     }
     
