@@ -101,7 +101,7 @@
             grid-gap: 12px;
 
             @include Laptop {
-                grid-template-columns:260px calc(100% - 272px);
+                grid-template-columns:275px calc(100% - 287px);
             }
         }
     }

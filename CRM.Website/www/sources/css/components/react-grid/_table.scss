@@ -29,11 +29,16 @@ $bgTotal: $bgSummaryTotal;
             > th {
                 vertical-align: middle;
                 text-align: center;
-                background: $bgHeaderTableLevel2;
                 border: 1px solid $colorBorderTable;
                 border-top: 1px solid $colorBorderTable;
                 color: #363636;
                 padding: 8px;
+                background: #2B4E80;
+                color: #FFFFFF;
+                font-weight: 700;
+                line-height: 17.7px;
+                font-family: Open Sans, sans-serif;
+            
 
                 @include Laptop-Medium {
                 padding: 2px;

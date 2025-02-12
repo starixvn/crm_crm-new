@@ -8,7 +8,7 @@
     grid-gap: 12px;
 
     @include Laptop {
-        grid-template-columns: 260px auto;
+        grid-template-columns: 275px auto;
     }
 
     .left-header {
