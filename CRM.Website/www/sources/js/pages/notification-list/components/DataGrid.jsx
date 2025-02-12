@@ -254,15 +254,19 @@ export class DataGrid extends Component {
                     <AutoRefresh />
                 </div>
                 <Table
-                    minWidth={960}
-                    maxWidth={document.getElementById('right-row-container').clientWidth}
-                    autoWidth
+                    maxWidth={2000}
+                    shouldUseMaxWidth
+                    width={document.getElementById('right-row-container').clientWidth}
+                    autoWidth={false}
+                    isFixColumn
                     header={this.buildNotificationListHeader(isHost)}
                     body={this.buildNotificationListBody(isHost)}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     shouldResetScrollPosition={this.props.resendOptions.shouldResetScrollPosition}
+                    containerPadding={0}
+                    adjustedHeight={10}
                 />
             </Fragment>
         );
