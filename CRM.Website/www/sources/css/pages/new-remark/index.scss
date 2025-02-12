@@ -6,6 +6,8 @@
     }
     
     .form-filter-v2 {
+        position: relative;
+
         .related-pic {
             width: 300px;
         }
@@ -20,8 +22,22 @@
         .react-datepicker-popper{
             z-index: 999 !important;
         }
-    }
+
+        .icon-toggle{
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
     
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
+        }
+    }
+
     .link-click {
         cursor: pointer;
         color: $link-color !important;

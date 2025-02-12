@@ -37,7 +37,8 @@ export class Filter extends Component {
             toDate: !isSearchAll ? currentDate : null,
             remarkTitleOptions: [],
             remarkTitleIds: '',
-            dateTypeSelect: isCustomerNotEmpty ? 7 : 4
+            dateTypeSelect: isCustomerNotEmpty ? 7 : 4,
+            showFilter: true
         };
     }
     componentDidMount(){
@@ -168,6 +169,14 @@ export class Filter extends Component {
         });
     };
 
+    handleToggleFilter = isToggle => {
+        this.setState({ showFilter: isToggle });
+        window.dispatchEvent(new Event('resize'));
+        if (isToggle) {
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+        }
+    };
+
     handleSubmit = () => {
         const { fromDate, toDate, remarkTitleIds } = this.state;
         if (remarkTitleIds === '') {
@@ -218,132 +227,142 @@ export class Filter extends Component {
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
-        const { remarkContent, userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions } = this.state;
+        const { remarkContent, userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions, showFilter } = this.state;
         return (
             <Form className='form-filter-v2' onSubmit={this.handleSubmit}>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: '440px'}}>
-                        <Form.Label htmlFor="remarkContent">
-                            {LangHelper.getResource('RemarkContent')}
-                        </Form.Label>
-                        <Form.Control size="sm" type="text"
-                            name="remarkContent" id="remarkContent"
-                            value={remarkContent}
-                            className="shadow-none" autoComplete="off"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group style={{width: '440px'}}>
-                        <Form.Label htmlFor="action">{LangHelper.getResource('RemarkTitle')}</Form.Label>
-                        <div className='form-control-wrapper' >
-                            <MultipleSelect
-                                valueField='value'
-                                dataSource={remarkTitleOptions}
-                                keyField='id'
-                                onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeDropdown('remarkTitleIds', selectedItemsKey);
-                                }}
-                                isAllTextShown
-                                maxDisplayItemCount={1}
-                                hasSearchBox
-                            />
-                        </div>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: '340px'}}>
-                        <Form.Label htmlFor="userName">
-                            {LangHelper.getResource('Username')}
-                        </Form.Label>
-                        <Form.Control size="sm" type="text"
-                            name="userName" id="userName"
-                            disabled={customerName !== ''}
-                            value={userName}
-                            className="shadow-none" autoComplete="off"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group style={{width: '60px', 'padding-top': '26px'}} controlId="formBasicCheckboxGuest">
-                        <Form.Check type="checkbox" label={LangHelper.getResource('Guest')}
-                            id='isGuestFiler' name='isGuestFiler'
-                            disabled={customerName !== ''}
-                            checked={isGuestFiler}
-                            onChange={this.handleChangeCheckbox}
-                        />
-                    </Form.Group>
-                    <Form.Group className='related-pic'>
-                        <Form.Label htmlFor="relatedToPICs">
-                            {LangHelper.getResource('RelatedToPICs')}
-                        </Form.Label>
-                        <Form.Control size="sm" type="text"
-                            name="relatedToPICs" id="relatedToPICs"
-                            value={relatedToPICs}
-                            className="shadow-none" autoComplete="off"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group style={{width: '175px', 'padding-top': '26px'}} controlId="formBasicCheckboxHeadline">
-                        <Form.Check type="checkbox" label={LangHelper.getResource('ShowHeadlineRemarks')}
-                            id='isShowHeadline' name='isShowHeadline'
-                            checked={isShowHeadline}
-                            onChange={this.handleChangeCheckbox}
-                        />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group className="form-group-date">
-                            <Form.Label htmlFor="fromDate">
-                                {LangHelper.getResource('FromDate')}
-                            </Form.Label>
-                            <div className='react-datepicker-wrapper-container'>
-                                <DatePicker
-                                    peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                    maxDate={new Date(this.maxFromDate)} useShortMonthInDropdown
-                                    selected={fromDate}
-                                    onChange={value => this.handleChangeFromDate(value)
-                                    }
+                {
+                    showFilter &&
+                    <React.Fragment>
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group style={{width: '440px'}}>
+                                <Form.Label htmlFor="remarkContent">
+                                    {LangHelper.getResource('RemarkContent')}
+                                </Form.Label>
+                                <Form.Control size="sm" type="text"
+                                    name="remarkContent" id="remarkContent"
+                                    value={remarkContent}
+                                    className="shadow-none" autoComplete="off"
+                                    onChange={this.handleChange}
                                 />
-                            </div>
-                    </Form.Group>
-                    <Form.Group className="form-group-date">
-                        <Form.Label>
-                            {LangHelper.getResource('ToDate')}
-                        </Form.Label>
-                        <div className='react-datepicker-wrapper-container'>
-                            <DatePicker
-                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                minDate={new Date(this.minToDate)} useShortMonthInDropdown
-                                selected={toDate}
-                                maxDate={new Date(this.maxToDate)}
-                                onChange={value => this.handleChangeToDate(value)}
-                            />
-                        </div>
-                    </Form.Group>
-                    <Form.Group style={{width: '230px'}}>
-                        <Form.Label style={{visibility: 'hidden'}}>{LangHelper.getResource('Time')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="dateTypeSelect" id="dateTypeSelect"
-                            value={dateTypeSelect}
-                            onChange={this.handleChangeDateType}
-                        >
-                            {
-                                DateTypeOption.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Button variant="primary" size="sm" className='btn-submit mr-4' onClick={this.handleSubmit}>
-                            <UnderlineButton.searchButton />
-                        </Button>
-                        {
-                            isHost &&
-                            <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
-                                <UnderlineButton.insertButton />
-                            </Button>
-                        }
-                    </Form.Group>
-                </Form.Row>
+                            </Form.Group>
+                            <Form.Group style={{width: '440px'}}>
+                                <Form.Label htmlFor="action">{LangHelper.getResource('RemarkTitle')}</Form.Label>
+                                <div className='form-control-wrapper' >
+                                    <MultipleSelect
+                                        valueField='value'
+                                        dataSource={remarkTitleOptions}
+                                        keyField='id'
+                                        onChange={(currentItem, selectedItemsKey) => {
+                                            this.handleChangeDropdown('remarkTitleIds', selectedItemsKey);
+                                        }}
+                                        isAllTextShown
+                                        maxDisplayItemCount={1}
+                                        hasSearchBox
+                                    />
+                                </div>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group style={{width: '340px'}}>
+                                <Form.Label htmlFor="userName">
+                                    {LangHelper.getResource('Username')}
+                                </Form.Label>
+                                <Form.Control size="sm" type="text"
+                                    name="userName" id="userName"
+                                    disabled={customerName !== ''}
+                                    value={userName}
+                                    className="shadow-none" autoComplete="off"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group style={{width: '60px', 'padding-top': '26px'}} controlId="formBasicCheckboxGuest">
+                                <Form.Check type="checkbox" label={LangHelper.getResource('Guest')}
+                                    id='isGuestFiler' name='isGuestFiler'
+                                    disabled={customerName !== ''}
+                                    checked={isGuestFiler}
+                                    onChange={this.handleChangeCheckbox}
+                                />
+                            </Form.Group>
+                            <Form.Group className='related-pic'>
+                                <Form.Label htmlFor="relatedToPICs">
+                                    {LangHelper.getResource('RelatedToPICs')}
+                                </Form.Label>
+                                <Form.Control size="sm" type="text"
+                                    name="relatedToPICs" id="relatedToPICs"
+                                    value={relatedToPICs}
+                                    className="shadow-none" autoComplete="off"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group style={{width: '175px', 'padding-top': '26px'}} controlId="formBasicCheckboxHeadline">
+                                <Form.Check type="checkbox" label={LangHelper.getResource('ShowHeadlineRemarks')}
+                                    id='isShowHeadline' name='isShowHeadline'
+                                    checked={isShowHeadline}
+                                    onChange={this.handleChangeCheckbox}
+                                />
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group className="form-group-date">
+                                    <Form.Label htmlFor="fromDate">
+                                        {LangHelper.getResource('FromDate')}
+                                    </Form.Label>
+                                    <div className='react-datepicker-wrapper-container'>
+                                        <DatePicker
+                                            peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                            maxDate={new Date(this.maxFromDate)} useShortMonthInDropdown
+                                            selected={fromDate}
+                                            onChange={value => this.handleChangeFromDate(value)
+                                            }
+                                        />
+                                    </div>
+                            </Form.Group>
+                            <Form.Group className="form-group-date">
+                                <Form.Label>
+                                    {LangHelper.getResource('ToDate')}
+                                </Form.Label>
+                                <div className='react-datepicker-wrapper-container'>
+                                    <DatePicker
+                                        peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                        minDate={new Date(this.minToDate)} useShortMonthInDropdown
+                                        selected={toDate}
+                                        maxDate={new Date(this.maxToDate)}
+                                        onChange={value => this.handleChangeToDate(value)}
+                                    />
+                                </div>
+                            </Form.Group>
+                            <Form.Group style={{width: '230px'}}>
+                                <Form.Label style={{visibility: 'hidden'}}>{LangHelper.getResource('Time')}</Form.Label>
+                                <Form.Control as="select" size="sm"
+                                    name="dateTypeSelect" id="dateTypeSelect"
+                                    value={dateTypeSelect}
+                                    onChange={this.handleChangeDateType}
+                                >
+                                    {
+                                        DateTypeOption.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group>
+                                <Button variant="primary" size="sm" className='btn-submit mr-4' onClick={this.handleSubmit}>
+                                    <UnderlineButton.searchButton />
+                                </Button>
+                                {
+                                    isHost &&
+                                    <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
+                                        <UnderlineButton.insertButton />
+                                    </Button>
+                                }
+                            </Form.Group>
+                        </Form.Row>
+                    </React.Fragment>
+                }
+                {
+                    this.state.showFilter
+                        ? <span className="fa fa-caret-up fa-sm icon-toggle" onClick={() => this.handleToggleFilter(false)} />
+                        : <span className="fa fa-caret-down fa-sm icon-toggle" onClick={() => this.handleToggleFilter(true)} />
+                }
             </Form>
         );
     }
