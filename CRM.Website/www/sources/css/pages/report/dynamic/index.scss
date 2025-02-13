@@ -1,5 +1,6 @@
 @import '../../../abstracts/variables';
 @import './responsive';
+@import '../../../abstracts/mixins';
 
 .dynamic {
     .form-filter-v2 {
@@ -36,6 +37,18 @@
                     .autocomplete-items{
                         width: fit-content;
                     }
+                }
+            }
+        }
+
+        .dropdown-menu {
+            @include Laptop {
+                width: 100% !important;
+            }
+
+            .tree {
+                @include Laptop {
+                    max-height: 300px !important;
                 }
             }
         }

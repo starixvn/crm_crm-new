@@ -273,8 +273,8 @@ export class DataGridCommunication extends Component {
                 width={document.getElementById('right-row-container').clientWidth}
                 autoWidth
                 header={this.buildHeader()}
-                body={this.buildBody()} 
-                adjustedHeight={10}
+                body={this.buildBody()}
+                adjustedHeight={20}
             />
         </div>
         );
