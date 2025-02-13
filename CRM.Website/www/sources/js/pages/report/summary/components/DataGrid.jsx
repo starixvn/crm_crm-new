@@ -216,10 +216,11 @@ export class DataGrid extends Component {
         }
         const defaultWidth = 400;
         const totalWidth = defaultWidth + months.length * 60;
+        const maxWidth = document.getElementById('right-row-container').clientWidth;
 
         return (
             <div className='table'>
-                <div style={{ width:totalWidth }} className='table-title-v2 d-flex justify-content-between align-items-center'>
+                <div style={{ width:totalWidth, maxWidth:maxWidth }} className='table-title-v2 d-flex justify-content-between align-items-center'>
                     <span>{reportTitle}</span>
                     {
                         categorySummaries.length > 0 && this.renderCustomButtonReport()
@@ -228,6 +229,7 @@ export class DataGrid extends Component {
                 <Table
                     width={totalWidth}
                     autoWidth={false}
+                    maxWidth={maxWidth}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     footer={this.renderFooter()}
