@@ -29,23 +29,23 @@ export class DataGrid extends Component {
     buildNotificationListHeader = isHost =>
         (<HeaderRow>
             <HeaderCell colWidth={7}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
-            <HeaderCell colWidth={15}>
+            <HeaderCell colWidth={16}>
                 <div>{LangHelper.getResource('NotificationID')}</div>
                 <div>{LangHelper.getResource('ReferenceId')}</div>
             </HeaderCell>
             <HeaderCell colWidth={23}>{LangHelper.getResource('Sender')}/{LangHelper.getResource('NotificationType')}</HeaderCell>
             <HeaderCell colWidth={15}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
             <HeaderCell colWidth={11}>{LangHelper.getResource('BotService')}</HeaderCell>
-            <HeaderCell colWidth={16}>{LangHelper.getResource('DisplayName')}</HeaderCell>
-            <HeaderCell colWidth={26}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+            <HeaderCell colWidth={14}>{LangHelper.getResource('DisplayName')}</HeaderCell>
+            <HeaderCell colWidth={20}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
             <HeaderCell colWidth={19}>{LangHelper.getResource('Recipient')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
             <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
             {
-                isHost && <HeaderCell colWidth={10}>{LangHelper.getResource('Action')}</HeaderCell>
+                isHost && <HeaderCell colWidth={12}>{LangHelper.getResource('Action')}</HeaderCell>
             }
             {
-                isHost && <HeaderCell colWidth={10}>
+                isHost && <HeaderCell colWidth={13}>
                     <input
                         type='button'
                         value={LangHelper.getResource('Resend')}
@@ -254,19 +254,15 @@ export class DataGrid extends Component {
                     <AutoRefresh />
                 </div>
                 <Table
-                    maxWidth={2000}
-                    shouldUseMaxWidth
-                    width={document.getElementById('right-row-container').clientWidth}
-                    autoWidth={false}
-                    isFixColumn
+                    minWidth={960}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    autoWidth
                     header={this.buildNotificationListHeader(isHost)}
                     body={this.buildNotificationListBody(isHost)}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     shouldResetScrollPosition={this.props.resendOptions.shouldResetScrollPosition}
-                    containerPadding={0}
-                    adjustedHeight={10}
                 />
             </Fragment>
         );
