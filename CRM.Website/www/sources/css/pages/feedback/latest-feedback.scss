@@ -1,5 +1,6 @@
 @import './edit-customer-feedback';
 @import '../../abstracts/variables';
+@import '../../abstracts/mixins';
 
 .latest-feedback {
     max-width: 1250px;
@@ -67,7 +68,11 @@
     max-height: 920px;
     border-radius: 3px;
     font-size: 12px;
-    text-align: left
+    text-align: left;
+
+    @include Laptop {
+        font-size: 8.5px;
+    }
 }
 
 #tooltip-customers [class$="inner"] {

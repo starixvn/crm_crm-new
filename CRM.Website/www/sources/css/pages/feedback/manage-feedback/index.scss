@@ -1,9 +1,12 @@
 
 @import '../edit-customer-feedback';
 @import '../../../abstracts/variables';
+@import '../../../abstracts/mixins';
 
 .manage-feedback{
     .form-filter-v2 {
+        position: relative;
+
         .form-username {
             display: flex;
             align-items: center;
@@ -38,6 +41,20 @@
         .react-datepicker-wrapper-container .react-datepicker-wrapper {
             display: block;
             height: 26px;
+        }
+
+        .icon-toggle{
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+    
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
         }
     }
 
@@ -130,7 +147,11 @@
     max-height: 920px;
     border-radius: 3px;
     font-size: 12px;
-    text-align: left
+    text-align: left;
+
+    @include Laptop {
+        font-size: 8.5px;
+    }
 }
 
 #tooltip-customers [class$="inner"] {

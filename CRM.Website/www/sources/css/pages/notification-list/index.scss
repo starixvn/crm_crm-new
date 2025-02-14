@@ -1,5 +1,6 @@
 ﻿@import '../../abstracts/variables';
 @import './responsive';
+@import '../../abstracts/mixins';
 
 .notification-list{
     .form-filter {
@@ -250,6 +251,10 @@
     .table-container .table > thead > tr > th {
         padding: 0px 12px 0px 12px;
         height: 40px;
+
+        @include Laptop {
+            padding: 0px 0px 0px 0px !important;
+        }
     }
 }
 

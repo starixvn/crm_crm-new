@@ -197,7 +197,7 @@
     }
 }
 
-@media screen and (max-width: 1449px){  
+@media screen and (max-width: 1449px){
     .row-content {
         & > div{
             &> :not(.show-left-panel) {
@@ -210,6 +210,12 @@
                 }
             }
         }
+    }
+}
+
+@media only screen and (max-width: 1366px) {
+    .react-select__control, .react-select-container  {
+        height: auto !important;
     }
 }
 
