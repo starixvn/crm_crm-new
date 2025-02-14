@@ -6,7 +6,7 @@
     {
         public int FeedbackId { get; set; }
         public short UserRole { get; } = Constants.UserRole;
-        public short Mode { get; } = 1;
+        public int Mode { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_CommunicationLogSel";
 

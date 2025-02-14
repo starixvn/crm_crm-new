@@ -62,9 +62,9 @@
             return Json(statuses);
         }
 
-        public async Task<IActionResult> GetLogByFeedbackId(int id)
+        public async Task<IActionResult> GetLogByFeedbackId(int id, int modeId)
         {
-            var log = await communicationService.GetLogByFeedbackIdAsync(id);
+            var log = await communicationService.GetLogByFeedbackIdAsync(id, modeId);
 
             if (log.RelatedCustomers is not null && log.RelatedCustomers.Any())
             {

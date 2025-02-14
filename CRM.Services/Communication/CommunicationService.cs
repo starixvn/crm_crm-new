@@ -14,7 +14,7 @@
     {
         Task<IEnumerable<CommunicationLog>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria);
 
-        Task<CommunicationLog> GetLogByFeedbackIdAsync(int id);
+        Task<CommunicationLog> GetLogByFeedbackIdAsync(int id, int modeId);
     }
 
     public class CommunicationService : ICommunicationService
@@ -45,11 +45,12 @@
             return communicationLogInfos;
         }
 
-        public async Task<CommunicationLog> GetLogByFeedbackIdAsync(int id)
+        public async Task<CommunicationLog> GetLogByFeedbackIdAsync(int id, int modeId)
         {
             var criteria = new GetLogByFeedbackIdCriteria
             {
-                FeedbackId = id
+                FeedbackId = id,
+                Mode = modeId
             };
 
             var (communicationLogInfos, relatedCustomers, settingItems) = 
