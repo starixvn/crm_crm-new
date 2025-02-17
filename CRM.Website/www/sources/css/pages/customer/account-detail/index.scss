@@ -22,6 +22,10 @@
         width: max-content;
     }
 
+    .react-datepicker-wrapper-container, .react-datepicker-wrapper {
+        height: calc(1.5em + 0.5rem) !important;
+    }
+
     .no-data {
         border-radius: 3px;
         border: 1px #b7b7b7 solid;
