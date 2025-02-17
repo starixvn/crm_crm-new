@@ -13,7 +13,7 @@
             justify-content: space-between;
 
             .username-width {
-                width: 51%;
+                width: 50%;
             }
 
             .response-width {
@@ -55,6 +55,10 @@
             background-color: #464D5D;
             color: white;
             cursor: pointer;
+        }
+
+        #btn-submit-manage-fb {
+            margin-top: 26px;
         }
     }
 
@@ -292,83 +296,6 @@
         }
     }
 }
-
-.medium-desktops, .large-desktops {
-    .form-filter-v2 {
-        .large-width {
-            width: 200px;
-        }
-    }
-}
-
-.extra-large-desktops .show-left-panel {
-    .form-filter-v2 {
-        .large-width {
-            width: 200px;
-        }
-    }
-}
-
-.large-desktops, .medium-desktops .show-left-panel {
-    .manage-feedback {
-        .form-filter-v2 {
-            .btn {
-                margin-top: 10px !important;
-            }
-        }
-    }
-}
-
-@media screen and (min-width: 1680px) and (max-width: 1879px) {
-    .row-content {
-        & > div {
-            &> :not(.show-left-panel) {
-                .manage-feedback {
-                    &> .form-filter-v2 {
-                        .btn {
-                            margin-top: 10px !important;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media screen and (min-width: 1800px) and (max-width: 2039px){
-    .show-left-panel {
-        .manage-feedback {
-            .form-filter-v2 {
-                .btn {
-                    margin-top: 10px !important;
-                }
-            }
-        }
-    }
-}
-
-@media screen and (min-width: 1440px) and (max-width: 1560px) {
-    .show-left-panel {
-        .manage-feedback {
-            .form-filter-v2 {
-                .btn {
-                    margin-top: 10px !important;
-                }
-            }
-        }
-    }
-}
-
-@media screen and (min-width: 1560px) and (max-width: 1800px) {
-    .show-left-panel{
-        .form-filter-v2 {
-            .btn {
-                margin-top: 26px !important;
-            }
-        }
-    }
-}
-
 
 #view-category-classification [class$="inner"]{
     max-width: 400px;
