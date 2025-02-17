@@ -50,6 +50,8 @@
 
         string GetResultSettlementName(string resultSettlementId, string languageCode);
 
+        string GetResourceByRefIdAndResourceId(string type, string refId, string languageCode);
+
         T GetFeedbackTemplates<T>(string fileXml);
 
         ValueTuple<bool, string> CheckFeedbackValidParams(CreateMutipleFeedbackCommand criteria);
@@ -183,6 +185,11 @@
         {
             var resultSettlementName = remotingRefService.GetResourceDataByRefIdAndResourceId("ResultSettlement", resultSettlementId, languageCode, string.Empty);
             return resultSettlementName;
+        }
+
+        public string GetResourceByRefIdAndResourceId(string type, string refId, string languageCode)
+        {
+            return remotingRefService.GetResourceDataByRefIdAndResourceId(type, refId, languageCode, string.Empty);
         }
 
         public T GetFeedbackTemplates<T>(string fileXml)
