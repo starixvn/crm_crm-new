@@ -63,7 +63,7 @@ export class DataGridCommunication extends Component {
     };
 
     handleShowCreateCommunication = async id => {
-        await DataService.getDataAsync(`CommunicationLog/GetLogByFeedbackId/${id}`).then(response => {
+        await DataService.getDataAsync(`CommunicationLog/GetLogByFeedbackId?id=${id}&modeId=${1}`).then(response => {
             if(!response || !response.data){
                 return;
             }

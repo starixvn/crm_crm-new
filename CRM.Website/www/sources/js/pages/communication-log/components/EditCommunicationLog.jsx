@@ -75,7 +75,7 @@ export class EditCommunicationLog extends Component {
         Site.blockUI();
         const urlLogByFeedbackId = Site.resolveClientUrl('CommunicationLog/GetLogByFeedbackId');
 
-        await DataService.getDataAsync(`${urlLogByFeedbackId}/${this.props.feedbackId}`).then(response => {
+        await DataService.getDataAsync(`${urlLogByFeedbackId}?id=${this.props.feedbackId}&modeId=${0}`).then(response => {
             if (!response || !response.data) {
                 return;
             }
