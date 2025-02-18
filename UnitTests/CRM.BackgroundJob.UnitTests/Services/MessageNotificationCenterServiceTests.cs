@@ -96,7 +96,8 @@
         [InlineData("TeamID", "1", "EN", "TeamName")]
         [InlineData("ResourceCricket", "1", "EN", "ResourceCricketName")]
         [InlineData("ResultSettlement", "1", "EN", "ResultSettlementName")]
-        [InlineData("test", "1", "EN", "")]
+        [InlineData("ResourceBasketball", "1", "EN", "ResourceBasketballName")]
+        [InlineData("ResourceESports", "1", "EN", "ResourceESportsName")]
         public void GetResourceRemotingRef_ReturnExpected(string type, string id, string languageCode, string expected)
         {
             // Arrange
@@ -105,8 +106,10 @@
             commonFeedback.GetLeagueName(id, languageCode).Returns("LeagueName");
             commonFeedback.GetSportName(id, languageCode).Returns("SportName");
             commonFeedback.GetTeamName(id, languageCode).Returns("TeamName");
-            commonFeedback.GetResourceCricketName(id, languageCode).Returns("ResourceCricketName");
-            commonFeedback.GetResultSettlementName(id, languageCode).Returns("ResultSettlementName");
+            commonFeedback.GetResourceByRefIdAndResourceId("ResourceCricket", id, languageCode).Returns("ResourceCricketName");
+            commonFeedback.GetResourceByRefIdAndResourceId("ResultSettlement", id, languageCode).Returns("ResultSettlementName");
+            commonFeedback.GetResourceByRefIdAndResourceId("ResourceBasketball", id, languageCode).Returns("ResourceBasketballName");
+            commonFeedback.GetResourceByRefIdAndResourceId("ResourceESports", id, languageCode).Returns("ResourceESportsName");
 
             // Act
             var actual = service.Public_GetResourceRemotingRef(type, id, languageCode);

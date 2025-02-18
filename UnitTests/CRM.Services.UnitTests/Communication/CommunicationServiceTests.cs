@@ -69,7 +69,7 @@
             settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
 
             // Act
-            var actual = await service.GetLogByFeedbackIdAsync(1);
+            var actual = await service.GetLogByFeedbackIdAsync(1, 1);
 
             // Assert
             Assert.Equal(communicationLogs.First(), actual);

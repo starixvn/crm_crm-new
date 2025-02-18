@@ -79,10 +79,10 @@
             // Arrange
             var log = fixture.Create<CommunicationLog>();
             var controller = GetController();
-            communicationService.GetLogByFeedbackIdAsync(1).Returns(log);
+            communicationService.GetLogByFeedbackIdAsync(1, 1).Returns(log);
 
             // Act
-            var result = await controller.GetLogByFeedbackId(1);
+            var result = await controller.GetLogByFeedbackId(1, 1);
             var jsonResult = Assert.IsType<JsonResult>(result);
             var communicationLog = (CommunicationLog)jsonResult.Value.GetType().GetProperty("log").GetValue(jsonResult.Value);
             Assert.Equal(log, communicationLog);
