@@ -7,16 +7,20 @@ describe('DataGrid', () => {
     beforeAll(() => {
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
-        appContainer.checked = true;
+        appContainer.checked = true;    
         document.body.appendChild(appContainer);
+
+        const rowContainer = document.createElement('div');
+        rowContainer.setAttribute('id', 'right-row-container');
+        document.body.appendChild(rowContainer);
     });
 
     afterAll(() => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
-        if (appContainer) {
-            document.body.removeChild(appContainer);
-        }
+        const rowContainer = document.getElementById('right-row-container');
+        document.body.removeChild(appContainer);
+        document.body.removeChild(rowContainer);
     });
 
     describe('buildHeader', () => {
