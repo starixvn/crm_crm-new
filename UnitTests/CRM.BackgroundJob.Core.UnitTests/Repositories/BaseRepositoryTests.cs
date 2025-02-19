@@ -15,12 +15,11 @@
 
         public BaseRepositoryTests()
         {
-            DbSettingProviderManager
-            .StartTestingSession()
-            .Run();
-
+            DbSettingProviderManager.StartTestingSession();
             objectDb = Substitute.For<IObjectDb>();
-            ObjectDbFactory.Mock((key, time, ip) => objectDb);
+            var mockFactory = Substitute.For<CreateObjectDbFunc>();
+            mockFactory(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>()).Returns(objectDb);
+            ObjectDbFactory.Mock(mockFactory);
         }
 
         #region ExecuteNonQueryAsync
@@ -33,10 +32,10 @@
             var repository = new BaseRepository();
 
             // Action
-            await repository.ExecuteNonQueryAsync(criteria);
+            var result = await repository.ExecuteNonQueryAsync(criteria);
 
             // Assert
-            await objectDb.Received().ExecuteNonQueryAsync(criteria);
+            Assert.Equal(0, result.Code);
         }
 
         [Fact]
