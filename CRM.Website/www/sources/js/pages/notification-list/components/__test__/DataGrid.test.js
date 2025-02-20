@@ -235,21 +235,21 @@ describe('DataGrid', () => {
                 const header = shallow(dataGrid.instance().buildNotificationListHeader());
                 
                 // Assert
-                expect(header.find(HeaderCell).at(0).props().colWidth).toBe(7);
+                expect(header.find(HeaderCell).at(0).props().colWidth).toBe(6);
                 expect(header.find(HeaderCell).at(0).html()).toContain('SymbolNo');
-                expect(header.find(HeaderCell).at(1).props().colWidth).toBe(15);
+                expect(header.find(HeaderCell).at(1).props().colWidth).toBe(16);
                 expect(header.find(HeaderCell).at(1).find('div').at(0).html()).toContain('NotificationID');
                 expect(header.find(HeaderCell).at(1).find('div').at(1).html()).toContain('ReferenceId');
                 expect(header.find(HeaderCell).at(2).props().colWidth).toBe(23);
                 expect(header.find(HeaderCell).at(2).html()).toContain('Sender');
                 expect(header.find(HeaderCell).at(2).html()).toContain('NotificationType');
-                expect(header.find(HeaderCell).at(3).props().colWidth).toBe(15);
+                expect(header.find(HeaderCell).at(3).props().colWidth).toBe(17);
                 expect(header.find(HeaderCell).at(3).html()).toContain('SendDateTimeGMTA8');
-                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(11);
+                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(12);
                 expect(header.find(HeaderCell).at(4).html()).toContain('BotService');
-                expect(header.find(HeaderCell).at(5).props().colWidth).toBe(16);
+                expect(header.find(HeaderCell).at(5).props().colWidth).toBe(14);
                 expect(header.find(HeaderCell).at(5).html()).toContain('DisplayName');
-                expect(header.find(HeaderCell).at(6).props().colWidth).toBe(26);
+                expect(header.find(HeaderCell).at(6).props().colWidth).toBe(17);
                 expect(header.find(HeaderCell).at(6).html()).toContain('GroupHeadline');
             });
 
@@ -285,7 +285,7 @@ describe('DataGrid', () => {
                 const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
                 
                 // Assert
-                expect(header.find(HeaderCell).at(10).props().colWidth).toBe(10);
+                expect(header.find(HeaderCell).at(10).props().colWidth).toBe(13);
             });
         });
 

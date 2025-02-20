@@ -623,7 +623,7 @@ describe('Filter', () => {
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             expect(filter.find(Form.Group).find(Button).length).toBe(2);
-            expect(filter.find(Form.Group).find(Button).at(1).html()).toContain('<button type=\"button\" class=\"mr-2 btn btn-primary btn-sm\">InsertPersonal</button>');
+            expect(filter.find(Form.Group).find(Button).at(1).html()).toContain('<button style=\"width:auto\" type=\"button\" class=\"mr-2 btn btn-primary btn-sm\">InsertPersonal</button>');
             filter.find(Button).at(1).simulate('click');
             expect(props.openInsertPersonalMappingPopup).toHaveBeenCalled();
         });

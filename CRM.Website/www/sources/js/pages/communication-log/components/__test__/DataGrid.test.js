@@ -10,17 +10,17 @@ describe('DataGrid', () => {
         appContainer.checked = true;    
         document.body.appendChild(appContainer);
 
-        const rowContainer = document.createElement('div');
-        rowContainer.setAttribute('id', 'right-row-container');
-        document.body.appendChild(rowContainer);
+        const appContainer2 = document.createElement('div');
+        appContainer2.setAttribute('id', 'right-row-container');
+        document.body.appendChild(appContainer2);
     });
 
     afterAll(() => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
-        const rowContainer = document.getElementById('right-row-container');
+        const appContainer2 = document.getElementById('right-row-container');
         document.body.removeChild(appContainer);
-        document.body.removeChild(rowContainer);
+        document.body.removeChild(appContainer2);
     });
 
     describe('buildHeader', () => {
