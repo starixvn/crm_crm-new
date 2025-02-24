@@ -188,8 +188,8 @@
 	</Function>
 	<Function Name="Feedback">
 		<Setting Key="Acc_CRM_FeedbackSelTop" SpName="Acc_CRM_FeedbackSelTop" DbName="DBCRM.bodb_CRM.wsv_nap" />
-		<Setting Key="Acc_CRM_FeedbackInfoUpd" SpName="Acc_CRM_FeedbackInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
-		<Setting Key="Acc_CRM_FeedbackSelByID" SpName="Acc_CRM_FeedbackSelByID" DbName="DBCRM.bodb_CRM.wsv_nap" />
+		<Setting Key="Acc_CRM_FeedbackInfoUpd" SpName="Acc_CRM_FeedbackInfoUpd_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+		<Setting Key="Acc_CRM_FeedbackSelByID" SpName="Acc_CRM_FeedbackSelByID_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_FeedbackSelTopByCustId" SpName="Acc_CRM_FeedbackSelTopByCustId" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_CustomerFeedbackQuickUpd" SpName="Acc_CRM_CustomerFeedbackQuickUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_FeedbackQuickSel" SpName="Acc_CRM_FeedbackQuickSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -198,11 +198,11 @@
 		<Setting Key="Acc_CRM_UpdMultipleReviewAndStatus" SpName="Acc_CRM_UpdMultipleReviewAndStatus" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_FeedbackDoubleCheck" SpName="Acc_CRM_FeedbackDoubleCheck" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Age_SelBalanceUpDay" SpName="Age_SelBalanceUpDay" DbName="DBAGE.bodb02.wsv_nap" />
-		<Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns" SpName="Acc_CRM_NewManualFeedback_FeedbackIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
+		<Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_NewManualFeedback_FeedbackIns_Guest" SpName="Acc_CRM_NewManualFeedback_FeedbackIns_Guest" DbName="DBCRM.bodb_CRM.wsv_nap" />
 		<Setting Key="Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew" SpName="Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew" DbName="DBCRM.bodb_CRM.wsv_nap" />
-		<Setting Key="Acc_CRM_NewManualFeedback_FeedbackUpd" SpName="Acc_CRM_NewManualFeedback_FeedbackUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
-		<Setting Key="Acc_CRM_NewManualFeedback_FeedbackSelByID" SpName="Acc_CRM_NewManualFeedback_FeedbackSelByID" DbName="DBCRM.bodb_CRM.wsv_nap" />
+		<Setting Key="Acc_CRM_NewManualFeedback_FeedbackUpd" SpName="Acc_CRM_NewManualFeedback_FeedbackUpd_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+		<Setting Key="Acc_CRM_NewManualFeedback_FeedbackSelByID" SpName="Acc_CRM_NewManualFeedback_FeedbackSelByID_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
 	</Function>
 	<Funtcion name="Customer">
 		<Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.wsv_nap">

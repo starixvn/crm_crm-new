@@ -284,7 +284,8 @@ export class AppContainer extends Component {
             isPreviewSolution: true,
             customerNameInput: '',
             reviewNameInput: '',
-            latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools)
+            latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools),
+            rating: feedback.rating ? feedback.rating : 0
         };
     };
 
@@ -822,28 +823,31 @@ export class AppContainer extends Component {
             await this.editOtherAccountCommunicationInfo();
         }
 
+        console.log('params', params);
         const { fieldInput } = this.state;
         Site.blockUI();
         const url = fieldInput.isCheckFeedbackIdIsNew ?
             Site.resolveClientUrl('Feedback/EditCustomerNewManualFeedback') :
             Site.resolveClientUrl('Feedback/EditCustomerOldFeedback');
-        await DataService.postDataAsync(url, params).then(response => {
-            const data = response.data;
-            this.setState({ editResult: data });
-            if (data.isSuccessful) {
-                setTimeout(() => {
-                    this.props.onClose(true);
-                    if (params.isOverwrite) {
-                        window.dispatchEvent(new Event('getCurrentCustomer'));
-                        window.localStorage.setItem('updateLeftPanel', params.custId);
-                        const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
-                        this.props.navigate(pathname, { state: this.props.currentCustomer });
-                    }
-                }, 3000);
-            } else {
-                this.formik.setSubmitting(false);
-            }
-        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+        
+        console.log('isCheckFeedbackIdIsNew', fieldInput.isCheckFeedbackIdIsNew);
+        // await DataService.postDataAsync(url, params).then(response => {
+        //     const data = response.data;
+        //     this.setState({ editResult: data });
+        //     if (data.isSuccessful) {
+        //         setTimeout(() => {
+        //             this.props.onClose(true);
+        //             if (params.isOverwrite) {
+        //                 window.dispatchEvent(new Event('getCurrentCustomer'));
+        //                 window.localStorage.setItem('updateLeftPanel', params.custId);
+        //                 const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
+        //                 this.props.navigate(pathname, { state: this.props.currentCustomer });
+        //             }
+        //         }, 3000);
+        //     } else {
+        //         this.formik.setSubmitting(false);
+        //     }
+        // }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     getParamNewManualFeedback(values) {
@@ -891,7 +895,8 @@ export class AppContainer extends Component {
             communicationInfos: customerInfo?.isGroupHeadLine ?
                 this.getHeadlineCommunicationInfos(fieldInput.latestFeedbackCommunicationTools) :
                 this.getNormalCommunicationInfos(fieldInput.latestFeedbackCommunicationTools),
-            isOverwrite: fieldInput.isOverwrite
+            isOverwrite: fieldInput.isOverwrite,
+            rating: parseInt(values.rating, 10)
         };
         return params;
     }
@@ -971,7 +976,8 @@ export class AppContainer extends Component {
             review: values.review,
             // 0: do nothing, 1: update, 2: remove
             updateReviewedMode: this.isReviewed(values),
-            isDeletedFeedbackView: this.props.isDeletedFeedbackView
+            isDeletedFeedbackView: this.props.isDeletedFeedbackView,
+            rating: parseInt(values.rating, 10)
         };
         return params;
     }

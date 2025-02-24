@@ -5,7 +5,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import VerifyCustomer from '@jsroot/components/VerifyCustomer';
 import AutoComplete from '@jsroot/components/AutoComplete';
-import { validateNoOfInquiry } from '../common.functions';
+import { validateNoOfInquiry, ratings } from '../common.functions';
 import Details from './Details';
 import CommentInfo from './CommentInfo';
 import UnderlineButton from '@jsroot/common/underlineButton';
@@ -58,6 +58,20 @@ export default class FeedbackInfo extends PureComponent {
                                     className="shadow-none" autoComplete="off"
                                     onInput={validateNoOfInquiry} onChange={handleChange}
                                 />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="rating">
+                                {LangHelper.getResource('Rating')}
+                            </Form.Label>
+                            <Col md="8" sm="8">
+                                <Form.Control as="select" size="sm" className="shadow-none" id='rating' name='rating' value={values.rating} onChange={handleChange}>
+                                    {ratings.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                                </Form.Control>
                             </Col>
                         </Form.Group>
                     </Col>

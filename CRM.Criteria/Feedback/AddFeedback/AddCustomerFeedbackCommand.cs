@@ -98,6 +98,8 @@
 
         public string ReviewerId { get; set; }
 
+        public int Rating { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_NewManualFeedback_FeedbackIns";
 
         public override bool IsValid() => true;
