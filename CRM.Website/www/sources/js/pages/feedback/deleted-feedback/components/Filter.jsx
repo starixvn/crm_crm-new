@@ -120,28 +120,30 @@ export class Filter extends Component {
         const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
 
         return (
-            <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
+            <Form onSubmit={this.handleSubmit} className="form-filter-v2" action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                     <Form.Row bsPrefix='form-row'>
-                        <Form.Group>
+                        <Form.Group className='large-width'>
                             <Form.Label className="col-form-label-username">
                                 {LangHelper.getResource('Username')}
                             </Form.Label>
-                            <Form.Control type="text" size="sm" className="shadow-none"
-                                autoComplete="on"
-                                name="username"
-                                onChange={this.handleChange}
-                            />
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="isGuest"
-                                onChange={this.handleChange}
-                            >
+                            <div className='form-username'>
+                                <Form.Control type="text" size="sm" className="shadow-none username-width"
+                                    autoComplete="on"
+                                    name="username"
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Control as="select" size="sm" className="shadow-none cusType-width"
+                                    name="isGuest"
+                                    onChange={this.handleChange}
+                                >
                                 {
                                     customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
                                 }
                             </Form.Control>
+                            </div>
                         </Form.Group>
-                        <Form.Group style={{width: '218.5px'}}>
+                        <Form.Group>
                             <Form.Label>
                                 {LangHelper.getResource('FromDate')}
                             </Form.Label>
@@ -158,7 +160,7 @@ export class Filter extends Component {
                                 />
                             </div>
                         </Form.Group>
-                        <Form.Group style={{width: '218.5px'}}>
+                        <Form.Group>
                             <Form.Label>
                                 {LangHelper.getResource('ToDate')}
                             </Form.Label>
@@ -176,9 +178,7 @@ export class Filter extends Component {
                                 />
                             </div>
                         </Form.Group>
-                    </Form.Row>
-                    <Form.Row bsPrefix='form-row'>
-                        <Form.Group>
+                        <Form.Group className='large-width'>
                             <Form.Label>
                                 {LangHelper.getResource('MainCategory')}
                             </Form.Label>
@@ -191,7 +191,7 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '450px'}}>
+                        <Form.Group className='large-width'>
                             <Form.Label>
                             {LangHelper.getResource('SubCategory')}
                             </Form.Label>
@@ -205,9 +205,7 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                    </Form.Row>
-                    <Form.Row bsPrefix='form-row'>
-                        <Form.Group style={{width: '200px'}}>
+                        <Form.Group className='communication-width'>
                             <Form.Label>
                                 {LangHelper.getResource('Communication')}
                             </Form.Label>
@@ -220,10 +218,10 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '237px'}}>
-                            <Form.Label style={{width: '130px'}}>
+                        <Form.Group className='customer-width'>
+                            <Form.Label>
                                 {LangHelper.getResource('CustomerResponse')}
-                             </Form.Label>
+                            </Form.Label>
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="responseId"
                                 onChange={this.handleChange}
@@ -233,7 +231,7 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '218.5px'}}>
+                        <Form.Group className='review-width'>
                             <Form.Label>
                                 {LangHelper.getResource('Is Reviewed')}
                             </Form.Label>
@@ -246,8 +244,8 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '80px'}}>
-                                <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></button>
+                        <Form.Group>
+                            <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></button>
                         </Form.Group >
                     </Form.Row>
             </Form>

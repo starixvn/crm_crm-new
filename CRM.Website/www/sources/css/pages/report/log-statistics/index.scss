@@ -1,19 +1,11 @@
 .log-statistics {
-    .form-filter {
-        .react-datepicker__input-container input {
-            width: 100% !important;
+    .form-filter-v2 {
+        .large-width {
+            width: 265px;
         }
-
-        .label-width {
-            width: 120px !important;
-        }
-
-        .form-width {
-            width: 350px !important;
-        }
-
-        .mainCategory-width {
-            width: 245px !important;
+        .react-datepicker-wrapper-container .react-datepicker-wrapper {
+            display: block;
+            height: 26px;
         }
     }
 
@@ -71,6 +63,7 @@
 
                     td:last-child {
                         background: #F0EDC4 !important;
+                        color: #0054a6 !important;
                     }
                 }
             }
@@ -91,7 +84,7 @@
             }
 
 
-            .table-title {
+            .table-title-v2 {
                 border-right: 0;
             }
         }
@@ -107,7 +100,7 @@
 
     .details {
         .fix-table-container {
-            .table-title {
+            .table-title-v2 {
                 border-right: 0;
             }
 
@@ -166,10 +159,49 @@
 }
 
 .chart-modal-dialog-log-statistics{
+    .modal-header {
+        background: #1D3557 !important;
+    }
     .modal-content{
         .recharts-default-legend{
             li{
                 width: 310px;
+            }
+        }
+    }
+}
+
+.show-left-panel {
+    .log-statistics {
+        .form-filter-v2 {
+            .large-width {
+                width: 200px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1800px){
+    .show-left-panel {
+        .log-statistics {
+            .btn {
+                margin-top: 10px !important;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1270px) and (max-width: 1510px){
+    .row-content {
+        & > div {
+            &> :not(.show-left-panel) {
+                .log-statistics {
+                    &> .form-filter-v2 {
+                        .btn {
+                            margin-top: 10px !important;
+                        }
+                    }
+                }
             }
         }
     }

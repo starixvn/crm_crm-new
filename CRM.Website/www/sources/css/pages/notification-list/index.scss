@@ -1,5 +1,6 @@
 ﻿@import '../../abstracts/variables';
 @import './responsive';
+@import '../../abstracts/mixins';
 
 .notification-list{
     .form-filter {
@@ -41,6 +42,31 @@
             }
         }
         
+        .icon-toggle {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
+        }
+    }
+
+    .form-filter-v2 {
+        position: relative;
+
+        .react-select__indicators {
+            display: none;
+        }
+
+        ::placeholder, .react-select__placeholder {
+            font-size: smaller !important;
+        }
+ 
         .icon-toggle {
             position: absolute;
             top: 100%;
@@ -221,9 +247,22 @@
     .Select-arrow-zone {
         display: none;
     }
+
+    .table-container .table > thead > tr > th {
+        padding: 0px 12px 0px 12px;
+        height: 40px;
+
+        @include Laptop {
+            padding: 0px 0px 0px 0px !important;
+        }
+    }
 }
 
 .notification-list-modal{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .notification-content {
         white-space: pre-line;
         word-break: break-word;
@@ -252,6 +291,7 @@
         }
     }
 }
+
 
 .view-detail-remark {
     width: 100%;

@@ -1,19 +1,18 @@
 ﻿.communication-setting{
-    .form-filter {
-        .form-row {
-            .form-group {
-                width: 320px;
+    .form-filter-v2 {
+        .form-group {
+            width: 260px !important;
+
+            .btn {
+                margin-top: 0 !important;
             }
-            .communication-setting {
-                width: 80px !important; 
-            }    
         }
     }
     
     .multiple-select-options-container {
         width: 300px;
     }
-    
+
     @media (min-width: 768px) {
         .sub-category-left
         {
@@ -37,6 +36,10 @@
 
 .communication-setting-modal {
     overflow-x: auto !important;
+
+    .modal-header {
+        background: #1D3557 !important;
+    }
 
     .modal-content {
         width: 83%;

@@ -161,7 +161,8 @@ export const initValues = (settings, customerInfo) =>{
         ticketRefInput: '',
         description: '',
         solution: '',
-        guestCommunicationInfos: customerInfo.guestCommunicationInfos
+        guestCommunicationInfos: customerInfo.guestCommunicationInfos,
+        rating: 0
     };
 
     return initialValues;
@@ -216,7 +217,8 @@ export const initCustomerInfo = customerDetail =>{
         headlineStaffInfoCommunications: getHeadlineStaffInfoCommunications(customerDetail.headlineStaffInfoCommunications),
         headlineStaffInfoLanguages: customerDetail.headlineStaffInfoLanguages,
         headlineStaffInfoPics: customerDetail.headlineStaffInfoPics,
-        otherAccountCommunicationInfos: getOtherAccountCommunicationInfos(customerDetail.otherAccountCommunicationInfos,)
+        otherAccountCommunicationInfos: getOtherAccountCommunicationInfos(customerDetail.otherAccountCommunicationInfos,),
+        rating: customerDetail.rating ? customerDetail.rating : 0
     };
 
     return initialValues;
@@ -252,7 +254,8 @@ export const initValuesAddCustomerFb = (settings, customerDetail, customerInfo) 
         description: '',
         solution: '',
         headlineStaffInfoCommunications: customerInfo.headlineStaffInfoCommunications,
-        otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos
+        otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos,
+        rating: customerInfo.rating ? customerInfo.rating : 0
     };
 
     return initialValues;
@@ -355,7 +358,8 @@ export const getParams = (values, customerDetail, settings, state) =>{
         RelatedCustID: listOfCustomerValid.length > 0 ? listOfCustomerValid.map(x => x.custId).join(',') : null,
         HeadlineStaffInfoCommunications: getHeadlineCommunicationToolAddFeedBack(customerInfo.headlineStaffInfoCommunications, customerDetail),
         OtherAccountCommunicationInfos: getNoneHeadlineCommunicationToolAddFeedBack(customerInfo.otherAccountCommunicationInfos, customerDetail),
-        GuestCommunicationInfos: getCommunicationToolAddGuestFeedBack(customerInfo.guestCommunicationInfos)
+        GuestCommunicationInfos: getCommunicationToolAddGuestFeedBack(customerInfo.guestCommunicationInfos),
+        rating: parseInt(values.rating, 10)
     };
 
     return params;

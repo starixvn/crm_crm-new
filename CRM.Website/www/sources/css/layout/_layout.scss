@@ -2,7 +2,7 @@
     grid-template-columns: 348px auto;
 
     @include Laptop {
-        grid-template-columns: 260px auto;
+        grid-template-columns: 275px auto;
     }
 }
 
@@ -27,6 +27,7 @@
 .row-search {
     display: grid;
     grid-gap: 12px;
+    min-width: 1250px;
 
     #left-container {
         margin: 0;

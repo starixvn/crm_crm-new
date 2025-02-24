@@ -588,7 +588,7 @@ describe('Filter', () => {
             const form = filter.find(Form);
 
             // Assert
-            expect(form.props().className).toBe('form-filter ');
+            expect(form.props().className).toBe('form-filter-v2 ');
         });
 
         it('should have first Form Row', () => {

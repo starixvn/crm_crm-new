@@ -175,15 +175,14 @@ export class Filter extends Component {
             {id: 3, name: 'Monthly'}
         ];
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit}>
                 {
                     <Fragment>
                         <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row bsPrefix='form-row'>
-                            <Form.Group style={{width: '210px'}}>
+                            <Form.Group>
                                 <Form.Label htmlFor="groupBy">{LangHelper.getResource('GroupBy')}</Form.Label>
                                 <Form.Control as="select" size="sm"
-                                    style={{width: '100px'}}
                                     name="groupBy" id="groupBy"
                                     value={groupBy}
                                     onChange={this.handleChange}
@@ -260,9 +259,8 @@ export class Filter extends Component {
                                     </div>
                                 </Form.Group>
                             }
-                        </Form.Row>
-                        <Form.Row bsPrefix='form-row'>
-                            <Form.Group className='form-group-main-category'>
+
+                            <Form.Group className='form-group-main-category large-width'>
                                 <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
                                 <Form.Control as="select" size="sm" name="mainCategoryId" id="mainCategoryId"
                                     value={mainCategoryId} onChange={this.handleChangeMainCategory}
@@ -283,11 +281,11 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-                            <div>
+                            <Form.Group>
                                 <Button variant="primary" size="sm" onClick={this.handleSubmit}>
                                     <UnderlineButton.submitButton />
                                 </Button>
-                            </div>
+                            </Form.Group>
                         </Form.Row>
                     </Fragment>
                 }

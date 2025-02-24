@@ -126,7 +126,7 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find('div').first().props().className).toEqual('table-title d-flex justify-content-between align-items-center');
+            expect(dataGrid.find('div').first().props().className).toEqual('table-title-v2 d-flex justify-content-between align-items-center');
             expect(dataGrid.find('div').first().html()).toContain('ChatTypeMapping');
         });
 

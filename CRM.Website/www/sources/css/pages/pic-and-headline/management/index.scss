@@ -14,6 +14,13 @@
                         }
                     }
                 }
+                tr > th {
+                    background: #2B4E80;
+                    color: #FFFFFF;
+                    font-weight: 700;
+                    line-height: 17.7px;
+                    font-family: Open Sans, sans-serif;
+                }
             }
         }
         .header-content, .body-content, .footer-content {
@@ -46,20 +53,13 @@
             }
         }
     }
-    .form-filter{
-        .form-label{
-            width: auto !important;
-            &.fixed-width{
-                width: 150px !important;
-            }
-        }
-        .form-control,.role-width{
-            width: 100% !important;
-        }
-    }
 }
 
 .pic-management-modal{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .modal-body {
         .form-group {
             .tool-action {

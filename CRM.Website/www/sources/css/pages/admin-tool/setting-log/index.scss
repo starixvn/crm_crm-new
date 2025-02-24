@@ -1,13 +1,9 @@
 .setting-log {
-    .form-filter {
+    .form-filter-v2 {
         max-width: 1500px;
 
-        .width-70 {
-            width: 70px !important;
-        }
-
         .react-datepicker__input-container input {
-            width: 100% !important;
+            height: calc(1.5em + 0.5rem) !important;
         }
     }
 
@@ -30,7 +26,7 @@
         }
     }
 
-    .table-title, .page-container, .table-container {
+    .table-title-v2, .page-container, .table-container {
         max-width: 1500px !important;
     }
 }

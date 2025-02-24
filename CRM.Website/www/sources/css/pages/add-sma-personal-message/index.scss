@@ -1,4 +1,12 @@
 .sma-personal-message{
+    .form-filter {
+        background-color: #FFFFFF !important;
+        border-radius: 5px 5px 5px 5px;
+        border: 1px solid #CCCCCC;
+        margin-bottom: 1rem;
+        font-family: Open Sans, sans-serif;
+    }
+
     .table-container{
         .header-content{
             .has-icons{
@@ -6,12 +14,14 @@
 
                 .fa-expand, .fa-compress{
                     position: absolute;
+                    cursor: pointer;
                     right: 0;
-                    top: -5px;
+                    top: -3px;
                     height: 24px;
                     width: 24px;
                     border-radius: 3px;
                     background-color: #066896;
+                    border: 1px solid #066896;
                     color: #fff;
 
                     &::before{
@@ -31,6 +41,10 @@
 }
 
 .add-sma-message-modal{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .modal-dialog{
         max-width: 950px !important;
     }

@@ -18,13 +18,12 @@
 }
 
 .customer-info-detail {
-    .table > thead > tr > th {
-        background: #2B4E80;
-        color: #FFFFFF;
-    }
-
     .none-communication-tool, .none-normal-communication-tool {
         width: max-content;
+    }
+
+    .react-datepicker-wrapper-container, .react-datepicker-wrapper {
+        height: calc(1.5em + 0.5rem) !important;
     }
 
     .no-data {

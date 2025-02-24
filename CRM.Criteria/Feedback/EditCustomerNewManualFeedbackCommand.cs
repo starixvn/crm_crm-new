@@ -95,6 +95,8 @@
 
         public string NewCommunicationTools => CommunicationInfos.Any() ? CommunicationInfos.ToXML("ROOT").ToString() : string.Empty;
 
+        public int Rating { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_NewManualFeedback_FeedbackUpd";
 
         public override bool IsValid() => FeedbackID > 0

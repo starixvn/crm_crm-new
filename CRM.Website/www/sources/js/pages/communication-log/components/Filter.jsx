@@ -93,7 +93,7 @@ export class Filter extends Component {
         }
 
         return (
-            <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
+            <Form onSubmit={this.handleSubmit} className="form-filter-v2" action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
@@ -143,9 +143,9 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <div className="form-group-button">
+                    <Form.Group>
                         <Button id='btn-submit-communication' type="submit" variant="primary" size="sm"><UnderlineButton.submitButton /></Button>
-                    </div>
+                    </Form.Group>
                 </Form.Row>
             </Form>
         );

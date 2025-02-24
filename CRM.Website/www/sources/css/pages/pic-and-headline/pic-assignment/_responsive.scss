@@ -1,86 +1,86 @@
-.pic-assignment {
-    @mixin form-checkbox-margin($value) {
-        .pic-assignment .form-filter {
-            #form-checkbox {
-                margin-right: $value;
-            }
-        }
-    }
+// .pic-assignment {
+//     @mixin form-checkbox-margin($value) {
+//         .pic-assignment .form-filter {
+//             #form-checkbox {
+//                 margin-right: $value;
+//             }
+//         }
+//     }
 
-    @mixin form-group-width($value) {
-        .pic-assignment .form-filter {
-            .form-group {
-                width: $value;
-            }
-        }
-    }
+//     @mixin form-group-width($value) {
+//         .pic-assignment .form-filter {
+//             .form-group {
+//                 width: $value;
+//             }
+//         }
+//     }
 
-    .extra-large-desktops > .show-left-panel .show-filter {
-        .form-group {
-            width: 240px !important;
-        }
-    }
+//     .extra-large-desktops > .show-left-panel .show-filter {
+//         .form-group {
+//             width: 240px !important;
+//         }
+//     }
 
-    .large-desktops {
-        & > .show-left-panel {
-            .pic-assignment {
-                & > .show-filter {
-                    .form-group {
-                        width: 315px;
+//     .large-desktops {
+//         & > .show-left-panel {
+//             .pic-assignment {
+//                 & > .show-filter {
+//                     .form-group {
+//                         width: 315px;
 
-                        .form-label {
-                            width: 90px;
-                        }
+//                         .form-label {
+//                             width: 90px;
+//                         }
 
-                        .form-control-wrapper, .form-control {
-                            width: calc(100% - 0.5rem - 90px);
-                        }
-                    }
+//                         .form-control-wrapper, .form-control {
+//                             width: calc(100% - 0.5rem - 90px);
+//                         }
+//                     }
 
-                    #form-checkbox {
-                        margin-right: 29px;
-                    }
-                }
-            }
-        }
+//                     #form-checkbox {
+//                         margin-right: 29px;
+//                     }
+//                 }
+//             }
+//         }
 
-        @include form-checkbox-margin(49px);
-    }
+//         @include form-checkbox-margin(49px);
+//     }
 
-    .medium-desktops {
-        & > .show-left-panel {
-            @include form-group-width(270px);
-        }
+//     .medium-desktops {
+//         & > .show-left-panel {
+//             @include form-group-width(270px);
+//         }
 
-        & > :not(.show-left-panel) {
-            @include form-checkbox-margin(-10px);
-        }
+//         & > :not(.show-left-panel) {
+//             @include form-checkbox-margin(-10px);
+//         }
 
-        @include form-group-width(230px);
-    }
+//         @include form-group-width(230px);
+//     }
 
-    .medium-desktops, .small-desktops {
-        & > .show-left-panel {
-            .form-row {
-                .form-group:nth-child(3) {
-                    .form-label {
-                        width: 80px;
-                    }
-                }
-            }
+//     .medium-desktops, .small-desktops {
+//         & > .show-left-panel {
+//             .form-row {
+//                 .form-group:nth-child(3) {
+//                     .form-label {
+//                         width: 80px;
+//                     }
+//                 }
+//             }
 
-            .show-filter .form-row-status {
-                margin-right: 0 !important;
-            }
+//             .show-filter .form-row-status {
+//                 margin-right: 0 !important;
+//             }
 
-            #form-checkbox {
-                margin-right: 9px;
-            }
-        }
-    }
+//             #form-checkbox {
+//                 margin-right: 9px;
+//             }
+//         }
+//     }
 
-    .small-desktops > .show-left-panel {
-        @include form-group-width(270px);
-        @include form-checkbox-margin(50px);
-    }
-}
+//     .small-desktops > .show-left-panel {
+//         @include form-group-width(270px);
+//         @include form-checkbox-margin(50px);
+//     }
+// }

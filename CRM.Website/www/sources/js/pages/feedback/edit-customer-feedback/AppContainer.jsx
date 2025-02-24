@@ -284,7 +284,8 @@ export class AppContainer extends Component {
             isPreviewSolution: true,
             customerNameInput: '',
             reviewNameInput: '',
-            latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools)
+            latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools),
+            rating: feedback.rating ? feedback.rating : 0
         };
     };
 
@@ -827,6 +828,7 @@ export class AppContainer extends Component {
         const url = fieldInput.isCheckFeedbackIdIsNew ?
             Site.resolveClientUrl('Feedback/EditCustomerNewManualFeedback') :
             Site.resolveClientUrl('Feedback/EditCustomerOldFeedback');
+        
         await DataService.postDataAsync(url, params).then(response => {
             const data = response.data;
             this.setState({ editResult: data });
@@ -891,7 +893,8 @@ export class AppContainer extends Component {
             communicationInfos: customerInfo?.isGroupHeadLine ?
                 this.getHeadlineCommunicationInfos(fieldInput.latestFeedbackCommunicationTools) :
                 this.getNormalCommunicationInfos(fieldInput.latestFeedbackCommunicationTools),
-            isOverwrite: fieldInput.isOverwrite
+            isOverwrite: fieldInput.isOverwrite,
+            rating: parseInt(values.rating, 10)
         };
         return params;
     }
@@ -971,7 +974,8 @@ export class AppContainer extends Component {
             review: values.review,
             // 0: do nothing, 1: update, 2: remove
             updateReviewedMode: this.isReviewed(values),
-            isDeletedFeedbackView: this.props.isDeletedFeedbackView
+            isDeletedFeedbackView: this.props.isDeletedFeedbackView,
+            rating: parseInt(values.rating, 10)
         };
         return params;
     }

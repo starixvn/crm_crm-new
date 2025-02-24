@@ -156,7 +156,7 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                     <span>{LangHelper.getResource('JobSettingManagement')}</span>
                 </div>
                 <Table
@@ -166,7 +166,7 @@ export class DataGrid extends Component {
                     body={this.buildBody()}
                     isPaging={false}
                     containerPadding={0}
-                    adjustedHeight={-20}
+                    adjustedHeight={10}
                     shouldResetScrollPosition={false}
                 />
             </Fragment>

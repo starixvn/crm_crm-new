@@ -183,7 +183,7 @@ export class DataGrid extends Component {
         this.props.getNewRemarks(params);
     };
 
-    renderTitle = () => <div className='table-title'><span>{LangHelper.getResource('Remark')}</span></div>;
+    renderTitle = () => <div className='table-title-v2'><span>{LangHelper.getResource('Remark')}</span></div>;
 
     render() {
         if (!this.props.gridData || this.props.gridData === null) {

@@ -12,14 +12,20 @@ describe('DataGrid', () => {
         LangHelper.getResource = jest.fn(value => value);
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'right-row-container');
+        const appContainer2 = document.createElement('div');
+        appContainer2.setAttribute('id', 'right-row-container');
+
         document.body.appendChild(appContainer);
+        document.body.appendChild(appContainer2);
     });
 
     afterEach(() => {
+        jest.clearAllMocks();
         const appContainer = document.getElementById('right-row-container');
-        if (appContainer) {
-            document.body.removeChild(appContainer);
-        }
+        const appContainer2 = document.getElementById('right-row-container');
+        
+        document.body.removeChild(appContainer);
+        document.body.removeChild(appContainer2);
     });
 
     it('component render correctly', () => {

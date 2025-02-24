@@ -142,7 +142,7 @@ export class Filter extends Component {
     render() {
         const { fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions } = this.state;
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='form-width'>
@@ -184,9 +184,8 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group className='form-width'>
+
+                    <Form.Group className='form-width large-width'>
                         <Form.Label htmlFor="mainCategoryIds">{LangHelper.getResource('MainCategory')}</Form.Label>
                         <div className='form-control-wrapper mainCategory-width'>
                             <MultipleSelect

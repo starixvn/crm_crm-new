@@ -89,6 +89,7 @@ export class ViewDetail extends Component {
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={() => this.onClose(onClose)}
                 dialogAs={DraggableModalDialog}
+                className='view-detail-modal'
             >
                 <Modal.Header closeButton>
                     <Modal.Title as='div'>{title}</Modal.Title>

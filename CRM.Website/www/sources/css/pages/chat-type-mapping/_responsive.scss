@@ -1,151 +1,158 @@
-@mixin form-group-width($value) {
-    .form-group{
-        width: $value;
-    }
+// @mixin form-group-width($value) {
+//     .form-group{
+//         width: $value;
+//     }
+// }
+
+// .extra-large-desktops{
+//     &> :not(.show-left-panel){
+//         .chat-type-mapping{
+//             &> :not(.show-filter){
+//                 @include form-group-width(240px);
+
+//                 .large-form {
+//                     width: 280px !important;
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// @media only screen and (max-width: 1894px) and (min-width: 1677px){
+//     .extra-large-desktops .show-left-panel{
+//         .chat-type-mapping .show-filter{
+//             @include form-group-width(230px);
+//             .large-form {
+//                 width: 250px !important;
+//             }
+//         }
+//     }
+// }
+
+// .large-desktops{
+//     &> :not(.show-left-panel){
+//         .chat-type-mapping{
+//             .show-filter{
+//                 @include form-group-width(260px);
+//             }
+
+//             &> :not(.show-filter){
+//                 @include form-group-width(209px);
+
+//                 .large-form {
+//                     width: 250px !important;
+//                 }
+//             }
+//         }
+//     }
+
+//     &> .show-left-panel{
+//         .chat-type-mapping{
+//             &> :not(.show-filter){
+//                 @include form-group-width(208px);
+
+//                 .large-form { width: 260px !important; }
+//             }
+
+//             &> .show-filter{
+//                 @include form-group-width(300px);
+//                 .large-form{
+//                     width: 300px !important;
+//                 }
+//                 .form-label{
+//                     width: 126px;
+//                 }
+//                 .form-control {
+//                     width: calc(100% - 0.5rem - 126px);
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// .medium-desktops{
+//     &> :not(.show-left-panel){
+//         .chat-type-mapping{
+//             .show-filter{
+//                 @include form-group-width(225px);
+
+//                 .large-form{
+//                     width: 240px !important;
+//                 }       
+//             }
+//         }
+//     }
+
+//     &> .show-left-panel{
+//         .chat-type-mapping{
+//             &> .show-filter{
+//                 @include form-group-width(270px);
+//                 .large-form { width: 270px !important; }
+
+//                 .form-label{
+//                     width: 126px !important;
+//                 }
+//             }
+
+//             &> :not(.show-filter){
+//                 @include form-group-width(300px);
+//                 .form-label{
+//                     width: 126px;
+//                 }
+
+//                 .form-group:nth-child(3){
+//                     width: 260px;
+
+//                     .form-label{
+//                         width: 100px !important;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// .small-desktops{
+//     &> .show-left-panel{
+//         .chat-type-mapping{
+//             &> :not(.show-filter){
+//                 @include form-group-width(210px);
+
+//                 .large-form {
+//                     width: 255px !important;
+//                 }
+//             }
+
+//             &> .show-filter{
+//                 @include form-group-width(215px);
+//                 .form-row{
+//                     &:nth-child(1){
+//                         .large-form{
+//                             width: 250px !important;
+//                         }
+//                     }
+//                     &:nth-child(2){
+//                         .large-form{
+//                             width: 160px !important;
+
+//                             .form-label{
+//                                 width: 60px;
+//                             }
+
+//                             .form-control{
+//                                 width: calc(100% - 0.5rem - 60px) !important;
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+.medium-desktops > :not(.show-left-panel) .chat-type-mapping .form-group {
+    width: 250px;
 }
-
-.extra-large-desktops{
-    &> :not(.show-left-panel){
-        .chat-type-mapping{
-            &> :not(.show-filter){
-                @include form-group-width(240px);
-
-                .large-form {
-                    width: 280px !important;
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (max-width: 1894px) and (min-width: 1677px){
-    .extra-large-desktops .show-left-panel{
-        .chat-type-mapping .show-filter{
-            @include form-group-width(230px);
-            .large-form {
-                width: 250px !important;
-            }
-        }
-    }
-}
-
-.large-desktops{
-    &> :not(.show-left-panel){
-        .chat-type-mapping{
-            .show-filter{
-                @include form-group-width(260px);
-            }
-
-            &> :not(.show-filter){
-                @include form-group-width(209px);
-
-                .large-form {
-                    width: 250px !important;
-                }
-            }
-        }
-    }
-
-    &> .show-left-panel{
-        .chat-type-mapping{
-            &> :not(.show-filter){
-                @include form-group-width(208px);
-
-                .large-form { width: 260px !important; }
-            }
-
-            &> .show-filter{
-                @include form-group-width(300px);
-                .large-form{
-                    width: 300px !important;
-                }
-                .form-label{
-                    width: 126px;
-                }
-                .form-control {
-                    width: calc(100% - 0.5rem - 126px);
-                }
-            }
-        }
-    }
-}
-
-.medium-desktops{
-    &> :not(.show-left-panel){
-        .chat-type-mapping{
-            .show-filter{
-                @include form-group-width(225px);
-
-                .large-form{
-                    width: 240px !important;
-                }       
-            }
-        }
-    }
-
-    &> .show-left-panel{
-        .chat-type-mapping{
-            &> .show-filter{
-                @include form-group-width(270px);
-                .large-form { width: 270px !important; }
-
-                .form-label{
-                    width: 126px !important;
-                }
-            }
-
-            &> :not(.show-filter){
-                @include form-group-width(300px);
-                .form-label{
-                    width: 126px;
-                }
-
-                .form-group:nth-child(3){
-                    width: 260px;
-
-                    .form-label{
-                        width: 100px !important;
-                    }
-                }
-            }
-        }
-    }
-}
-
-.small-desktops{
-    &> .show-left-panel{
-        .chat-type-mapping{
-            &> :not(.show-filter){
-                @include form-group-width(210px);
-
-                .large-form {
-                    width: 255px !important;
-                }
-            }
-
-            &> .show-filter{
-                @include form-group-width(215px);
-                .form-row{
-                    &:nth-child(1){
-                        .large-form{
-                            width: 250px !important;
-                        }
-                    }
-                    &:nth-child(2){
-                        .large-form{
-                            width: 160px !important;
-
-                            .form-label{
-                                width: 60px;
-                            }
-
-                            .form-control{
-                                width: calc(100% - 0.5rem - 60px) !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+.medium-desktops > .show-left-panel .chat-type-mapping .form-group {
+    width: 230px;
 }

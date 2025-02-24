@@ -236,7 +236,7 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                     {
                         !gridParams.username ?
                         <span>Top {gridParams.top} Feedback</span> :

@@ -1,59 +1,64 @@
 
 @import '../edit-customer-feedback';
 @import '../../../abstracts/variables';
+@import '../../../abstracts/mixins';
 
 .manage-feedback{
-    .form-filter, .table-title, .page-container{
-        max-width: 1250px !important;
-    }
+    .form-filter-v2 {
+        position: relative;
 
-    .form-filter {
-        .form-row {
-            .sm-width{
-                width: 260px !important;
-            }
+        .form-username {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            .lg-width{
-                width: 260px !important;
-                .form-label{
-                    width: 145px !important;
-                }
-            }
-    
-            .subCategory-width{
-                width: 533px !important;
-            }
-    
-            .label-status{
-                width: 50px !important;
+            .username-width {
+                width: 50%;
             }
 
-            &>.form-group:nth-child(2){
-                margin-left: 20px;
+            .response-width {
+                width: 46%;
             }
-    
-            .form-group {
-                width: 360px;
-                .username-width{
-                    width: 148px;
-                }
-    
-                .response-width{
-                    width: 100px;
-                    margin-left: 5px;
-                }
-    
-                .select-options, .react-datepicker-wrapper-container input{
-                    width: 130px;
-                }
-                .select-options-sm{
-                    width: 95px;
-                }
+        }
 
-                #responseId{
-                    width: 150px;
-                }
+        .form-com-tus {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .form-communication {
+                width: 50%;
             }
+            .form-status {
+                width: 45%;
+            }
+        }
+
+        .large-width {
+            width: 300px;
+        }
+
+        .react-datepicker-wrapper-container .react-datepicker-wrapper {
+            display: block;
+            height: 26px;
+        }
+
+        .icon-toggle{
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+    
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
+        }
+
+        #btn-submit-manage-fb {
+            margin-top: 26px;
         }
     }
 
@@ -146,7 +151,11 @@
     max-height: 920px;
     border-radius: 3px;
     font-size: 12px;
-    text-align: left
+    text-align: left;
+
+    @include Laptop {
+        font-size: 8.5px;
+    }
 }
 
 #tooltip-customers [class$="inner"] {
@@ -157,6 +166,10 @@
 .edit-multiple-review-status-modal-dialog{
     .modal-dialog {
         max-width: 987px;
+
+        .modal-header {
+            background: #1D3557 !important;
+        }
 
         .modal-content {
             .panel-group{
@@ -202,6 +215,10 @@
 .edit-multiple-log {
     .modal-dialog {
         max-width: 987px;
+
+        .modal-header {
+            background: #1D3557 !important;
+        }
 
         .modal-content {
             .panel-group {
@@ -280,20 +297,13 @@
     }
 }
 
-.medium-desktops .show-left-panel{
-    .manage-feedback, .form-filter{
-        .form-group{
-            margin-bottom: 9px;
-        }
-        .form-row:last-child {
-            .lg-width{
-                width: 195px !important;
-            }
-        }
-    }
-}
-
 #view-category-classification [class$="inner"]{
     max-width: 400px;
     text-align: left;
+}
+
+.edit-no-of-inquiry-modal-dialog {
+    .modal-header {
+        background: #1D3557 !important;
+    }
 }

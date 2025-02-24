@@ -70,7 +70,7 @@ export class LastRemarkDataGrid extends Component {
         }
         return (
             <div className="table-last-remarks mb-3">
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                     <span>{LangHelper.getResource('LastRemark')}</span>
                     <u onClick={this.handleViewNewRemark}>{LangHelper.getResource('ViewAllRemarks')}</u>
                 </div>

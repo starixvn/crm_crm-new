@@ -177,7 +177,7 @@ describe('RelatedCustomerGrid', () => {
             const container = shallow(<RelatedCustomerGrid />);
 
             // Assert
-            expect(container.find('div').html()).toEqual('<div class="table-title">List of related customers</div>');
+            expect(container.find('div').html()).toEqual('<div class="table-title-v2">List of related customers</div>');
         });
 
         it('Table props should be mapped correctly', () => {

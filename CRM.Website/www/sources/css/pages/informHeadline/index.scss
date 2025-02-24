@@ -3,7 +3,7 @@
 .inform-headline {
     max-width: 1620px;
 
-    .table-title{
+    .table-title-v2{
         border-right: none;
     }
     .fix-table-container{
@@ -11,7 +11,7 @@
             border: none;
             padding: 0;
         }
-
+    
         .header-content,
         .body-content,
         .footer-content {
@@ -80,6 +80,10 @@
 }
 
 .edit-inform-modal-dialog, .new-inform-modal-dialog{
+    .form-filter-v2 {
+        border-radius: 0 0 5px 5px !important;
+    }
+
     .modal-dialog{
         max-width: 1200px;
 
@@ -90,6 +94,36 @@
                 font-size: larger;
                 font-weight: 400;
             }
+        }
+    }
+}
+
+.edit-inform-modal-dialog, .new-inform-modal-dialog {
+    .input-edit {
+        display: flex;
+        column-gap: 0 !important;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .input-excel {
+            width: 98%;
+        }
+
+        .icon-excel {
+            width: 1%;
+        }
+    }
+
+    .direct-account {
+        display: flex;
+        align-items: center;
+        width: auto !important;
+        padding-top: 10px;
+        padding-bottom: 0 !important;
+
+        >label {
+            width: auto !important;
         }
     }
 }
@@ -117,11 +151,11 @@
     margin: auto;
 }
 
-
 .modal-remove .modal-content {
     width: 600px;
     margin: auto;
 }
+
 
 #tooltip-copy-selected [class$="inner"] {
     min-width: 250px;
@@ -135,4 +169,10 @@
 
 .number-remove:hover{
     color: #ffb400;
+}
+
+.edit-inform-modal-dialog, .new-inform-modal-dialog, .modal-remove, .modal-removeDetail {
+    .modal-header {
+        background: #1D3557 !important;
+    }
 }

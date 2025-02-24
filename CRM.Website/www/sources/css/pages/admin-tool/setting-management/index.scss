@@ -1,6 +1,17 @@
 .setting-management{
-    .table-title, .form-filter{
+    .table-title-v2, .form-filter-v2{
         max-width: 950px;
+    }
+
+    .form-filter-v2 {
+        .form-row {
+            column-gap: 15px;
+            padding-top: 5px;
+        }
+
+        .btn {
+            height: 26px;
+        }
     }
     
     .header-content .table > thead > tr > th {
@@ -41,6 +52,23 @@
 }
 
 .licensee-mapping{
+    .form-filter-v2 {
+        .form-row {
+            column-gap: 15px;
+            padding-top: 5px;
+
+            .setting-group {
+                display: flex;
+                align-items: center;
+                width: 210px !important;
+            }
+
+            .btn {
+                margin-top: 0 !important;
+            }
+        }
+    }
+
     .modal-content{
         position: absolute;
         top: 50%;
@@ -66,5 +94,11 @@
         .btnSearch{
             min-width: 70px;
         }
+    }
+}
+
+.setting-modal, .licensee-mapping, .cancel-modal-dialog {
+    .modal-header {
+        background: #1D3557 !important;
     }
 }

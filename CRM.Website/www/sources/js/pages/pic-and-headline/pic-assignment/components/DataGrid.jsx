@@ -430,7 +430,7 @@ export class DataGrid extends Component {
 
     renderTitle = (isRenderCommunication, totalUnassignedDirectAccount) =>{
         return(
-            <div className={`table-title d-flex justify-content-between ${!isRenderCommunication ? 'header-pic-max-width' : ''}`}>
+            <div className={`table-title-v2 d-flex justify-content-between ${!isRenderCommunication ? 'header-pic-max-width' : ''}`}>
                 <div>{LangHelper.getResource('PICAssignment')}</div>
                 <div>
                     {
@@ -479,9 +479,9 @@ export class DataGrid extends Component {
         return (
             <div className='pic-assignment-container'>
                 <Table
-                    maxWidth={isRenderCommunication ? calMaxWidth : 1350}
+                    maxWidth={calMaxWidth}
                     shouldUseMaxWidth
-                    width={isRenderCommunication ? document.getElementById('right-row-container').clientWidth : 1350}
+                    width={document.getElementById('right-row-container').clientWidth}
                     autoWidth={false}
                     title={title}
                     isFixColumn

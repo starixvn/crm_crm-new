@@ -5,7 +5,17 @@ import { shallow } from 'enzyme';
 import { LogActions } from '@jsroot/common/constants';
 
 describe('PicDataGrid', () => {
+    beforeAll(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'right-row-container');
+        document.body.appendChild(appContainer);
+    });
+
     afterAll(() => {
+        const appContainer = document.getElementById('right-row-container');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
         jest.clearAllMocks();
     });
 

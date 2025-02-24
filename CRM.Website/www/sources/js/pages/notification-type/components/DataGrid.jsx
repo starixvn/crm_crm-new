@@ -93,7 +93,7 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='table-title'>{LangHelper.getResource('NotificationType')}</div>
+                <div className='table-title-v2'>{LangHelper.getResource('NotificationType')}</div>
                 <Table
                     minWidth={960}
                     maxWidth={document.getElementById('right-row-container').clientWidth}

@@ -4,7 +4,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DatePicker from '@jsroot/components/date-picker/index';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { validateNoOfInquiry } from '../common.functions';
+import { validateNoOfInquiry, ratings } from '../common.functions';
 import LangHelper from '@jsroot/common/langHelper';
 
 export default class Detail extends PureComponent {
@@ -298,6 +298,22 @@ export default class Detail extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
+                    {
+                        customerDetail !== null &&
+                        <Col sm="4" md="4">
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="4" md="4" htmlFor="rating">{LangHelper.getResource('Rating')}</Form.Label>
+                                <Col sm="8" md="8">
+                                    <Form.Control as="select" size="sm" className="shadow-none"
+                                        name="rating" id="rating" value={values.rating} onChange={handleChange}
+                                    >
+                                        <option value="" hidden disabled />
+                                        {ratings.map(item => renderOptions(item.value, item.id))}
+                                    </Form.Control>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    }
                 </Form.Group>
             </>
         );

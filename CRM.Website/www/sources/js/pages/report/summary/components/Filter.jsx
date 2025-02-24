@@ -66,7 +66,7 @@ export class Filter extends Component {
         const { categoryOptions, siteOptions } = this.state;
 
         return (
-            <Form className="form-filter" onSubmit={this.submitHandler}>
+            <Form className="form-filter-v2" onSubmit={this.submitHandler}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
@@ -93,7 +93,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group className='form-width'>
+                    <Form.Group style={{width: '270px'}} className='form-width'>
                         <Form.Label htmlFor="categoryId">{LangHelper.getResource('Category')}</Form.Label>
                         <div className='form-control-wrapper w-100'>
                             <MultipleSelect
@@ -112,7 +112,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
 
-                    <Form.Group>
+                    <Form.Group style={{width: '60px'}}>
                         <Button variant="primary" size="sm" onClick={this.submitHandler}>
                             <UnderlineButton.submitButton />
                         </Button>

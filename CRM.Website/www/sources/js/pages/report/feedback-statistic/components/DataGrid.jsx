@@ -273,7 +273,7 @@ export class DataGrid extends Component {
 
         return (
             <div style={{maxWidth:width}}>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                     <span>{gridData.title}</span>
                     {
                         gridData.feedbackCategories.length > 0 && this.renderCustomButton()

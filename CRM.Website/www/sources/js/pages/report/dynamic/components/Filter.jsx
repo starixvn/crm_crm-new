@@ -437,7 +437,7 @@ export class Filter extends Component {
         const siteOptions = changeSiteSetting(allSettings.sites, 'childSites', 'childSites');
 
         return (
-            <Form className="form-filter" onSubmit={this.handleSubmit}>
+            <Form className="form-filter-v2" onSubmit={this.handleSubmit}>
                 {
                     showFilter &&
                     <React.Fragment>
@@ -469,9 +469,7 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group>
                                 <Form.Label htmlFor="response" className="col-auto col-form-label">{LangHelper.getResource('Response')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
@@ -520,9 +518,7 @@ export class Filter extends Component {
                                     />
                                 </div>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group>
                                 <Form.Label htmlFor="handler" className="col-auto col-form-label">{LangHelper.getResource('Handler')}</Form.Label>
                                 <Form.Control type="text" size="sm" className="shadow-none"
@@ -565,9 +561,7 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group>
                                 <Form.Label htmlFor="extension" className="col-auto col-form-label">{LangHelper.getResource('Extension')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
@@ -604,9 +598,7 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-                        </Form.Row>
 
-                        <Form.Row>
                             <Form.Group className="form-group-subject">
                                 <Form.Label htmlFor="subject" className="col-auto col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
                                 <div style={{ width: '100%' }}>

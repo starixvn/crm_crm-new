@@ -196,7 +196,7 @@ export class Filter extends Component {
         const { isHost } = this.props;
 
         return (
-            <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={this.handleSubmit}>
+            <Form className={`form-filter-v2 ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('Site')}</Form.Label>
@@ -268,98 +268,99 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <Form.Group style={{width: '189px'}}>
+                        <Form.Group style={{width: '210px'}}>
                             <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
                                 {LangHelper.getResource('Submit')}
                             </Button>
                             {
                                 isHost &&
-                                <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                <Button style={{width: '100px'}} className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
                                     {LangHelper.getResource('AssignPIC')}
                                 </Button>
                             }
                         </Form.Group>
                     }
-                </Form.Row>
-                {
-                    this.state.showFilter &&
-                    <Form.Row bsPrefix='form-row'>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('PIC')}</Form.Label>
-                            <Form.Control as='input' size='sm' className='shadow-none'
-                                name='picName' value={this.state.filter.picName}
-                                onChange={this.handleChange}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('DirectAccount')}</Form.Label>
-                            <Form.Control as='input' size='sm' className='shadow-none'
-                                name='directAccount' value={this.state.filter.directAccount}
-                                onChange={this.handleChange}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('Position')}</Form.Label>
-                            <div className='form-control-wrapper'>
-                                <MultipleSelect
-                                    dataSource={this.state.positionOptions}
-                                    keyField='id'
-                                    valueField='name'
-                                    statusField='checked'
-                                    isSummited={false}
-                                    isAllTextShown
-                                    onChange={
-                                        (currentItem, selectedItemsKey) => this.handlePositionChange(currentItem, selectedItemsKey)
-                                    }
+                {/* </Form.Row> */}
+                    {
+                        this.state.showFilter &&
+                        <div style={{display: 'contents'}}>
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('PIC')}</Form.Label>
+                                <Form.Control as='input' size='sm' className='shadow-none'
+                                    name='picName' value={this.state.filter.picName}
+                                    onChange={this.handleChange}
                                 />
-                            </div>
-                        </Form.Group>
-                        <Form.Group id='form-checkbox'>
-                            <div className='filter-checkbox'>
-                                <input type='checkbox'
-                                    className='shadow-none'
-                                    name='excludeAssignedAcc'
-                                    checked={this.state.filter.excludeAssignedAcc}
-                                    onChange={this.handleCheckBoxChange}
-                                />
-                                <div className='filter-checkbox-text'>{LangHelper.getResource('OnlyShowUnassignedDirectAccounts')}</div>
-                                <input type='checkbox'
-                                    className='shadow-none'
-                                    name='excludeIgnoredAcc'
-                                    checked={this.state.filter.excludeIgnoredAcc}
-                                    onChange={this.handleCheckBoxChange}
-                                />
-                                <div className='filter-checkbox-text'>{LangHelper.getResource('ExcludeIgnoredAccounts')}</div>
-                                <input type='checkbox'
-                                    className='shadow-none'
-                                    name='excludeIsTest'
-                                    checked={this.state.filter.excludeIsTest}
-                                    onChange={this.handleCheckBoxChange}
-                                />
-                                <div className='filter-checkbox-text'>{LangHelper.getResource('ExcludeTestAccounts')}</div>
-                            </div>
-                        </Form.Group>
-                        {
-                            this.state.showFilter &&
-                            <Form.Group style={{width: '189px'}}>
-                                <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
-                                    {LangHelper.getResource('Submit')}
-                                </Button>
-                                {
-                                    isHost &&
-                                    <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
-                                        {LangHelper.getResource('AssignPIC')}
-                                    </Button>
-                                }
                             </Form.Group>
-                        }
-                    </Form.Row>
-                }
-                {
-                    this.state.showFilter
-                        ? <span className="fa fa-caret-up fa-sm toggle-filter" onClick={() => this.handleToggleFilter(false)} />
-                        : <span className="fa fa-caret-down fa-sm toggle-filter" onClick={() => this.handleToggleFilter(true)} />
-                }
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('DirectAccount')}</Form.Label>
+                                <Form.Control as='input' size='sm' className='shadow-none'
+                                    name='directAccount' value={this.state.filter.directAccount}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('Position')}</Form.Label>
+                                <div className='form-control-wrapper'>
+                                    <MultipleSelect
+                                        dataSource={this.state.positionOptions}
+                                        keyField='id'
+                                        valueField='name'
+                                        statusField='checked'
+                                        isSummited={false}
+                                        isAllTextShown
+                                        onChange={
+                                            (currentItem, selectedItemsKey) => this.handlePositionChange(currentItem, selectedItemsKey)
+                                        }
+                                    />
+                                </div>
+                            </Form.Group>
+                            <Form.Group id='form-checkbox'>
+                                <div className='filter-checkbox'>
+                                    <input type='checkbox'
+                                        className='shadow-none'
+                                        name='excludeAssignedAcc'
+                                        checked={this.state.filter.excludeAssignedAcc}
+                                        onChange={this.handleCheckBoxChange}
+                                    />
+                                    <div className='filter-checkbox-text'>{LangHelper.getResource('OnlyShowUnassignedDirectAccounts')}</div>
+                                    <input type='checkbox'
+                                        className='shadow-none'
+                                        name='excludeIgnoredAcc'
+                                        checked={this.state.filter.excludeIgnoredAcc}
+                                        onChange={this.handleCheckBoxChange}
+                                    />
+                                    <div className='filter-checkbox-text'>{LangHelper.getResource('ExcludeIgnoredAccounts')}</div>
+                                    <input type='checkbox'
+                                        className='shadow-none'
+                                        name='excludeIsTest'
+                                        checked={this.state.filter.excludeIsTest}
+                                        onChange={this.handleCheckBoxChange}
+                                    />
+                                    <div className='filter-checkbox-text'>{LangHelper.getResource('ExcludeTestAccounts')}</div>
+                                </div>
+                            </Form.Group>
+                            {
+                                this.state.showFilter &&
+                                <Form.Group style={{width: '210px'}}>
+                                    <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
+                                        {LangHelper.getResource('Submit')}
+                                    </Button>
+                                    {
+                                        isHost &&
+                                        <Button style={{width: '100px'}} className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                            {LangHelper.getResource('AssignPIC')}
+                                        </Button>
+                                    }
+                                </Form.Group>
+                            }
+                        </div>
+                    }
+                    {
+                        this.state.showFilter
+                            ? <span className="fa fa-caret-up fa-sm toggle-filter" onClick={() => this.handleToggleFilter(false)} />
+                            : <span className="fa fa-caret-down fa-sm toggle-filter" onClick={() => this.handleToggleFilter(true)} />
+                    }
+                </Form.Row>
             </Form>
         );
     }

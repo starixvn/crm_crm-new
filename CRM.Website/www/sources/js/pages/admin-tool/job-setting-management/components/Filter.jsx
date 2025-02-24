@@ -62,9 +62,9 @@ export class Filter extends Component {
         const environmentOptions = ['UAT', 'PRO'];
         const settingNameOptions = ['All', ...settingNames];
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: '280px'}}>
+                    <Form.Group style={{width: '260px'}}>
                         <Form.Label className="col-auto col-form-label">{LangHelper.getResource('ServiceName')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="serviceName" id="serviceName"
@@ -88,7 +88,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{width: '280px'}}>
+                    <Form.Group style={{width: '260px'}}>
                         <Form.Label className="col-auto col-form-label">{LangHelper.getResource('SettingName')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="settingName" id="settingName"
@@ -100,8 +100,8 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{width: '75px'}}>
-                        <Button variant="primary" size="sm" className='ml-3' onClick={this.handleSubmit}>
+                    <Form.Group style={{width: '80px'}}>
+                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Search')}
                         </Button>
                     </Form.Group>

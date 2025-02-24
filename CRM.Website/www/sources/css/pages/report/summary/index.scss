@@ -6,6 +6,14 @@
         }
     
         .table {
+            thead > tr > th {
+                background: #2B4E80;
+                color: #FFFFFF;
+                font-weight: 700;
+                line-height: 17.7px;
+                font-family: Open Sans, sans-serif;
+            }
+
             tbody {
                 tr:nth-child(n) td {
                     background: #fff;
@@ -48,31 +56,13 @@
     .icon {
         cursor: pointer;
     }
-    
-    .form-filter {
-        width: 820px;
-    
-        .form-width {
-            width: 350px !important;
-        }
-    
-        .form-row {
-            .form-group {
-                width: 130px;
-    
-                .form-label {
-                    width: 50px;
-                }
-    
-                .form-control {
-                    width: calc(100% - 0.5rem - 50px);
-                }
-            }
-        }
-    }
 }
 
 .chart-modal-dialog-summary {
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .modal-content {
         .recharts-default-legend {
             li { width: 310px; }

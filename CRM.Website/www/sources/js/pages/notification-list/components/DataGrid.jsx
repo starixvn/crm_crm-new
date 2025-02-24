@@ -28,24 +28,24 @@ export class DataGrid extends Component {
 
     buildNotificationListHeader = isHost =>
         (<HeaderRow>
-            <HeaderCell colWidth={7}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
-            <HeaderCell colWidth={15}>
+            <HeaderCell colWidth={6}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
+            <HeaderCell colWidth={16}>
                 <div>{LangHelper.getResource('NotificationID')}</div>
                 <div>{LangHelper.getResource('ReferenceId')}</div>
             </HeaderCell>
             <HeaderCell colWidth={23}>{LangHelper.getResource('Sender')}/{LangHelper.getResource('NotificationType')}</HeaderCell>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
-            <HeaderCell colWidth={11}>{LangHelper.getResource('BotService')}</HeaderCell>
-            <HeaderCell colWidth={16}>{LangHelper.getResource('DisplayName')}</HeaderCell>
-            <HeaderCell colWidth={26}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+            <HeaderCell colWidth={17}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
+            <HeaderCell colWidth={12}>{LangHelper.getResource('BotService')}</HeaderCell>
+            <HeaderCell colWidth={14}>{LangHelper.getResource('DisplayName')}</HeaderCell>
+            <HeaderCell colWidth={17}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
             <HeaderCell colWidth={19}>{LangHelper.getResource('Recipient')}</HeaderCell>
-            <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
+            <HeaderCell colWidth={22}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
             <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
             {
-                isHost && <HeaderCell colWidth={10}>{LangHelper.getResource('Action')}</HeaderCell>
+                isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Action')}</HeaderCell>
             }
             {
-                isHost && <HeaderCell colWidth={10}>
+                isHost && <HeaderCell colWidth={13}>
                     <input
                         type='button'
                         value={LangHelper.getResource('Resend')}
@@ -249,7 +249,7 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='d-flex table-title justify-content-between align-items-center'>
+                <div className='d-flex table-title-v2 justify-content-between align-items-center'>
                     <div>{LangHelper.getResource('NotificationList')}</div>
                     <AutoRefresh />
                 </div>

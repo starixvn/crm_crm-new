@@ -47,6 +47,31 @@
       }
     }
   }
+
+  .form-filter-v2 {
+    .announcement-num {
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      /* Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    }
+  }
+
+  .table-container .table > thead > tr > th {
+    background: #2B4E80;
+    color: #FFFFFF;
+    font-weight: 700;
+    line-height: 17.7px;
+    font-family: Open Sans, sans-serif;
+    padding: 0px 12px 0px 12px;
+    height: 40px;
+  }
+
   .link-click {
     cursor: pointer;
     color: $link-color !important;
@@ -140,6 +165,7 @@
 
     .modal-header {
       padding: 12px 16px !important;
+      background: #1D3557 !important;
     }
 
     .modal-body {
@@ -197,16 +223,11 @@
       button {
         display: inline-flex;
         align-items: center;
-        padding: 5px 16px;
         font-weight: 700;
-        border-radius: 3px;
-        border: 1px solid #3c5b9b;
-        background: #4e71bb;
-        box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
         margin: 0;
 
         &:last-child {
-          margin-left: 21px;
+          margin-left: 5px;
         }
       }
 
@@ -327,7 +348,7 @@
 
     .group-header {
       color: #333;
-      background: #c0cbe2;
+      background: #E7EAEF;
       padding: 6px 16px;
       font-weight: 700;
       border-radius: 2px 2px 0px 0px;
@@ -741,14 +762,14 @@
 
       &.btn-save {
         background: #ebeff6;
-        color: #3c5b9b;
-        border-color: #3c5b9b;
+        color: #2B4E80;
+        border-color: #2B4E80;
       }
 
       &.btn-send {
-        background: #4e71bb;
+        background: #2B4E80;
         color: #fff;
-        border-color: #3c5b9b;
+        border-color: #2B4E80;
         box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
       }
     }
@@ -791,4 +812,35 @@
   max-width: 380px;
   min-width: 380px;
   text-align: left;
+}
+
+.cancelAnnouncement {
+  .modal-header {
+    background: #1D3557 !important;
+  }
+}
+
+@media screen and (max-width: 1489px){
+  .show-left-panel {
+      .announcement {
+          .btn {
+              margin-top: 26px !important;
+          }
+      }
+  }
+  .announcement {
+    .btn {
+        margin-top: 10px !important;
+    }
+  }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1849px){
+  .show-left-panel {
+      .announcement {
+          .btn {
+              margin-top: 10px !important;
+          }
+      }
+  }
 }

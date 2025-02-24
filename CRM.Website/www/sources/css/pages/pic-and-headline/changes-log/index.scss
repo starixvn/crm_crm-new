@@ -1,54 +1,53 @@
 .change-logs{
-    .form-filter {
-        max-width: 1500px !important;
+    .form-filter-v2 {
+        border-radius: 0px 5px 5px 5px !important;
 
-        .form-label{
-            width: 100px !important;
-        }
-
-        .form-group {
-            width: 250px;
-        }
-        .react-datepicker-wrapper-container, .form-control{
-            width: calc(100% - 0.5rem - 100px) !important;
-        }
-
-        .react-datepicker__input-container input {
-            width: 100% !important;
-        }
-    
-        .multiple-select-container, .form-control {
-            width: calc(100% - 0.5rem - 100px) !important;
+        .react-datepicker-wrapper-container .react-datepicker-wrapper {
+            display: block;
+            height: 26px;
         }
     }
 
     .nav-tabs{
+        border-bottom: 0px !important;
+        font-weight: 600;
+        height: 32px;
+
         a{
-            border-radius: 0;
             font-size: 12px;
-            padding: 2px 12px;
-            outline: none;
-            height: 26px;
         }
         .active{
-            background-color:#466ab6 !important;
-            border-color:#466ab6;
-            color:#fff !important;
+            background-color: #FFFFFF !important;
+            border: 1px solid #CCCCCC;
+            border-bottom: 0px !important;
+            height: 33px;
+        }
+
+        a#controlled-tab-tab-headlineDA {
+            border: 1px solid #CCCCCC;
+            background: #eaeef4;
+            width: 176px;
+            padding: 6px 12px 6px 12px;
+            border-radius: 5px 5px 0px 0px;
+            cursor: pointer;
+            color: black !important;
+        }
+
+        a#controlled-tab-tab-pic {
+            width: 46px;
+            font-size: 12px;
+            outline: none;
+            color: black !important;
+            padding: 6px 12px;
+            border-radius: 5px 5px 0 0;
+            background: #eaeef4;
+            cursor: pointer;
+            margin-left: 10px;
         }
 
         .nav-link{
-            background-color: #d9d9d9;
-            color: #fff;
-
-            &:hover{
-                background-color:#2d5ab9 !important;
-                color:#fff !important;
-            }
+            background: #eaeef4;
         }
-    }
-
-    .table-title, .page-container, .table-container, .fix-table-container{
-        max-width: 1500px !important;
     }
 
     .table-container, .fix-table-container {
@@ -127,6 +126,42 @@
 
                 .container-detail .col-value-detail:last-child{
                     border-right: 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1300px){
+    .row-content {
+        & > div {
+            &>:not(.show-left-panel) {
+                .change-logs {
+                    #controlled-tab-tabpane-headlineDA {
+                        .form-filter-v2 {
+                            .btn {
+                                margin-top: 10px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1669px){
+    .row-content {
+        & > div {
+            &>.show-left-panel {
+                .change-logs {
+                    #controlled-tab-tabpane-headlineDA, #controlled-tab-tabpane-pic {
+                        .form-filter-v2 {
+                            .btn {
+                                margin-top: 10px !important;
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -64,7 +64,7 @@
     padding: 6px 6px 0;
     position: absolute;
     width: 100%;
-    min-width: 1263px;
+    //min-width: 1263px;
     left: 0;
     right: 0;
     top: 0;
@@ -76,7 +76,8 @@
 
     #app-container{
         width: 100%;
-        height: 100%
+        height: 100%;
+        font-family: Open Sans, sans-serif;
     }
 
     #fix-header-menu{
@@ -100,7 +101,7 @@
             grid-gap: 12px;
 
             @include Laptop {
-                grid-template-columns:260px calc(100% - 272px);
+                grid-template-columns:275px calc(100% - 287px);
             }
         }
     }

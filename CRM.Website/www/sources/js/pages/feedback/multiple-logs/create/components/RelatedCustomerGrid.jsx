@@ -87,7 +87,7 @@ export class RelatedCustomerGrid extends Component {
 
         return (
             <Fragment>
-                <div className='table-title'>List of related customers</div>
+                <div className='table-title-v2'>List of related customers</div>
                 <Table
                     width={772}
                     maxWidth={772}

@@ -1,41 +1,18 @@
 @import '../../../abstracts/variables';
 @import './responsive';
+@import '../../../abstracts/mixins';
 
 .dynamic {
-    .form-filter,
-    .table-title,
-    .page-container,
-    .table-container {
-        max-width: 1200px !important;
-    }
-
-    .form-filter {
+    .form-filter-v2 {
         position: relative;
 
-        .react-datepicker-wrapper-container .react-datepicker-wrapper input.form-control {
-            height: 100%;
-            width: 153.5px;
-        }
         .selectwithsearchtree{
-            .dropdown-menu{
-                .form-control{
-                    width: 100%;
-                }
+            .btn {
+                width: 100%;
+                height: 100%;
+                margin-top: 0px;
             }
         }
-        .row {
-            margin-left: 0;
-            margin-right: 0;
-        }
-
-        .group-tool {
-            width: 310px;
-
-            .col-label-tool {
-                width: 150px;
-            }
-        }
-
         .icon-toggle{
             position: absolute;
             top: 100%;
@@ -51,7 +28,7 @@
         }
 
         .form-group-subject{
-            width: 533px !important;
+            width: 440px !important;
             .autocomplete-container{
                 .form-control{
                     width: 100%;
@@ -60,6 +37,18 @@
                     .autocomplete-items{
                         width: fit-content;
                     }
+                }
+            }
+        }
+
+        .dropdown-menu {
+            @include Laptop {
+                width: 100% !important;
+            }
+
+            .tree {
+                @include Laptop {
+                    max-height: 300px !important;
                 }
             }
         }
@@ -125,6 +114,10 @@
 
 
 .feedback-detail-deleted {
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .modal-dialog {
         max-width: 1050px !important;
 
@@ -174,6 +167,10 @@
 }
 
 .chart-modal-dynamic{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .modal-dialog {
         max-width: 1300px !important;
         .modal-content {

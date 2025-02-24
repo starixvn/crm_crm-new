@@ -121,7 +121,7 @@ export class ConfirmAssignedDirectAccount extends Component {
                             {LangHelper.getResource('ListOfAssignedDirectAccounts')}
                         </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body className='list-assign-modal'>
                         <Table
                             maxWidth={772}
                             header={this.buildHeader()}

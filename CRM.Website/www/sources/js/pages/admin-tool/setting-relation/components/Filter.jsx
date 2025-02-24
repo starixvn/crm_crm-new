@@ -34,7 +34,7 @@ export class Filter extends Component {
 
     render() {
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group style={{width: 210}}>

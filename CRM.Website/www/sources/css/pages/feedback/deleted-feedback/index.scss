@@ -1,54 +1,29 @@
 @import '../../../abstracts/variables';
 
 .deleted-feedback{
-    .form-filter {
-        max-width: 1200px;
+    .form-filter-v2 {
+        .form-username {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-        .react-datepicker-wrapper-container{
-            width: calc(100% - 0.5rem - 100px);
-            
-            .react-datepicker__input-container input {
-                width: 100% !important;
+            .username-width {
+                width: 65%;
+            }
+
+            .cusType-width {
+                width: 30%;
             }
         }
 
-        .form-group{
-            &:nth-child(1){
-                width: 450px;
-                .col-form-label-username{
-                    width: 143px;
-                }
-                input{
-                    margin-right: 5px;
-                }
-
-                select[name="isGuest"]{
-                    width: 100px;
-                }
-            }
+        .react-datepicker-wrapper-container .react-datepicker-wrapper {
+            display: block;
+            height: 26px;
         }
 
-        .filter-customer-response {
-            margin-right: 10px;
-            margin-left: 20px;
+        .large-width, .review-width {
+            width: 270px;
         }
-    
-        .filter-res{
-            max-width: 12.4%;
-        }
-        
-        .filter-coll-all{
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        .col-form-label{
-            padding-bottom: 0;
-        }
-    }
-
-    .table-title, .page-container, .table-container{
-        max-width: 1200px !important;
     }
 
     .header-content .table > thead > tr > th {
@@ -75,6 +50,10 @@
 .edit-feedback-modal-dialog {
     .modal-dialog {
         min-width: 1200px !important;
+
+        .modal-header {
+            background: #1D3557 !important;
+        }
 
         .modal-content {
             .panel-group {
@@ -188,4 +167,80 @@
 #view-category-classification [class$="inner"]{
     max-width: 400px;
     text-align: left;
+}
+
+
+.show-left-panel {
+    .form-filter-v2 {
+        .large-width, .customer-width, .review-width, .communication-width {
+            width: 200px;
+        }
+    }
+}
+
+@media screen and (max-width: 1559px){
+    .show-left-panel{
+        .deleted-feedback {
+            .form-filter-v2 {
+                .btn {
+                    margin-top: 10px !important;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1650px) and (max-width: 1890px){
+    .row-content {
+        & > div {
+            &> :not(.show-left-panel) {
+                .deleted-feedback {
+                    &> .form-filter-v2 {
+                        .customer-width {
+                            width: 270px !important;
+                        }
+                        .review-width {
+                            width: 200px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .show-left-panel {
+        .deleted-feedback {
+            .customer-width {
+                width: 200px !important;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1410px) and (max-width: 1650px) {
+    .row-content {
+        & > div {
+            &> :not(.show-left-panel) {
+                .deleted-feedback {
+                    &> .form-filter-v2 {
+                        .communication-width {
+                            width: 270px !important;
+                        }
+                        .review-width {
+                            width: 200px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1337px){
+    .deleted-feedback {
+        .form-filter-v2 {
+            .btn {
+                margin-top: 10px !important;
+            }
+        }
+    }
 }

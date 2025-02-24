@@ -1,5 +1,9 @@
 ﻿@import './responsive';
 
+.modal-header {
+    background: #1D3557 !important;
+}
+
 .chat-type-mapping{
     .form-filter {
         position: relative;
@@ -24,6 +28,24 @@
             .large-label {
                 width: 140px;
             }
+        }
+    }
+
+    .form-filter-v2 {
+        position: relative;
+
+        .icon-toggle {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
         }
     }
 

@@ -1,6 +1,11 @@
 ﻿.settlement{
     width: 700px;
     .form-filter {
+        background-color: #FFFFFF !important;
+        border-radius: 5px 5px 5px 5px;
+        border: 1px solid #CCCCCC;
+	    font-family: Open Sans, sans-serif;
+
         .form-row {
             .form-group {
                 width: 150px;
@@ -15,7 +20,7 @@
             }
         }
     }
-    
+  
     .table-title {
         .tool-box {
             .fa {
@@ -48,6 +53,10 @@
     }
 }
 .settlement-modal-chart{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .recharts-default-legend li {
         width: 213px;
         margin-left: 10px;

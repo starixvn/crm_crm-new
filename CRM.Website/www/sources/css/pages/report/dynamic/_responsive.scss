@@ -1,77 +1,77 @@
-.medium-desktops{
-    &> .show-left-panel{
-        .dynamic{
-            .form-row{
-                .form-group {
-                    width: 230px;
+// .medium-desktops{
+//     &> .show-left-panel{
+//         .dynamic{
+//             .form-row{
+//                 .form-group {
+//                     width: 230px;
     
-                    label{
-                        width: 100px;
-                    }
+//                     label{
+//                         width: 100px;
+//                     }
                     
-                    .react-datepicker__input-container input{
-                        width: 100% !important;
-                    }
+//                     .react-datepicker__input-container input{
+//                         width: 100% !important;
+//                     }
 
-                    &:nth-child(4){
-                        width: 200px !important;
-                        label{
-                            width: 84px !important;
-                        }
+//                     &:nth-child(4){
+//                         width: 200px !important;
+//                         label{
+//                             width: 84px !important;
+//                         }
             
-                        .form-control, .form-control-wrapper {
-                            width: calc(100% - 0.5rem - 84px);
-                        }
-                    }
+//                         .form-control, .form-control-wrapper {
+//                             width: calc(100% - 0.5rem - 84px);
+//                         }
+//                     }
 
-                    .selectwithsearchtree{
-                        min-width: 100px;
+//                     .selectwithsearchtree{
+//                         min-width: 100px;
 
-                        input{
-                            width: 100% !important;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+//                         input{
+//                             width: 100% !important;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
-.large-desktops{
-    &> .show-left-panel{
-        .dynamic{
-            .form-row{
-                .form-group {
-                    width: 240px;
+// .large-desktops{
+//     &> .show-left-panel{
+//         .dynamic{
+//             .form-row{
+//                 .form-group {
+//                     width: 240px;
     
-                    label{
-                        width: 100px;
-                    }
+//                     label{
+//                         width: 100px;
+//                     }
                     
-                    .react-datepicker__input-container input{
-                        width: 100% !important;
-                    }
+//                     .react-datepicker__input-container input{
+//                         width: 100% !important;
+//                     }
 
-                    &:nth-child(4){
-                        width: 260px !important;
-                        label{
-                            width: 125px !important;
-                        }
+//                     &:nth-child(4){
+//                         width: 260px !important;
+//                         label{
+//                             width: 125px !important;
+//                         }
             
-                        .form-control, .form-control-wrapper {
-                            width: calc(100% - 0.5rem - 125px);
-                        }
-                    }
+//                         .form-control, .form-control-wrapper {
+//                             width: calc(100% - 0.5rem - 125px);
+//                         }
+//                     }
 
-                    .selectwithsearchtree{
-                        min-width: 100px;
+//                     .selectwithsearchtree{
+//                         min-width: 100px;
 
-                        input{
-                            width: 100% !important;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+//                         input{
+//                             width: 100% !important;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

@@ -33,7 +33,8 @@ export class Filter extends Component {
             statusId: 0,
             responseId: 0,
             isReviewed: '',
-            isGuest: !this.props.currentCustomer ? -1 : this.isCheckGuest()
+            isGuest: !this.props.currentCustomer ? -1 : this.isCheckGuest(),
+            showFilter: true
         };
     }
 
@@ -51,6 +52,14 @@ export class Filter extends Component {
             btn.click();
         }
     }
+
+    handleToggleFilter = isToggle => {
+        this.setState({ showFilter: isToggle });
+        window.dispatchEvent(new Event('resize'));
+        if (isToggle) {
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+        }
+    };
 
     handleChangeFromDate = fromDate => {
         const maxDate = new Date(fromDate.getTime());
@@ -118,7 +127,7 @@ export class Filter extends Component {
         ];
 
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
-            reviewer, statusId, responseId, isReviewed, isGuest } = this.state;
+            reviewer, statusId, responseId, isReviewed, isGuest, showFilter } = this.state;
         const { customerTypes, responses, mainCategories, subCategories, communications, statuses } = this.props.settings;
         const responsesOptions = [{ id: 0, value: 'All' }, ...responses];
         const statusesOptions = [{ statusId: 0, name: 'All' }, ...statuses];
@@ -128,171 +137,183 @@ export class Filter extends Component {
         const subCategoryOptions = filterSubCategories(mainCategoryOptions, mainCategoryId, subCategoryId, this.setState.bind(this));
 
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
-                        <Form.Label htmlFor="runningNumber">{LangHelper.getResource('RunningNumber')}</Form.Label>
-                        <Form.Control type="text" size="sm"
-                            value={runningNumber}
-                            name="runningNumber" id="runningNumber"
-                            className="shadow-none" autoComplete="on"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group className='sm-width'>
-                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
-                        <div className='react-datepicker-wrapper-container'>
-                            <DatePicker
-                                dropdownMode="select"
-                                showMonthDropdown
-                                useShortMonthInDropdown
-                                showYearDropdown
-                                selected={fromDate}
-                                maxDate={new Date(this.maxFromDate)}
-                                onChange={value => this.handleChangeFromDate(value)}
-                            />
-                        </div>
-                    </Form.Group>
-                    <Form.Group className='lg-width'>
-                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
-                        <div className='react-datepicker-wrapper-container'>
-                            <DatePicker
-                                dropdownMode="select"
-                                selected={toDate}
-                                showMonthDropdown
-                                useShortMonthInDropdown
-                                showYearDropdown
-                                minDate={new Date(this.minToDate)}
-                                maxDate={new Date(this.maxToDate)}
-                                onChange={value => this.handleChangeToDate(value)}
-                            />
-                        </div>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
-                        <Form.Label htmlFor="username">{LangHelper.getResource('Username')}</Form.Label>
-                        <Form.Control type="text" size="sm"
-                            disabled={this.props.currentCustomer}
-                            value={username}
-                            name="username" id="username"
-                            className="shadow-none username-width" autoComplete="on"
-                            onChange={this.handleChange}
-                        />
-                        <Form.Control as="select" size="sm"
-                            disabled={this.props.currentCustomer}
-                            name="isGuest" id="isGuest"
-                            className="shadow-none response-width"
-                            value={isGuest}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group className='sm-width'>
-                        <Form.Label htmlFor="isReviewed">{LangHelper.getResource('IsReviewed')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="isReviewed" id="isReviewed"
-                            className='select-options'
-                            value={isReviewed}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                reviews.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group className='lg-width'>
-                        <Form.Label htmlFor="responseId">{LangHelper.getResource('CustomerResponse')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="responseId" id="responseId"
-                            value={responseId}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                responsesOptions.map((value, key) => this.renderOptions(value.value, value.id, key))
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
-                        <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="mainCategoryId" id="mainCategoryId"
-                            value={mainCategoryId}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                mainCategoryOptions.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group className='subCategory-width'>
-                        <Form.Label htmlFor="subCategoryId">{LangHelper.getResource('SubCategory')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="subCategoryId"
-                            value={subCategoryId}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                subCategoryOptions.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
-                        <Form.Label htmlFor="communicationId">{LangHelper.getResource('Communication')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="communicationId" id="communicationId"
-                            className='select-options-sm mr-2'
-                            value={communicationId}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                communicationOptions.map((value, key) => this.renderOptions(value.name, value.id, key))
-                            }
-                        </Form.Control>
-                        <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="statusId" id="statusId"
-                            className='select-options-sm'
-                            value={statusId}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                statuesFilterDelete.map((value, key) => this.renderOptions(value.name, value.statusId, key))
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group className='sm-width'>
-                        <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
-                        <Form.Control type="text" size="sm" value={handler}
-                            id="handler"
-                            name="handler"
-                            autoComplete="on"
-                            className="shadow-none select-options"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group className='lg-width'>
-                        <Form.Label htmlFor="reviewer">{LangHelper.getResource('Reviewer')}</Form.Label>
-                        <Form.Control type="text" size="sm" value={reviewer}
-                            name="reviewer" autoComplete="on"
-                            className="shadow-none select-options"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group style={{width: '65px'}}>
-                        <Button id='btn-submit-manage-fb' variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
-                            <UnderlineButton.submitButton />
-                        </Button>
-                    </Form.Group>
-                </Form.Row>
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit} action="javascript:void(0)">
+                {
+                    showFilter &&
+                    <React.Fragment>
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group className='large-width'>
+                                <Form.Label htmlFor="runningNumber">{LangHelper.getResource('RunningNumber')}</Form.Label>
+                                <Form.Control type="text" size="sm"
+                                    value={runningNumber}
+                                    name="runningNumber" id="runningNumber"
+                                    className="shadow-none" autoComplete="on"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                                <div className='react-datepicker-wrapper-container'>
+                                    <DatePicker
+                                        dropdownMode="select"
+                                        showMonthDropdown
+                                        useShortMonthInDropdown
+                                        showYearDropdown
+                                        selected={fromDate}
+                                        maxDate={new Date(this.maxFromDate)}
+                                        onChange={value => this.handleChangeFromDate(value)}
+                                    />
+                                </div>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
+                                <div className='react-datepicker-wrapper-container'>
+                                    <DatePicker
+                                        dropdownMode="select"
+                                        selected={toDate}
+                                        showMonthDropdown
+                                        useShortMonthInDropdown
+                                        showYearDropdown
+                                        minDate={new Date(this.minToDate)}
+                                        maxDate={new Date(this.maxToDate)}
+                                        onChange={value => this.handleChangeToDate(value)}
+                                    />
+                                </div>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group className='large-width'>
+                                <Form.Label htmlFor="username">{LangHelper.getResource('Username')}</Form.Label>
+                                <div className="form-username">
+                                    <Form.Control type="text" size="sm"
+                                        disabled={this.props.currentCustomer}
+                                        value={username}
+                                        name="username" id="username"
+                                        className="shadow-none username-width" autoComplete="on"
+                                        onChange={this.handleChange}
+                                    />
+                                    <Form.Control as="select" size="sm"
+                                        disabled={this.props.currentCustomer}
+                                        name="isGuest" id="isGuest"
+                                        className="shadow-none response-width"
+                                        value={isGuest}
+                                        onChange={this.handleChange}
+                                    >
+                                        {
+                                            customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                        }
+                                    </Form.Control>
+                                </div>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="isReviewed">{LangHelper.getResource('IsReviewed')}</Form.Label>
+                                <Form.Control as="select" size="sm"
+                                    name="isReviewed" id="isReviewed"
+                                    className='select-options'
+                                    value={isReviewed}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        reviews.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="responseId">{LangHelper.getResource('CustomerResponse')}</Form.Label>
+                                <Form.Control as="select" size="sm"
+                                    name="responseId" id="responseId"
+                                    value={responseId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        responsesOptions.map((value, key) => this.renderOptions(value.value, value.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group className='large-width'>
+                                <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
+                                <Form.Control as="select" size="sm"
+                                    name="mainCategoryId" id="mainCategoryId"
+                                    value={mainCategoryId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        mainCategoryOptions.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group style={{'width': '440px'}}>
+                                <Form.Label htmlFor="subCategoryId">{LangHelper.getResource('SubCategory')}</Form.Label>
+                                <Form.Control as="select" size="sm"
+                                    name="subCategoryId"
+                                    value={subCategoryId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        subCategoryOptions.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group style={{'width': '150px'}}>
+                                <Form.Label htmlFor="communicationId">{LangHelper.getResource('Communication')}</Form.Label>
+                                <Form.Control as="select" size="sm"
+                                    name="communicationId" id="communicationId"
+                                    className='select-options-sm mr-2'
+                                    value={communicationId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        communicationOptions.map((value, key) => this.renderOptions(value.name, value.id, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group style={{'width': '138px','margin-left':'-28px'}}>
+                                <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                                <Form.Control as="select" size="sm"
+                                    name="statusId" id="statusId"
+                                    className='select-options-sm'
+                                    value={statusId}
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        statuesFilterDelete.map((value, key) => this.renderOptions(value.name, value.statusId, key))
+                                    }
+                                </Form.Control>
+                            </Form.Group>        
+                            <Form.Group>
+                                <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
+                                <Form.Control type="text" size="sm" value={handler}
+                                    id="handler"
+                                    name="handler"
+                                    autoComplete="on"
+                                    className="shadow-none select-options"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="reviewer">{LangHelper.getResource('Reviewer')}</Form.Label>
+                                <Form.Control type="text" size="sm" value={reviewer}
+                                    name="reviewer" autoComplete="on"
+                                    className="shadow-none select-options"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <Button id='btn-submit-manage-fb' variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
+                                <UnderlineButton.submitButton />
+                            </Button>
+                        </Form.Row>
+                    </React.Fragment>
+                }
+                {
+                    this.state.showFilter
+                        ? <span className="fa fa-caret-up fa-sm icon-toggle" onClick={() => this.handleToggleFilter(false)} />
+                        : <span className="fa fa-caret-down fa-sm icon-toggle" onClick={() => this.handleToggleFilter(true)} />
+                }
             </Form>
         );
     }

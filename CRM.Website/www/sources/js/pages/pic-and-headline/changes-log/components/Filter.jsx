@@ -107,7 +107,7 @@ export class Filter extends Component {
         const { headlineDA, fromDate, toDate, editBy, actionTypeOptions } = this.state;
 
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter-v2' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="headlineDA">{LangHelper.getResource('HeadlineDA')}</Form.Label>

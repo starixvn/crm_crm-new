@@ -155,6 +155,11 @@
         .header-content, .body-content, .footer-content {
             border: none;
         }
+        
+        .header-content .table > thead > tr > th {
+            border: none;
+            border-right: 1px solid #b7b7b7;
+        }
 
         .body-content .table {
             border-left: 1px solid #b7b7b7;

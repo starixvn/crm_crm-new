@@ -1,8 +1,23 @@
 @import './edit-customer-feedback';
 @import '../../abstracts/variables';
+@import '../../abstracts/mixins';
 
 .latest-feedback {
     max-width: 1250px;
+
+    .form-filter {
+        background-color: #FFFFFF !important;
+        border-radius: 5px 5px 5px 5px;
+        border: 1px solid #CCCCCC;
+        font-family: Open Sans, sans-serif;
+        margin-bottom: 1rem;
+
+        label {
+            font-weight: bold;
+            font-weight: 600;
+        }
+    }
+
     .link-click {
         cursor: pointer;
         color: $link-color !important;
@@ -42,6 +57,10 @@
     }
 }
 
+.modal-header {
+    background: #1D3557 !important;
+}
+
 .tooltipFeedback [class$="inner"] {
     min-width: 100px;
     max-width: 650px;
@@ -49,7 +68,11 @@
     max-height: 920px;
     border-radius: 3px;
     font-size: 12px;
-    text-align: left
+    text-align: left;
+
+    @include Laptop {
+        font-size: 8.5px;
+    }
 }
 
 #tooltip-customers [class$="inner"] {

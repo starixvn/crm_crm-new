@@ -15,12 +15,25 @@
         }
     }
     
-    .table-title, .form-filter{
+    .table-title-v2, .form-filter-v2{
         max-width: 700px;
+    }
+
+    .form-filter-v2 {
+        .btn {
+            margin-top: 0 !important;
+        }
+        .form-row {
+            column-gap: 15px;
+            padding-top: 5px;
+        }
     }
 }
 
 .update-setting-relation{
+    .modal-header {
+        background: #1D3557 !important;
+    }
     .modal-content{
         width: 660px !important;
         max-height: 660px !important;
@@ -40,15 +53,19 @@
             border-left: 1px solid #b7b7b7;
         }
 
-        .filter-relation{
-            display: flex;
-            flex-wrap: wrap;
-            border: 1px solid rgb(183, 183, 183);
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: rgb(232, 232, 232);
-            .label-subSetting{
-                max-width: 18%;
+        .form-filter-v2 {
+            .form-row {
+                padding-top: 5px;
+
+                .sub-group {
+                    display: flex;
+                    align-items: center;
+                    width: 300px !important;
+                }
+
+                .btn {
+                    margin-top: 0 !important;
+                }
             }
         }
 

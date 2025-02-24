@@ -112,7 +112,7 @@ export class Filter extends PureComponent {
     render() {
         const { filter, settingRoles } = this.state;
         return (
-            <Form className="form-filter" onSubmit={this.submitHandler}>
+            <Form className="form-filter-v2" onSubmit={this.submitHandler}>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group className='field-name'>
                         <Form.Label htmlFor="NamePIC">{LangHelper.getResource('Name')}</Form.Label>
@@ -147,7 +147,7 @@ export class Filter extends PureComponent {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group style={{width: '160px'}}>
+                    <Form.Group>
                         <Button variant="primary" size="sm" className="mr-4" onClick={this.submitHandler} type="submit">
                             {LangHelper.getResource('Submit')}
                         </Button>

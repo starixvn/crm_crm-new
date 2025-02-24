@@ -3,6 +3,10 @@
 }
 
 .job-setting-modal{
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .modal-content{
         #serviceName{
             text-overflow: ellipsis;
@@ -23,6 +27,9 @@
 }
 
 .confirm-edit-modal .modal-dialog{
+    .modal-header {
+        background: #1D3557 !important;
+    }
     max-width: 600px !important;
 }
 

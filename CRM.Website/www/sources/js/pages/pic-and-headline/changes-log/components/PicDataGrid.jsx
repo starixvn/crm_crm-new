@@ -444,14 +444,15 @@ export class PicDataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='table-title justify-content-between d-flex align-items-center'>
+                <div className='table-title-v2 justify-content-between d-flex align-items-center'>
                     <span>{LangHelper.getResource('ChangesLog')}</span>
                 </div>
                 <Table
                     header={this.buildHeader()}
                     body={this.buildBody()}
-                    width={1500}
-                    autoWidth={false}
+                    minWidth={960}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    autoWidth
                     isPaging
                     adjustedHeight={10}
                     pageOption={pagingOption}

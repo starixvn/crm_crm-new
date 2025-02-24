@@ -48,7 +48,7 @@
         }
     }
     
-    .table-title {
+    .table-title-v2 {
         max-width: 1250px;
     }
     
@@ -111,6 +111,22 @@
                         padding-bottom: 0
                     }
 
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1330px){
+    .row-content {
+        & > div {
+            &> .show-left-panel {
+                .deleted-feedback-statistic {
+                    &> .form-filter-v2 {
+                        .btn {
+                            margin-top: 10px !important;
+                        }
+                    }
                 }
             }
         }

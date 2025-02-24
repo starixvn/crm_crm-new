@@ -70,17 +70,17 @@ export class Filter extends Component {
         }
 
         return (
-            <Form className="form-filter" id="filter-form-subject" onSubmit={this.handleSubmit}>
+            <Form className="form-filter-v2" id="filter-form-subject" onSubmit={this.handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
+                    <Form.Group className='auto-complete'>
                         <AutoComplete
                             options={this.state.feedbackSubjectSuggestions}
                             onChange={value => this.handleChange(value)}
                             onInputChange={search => this.handleInputChange(search)}
                         />
                     </Form.Group>
-                    <Button className="mr-4" variant="primary" size="sm"
+                    <Button variant="primary" size="sm"
                         onClick={this.handleSubmit}
                     >
                         <UnderlineButton.searchButton />

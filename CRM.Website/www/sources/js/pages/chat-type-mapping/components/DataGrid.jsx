@@ -305,7 +305,7 @@ export class DataGrid extends Component {
         const confirmMsg = this.renderConfirmMessage();
         return (
             <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                     <span>{LangHelper.getResource('ChatTypeMapping')}</span>
                     {
                         this.props.gridData.data.length > 0 && this.renderExportExcelText()

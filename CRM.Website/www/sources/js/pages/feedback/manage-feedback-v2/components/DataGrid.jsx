@@ -291,7 +291,7 @@ export class DataGrid extends Component {
     renderTableTitle = gridDataFeedbacks => {
         const isClickableEditMultiple = Array.from(this.state.checkedItems.values()).includes(true);
         return (
-            <div className='table-title d-flex justify-content-between align-items-center'>
+            <div className='table-title-v2 d-flex justify-content-between align-items-center'>
                 {
                      this.props.isHost ?
                      <div>
@@ -334,8 +334,9 @@ export class DataGrid extends Component {
             <Fragment>
                 {this.renderTableTitle(gridDataFeedbacks)}
                 <Table
-                    width={1250}
-                    autoWidth={false}
+                    minWidth={960}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    autoWidth
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
@@ -343,6 +344,7 @@ export class DataGrid extends Component {
                     body={this.buildBody(isHost)}
                     containerPadding={0}
                     shouldResetScrollPosition={false}
+                    adjustedHeight={10}
                 />
             </Fragment>
         );

@@ -57,7 +57,7 @@ describe('DataGrid', () => {
 
             // Assert
             expect(LangHelper.getResource).toHaveBeenCalledWith('NotificationTemplate');
-            expect(container.find('div').html()).toEqual('<div class="table-title">NotificationTemplate</div>');
+            expect(container.find('div').html()).toEqual('<div class="table-title-v2">NotificationTemplate</div>');
         });
 
         it('Table props should be mapped correctly', () => {

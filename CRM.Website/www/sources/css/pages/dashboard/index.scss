@@ -99,6 +99,10 @@
     }
 }
 .customer-modal-dialog {
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .check-customer {
         display: flex;
         align-items: center;
@@ -128,6 +132,10 @@
 }
 
 .modal-edit-redemption {
+    .modal-header {
+        background: #1D3557 !important;
+    }
+
     .modal-dialog {
         .modal-content {
             width: 768px;
@@ -182,6 +190,10 @@
 }
 
 .communication-modal-dialog {
+    .modal-header {
+        background: #1D3557 !important;
+    }
+    
     .modal-dialog {
         min-width: 1015px !important;
 

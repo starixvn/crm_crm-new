@@ -66,7 +66,7 @@ export class FilterContactInforms extends PureComponent {
 
         return (
             <Fragment>
-                <div className="table-title d-flex justify-content-between align-items-center">
+                <div className="table-title-v2 d-flex justify-content-between align-items-center">
                     {titleDetail.title}
                     {
                         contactInforms.length > 0 && (
@@ -77,13 +77,13 @@ export class FilterContactInforms extends PureComponent {
                     }
                 </div>
 
-                <Form onSubmit={this.handleSearch} className="form-filter">
-                    <Form.Group as={Row}>
-                        <Form.Label className="col-form-label" style={{paddingLeft:'10px'}}>
-                            {LangHelper.getResource('Username')}
-                        </Form.Label>
+                <Form onSubmit={this.handleSearch} className="form-filter-v2">
+                    <Form.Row>
+                        <Form.Group>
+                            <Form.Label>
+                                {LangHelper.getResource('Username')}
+                            </Form.Label>
 
-                        <Col sm="2" md="2">
                             <Form.Control type="input" size="sm" className="shadow-none"
                                 autoComplete="off"
                                 name="username"
@@ -91,13 +91,13 @@ export class FilterContactInforms extends PureComponent {
                                 onChange={event => this.handleChangeFilter(event)}
                                 onKeyPress={event => event.key === 'Enter' && this.handleSearch(event)}
                             />
-                        </Col>
+                        </Form.Group>
 
-                        <Form.Label className="col-form-label" style={{paddingLeft:'10px'}}>
-                            {LangHelper.getResource('Status')}
-                        </Form.Label>
+                        <Form.Group>
+                            <Form.Label>
+                                {LangHelper.getResource('Status')}
+                            </Form.Label>
 
-                        <Col sm="2" md="2">
                             <MultipleSelect
                                 dataSource={filterStatuses}
                                 keyField='settingId' valueField='settingValue'
@@ -109,14 +109,14 @@ export class FilterContactInforms extends PureComponent {
                                     this.handleChangeStatus(selectedItemsKey);
                                 }}
                             />
-                        </Col>
+                        </Form.Group>
 
-                        <Col>
+                        <Form.Group>
                             <Button variant="primary" size="sm" onClick={this.handleSearch}>
                                 {LangHelper.getResource('Search')}
                             </Button>
-                        </Col>
-                    </Form.Group>
+                        </Form.Group>
+                    </Form.Row>
                 </Form>
             </Fragment>
         );

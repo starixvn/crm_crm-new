@@ -170,5 +170,7 @@
             };
 
         public Phone Mobile => new Phone { CountryCode = MobilePhoneCountryCode, AreaCode = MobilePhoneAreaCode, PhoneNumber = MobilePhone };
+
+        public int? Rating { get; set; }
     }
 }
