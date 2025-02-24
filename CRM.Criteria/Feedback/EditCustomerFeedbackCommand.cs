@@ -133,8 +133,6 @@
         [SpParam(Ignored = true)]
         public bool IsDeletedFeedbackView { get; set; }
 
-        public int Rating { get; set; }
-
         public override string GetSettingKey() => "Acc_CRM_FeedbackInfoUpd";
 
         public override bool IsValid() => FeedbackId > 0

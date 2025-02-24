@@ -823,31 +823,29 @@ export class AppContainer extends Component {
             await this.editOtherAccountCommunicationInfo();
         }
 
-        console.log('params', params);
         const { fieldInput } = this.state;
         Site.blockUI();
         const url = fieldInput.isCheckFeedbackIdIsNew ?
             Site.resolveClientUrl('Feedback/EditCustomerNewManualFeedback') :
             Site.resolveClientUrl('Feedback/EditCustomerOldFeedback');
         
-        console.log('isCheckFeedbackIdIsNew', fieldInput.isCheckFeedbackIdIsNew);
-        // await DataService.postDataAsync(url, params).then(response => {
-        //     const data = response.data;
-        //     this.setState({ editResult: data });
-        //     if (data.isSuccessful) {
-        //         setTimeout(() => {
-        //             this.props.onClose(true);
-        //             if (params.isOverwrite) {
-        //                 window.dispatchEvent(new Event('getCurrentCustomer'));
-        //                 window.localStorage.setItem('updateLeftPanel', params.custId);
-        //                 const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
-        //                 this.props.navigate(pathname, { state: this.props.currentCustomer });
-        //             }
-        //         }, 3000);
-        //     } else {
-        //         this.formik.setSubmitting(false);
-        //     }
-        // }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+        await DataService.postDataAsync(url, params).then(response => {
+            const data = response.data;
+            this.setState({ editResult: data });
+            if (data.isSuccessful) {
+                setTimeout(() => {
+                    this.props.onClose(true);
+                    if (params.isOverwrite) {
+                        window.dispatchEvent(new Event('getCurrentCustomer'));
+                        window.localStorage.setItem('updateLeftPanel', params.custId);
+                        const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
+                        this.props.navigate(pathname, { state: this.props.currentCustomer });
+                    }
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     getParamNewManualFeedback(values) {
