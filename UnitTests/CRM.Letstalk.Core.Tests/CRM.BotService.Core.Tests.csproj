@@ -22,8 +22,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\CRM.BotService.Core\CRM.BotService.Core.csproj" />
-  </ItemGroup>
-
 </Project>
