@@ -468,6 +468,7 @@
     PicType: 'Pic Type',
     QuickUpdate: 'Quick Update',
     QQ: 'QQ',
+    Rating: 'Rating',
     Reason: 'Reason',
     Recipient: 'Recipient',
     RecipientRequired: 'Recipient is required!',
