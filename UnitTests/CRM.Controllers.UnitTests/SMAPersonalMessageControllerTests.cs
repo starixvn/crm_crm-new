@@ -15,7 +15,7 @@
     using CRM.Models.NotificationType;
     using CRM.Models.SMAPersonalMessage;
     using CRM.Services;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;

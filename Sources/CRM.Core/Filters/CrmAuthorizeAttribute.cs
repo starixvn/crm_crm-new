@@ -1,33 +1,39 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
+    using CRM.Core.Services;
     using Fanex.Logging;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client;
-    using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Logging;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
     public class CrmAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
-        private readonly INapSession napSession;
-        private readonly ILogger logger;
-
-        public CrmAuthorizeAttribute() : this(null, null)
+#pragma warning disable S1450
+        private INapSession napSession;
+        private ILogger logger;
+#pragma warning restore S1450
+        public CrmAuthorizeAttribute()
         {
         }
 
         public CrmAuthorizeAttribute(INapSession napSession, ILogger logger)
         {
-            this.napSession = napSession ?? NapClientManager.NapSession;
-            this.logger = logger ?? new Logger();
+            this.napSession = napSession;
+            this.logger = logger;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            napSession ??= context.HttpContext.RequestServices.GetRequiredService<INapSession>();
+            logger ??= context.HttpContext.RequestServices.GetRequiredService<ILogger>();
+
             try
             {
                 if (context.HttpContext == null)

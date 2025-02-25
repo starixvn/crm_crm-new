@@ -8,7 +8,7 @@
     using CRM.Criteria.AdminTool.CategoryClassification;
     using CRM.Models.AdminTool.CategoryClassification;
     using CRM.Services.AdminTool;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using NSubstitute;
     using Xunit;
 

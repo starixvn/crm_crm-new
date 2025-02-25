@@ -17,7 +17,7 @@
     using CRM.Services;
     using CRM.Services.BotServices.Interfaces;
     using CRM.ViewModels.ChatTypeMapping;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using NSubstitute;

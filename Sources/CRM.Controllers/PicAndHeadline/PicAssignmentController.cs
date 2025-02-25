@@ -14,7 +14,7 @@
     using CRM.Models.PicAndHeadline;
     using CRM.Resources;
     using CRM.Services;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

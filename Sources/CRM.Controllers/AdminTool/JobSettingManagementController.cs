@@ -8,7 +8,8 @@
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool.JobSettingManagement;
     using CRM.Models.AdminTool;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

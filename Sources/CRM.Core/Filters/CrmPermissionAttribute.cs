@@ -6,7 +6,6 @@
     using Fanex.Logging;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client;
-    using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,21 +15,24 @@
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class CrmPermissionAttribute : Attribute, IAsyncAuthorizationFilter
     {
-        #pragma warning disable S1450
+#pragma warning disable S1450
         private IPermissionService permissionService;
-        #pragma warning restore S1450
-        private readonly INapSession napSession;
-        private readonly ILogger logger;
+        private INapSession napSession;
+        private ILogger logger;
 
-        public CrmPermissionAttribute() : this(null, null)
+#pragma warning restore S1450
+
+        public CrmPermissionAttribute()
         {
+            PermissionCache = true;
         }
 
-        public CrmPermissionAttribute(INapSession napSession, ILogger logger)
+        public CrmPermissionAttribute(INapSession napSession, ILogger logger, IPermissionService permissionService)
         {
-            this.napSession = napSession ?? NapClientManager.NapSession;
-            this.logger = logger ?? new Logger();
             PermissionCache = true;
+            this.napSession = napSession;
+            this.logger = logger;
+            this.permissionService = permissionService;
         }
 
         public string FunctionKey { get; set; }
@@ -39,6 +41,9 @@
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
+            permissionService ??= context.HttpContext.RequestServices.GetRequiredService<IPermissionService>();
+            napSession ??= context.HttpContext.RequestServices.GetRequiredService<INapSession>();
+            logger ??= context.HttpContext.RequestServices.GetRequiredService<ILogger>();
             try
             {
                 if (context.HttpContext == null)
@@ -78,7 +83,6 @@
 
         private async Task HandleResponseFilter(AuthorizationFilterContext context)
         {
-            permissionService = context.HttpContext.RequestServices.GetRequiredService<IPermissionService>();
             bool hasPermission = false;
             if (!string.IsNullOrWhiteSpace(FunctionKey))
             {

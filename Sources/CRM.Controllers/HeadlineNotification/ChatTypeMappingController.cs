@@ -16,7 +16,7 @@
     using CRM.Services;
     using CRM.Services.BotServices.Interfaces;
     using CRM.ViewModels.ChatTypeMapping;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

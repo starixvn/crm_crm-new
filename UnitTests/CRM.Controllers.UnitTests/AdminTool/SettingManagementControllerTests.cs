@@ -13,7 +13,7 @@ namespace CRM.Controllers.UnitTests.AdminTool
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.ViewModels;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;

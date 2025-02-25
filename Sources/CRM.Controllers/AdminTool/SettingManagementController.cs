@@ -9,7 +9,7 @@
     using CRM.Models.AdminTool;
     using CRM.Services;
     using CRM.ViewModels;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

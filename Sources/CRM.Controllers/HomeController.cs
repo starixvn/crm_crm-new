@@ -5,7 +5,7 @@
     using CRM.Core.Filters;
     using CRM.Core.Services;
     using Microsoft.AspNetCore.Mvc;
-    using ONEbook.UM.AspNetCore.Filters;
+    using ONEbook.UM.Filters;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [ServiceFilter(typeof(CheckUMFilterAttribute))]

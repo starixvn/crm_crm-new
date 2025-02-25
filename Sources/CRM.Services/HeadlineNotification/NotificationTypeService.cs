@@ -10,7 +10,7 @@
     using CRM.Criteria.NotificationType;
     using CRM.Models;
     using CRM.Models.NotificationType;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
 
     public class NotificationTypeService : INotificationTypeService

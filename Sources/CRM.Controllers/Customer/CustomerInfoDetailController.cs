@@ -10,7 +10,7 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

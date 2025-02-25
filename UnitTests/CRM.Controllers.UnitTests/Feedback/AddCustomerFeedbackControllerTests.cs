@@ -15,7 +15,7 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;

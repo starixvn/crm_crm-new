@@ -9,7 +9,7 @@
     using CRM.Criteria.NotificationCenter;
     using CRM.Models.NotificationCenter;
     using CRM.Services.NotificationCenter;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using NSubstitute;

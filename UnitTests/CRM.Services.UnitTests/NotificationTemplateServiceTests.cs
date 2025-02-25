@@ -10,7 +10,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.NotificationTemplate;
     using CRM.Models.NotificationTemplate;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using NSubstitute;
     using Xunit;
 

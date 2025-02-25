@@ -14,7 +14,7 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Redemption;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;

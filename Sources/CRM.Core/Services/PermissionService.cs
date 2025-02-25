@@ -6,8 +6,8 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
+    using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Models.ValueObject;
     using Fanex.NAP.Client.Services;
     using Microsoft.Extensions.Caching.Memory;

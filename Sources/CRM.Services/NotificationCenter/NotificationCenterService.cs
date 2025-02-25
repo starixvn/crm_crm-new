@@ -8,7 +8,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.NotificationCenter;
     using CRM.Models.NotificationCenter;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.Extensions.Configuration;
 
     public interface INotificationCenterService

@@ -21,20 +21,19 @@
     {
         private readonly IBaseService baseService;
         private readonly IConfiguration configuration;
+        private readonly IHttpClientFactory httpClientFactory;
 
-        public TicketRefService(IBaseService baseService, IConfiguration configuration)
+        public TicketRefService(IBaseService baseService, IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
             this.baseService = baseService;
             this.configuration = configuration;
         }
         public async Task<TicketInfo> GetTicketByRefNoAsync(long refno)
         {
-            try
-            {
+            try {
                 var napUrl = configuration.GetSection("NapSettings:Url").Value;
-                var apiKey = configuration.GetSection("NapSettings:APIKey").Value;
-                CustomDelegatingHandler customDelegatingHandler = new CustomDelegatingHandler(apiKey);
-                HttpClient client = HttpClientFactory.Create(customDelegatingHandler);
+                HttpClient client = httpClientFactory.CreateClient("TicketRefClient");
+
                 var url = new Uri(napUrl + "BetListApi/GetBetListByRefNo?refno=" + refno);
                 var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();

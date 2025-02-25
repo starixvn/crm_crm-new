@@ -8,7 +8,7 @@
     using CRM.Resources;
     using CRM.Services.Customer;
     using CRM.Services.Remark;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

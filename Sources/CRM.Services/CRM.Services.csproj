@@ -1,26 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="EPPlus" Version="4.5.3.2" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
-        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-	<ItemGroup>
-		<RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
-	</ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
-        <ProjectReference Include="..\CRM.Criteria\CRM.Criteria.csproj" />
-        <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
-        <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
-        <ProjectReference Include="..\CRM.ViewModel\CRM.ViewModels.csproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.3.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
+    <PackageReference Include="ONEbook.UM" Version="3.2.4" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
+    <ProjectReference Include="..\CRM.Criteria\CRM.Criteria.csproj" />
+    <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
+    <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
+    <ProjectReference Include="..\CRM.ViewModel\CRM.ViewModels.csproj" />
+  </ItemGroup>
 </Project>

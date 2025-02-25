@@ -10,7 +10,7 @@
     using CRM.Resources;
     using Fanex.Data;
     using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Fanex.NAP.Client.Models;
     using Fanex.NAP.Client.Models.ParameterObject;
     using Fanex.NAP.Client.Models.ValueObject;
@@ -136,7 +136,7 @@
                 new MenuItem {Id = 1, Name = "Test", Url = "/Test"},
                 new MenuItem {Id = 2, Name = "Sub", Url = "Sub" }
             };
-            userService.GetMenuItemAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), true).Returns(menuItems);
+            userService.GetMenuItemAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(menuItems);
 
             //Actual
             var actual = await controller.SingleSignOn(sso);

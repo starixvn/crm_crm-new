@@ -12,7 +12,7 @@
     using CRM.Models.NotificationList;
     using CRM.Models.NotificationType;
     using CRM.Services;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;

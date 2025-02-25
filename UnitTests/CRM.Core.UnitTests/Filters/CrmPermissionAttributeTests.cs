@@ -3,9 +3,10 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
+    using Core.Services;
     using CRM.Core.Filters;
     using Fanex.Logging;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -23,6 +24,7 @@
             // Arrange
             var napSession = Substitute.For<INapSession>();
             var logger = Substitute.For<ILogger>();
+            var permissionService = Substitute.For<IPermissionService>();
             napSession.UserId.Returns(1);
 
             var context = new AuthorizationFilterContext(
@@ -33,7 +35,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(napSession, logger)
+            var filter = new CrmPermissionAttribute(napSession, logger, permissionService)
             {
                 Policy = Policy.Host
             };
@@ -52,7 +54,7 @@
             // Arrange
             var napSession = Substitute.For<INapSession>();
             var logger = Substitute.For<ILogger>();
-
+            var permissionService = Substitute.For<IPermissionService>();
             var context = new AuthorizationFilterContext(
                 new ActionContext
                 {
@@ -61,7 +63,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(napSession, logger)
+            var filter = new CrmPermissionAttribute(napSession, logger, permissionService)
             {
                 Policy = Policy.Host
             };

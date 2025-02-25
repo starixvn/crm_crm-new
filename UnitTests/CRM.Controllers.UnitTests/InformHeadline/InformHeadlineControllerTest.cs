@@ -16,7 +16,7 @@
     using CRM.Services.InformHeadline;
     using CRM.ViewModels.InformHeadline;
     using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;

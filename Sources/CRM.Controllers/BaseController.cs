@@ -3,7 +3,7 @@
     using System.Linq;
     using CRM.Core.Filters;
     using Microsoft.AspNetCore.Mvc;
-    using ONEbook.UM.AspNetCore.Filters;
+    using ONEbook.UM.Filters;
 
     [ServiceFilter(typeof(CheckUMFilterAttribute))]
     [CrmAuthorize]

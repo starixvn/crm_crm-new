@@ -6,7 +6,7 @@
     using CRM.Core.Filters;
     using CRM.Core.Services;
     using Fanex.Logging;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;

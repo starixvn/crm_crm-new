@@ -20,7 +20,7 @@
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
     using Fanex.Logging.Extensions;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using static Fanex.NAP.Client.Helpers.Business.Constant;

@@ -16,7 +16,7 @@
     using CRM.Models.Announcement;
     using CRM.Services;
     using CRM.Services.Interfaces;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;

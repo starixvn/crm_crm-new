@@ -12,7 +12,7 @@
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Setting;
     using CRM.Services;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;

@@ -21,7 +21,7 @@
 
     public static class ServiceDIExtensions
     {
-        public static void ResolveServiceDI(this IServiceCollection services)
+        public static void AddCrmServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISettingService, SettingService>();

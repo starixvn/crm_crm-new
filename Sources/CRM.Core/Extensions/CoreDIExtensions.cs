@@ -5,22 +5,21 @@
     using Fanex.Caching;
     using Fanex.Data.Repository;
     using Fanex.Logging;
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class CoreDIExtensions
     {
-        public static void ResolveCoreConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static void AddCoreServices(this IServiceCollection services, IConfiguration configuration)
         {
             var botConfigs = configuration.GetSection("BotServiceSettings").Get<BotServiceSettings>();
             services.AddSingleton(botConfigs);
-        }
 
-        public static void ResolveCoreDI(this IServiceCollection services)
-        {
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
             services.AddSingleton<IBaseService, BaseService>();
             services.AddSingleton<ICacheService, CacheService>();
+            services.AddSingleton<IMemoryCache, MemoryCache>();
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ICRMLogService, CRMLogService>();
             services.AddScoped<ISessionService, SessionService>();

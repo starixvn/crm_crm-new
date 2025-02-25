@@ -10,7 +10,7 @@
     using CRM.Criteria.NotificationType;
     using CRM.Models.NotificationList;
     using CRM.Services;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

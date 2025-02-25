@@ -7,7 +7,7 @@
     using CRM.Criteria.AdminTool.CommunicationToolSetting;
     using CRM.Criteria.CommunicationToolSetting;
     using CRM.Models.AdminTool.CommunicationToolSetting;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
 
     public interface ICommunicationToolSettingService
     {

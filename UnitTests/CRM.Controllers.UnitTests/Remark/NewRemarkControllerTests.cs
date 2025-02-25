@@ -20,7 +20,7 @@
     using CRM.Services.Customer;
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;

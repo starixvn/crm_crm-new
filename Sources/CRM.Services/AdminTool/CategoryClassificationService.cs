@@ -6,7 +6,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool.CategoryClassification;
     using CRM.Models.AdminTool.CategoryClassification;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
 
     public interface ICategoryClassificationService
     {

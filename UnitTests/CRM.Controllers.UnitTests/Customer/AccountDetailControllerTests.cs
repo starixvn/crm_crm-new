@@ -9,7 +9,7 @@
     using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;

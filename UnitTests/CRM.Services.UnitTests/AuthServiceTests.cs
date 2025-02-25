@@ -7,7 +7,7 @@ namespace CRM.Services.UnitTests
     using AutoFixture;
     using CRM.Core.Enumerables;
     using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Fanex.NAP.Client.Services;
     using NSubstitute;
     using ONEbook.UM.Services;

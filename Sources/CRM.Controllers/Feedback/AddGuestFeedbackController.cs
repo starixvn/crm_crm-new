@@ -9,7 +9,7 @@
     using CRM.Criteria.Feedback.AddFeedback;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 

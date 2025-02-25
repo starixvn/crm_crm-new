@@ -7,7 +7,7 @@
     using CRM.Criteria.SMAPersonalMessage;
     using CRM.Models.SMAPersonalMessage;
     using CRM.Services;
-    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
