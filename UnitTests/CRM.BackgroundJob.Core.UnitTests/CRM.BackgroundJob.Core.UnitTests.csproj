@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\CRM.BackgroundJob.Core\CRM.BackgroundJob.Core.csproj" />
-  </ItemGroup>
-
 </Project>
