@@ -14,13 +14,13 @@ WORKDIR /src
 
 COPY ["nuget.config", "."]
 COPY ["CRM.Website/CRM.Website.csproj", "CRM.Website/"]
-COPY ["CRM.Controllers/CRM.Controllers.csproj", "CRM.Controllers/"]
-COPY ["CRM.Core/CRM.Core.csproj", "CRM.Core/"]
-COPY ["CRM.Resources/CRM.Resources.csproj", "CRM.Resources/"]
-COPY ["CRM.Models/CRM.Models.csproj", "CRM.Models/"]
-COPY ["CRM.Services/CRM.Services.csproj", "CRM.Services/"]
-COPY ["CRM.Criteria/CRM.Criteria.csproj", "CRM.Criteria/"]
-COPY ["CRM.ViewModel/CRM.ViewModels.csproj", "CRM.ViewModel/"]
+COPY ["Sources/CRM.Controllers/CRM.Controllers.csproj", "Sources/CRM.Controllers/"]
+COPY ["Sources/CRM.Core/CRM.Core.csproj", "Sources/CRM.Core/"]
+COPY ["Sources/CRM.Resources/CRM.Resources.csproj", "Sources/CRM.Resources/"]
+COPY ["Sources/CRM.Models/CRM.Models.csproj", "Sources/CRM.Models/"]
+COPY ["Sources/CRM.Services/CRM.Services.csproj", "Sources/CRM.Services/"]
+COPY ["Sources/CRM.Criteria/CRM.Criteria.csproj", "Sources/CRM.Criteria/"]
+COPY ["Sources/CRM.ViewModel/CRM.ViewModels.csproj", "Sources/CRM.ViewModel/"]
 
 RUN dotnet nuget add source https://nuget.nexdev.net/api/v2
 
