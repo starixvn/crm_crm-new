@@ -40,11 +40,11 @@
 		<RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
 	</ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\CRM.Controllers\CRM.Controllers.csproj" />
-        <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
-        <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
-        <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
-        <ProjectReference Include="..\CRM.Services\CRM.Services.csproj" />
+        <ProjectReference Include="..\Sources\CRM.Controllers\CRM.Controllers.csproj" />
+        <ProjectReference Include="..\Sources\CRM.Core\CRM.Core.csproj" />
+        <ProjectReference Include="..\Sources\CRM.Models\CRM.Models.csproj" />
+        <ProjectReference Include="..\Sources\CRM.Resources\CRM.Resources.csproj" />
+        <ProjectReference Include="..\Sources\CRM.Services\CRM.Services.csproj" />
     </ItemGroup>
     <ItemGroup>
         <None Update="ExcelTemplates\CategoryClassification.xlsx">

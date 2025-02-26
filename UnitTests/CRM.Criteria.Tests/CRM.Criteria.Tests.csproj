@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CRM.Criteria\CRM.Criteria.csproj" />
+    <ProjectReference Include="..\..\Sources\CRM.Criteria\CRM.Criteria.csproj" />
   </ItemGroup>
 
 </Project>
