@@ -484,7 +484,7 @@ export class CreateForm extends Component {
             subCategoryIds: values.subCategoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
             isUseDefaultCommunicationTool: values.isUseDefaultCommunicationTool,
             relatedCustomerList: this.getRelatedCustomers(),
-            rating: values.rating
+            rating: parseInt(values.rating, 10)
         };
 
         this.reVerifyInactiveSiteAndConfirm(usernames, params, setSubmitting, values);
