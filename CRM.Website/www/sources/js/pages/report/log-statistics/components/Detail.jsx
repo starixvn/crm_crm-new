@@ -43,6 +43,7 @@ export class Detail extends Component {
                 <HeaderCell colWidth={30}>{LangHelper.getResource('ComplaintsEnquiries')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Solution')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('NoOfInquiries')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('Rating')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Language')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Response')}</HeaderCell>
@@ -127,6 +128,7 @@ export class Detail extends Component {
                 <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.remarkText }} />
                 <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.solution }} />
                 <Cell className='text-center'>{item.noInquiries}</Cell>
+                <Cell className='text-center'>{item.rating}</Cell>
                 <Cell className='text-center'>{item.status}</Cell>
                 <Cell className='text-center'>{item.language}</Cell>
                 <Cell className='text-center'>{item.response}</Cell>

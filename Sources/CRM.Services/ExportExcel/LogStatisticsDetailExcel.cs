@@ -13,7 +13,7 @@
     {
         private const byte RowStartBody = 5;
         private const byte RowStartHeader = 4;
-        private const byte TotalColumns = 23;
+        private const byte TotalColumns = 24;
 
         private readonly StatisticsDetailReportByDateModel logStatisticsDetail;
         private readonly IEnumerable<Setting> mainCategories;
@@ -73,7 +73,7 @@
                     data.Role, RemoveHtmlTags(data.IsNewFeedback  ? CheckPerNewHeadlineContact(data) : data.Contact), productValue == "N/A." ? "N/A" : productValue,
                     subproductValue == "N/A." ? "N/A" : subproductValue, data.CountryName,
                     mainCategoryValue, subCategoryValue, RemoveHtmlTags(data.RemarkText),
-                    RemoveHtmlTags(data.Solution), data.NoInquiries, data.Status,
+                    RemoveHtmlTags(data.Solution), data.NoInquiries, data.Rating , data.Status,
                     data.Language, data.Response, data.CreatorName, data.CreateDate.ToString("MMMM dd, yyyy hh:mm:ss tt")
                 };
             });
@@ -91,7 +91,7 @@
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthSmall = 15;
-            const int WidthNormal = 20;
+            const int WidthNormal = 25;
             const int WidthLarge = 35;
             const int WidthExtraLarge = 45;
             const int ColumnCustomer = 5;
@@ -100,7 +100,7 @@
             const int ColumnSubCategory = 15;
             const int ColumnComplaints = 16;
             const int ColumnSolution = 17;
-            const int ColumnCreatedTime = 23;
+            const int ColumnCreatedTime = 24;
 
             worksheet.DefaultColWidth = WidthSmall;
             worksheet.Column(ColumnCustomer).Width = WidthLarge;

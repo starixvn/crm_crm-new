@@ -156,5 +156,7 @@
         {
             return (new System.Text.RegularExpressions.Regex("\n")).Replace(AutoField, "<br>") + "<br><br>" + Remark;
         }
+
+        public int Rating { get; set; }
     }
 }

@@ -298,22 +298,19 @@ export default class Detail extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
-                    {
-                        customerDetail !== null &&
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="rating">{LangHelper.getResource('Rating')}</Form.Label>
-                                <Col sm="8" md="8">
-                                    <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="rating" id="rating" value={values.rating} onChange={handleChange}
-                                    >
-                                        <option value="" hidden disabled />
-                                        {ratings.map(item => renderOptions(item.value, item.id))}
-                                    </Form.Control>
-                                </Col>
-                            </Form.Group>
-                        </Col>
-                    }
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="rating">{LangHelper.getResource('Rating')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="rating" id="rating" value={values.rating} onChange={handleChange}
+                                >
+                                    <option value="" hidden disabled />
+                                    {ratings.map(item => renderOptions(item.value, item.id))}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col> 
                 </Form.Group>
             </>
         );

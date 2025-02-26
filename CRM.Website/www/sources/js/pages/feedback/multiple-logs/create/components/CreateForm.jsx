@@ -22,7 +22,7 @@ import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams, generateTimeAndToolPrefix, getIdDefaultValueResponse, isHavePermissionOnSite
 } from '@jsroot/common/shareScripts';
-import { validateNoOfInquiry, validateMainCategorySubCategory } from '../../../common.functions';
+import { validateNoOfInquiry, validateMainCategorySubCategory, ratings } from '../../../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 export class CreateForm extends Component {
@@ -97,7 +97,8 @@ export class CreateForm extends Component {
             solution: '',
             isUseDefaultCommunicationTool: true,
             isUseDefaultLanguage: true,
-            isUseDefaultCountry: true
+            isUseDefaultCountry: true,
+            rating: 0
         };
     };
 
@@ -482,7 +483,8 @@ export class CreateForm extends Component {
             mainCategoryIds: values.mainCategoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
             subCategoryIds: values.subCategoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
             isUseDefaultCommunicationTool: values.isUseDefaultCommunicationTool,
-            relatedCustomerList: this.getRelatedCustomers()
+            relatedCustomerList: this.getRelatedCustomers(),
+            rating: parseInt(values.rating, 10)
         };
 
         this.reVerifyInactiveSiteAndConfirm(usernames, params, setSubmitting, values);
@@ -885,6 +887,16 @@ export class CreateForm extends Component {
                         <Form.Label className="custom-label">{LangHelper.getResource('LicenseeType')}</Form.Label>
                         <Form.Group className="custom-input">
                             <Form.Control as="select" disabled size="sm" className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
+                            </Form.Control>
+                        </Form.Group>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group className="pt-2 custom-form-group">
+                        <Form.Label className="custom-label">{LangHelper.getResource('Rating')}</Form.Label>
+                        <Form.Group className="custom-input">
+                            <Form.Control as="select" size="sm" className="shadow-none" name="rating" value={values.rating} id="rating" onChange={handleChange}>
+                                {ratings.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
                             </Form.Control>
                         </Form.Group>
                     </Form.Group>
