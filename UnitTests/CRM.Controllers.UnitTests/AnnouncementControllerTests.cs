@@ -21,7 +21,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
-    using NSubstitute.ReceivedExtensions;
     using Xunit;
 
     public class AnnouncementControllerTests

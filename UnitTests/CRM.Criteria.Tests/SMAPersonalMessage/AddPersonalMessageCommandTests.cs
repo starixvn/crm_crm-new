@@ -1,6 +1,5 @@
 ﻿namespace CRM.Criteria.Tests.SMAPersonalMessage
 {
-    using CRM.Criteria.NotificationTemplate;
     using CRM.Criteria.SMAPersonalMessage;
     using Xunit;
     public class AddPersonalMessageCommandTests

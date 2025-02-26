@@ -1,7 +1,6 @@
 ﻿namespace CRM.Criteria.Tests.Customer
 {
     using CRM.Criteria.Customer;
-    using CRM.Criteria.NotificationList;
     using Xunit;
 
     public class CheckCustomerExistsOnCrmCriteriaTests

@@ -3,13 +3,8 @@
     using System;
     using System.Collections.Generic;
     using CRM.Criteria.Feedback;
-    using CRM.Models;
-    using CRM.Models.Common;
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.AddCustomerFeedback;
-    using CRM.Models.Setting;
-    using Microsoft.AspNetCore.Mvc.ViewEngines;
-    using Telegram.Bot.Types;
     using Xunit;
 
     public class EditCustomerNewManualFeedbackCommandTests

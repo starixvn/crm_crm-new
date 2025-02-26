@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoFixture;
-using CRM.Core.Enumerables;
-using CRM.Models.AdminTool.CategoryClassification;
 using CRM.Models.NotificationCenter;
 using CRM.Resources;
 using CRM.Services.UnitTests.ExportExcel.TestableClasses;
 using NSubstitute;
-using NSubstitute.Core;
 using OfficeOpenXml.Style;
 using Xunit;
 

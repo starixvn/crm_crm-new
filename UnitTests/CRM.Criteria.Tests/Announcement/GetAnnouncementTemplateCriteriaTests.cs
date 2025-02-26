@@ -1,5 +1,4 @@
 ﻿using CRM.Criteria.Announcement;
-using CRM.Criteria.ChatTypeMapping;
 using Xunit;
 
 namespace CRM.Criteria.Tests.Announcement

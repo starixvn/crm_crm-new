@@ -17,9 +17,7 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;

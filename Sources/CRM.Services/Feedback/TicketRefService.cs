@@ -27,6 +27,7 @@
         {
             this.baseService = baseService;
             this.configuration = configuration;
+            this.httpClientFactory = httpClientFactory;
         }
         public async Task<TicketInfo> GetTicketByRefNoAsync(long refno)
         {

@@ -2,17 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.HeadlineNotification;
     using CRM.Core.Models;
     using CRM.Core.Services;
-    using CRM.Criteria.NotificationType;
     using CRM.Criteria.SMAPersonalMessage;
-    using CRM.Models.NotificationType;
     using CRM.Models.SMAPersonalMessage;
     using CRM.Services;
     using Fanex.NAP.Client;

@@ -1,8 +1,6 @@
 ﻿namespace CRM.Criteria.Tests.Feedback
 {
-    using System.Collections.Generic;
     using CRM.Criteria.Feedback;
-    using CRM.Models.Feedback;
     using Xunit;
 
     public class GetCustomerNewManualFeedbackByIdCriteriaTests

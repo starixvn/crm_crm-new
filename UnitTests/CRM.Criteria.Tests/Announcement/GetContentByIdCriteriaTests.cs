@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CRM.Criteria.Announcement;
+﻿using CRM.Criteria.Announcement;
 using Xunit;
 
 namespace CRM.Criteria.Tests.Announcement

@@ -22,7 +22,6 @@
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Feedback.AddCustomerFeedback;
     using NSubstitute;
     using Xunit;
     using static Fanex.NAP.Client.Helpers.Business.Constant;

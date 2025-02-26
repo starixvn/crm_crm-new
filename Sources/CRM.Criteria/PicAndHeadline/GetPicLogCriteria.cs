@@ -1,7 +1,6 @@
 ﻿namespace CRM.Criteria.PicAndHeadline
 {
     using System;
-    using Fanex.Data;
     using Fanex.Data.Repository;
 
     public class GetPicLogCriteria : CriteriaBase

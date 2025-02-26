@@ -2,9 +2,7 @@
 {
     using System.Collections.Generic;
     using CRM.Criteria.Announcement;
-    using CRM.Criteria.ChatTypeMapping;
     using CRM.Models.Announcement;
-    using CRM.Models.NotificationTemplate;
     using Xunit;
 
     public class EditAnnouncementCommandTests

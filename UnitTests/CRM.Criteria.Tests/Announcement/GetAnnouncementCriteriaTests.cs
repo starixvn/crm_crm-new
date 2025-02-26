@@ -2,7 +2,6 @@
 namespace CRM.Criteria.Tests.Announcement
 {
     using CRM.Criteria.Announcement;
-    using CRM.Criteria.ChatTypeMapping;
     using Xunit;
     public class GetAnnouncementCriteriaTests
     {

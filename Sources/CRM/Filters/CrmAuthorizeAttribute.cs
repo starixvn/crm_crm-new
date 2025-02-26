@@ -1,7 +1,6 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
-    using CRM.Core.Services;
     using Fanex.Logging;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client;
@@ -10,7 +9,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.IdentityModel.Logging;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
     public class CrmAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
