@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Website", "CRM.Website\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Controllers", "Sources\CRM.Controllers\CRM.Controllers.csproj", "{E0B0ABC6-0B75-4379-9E98-E0846EF1D12C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Core", "Sources\CRM.Core\CRM.Core.csproj", "{DB3EE042-9777-4FF4-A060-E245592DC5D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM", "Sources\CRM\CRM.csproj", "{DB3EE042-9777-4FF4-A060-E245592DC5D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Criteria", "Sources\CRM.Criteria\CRM.Criteria.csproj", "{4F3861C6-92C6-4722-B62E-0C1C03CA53B5}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.ViewModels", "Sources\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Controllers.UnitTests", "UnitTests\CRM.Controllers.UnitTests\CRM.Controllers.UnitTests.csproj", "{804B5A63-9B75-4B7B-B87B-33809CA38F93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Core.UnitTests", "UnitTests\CRM.Core.UnitTests\CRM.Core.UnitTests.csproj", "{AFDC1E9A-337A-4728-A40C-7423D118F487}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.UnitTests", "UnitTests\CRM.UnitTests\CRM.UnitTests.csproj", "{AFDC1E9A-337A-4728-A40C-7423D118F487}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Criteria.Tests", "UnitTests\CRM.Criteria.Tests\CRM.Criteria.Tests.csproj", "{E30546C7-A232-4B11-A74C-3858E67F8FF7}"
 EndProject

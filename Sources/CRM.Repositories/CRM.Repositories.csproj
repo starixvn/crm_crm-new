@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
+        <ProjectReference Include="..\CRM\CRM.csproj" />
         <ProjectReference Include="..\CRM.Criteria\CRM.Criteria.csproj" />
         <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
     </ItemGroup>

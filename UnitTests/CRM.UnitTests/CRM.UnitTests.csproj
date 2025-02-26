@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources\CRM.Core\CRM.Core.csproj" />
+    <ProjectReference Include="..\..\Sources\CRM\CRM.csproj" />
   </ItemGroup>
 
 </Project>

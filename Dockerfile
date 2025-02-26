@@ -10,7 +10,7 @@ WORKDIR /src
 
 COPY ["CRM.Website/CRM.Website.csproj", "CRM.Website/"]
 COPY ["Sources/CRM.Controllers/CRM.Controllers.csproj", "Sources/CRM.Controllers/"]
-COPY ["Sources/CRM.Core/CRM.Core.csproj", "Sources/CRM.Core/"]
+COPY ["Sources/CRM/CRM.csproj", "Sources/CRM/"]
 COPY ["Sources/CRM.Resources/CRM.Resources.csproj", "Sources/CRM.Resources/"]
 COPY ["Sources/CRM.Models/CRM.Models.csproj", "Sources/CRM.Models/"]
 COPY ["Sources/CRM.Services/CRM.Services.csproj", "Sources/CRM.Services/"]
