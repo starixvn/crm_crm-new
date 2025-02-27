@@ -1,5 +1,4 @@
-﻿using System.IO;
-using CRM.Core.Extensions;
+﻿using CRM.Core.Extensions;
 using CRM.Core.Middlewares;
 using CRM.Services.Extensions;
 using CRM.Website;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using ONEbook.UM.DependencyInjection;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -36,7 +36,6 @@ services.AddHealthChecks();
 services.AddControllersWithViews(
     mvcOption => mvcOption.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
 ).AddNewtonsoftJson();
-
 
 var app = builder.Build();
 var env = app.Environment;
@@ -65,7 +64,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCookiePolicy();
 app.UseSession();
-app.UseHealthChecks("/Whoami");
+app.MapHealthChecks("/whoami").AllowAnonymous();
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
