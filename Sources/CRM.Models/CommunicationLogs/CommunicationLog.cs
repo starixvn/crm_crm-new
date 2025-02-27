@@ -80,5 +80,7 @@
                 totalDays.Minutes,
                 totalDays.Seconds);
         }
+
+        public int Rating { get; set; }
     }
 }
