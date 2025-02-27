@@ -3,7 +3,7 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import { Button, Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import VerifyCustomer from '@jsroot/components/VerifyCustomer';
-import { validateNoOfInquiry } from '../../feedback/common.functions';
+import { validateNoOfInquiry, ratings } from '../../feedback/common.functions';
 import UnderlineButton from '@jsroot/common/underlineButton';
 
 export default class VerifySection extends PureComponent {
@@ -33,6 +33,18 @@ export default class VerifySection extends PureComponent {
                                     value={verifySection.noInquiries} min={1} max={3200} className="shadow-none" autoComplete="off"
                                     onInput={validateNoOfInquiry} onChange={event => handleChangeVerifySection(event.target.name, event.target.value)}
                                 />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="6" md="6">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="rating">{LangHelper.getResource('Rating')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="rating" id="rating" value={verifySection.rating} onChange={event => handleChangeVerifySection(event.target.name, event.target.value)}
+                                >
+                                    {ratings.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                                </Form.Control>
                             </Col>
                         </Form.Group>
                     </Col>

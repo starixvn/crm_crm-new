@@ -27,6 +27,7 @@ import {
 import { validateMainCategorySubCategory } from '../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import WithNavigation from '@jsroot/components/WithNavigation';
+import ReminderRating from '../../../components/ReminderRating';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -1143,8 +1144,9 @@ export class AppContainer extends Component {
         );
     };
 
-    renderComfirmChatTypeMapping() {
+    renderComfirmChatTypeMapping(rating) {
         return <>
+            <ReminderRating value={rating}/>
             <div className="confirm-headline">{LangHelper.getResource('ConfirmContentHeadlineCommunicationInfo')}</div>
             {
                 this.state.checkChattypeMappingDialog.data.map(item => {
@@ -1178,6 +1180,7 @@ export class AppContainer extends Component {
         if (feedback === null || settings === null || customerInfo === null) {
             return null;
         }
+        const rating = this.formik?.values.rating;
 
         return (
             <Fragment>
@@ -1203,6 +1206,7 @@ export class AppContainer extends Component {
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             <>
+                                <ReminderRating value={rating}/>
                                 <div>Are you sure you want to Add or Update the Feedback/Log?</div>
                                 {
                                     this.state.fieldInput.isOverwrite && 
@@ -1231,7 +1235,7 @@ export class AppContainer extends Component {
                     <ConfirmPopup
                         className='confirm-headline-modal'
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
-                        content={this.renderComfirmChatTypeMapping()}
+                        content={this.renderComfirmChatTypeMapping(rating)}
                         size='lg'
                         onSubmit={() => {
                             this.editHeadlineCommunicationPic();

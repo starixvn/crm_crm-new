@@ -479,6 +479,7 @@
     RelatedCustomer: 'Related Customer',
     RelatedTo: 'Related To',
     Remark: 'Remark',
+    ReminderRating: 'Reminder: Please update the Rating before saving. Thank you!',
     Remove: 'Remove',
     RemoveAndAssign: 'Remove & Assign',
     RemoveAssignmentSuccessfully: 'Remove {0} assignment successfully!',
