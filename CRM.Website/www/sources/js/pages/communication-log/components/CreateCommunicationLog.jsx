@@ -729,7 +729,6 @@ export class CreateCommunicationLog extends Component {
                             title={LangHelper.getResource('ConfirmIgnoreChanges')}
                             content={
                                 <div>
-                                    <ReminderRating value={verifySection.rating}/>
                                     <div>{LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnInput'), 'communication')}</div>
                                     <div>{LangHelper.getResource('ConfirmIgnoreTheseChanges')}</div>
                                 </div>

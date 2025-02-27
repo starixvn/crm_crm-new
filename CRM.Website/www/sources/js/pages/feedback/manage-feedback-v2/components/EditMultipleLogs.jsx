@@ -314,7 +314,8 @@ export class EditMultipleLogs extends Component {
                 description: isChecked,
                 solution: isChecked,
                 reviewed: isChecked,
-                review: isChecked
+                review: isChecked,
+                rating: isChecked
             }
         });
     };

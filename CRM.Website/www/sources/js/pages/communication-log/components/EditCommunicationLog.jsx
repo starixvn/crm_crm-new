@@ -613,7 +613,6 @@ export class EditCommunicationLog extends Component {
                             size='md'
                             content={
                                 <div>
-                                    <ReminderRating value={verifySection.rating}/>
                                     <div>{LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnInput'), 'communication')}</div>
                                     <div>{LangHelper.getResource('ConfirmIgnoreTheseChanges')}</div>
                                 </div>
