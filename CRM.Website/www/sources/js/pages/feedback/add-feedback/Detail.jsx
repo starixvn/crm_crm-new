@@ -305,7 +305,6 @@ export default class Detail extends PureComponent {
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                     name="rating" id="rating" value={values.rating} onChange={handleChange}
                                 >
-                                    <option value="" hidden disabled />
                                     {ratings.map(item => renderOptions(item.value, item.id))}
                                 </Form.Control>
                             </Col>

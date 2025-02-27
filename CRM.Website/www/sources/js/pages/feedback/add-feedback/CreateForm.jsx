@@ -43,6 +43,7 @@ import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import ReminderRating from '../../../components/ReminderRating';
 
 export class CreateForm extends Component {
     constructor(props) {
@@ -675,8 +676,9 @@ export class CreateForm extends Component {
         );
     };
 
-    renderComfirmChatTypeMapping() {
+    renderComfirmChatTypeMapping(rating) {
         return <>
+            <ReminderRating value={rating}/>
             <div className="confirm-headline">{LangHelper.getResource('ConfirmContentHeadlineCommunicationInfo')}</div>
             {
                 this.state.checkChattypeMappingDialog.data.map(item => {
@@ -735,6 +737,7 @@ export class CreateForm extends Component {
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             <>
+                                <ReminderRating value={values.rating}/>
                                 <div dangerouslySetInnerHTML={{ __html: this.props.confirmCreateGuestDialog.confirmMessage }} />
                                 {
                                     this.state.customerInfo.isOverwriteInfo &&
@@ -761,7 +764,12 @@ export class CreateForm extends Component {
                     this.state.checkDuplicateDialog.show &&
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('Warning')}
-                        contents={<div>{`This customer has a similar log with running number ${this.state.duplicateFeedbackId}. Do you want to create this log?`}</div>}
+                        contents={
+                            <>
+                                <ReminderRating value={values.rating}/>
+                                <div>{`This customer has a similar log with running number ${this.state.duplicateFeedbackId}. Do you want to create this log?`}</div>
+                            </>
+                        }
                         buttons={[
                             <Button variant="primary" size="sm" disabled={isSubmitting} onClick={this.checkChattypeMapping}>
                                 {LangHelper.getResource('OK')}
@@ -777,7 +785,7 @@ export class CreateForm extends Component {
                     <ConfirmPopup
                         className='confirm-headline-modal'
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
-                        content={this.renderComfirmChatTypeMapping()}
+                        content={this.renderComfirmChatTypeMapping(values.rating)}
                         size='lg'
                         onSubmit={() => {
                                 this.editHeadlineCommunicationPic();

@@ -25,6 +25,8 @@ import {
 import { validateNoOfInquiry, validateMainCategorySubCategory, ratings } from '../../../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import ReminderRating from '../../../../../components/ReminderRating';
+
 export class CreateForm extends Component {
     static defaultProps = {
         verifyCustomerResults: [],
@@ -1029,7 +1031,12 @@ export class CreateForm extends Component {
                     confirmCreateMultipleLogsDialog.show &&
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('Confirmation')}
-                        contents={<div dangerouslySetInnerHTML={{ __html: confirmCreateMultipleLogsDialog.confirmMessage }} />}
+                        contents={
+                            <>
+                                <ReminderRating value={this.formik?.values.rating}/>
+                                <div dangerouslySetInnerHTML={{ __html: confirmCreateMultipleLogsDialog.confirmMessage }} />
+                            </>
+                        }
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleCreateMultipleLogs}>
                                 {LangHelper.getResource('OK')}

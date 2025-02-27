@@ -15,7 +15,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import UnderlineButton from '@jsroot/common/underlineButton';
-import { validateNoOfInquiry } from '../../common.functions';
+import { validateNoOfInquiry, ratings } from '../../common.functions';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { getInitFormik, getValidateFormik } from '../common.functions.js';
 import {
@@ -24,6 +24,7 @@ import {
 } from '@jsroot/common/shareScripts';
 import { changeSiteSetting } from '@jsroot/common/shareScripts';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import ReminderRating from '../../../../components/ReminderRating.jsx';
 
 export class EditMultipleLogs extends Component {
     static propTypes = {
@@ -77,7 +78,8 @@ export class EditMultipleLogs extends Component {
                 description: false,
                 solution: false,
                 reviewed: false,
-                review: false
+                review: false,
+                rating: false
             },
             editResult: null
         };
@@ -312,7 +314,8 @@ export class EditMultipleLogs extends Component {
                 description: isChecked,
                 solution: isChecked,
                 reviewed: isChecked,
-                review: isChecked
+                review: isChecked,
+                rating: isChecked
             }
         });
     };
@@ -693,6 +696,24 @@ export class EditMultipleLogs extends Component {
                         />
                     </Col>
                 </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2" htmlFor="rating">
+                        {LangHelper.getResource('Rating')}
+                    </Form.Label>
+                    <Col sm="4" md="4" className="d-flex">
+                        <Form.Control as="select" size="sm" className='shadow-none select-width-sm mr-2'
+                            id="rating" name="rating"
+                            value={values.rating} onChange={handleChange}
+                        >
+                            {ratings.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                        </Form.Control>
+                        <input type='checkbox'
+                            name='rating'
+                            onChange={this.handleChangeCheckbox}
+                            checked={isCheck.rating}
+                        />
+                    </Col>
+                </Form.Group>
             </div>
         );
     };
@@ -975,7 +996,9 @@ export class EditMultipleLogs extends Component {
             isUpdateCategory: isCheck.mainCategory,
             noInquiries: values.noInquiries === '' ? 0 : parseInt(values.noInquiries, 10),
             isUpdateNoInquiries: isCheck.inquiry,
-            updateReviewedMode: this.reviewMode(isCheck.reviewed, values.review)
+            updateReviewedMode: this.reviewMode(isCheck.reviewed, values.review),
+            isUpdateRating: isCheck.rating,
+            rating: parseInt(values.rating, 10)
         };
         this.confirmEditMultipleLogs(params);
     };
@@ -1058,7 +1081,12 @@ export class EditMultipleLogs extends Component {
                     confirmEditMultipleLogsDialog.show &&
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('ConfirmMultipleUpdates')}
-                        contents={<div>{LangHelper.getResource('ConfirmEditMultipleLogsContent')}</div>}
+                        contents={
+                            <>
+                                <ReminderRating value={this.formik?.values.rating}/>
+                                <div>{LangHelper.getResource('ConfirmEditMultipleLogsContent')}</div>
+                            </>
+                        }
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleConfirmEditMultipleLogs}>
                                 {LangHelper.getResource('OK')}

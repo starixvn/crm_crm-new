@@ -31,7 +31,8 @@ export const getInitFormik = (communicationLog, communicationSettings, usernames
         endTime: new Date(communicationLog.resolutionDate),
         review: communicationLog.review,
         reviewer: communicationLog.reviewer,
-        solveDate: DateTimeService.toShortDateTimeFormat(communicationLog.solveDate)
+        solveDate: DateTimeService.toShortDateTimeFormat(communicationLog.solveDate),
+        rating: communicationLog.rating
     };
 };
 

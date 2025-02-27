@@ -104,6 +104,10 @@
 
         public int NoInquiries { get; set; }
 
+        public bool IsUpdateRating { get; set; }
+
+        public int Rating { get; set; }
+
         public string IP { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_GuestFeedbackUpd_Multiple";
