@@ -52,10 +52,15 @@ else
 }
 
 app.UseStaticFiles();
+
+var compositeProvider = new CompositeFileProvider(
+    env.WebRootFileProvider,
+    new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "www/dist")));
+env.WebRootFileProvider = compositeProvider;
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "www", "dist")),
-    RequestPath = ""
+    FileProvider = compositeProvider,
+    RequestPath = "/www/dist"
 });
 
 app.UseRouting();

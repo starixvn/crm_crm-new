@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <base href="@Url.Content("~/")">
-    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <div class="crm-container" id="crm-container">
@@ -59,6 +59,6 @@
         <script asp-src-include="~/js/pro/lib/vendors.*.js" asp-append-version="true"></script>
         <script asp-src-include="~/js/pro/lib/lang-en-US.*.js" asp-append-version="true"></script>
     </environment>
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
