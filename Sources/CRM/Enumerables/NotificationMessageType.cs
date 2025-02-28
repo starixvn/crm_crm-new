@@ -1,10 +1,9 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum NotificationMessageType
 {
-    public enum NotificationMessageType
-    {
-        PlainText = 0,
-        Html,
-        Image,
-        FullImage
-    }
+    PlainText = 0,
+    Html,
+    Image,
+    FullImage
 }

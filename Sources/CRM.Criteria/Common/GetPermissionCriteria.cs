@@ -1,7 +1,6 @@
-﻿namespace CRM.Criteria.Common
+﻿namespace CRM.Criteria.Common;
+
+public class GetPermissionCriteria
 {
-    public class GetPermissionCriteria
-    {
-        public string FunctionKey { get; set; }
-    }
+    public string FunctionKey { get; set; }
 }

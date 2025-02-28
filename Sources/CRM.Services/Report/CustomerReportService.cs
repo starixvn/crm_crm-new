@@ -1,50 +1,39 @@
-﻿namespace CRM.Services.Report
+﻿namespace CRM.Services.Report;
+
+using System.Threading.Tasks;
+using CRM.Criteria.Report.CustomerReport;
+using CRM.Models.Report.CustomerReport;
+
+public interface ICustomerReportService
 {
-    using System.Threading.Tasks;
-    using CRM.Core.Services;
-    using CRM.Criteria.Report.CustomerReport;
-    using CRM.Models.Report.CustomerReport;
+    Task<CustomerReportInfo> GetCustomerReportAsync(GetCustomerReportParam param);
+}
 
-    public interface ICustomerReportService
+public class CustomerReportService(IBaseService baseService) : ICustomerReportService
+{
+    public async Task<CustomerReportInfo> GetCustomerReportAsync(GetCustomerReportParam param)
     {
-        Task<CustomerReportInfo> GetCustomerReportAsync(GetCustomerReportParam param);
-    }
-
-    public class CustomerReportService : ICustomerReportService
-    {
-        private readonly IBaseService baseService;
-
-        public CustomerReportService (
-            IBaseService baseService
-        )
+        var criteria = new GetCustomerReportCriteria
         {
-            this.baseService = baseService;
-        }
+            Username = param.Username,
+            Headline = param.Headline,
+            Vip = param.VipId,
+            LanguageId = param.LanguageIds,
+            SiteId = param.SiteIds,
+            RoleId = param.PositionIds,
+            ExcludeIgnoredAcc = param.ExcludeIgnoredAccounts,
+            PageIndex = param.PageIndex,
+            PageSize = param.PageSize
+        };
 
-        public async Task<CustomerReportInfo> GetCustomerReportAsync(GetCustomerReportParam param)
+        var customerInfo = await baseService.GetDataAsync<CustomerInfo>(criteria);
+
+        var customerReportInfo = new CustomerReportInfo
         {
-            var criteria = new GetCustomerReportCriteria
-            {
-                Username = param.Username,
-                Headline = param.Headline,
-                Vip = param.VipId,
-                LanguageId = param.LanguageIds,
-                SiteId = param.SiteIds,
-                RoleId = param.PositionIds,
-                ExcludeIgnoredAcc = param.ExcludeIgnoredAccounts,
-                PageIndex = param.PageIndex,
-                PageSize = param.PageSize
-            };
-
-            var customerInfo = await baseService.GetDataAsync<CustomerInfo>(criteria);
-
-            var customerReportInfo = new CustomerReportInfo
-            {
-                CustomerList = customerInfo,
-                TotalCustomer = criteria.TotalRows
-            };
+            CustomerList = customerInfo,
+            TotalCustomer = criteria.TotalRows
+        };
             
-            return customerReportInfo;
-        }
+        return customerReportInfo;
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace CRM.Models.Report.CategoriesSummaryReport
+﻿namespace CRM.Models.Report.CategoriesSummaryReport;
+
+public enum ChartType
 {
-    public enum ChartType
-    {
-        Summary = 0,
-        Detailed = 1
-    }
+    Summary = 0,
+    Detailed = 1
 }

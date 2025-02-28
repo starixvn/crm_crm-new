@@ -1,13 +1,12 @@
-﻿namespace CRM.Models.NotificationCenter
+﻿namespace CRM.Models.NotificationCenter;
+
+using System;
+
+public class ExcelSiteTicket
 {
-    using System;
+    public int NotificationId { get; set; }
 
-    public class ExcelSiteTicket
-    {
-        public int NotificationId { get; set; }
+    public DateTime EventTime { get; set; }
 
-        public DateTime EventTime { get; set; }
-
-        public string EventName { get; set; }
-    }
+    public string EventName { get; set; }
 }

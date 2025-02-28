@@ -1,16 +1,15 @@
-﻿namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback;
+
+using Models;
+
+public class EditNoOfInquiryCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public int FeedbackId { get; set; }
+    public int? NoInquiries { get; set; }
+    public int UserId { get; set; }
+    public string IP { get; set; }
 
-    public class EditNoOfInquiryCommand : BaseNonQueryCommand
-    {
-        public int FeedbackId { get; set; }
-        public int? NoInquiries { get; set; }
-        public int UserId { get; set; }
-        public string IP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_CustomerFeedbackQuickUpd";
 
-        public override string GetSettingKey() => "Acc_CRM_CustomerFeedbackQuickUpd";
-
-        public override bool IsValid() => FeedbackId > 0;
-    }
+    public override bool IsValid() => FeedbackId > 0;
 }

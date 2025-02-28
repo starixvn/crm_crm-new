@@ -1,31 +1,30 @@
-﻿namespace CRM.Criteria.Dashboard
+﻿namespace CRM.Criteria.Dashboard;
+
+using Fanex.Data;
+using Models;
+
+public class EditCustomerVerifyCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
-    using Fanex.Data;
+    [SpParam(SqlParamName = "CustId")]
+    public int CustomerId { get; set; }
 
-    public class EditCustomerVerifyCommand : BaseNonQueryCommand
-    {
-        [SpParam(SqlParamName = "CustId")]
-        public int CustomerId { get; set; }
+    public bool IsVerifyEmail { get; set; }
 
-        public bool IsVerifyEmail { get; set; }
+    public bool IsVerifyPassport { get; set; }
 
-        public bool IsVerifyPassport { get; set; }
+    public bool IsVerifyBirthday { get; set; }
 
-        public bool IsVerifyBirthday { get; set; }
+    public bool IsVerifySecretCode { get; set; }
 
-        public bool IsVerifySecretCode { get; set; }
+    public bool IsVerifyBetCredit { get; set; }
 
-        public bool IsVerifyBetCredit { get; set; }
+    public bool IsVerifyGivenCredit { get; set; }
 
-        public bool IsVerifyGivenCredit { get; set; }
+    public int UserId { get; set; }
 
-        public int UserId { get; set; }
+    public string IP { get; set; }
 
-        public string IP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_CustomerInformationVerify";
 
-        public override string GetSettingKey() => "Acc_CRM_CustomerInformationVerify";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

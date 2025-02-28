@@ -1,11 +1,10 @@
-﻿namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback;
+
+using Fanex.Data.Repository;
+
+public class BalanceUpDayCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public override string GetSettingKey() => "Age_SelBalanceUpDay";
 
-    public class BalanceUpDayCriteria : CriteriaBase
-    {
-        public override string GetSettingKey() => "Age_SelBalanceUpDay";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

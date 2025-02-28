@@ -1,17 +1,16 @@
-﻿namespace CRM.Criteria.Common
+﻿namespace CRM.Criteria.Common;
+
+using Fanex.Data.Repository;
+
+public class GetHeadlinesCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public int? Limit { get; set; }
 
-    public class GetHeadlinesCriteria : CriteriaBase
-    {
-        public int? Limit { get; set; }
+    public string Username { get; set; }
 
-        public string Username { get; set; }
+    public bool? ExcludeNotAssignedGroup { get; set; }
 
-        public bool? ExcludeNotAssignedGroup { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_HeadlineSel";
 
-        public override string GetSettingKey() => "Acc_CRM_HeadlineSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

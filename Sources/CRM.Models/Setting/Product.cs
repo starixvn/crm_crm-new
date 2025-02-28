@@ -1,17 +1,16 @@
-﻿namespace CRM.Models.Setting
+﻿namespace CRM.Models.Setting;
+
+using System;
+using System.Collections.Generic;
+
+[Serializable]
+public class Product : SettingRelation
 {
-    using System;
-    using System.Collections.Generic;
+    public string Name { get; set; }
 
-    [Serializable]
-    public class Product : SettingRelation
-    {
-        public string Name { get; set; }
+    public int ParentId { get; set; }
 
-        public int ParentId { get; set; }
+    public int GrandParentId { get; set; }
 
-        public int GrandParentId { get; set; }
-
-        public IList<Product> ChildSettings { get; set; }
-    }
+    public IList<Product> ChildSettings { get; set; }
 }

@@ -1,9 +1,8 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum UserRole
 {
-    public enum UserRole
-    {
-        None = -1,
-        ALL = 0,
-        NormalStaff = 2
-    }
+    None = -1,
+    ALL = 0,
+    NormalStaff = 2
 }

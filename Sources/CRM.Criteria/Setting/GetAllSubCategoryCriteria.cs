@@ -1,18 +1,17 @@
-﻿namespace CRM.Criteria.Setting
+﻿namespace CRM.Criteria.Setting;
+
+using Constants;
+using Fanex.Data.Repository;
+
+public class GetAllSubCategoryCriteria : CriteriaBase
 {
-    using CRM.Core.Constants;
-    using Fanex.Data.Repository;
+    public int? MainCategoryId { get; set; }
 
-    public class GetAllSubCategoryCriteria : CriteriaBase
-    {
-        public int? MainCategoryId { get; set; }
+    public byte UserRole { get; } = Constants.UserRole;
 
-        public byte UserRole { get; } = Constants.UserRole;
+    public byte Active { get; set; }
 
-        public byte Active { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_SubCategoryList";
 
-        public override string GetSettingKey() => "Acc_CRM_SubCategoryList";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

@@ -1,41 +1,35 @@
-﻿namespace CRM.Models.InformHeadline
+﻿namespace CRM.Models.InformHeadline;
+
+using System;
+
+public class EditInform
 {
-    using System;
-    public class EditInform
+    private const int NeverTouchStatusId = 45006;
+
+    private int _informHeadlineStatusId;
+
+    public int HeadlineId { get; set; }
+
+    public int GroupId { get; set; }
+
+    public string Username { get; set; }
+
+    public DateTime? UpdatedTime { get; set; }
+
+    public string ClientUpdatedTime { get; set; }
+
+    public int InformHeadlineStatusId
     {
-        private const int NeverTouchStatusId = 45006;
+        get => _informHeadlineStatusId == 0 ? NeverTouchStatusId : _informHeadlineStatusId;
 
-        private int _informHeadlineStatusId;
-
-        public int HeadlineId { get; set; }
-
-        public int GroupId { get; set; }
-
-        public string Username { get; set; }
-
-        public DateTime? UpdatedTime { get; set; }
-
-        public string ClientUpdatedTime { get; set; }
-
-        public int InformHeadlineStatusId
-        {
-            get
-            {
-                return _informHeadlineStatusId == 0 ? NeverTouchStatusId : _informHeadlineStatusId;
-            }
-
-            set
-            {
-                _informHeadlineStatusId = value;
-            }
-        }
-
-        public string Remark { get; set; }
-
-        public string Handler { get; set; }
-
-        public int Extension { get; set; }
-
-        public int ProductStatus { get; set; }
+        set => _informHeadlineStatusId = value;
     }
+
+    public string Remark { get; set; }
+
+    public string Handler { get; set; }
+
+    public int Extension { get; set; }
+
+    public int ProductStatus { get; set; }
 }

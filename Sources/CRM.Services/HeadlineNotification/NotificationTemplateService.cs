@@ -1,120 +1,109 @@
-﻿namespace CRM.Services
+﻿namespace CRM.Services.HeadlineNotification;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using CRM.Criteria.NotificationTemplate;
+using CRM.Extensions.XML;
+using CRM.Models.NotificationTemplate;
+using Fanex.NAP.Client;
+using Models;
+
+public interface INotificationTemplateService
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Web;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
-    using CRM.Criteria.NotificationTemplate;
-    using CRM.Models.NotificationTemplate;
-    using Fanex.NAP.Client;
+    Task<IEnumerable<NotificationTemplate>> GetAsync(GetNotificationTemplateParam param);
 
-    public interface INotificationTemplateService
+    Task<NotificationTemplate> GetByIdAsync(int id);
+
+    Task<CommandResult> CreateAsync(CreateNotificationTemplate model);
+
+    Task<CommandResult> EditAsync(EditNotificationTemplate model);
+
+    Task<CommandResult> DeleteAsync(DeleteNotificationTemplate model);
+}
+
+public class NotificationTemplateService(
+    INapSession napSession,
+    IBaseService baseService) : INotificationTemplateService
+{
+    public async Task<IEnumerable<NotificationTemplate>> GetAsync(GetNotificationTemplateParam param)
     {
-        Task<IEnumerable<NotificationTemplate>> GetAsync(GetNotificationTemplateParam param);
+        var criteria = new GetNotificationTemplateCriteria
+        {
+            NotificationTypeId = param.NotificationTypeId,
+            NotificationTemplateName = param.NotificationTemplateName,
+            PageIndex = param.PageIndex,
+            PageSize = param.PageSize
+        };
+        var templates = await baseService.FetchMultipleAsync<NotificationTemplate, NotificationTemplateContent>(criteria);
+        param.TotalRows = criteria.TotalRows;
 
-        Task<NotificationTemplate> GetByIdAsync(int id);
-
-        Task<CommandResult> CreateAsync(CreateNotificationTemplate model);
-
-        Task<CommandResult> EditAsync(EditNotificationTemplate model);
-
-        Task<CommandResult> DeleteAsync(DeleteNotificationTemplate model);
+        return templates.Item1;
     }
 
-    public class NotificationTemplateService : INotificationTemplateService
+    public async Task<NotificationTemplate> GetByIdAsync(int id)
     {
-        private readonly INapSession napSession;
-        private readonly IBaseService baseService;
-
-        public NotificationTemplateService(
-            INapSession napSession,
-            IBaseService baseService)
+        var criteria = new GetNotificationTemplateCriteria
         {
-            this.napSession = napSession;
-            this.baseService = baseService;
+            NotificationTemplateId = id
+        };
+        var tuple = await baseService.FetchMultipleAsync<NotificationTemplate, NotificationTemplateContent>(criteria);
+        var template = tuple.Item1.FirstOrDefault();
+        if (template != null)
+        {
+            template.Contents = tuple.Item2.Select(x => new NotificationTemplateContent
+            {
+                LanguageId = x.LanguageId,
+                Language = x.Language,
+                Content = HttpUtility.HtmlDecode(x.Content)
+            });
         }
 
-        public async Task<IEnumerable<NotificationTemplate>> GetAsync(GetNotificationTemplateParam param)
+        return template;
+    }
+
+    public async Task<CommandResult> CreateAsync(CreateNotificationTemplate model)
+    {
+        var command = new CreateNotificationTemplateCommand
         {
-            var criteria = new GetNotificationTemplateCriteria
-            {
-                NotificationTypeId = param.NotificationTypeId,
-                NotificationTemplateName = param.NotificationTemplateName,
-                PageIndex = param.PageIndex,
-                PageSize = param.PageSize
-            };
-            var templates = await baseService.FetchMultipleAsync<NotificationTemplate, NotificationTemplateContent>(criteria);
-            param.TotalRows = criteria.TotalRows;
+            NotificationTypeId = model.NotificationTypeId,
+            NotificationTemplateName = model.NotificationTemplateName?.Trim(),
+            Title = model.Title?.Trim(),
+            ContentXml = model.Contents.Any() ? model.Contents.ToXML("Contents").ToString() : string.Empty,
+            LoginIP = model.LoginIP,
+            UserId = napSession.UserId
+        };
 
-            return templates.Item1;
-        }
+        return await baseService.ExecuteNonQueryAsync(command);
+    }
 
-        public async Task<NotificationTemplate> GetByIdAsync(int id)
+    public async Task<CommandResult> EditAsync(EditNotificationTemplate model)
+    {
+        var command = new EditNotificationTemplateCommand
         {
-            var criteria = new GetNotificationTemplateCriteria
-            {
-                NotificationTemplateId = id
-            };
-            var tuple = await baseService.FetchMultipleAsync<NotificationTemplate, NotificationTemplateContent>(criteria);
-            var template = tuple.Item1.FirstOrDefault();
-            if (template != null)
-            {
-                template.Contents = tuple.Item2.Select(x => new NotificationTemplateContent
-                {
-                    LanguageId = x.LanguageId,
-                    Language = x.Language,
-                    Content = HttpUtility.HtmlDecode(x.Content)
-                });
-            }
+            NotificationTemplateId = model.NotificationTemplateId,
+            NotificationTypeId = model.NotificationTypeId,
+            NotificationTemplateName = model.NotificationTemplateName?.Trim(),
+            Title = model.Title?.Trim(),
+            ContentXml = model.Contents.Any() ? model.Contents.ToXML("Contents").ToString() : string.Empty,
+            LoginIP = model.LoginIP,
+            UserId = napSession.UserId
+        };
 
-            return template;
-        }
+        return await baseService.ExecuteNonQueryAsync(command);
+    }
 
-        public async Task<CommandResult> CreateAsync(CreateNotificationTemplate model)
+    public async Task<CommandResult> DeleteAsync(DeleteNotificationTemplate model)
+    {
+        var command = new DeleteNotificationTemplateCommand
         {
-            var command = new CreateNotificationTemplateCommand
-            {
-                NotificationTypeId = model.NotificationTypeId,
-                NotificationTemplateName = model.NotificationTemplateName?.Trim(),
-                Title = model.Title?.Trim(),
-                ContentXml = model.Contents.Any() ? model.Contents.ToXML("Contents").ToString() : string.Empty,
-                LoginIP = model.LoginIP,
-                UserId = napSession.UserId
-            };
+            NotificationTemplateId = model.NotificationTemplateId,
+            NotificationTemplateName = model.NotificationTemplateName,
+            LoginIP = model.LoginIP,
+            UserId = napSession.UserId
+        };
 
-            return await baseService.ExecuteNonQueryAsync(command);
-        }
-
-        public async Task<CommandResult> EditAsync(EditNotificationTemplate model)
-        {
-            var command = new EditNotificationTemplateCommand
-            {
-                NotificationTemplateId = model.NotificationTemplateId,
-                NotificationTypeId = model.NotificationTypeId,
-                NotificationTemplateName = model.NotificationTemplateName?.Trim(),
-                Title = model.Title?.Trim(),
-                ContentXml = model.Contents.Any() ? model.Contents.ToXML("Contents").ToString() : string.Empty,
-                LoginIP = model.LoginIP,
-                UserId = napSession.UserId
-            };
-
-            return await baseService.ExecuteNonQueryAsync(command);
-        }
-
-        public async Task<CommandResult> DeleteAsync(DeleteNotificationTemplate model)
-        {
-            var command = new DeleteNotificationTemplateCommand
-            {
-                NotificationTemplateId = model.NotificationTemplateId,
-                NotificationTemplateName = model.NotificationTemplateName,
-                LoginIP = model.LoginIP,
-                UserId = napSession.UserId
-            };
-
-            return await baseService.ExecuteNonQueryAsync(command);
-        }
+        return await baseService.ExecuteNonQueryAsync(command);
     }
 }

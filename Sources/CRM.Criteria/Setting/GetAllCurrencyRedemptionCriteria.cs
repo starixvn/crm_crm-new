@@ -1,11 +1,10 @@
-﻿namespace CRM.Criteria.Setting
+﻿namespace CRM.Criteria.Setting;
+
+using Fanex.Data.Repository;
+
+public class GetAllCurrencyRedemptionCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public override string GetSettingKey() => "Acc_CRM_CurrencyList_Redemption";
 
-    public class GetAllCurrencyRedemptionCriteria : CriteriaBase
-    {
-        public override string GetSettingKey() => "Acc_CRM_CurrencyList_Redemption";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

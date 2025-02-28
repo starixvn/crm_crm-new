@@ -1,30 +1,29 @@
-﻿namespace CRM.Criteria.InformHeadline
+﻿namespace CRM.Criteria.InformHeadline;
+
+using Fanex.Data;
+using Fanex.Data.Repository;
+
+public class GetEditInformsCriteria : CriteriaBase
 {
-    using Fanex.Data;
-    using Fanex.Data.Repository;
+    public int TitleId { get; set; }
 
-    public class GetEditInformsCriteria : CriteriaBase
-    {
-        public int TitleId { get; set; }
+    public byte TypeAccount { get; set; }
 
-        public byte TypeAccount { get; set; }
+    [SpParam(SqlParamName = "Currency")]
+    public string Currencies { get; set; }
 
-        [SpParam(SqlParamName = "Currency")]
-        public string Currencies { get; set; }
+    [SpParam(SqlParamName = "Level")]
+    public string Levels { get; set; }
 
-        [SpParam(SqlParamName = "Level")]
-        public string Levels { get; set; }
+    [SpParam(SqlParamName = "Site")]
+    public string Sites { get; set; }
 
-        [SpParam(SqlParamName = "Site")]
-        public string Sites { get; set; }
+    public byte IsVip { get; set; }
 
-        public byte IsVip { get; set; }
+    [SpParam(SqlParamName = "Ignored")]
+    public bool ExcludeIgnoredAccounts { get; set; }
 
-        [SpParam(SqlParamName = "Ignored")]
-        public bool ExcludeIgnoredAccounts { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_InformHeadlineSearchSel";
 
-        public override string GetSettingKey() => "Acc_CRM_InformHeadlineSearchSel";
-
-        public override bool IsValid() => TitleId > 0;
-    }
+    public override bool IsValid() => TitleId > 0;
 }

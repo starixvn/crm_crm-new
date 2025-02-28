@@ -1,14 +1,13 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum NotificationStatus
 {
-    public enum NotificationStatus
-    {
-        Planned,
-        Sending,
-        Sent,
-        Error,
-        Draft,
-        Resolved,
-        Duplicated,
-        BotBlocked
-    }
+    Planned,
+    Sending,
+    Sent,
+    Error,
+    Draft,
+    Resolved,
+    Duplicated,
+    BotBlocked
 }

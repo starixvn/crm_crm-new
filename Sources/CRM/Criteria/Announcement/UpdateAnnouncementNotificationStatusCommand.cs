@@ -1,13 +1,12 @@
-﻿namespace CRM.Core.Criteria.Announcement
+﻿namespace CRM.Criteria.Announcement;
+
+using Models;
+
+public class UpdateAnnouncementNotificationStatusCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public string XmlData { get; set; }
 
-    public class UpdateAnnouncementNotificationStatusCommand : BaseNonQueryCommand
-    {
-        public string XmlData { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Notification_UpdStatus";
 
-        public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Notification_UpdStatus";
-
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(XmlData);
-    }
+    public override bool IsValid() => !string.IsNullOrWhiteSpace(XmlData);
 }

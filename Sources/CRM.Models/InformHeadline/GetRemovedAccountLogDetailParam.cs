@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.InformHeadline
+﻿namespace CRM.Models.InformHeadline;
+
+public class GetRemovedAccountLogDetailParam
 {
-    public class GetRemovedAccountLogDetailParam
-    {
-        public int LogId { get; set; }
+    public int LogId { get; set; }
 
-        public int PageIndex { get; set; }
+    public int PageIndex { get; set; }
 
-        public int PageSize { get; set; }
-    }
+    public int PageSize { get; set; }
 }

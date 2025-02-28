@@ -1,16 +1,15 @@
-﻿using System.ComponentModel;
+﻿namespace CRM.Enumerables;
 
-namespace CRM.Core.Enumerables
+using System.ComponentModel;
+
+public enum MappingStatus
 {
-    public enum MappingStatus
-    {
-        [Description("Bot Removed")]
-        BotRemoved = 0,
+    [Description("Bot Removed")]
+    BotRemoved = 0,
 
-        [Description("Not Mapped")]
-        NotMapped = 1,
+    [Description("Not Mapped")]
+    NotMapped = 1,
 
-        [Description("Mapped")]
-        Mapped = 2
-    }
+    [Description("Mapped")]
+    Mapped = 2
 }

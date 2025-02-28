@@ -1,12 +1,11 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum FeedbackStatus
 {
-    public enum FeedbackStatus
-    {
-        None = 0,
-        Pending = 11001,
-        Closed = 11002,
-        Solved = 11003,
-        Deleted = 11004,
-        Checked = 1106
-    }
+    None = 0,
+    Pending = 11001,
+    Closed = 11002,
+    Solved = 11003,
+    Deleted = 11004,
+    Checked = 1106
 }

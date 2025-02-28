@@ -1,81 +1,71 @@
-namespace CRM.Controllers
+namespace CRM.Controllers.HeadlineNotification;
+
+using System.Threading.Tasks;
+using Constants;
+using CRM.Criteria.NotificationType;
+using CRM.Models.NotificationType;
+using Filters;
+using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
+using static Fanex.NAP.Client.Helpers.Business.Constant;
+
+[CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Read)]
+public class NotificationTypeController(
+    INotificationTypeService notificationTypeService,
+    ICommonService commonService)
+    : BaseController
 {
-    using System.Threading.Tasks;
-    using CRM.Core.Constants;
-    using CRM.Core.Filters;
-    using CRM.Core.Models;
-    using CRM.Criteria.NotificationType;
-    using CRM.Models.NotificationType;
-    using CRM.Services;
-    using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Client.Helpers.Business.Constant;
-
-    [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Read)]
-    public class NotificationTypeController : BaseController
+    public async Task<IActionResult> GetSettings()
     {
-        private readonly INotificationTypeService notificationTypeService;
-        private readonly ICommonService commonService;
-
-        public NotificationTypeController(
-            INotificationTypeService notificationTypeService,
-            ICommonService commonService)
+        var result = new
         {
-            this.notificationTypeService = notificationTypeService;
-            this.commonService = commonService;
-        }
+            ChatTypes = commonService.GetChatTypes(),
+            Systems = await commonService.GetSystemAsync(),
+            RecipientTypes = await commonService.GetRecipientTypeAsync()
+        };
 
-        public async Task<IActionResult> GetSettings()
+        return Json(result);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> GetNotificationType([FromBody] GetNotificationTypeParam param)
+    {
+        var criteria = new GetNotificationTypeCriteria
         {
-            var result = new
-            {
-                ChatTypes = commonService.GetChatTypes(),
-                Systems = await commonService.GetSystemAsync(),
-                RecipientTypes = await commonService.GetRecipientTypeAsync()
-            };
+            RecipientTypeIds = param.RecipientTypeIds,
+            ChatTypeIds = param.ChatTypeIds,
+            SystemId = param.SystemId,
+            NotificationTypeName = param.NotificationTypeName,
+            PageIndex = param.PageIndex,
+            PageSize = param.PageSize
+        };
 
-            return Json(result);
-        }
+        var notificationTypes = await notificationTypeService.GetNotificationTypeAsync(criteria);
 
-        [HttpPost]
-        public async Task<IActionResult> GetNotificationType([FromBody] GetNotificationTypeParam param)
-        {
-            var criteria = new GetNotificationTypeCriteria
-            {
-                RecipientTypeIds = param.RecipientTypeIds,
-                ChatTypeIds = param.ChatTypeIds,
-                SystemId = param.SystemId,
-                NotificationTypeName = param.NotificationTypeName,
-                PageIndex = param.PageIndex,
-                PageSize = param.PageSize
-            };
+        return Json(new { totalItems = criteria.TotalRows, data = notificationTypes });
+    }
 
-            var notificationTypes = await notificationTypeService.GetNotificationTypeAsync(criteria);
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Host)]
+    public async Task<IActionResult> Create([FromBody] CreateNotificationType model)
+    {
+        var commandResult = await notificationTypeService.CreateAsync(model);
+        return Json(commandResult);
+    }
 
-            return Json(new { totalItems = criteria.TotalRows, data = notificationTypes });
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Host)]
+    public async Task<IActionResult> Edit([FromBody] EditNotificationType model)
+    {
+        var commandResult = await notificationTypeService.EditAsync(model);
+        return Json(commandResult);
+    }
 
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Host)]
-        public async Task<IActionResult> Create([FromBody] CreateNotificationType model)
-        {
-            CommandResult commandResult = await notificationTypeService.CreateAsync(model);
-            return Json(commandResult);
-        }
-
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Host)]
-        public async Task<IActionResult> Edit([FromBody] EditNotificationType model)
-        {
-            CommandResult commandResult = await notificationTypeService.EditAsync(model);
-            return Json(commandResult);
-        }
-
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Host)]
-        public async Task<IActionResult> Delete([FromBody] DeleteNotificationType model)
-        {
-            CommandResult commandResult = await notificationTypeService.DeleteAsync(model);
-            return Json(commandResult);
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Host)]
+    public async Task<IActionResult> Delete([FromBody] DeleteNotificationType model)
+    {
+        var commandResult = await notificationTypeService.DeleteAsync(model);
+        return Json(commandResult);
     }
 }

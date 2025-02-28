@@ -1,13 +1,12 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+using System.ComponentModel;
+
+public enum ChatType
 {
-    using System.ComponentModel;
+    [Description("Group")]
+    Group = 1,
 
-    public enum ChatType
-    {
-        [Description("Group")]
-        Group = 1,
-
-        [Description("Personal")]
-        Personal = 2
-    }
+    [Description("Personal")]
+    Personal = 2
 }

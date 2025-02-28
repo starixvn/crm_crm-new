@@ -1,12 +1,11 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum CustomerStatus
 {
-    public enum CustomerStatus
-    {
-        Open,
-        Locked,
-        Suspended,
-        Closed,
-        Disabled,
-        Active
-    }
+    Open,
+    Locked,
+    Suspended,
+    Closed,
+    Disabled,
+    Active
 }

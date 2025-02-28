@@ -1,13 +1,12 @@
-﻿namespace CRM.Core.Models
-{
-    using CRM.Core.Enumerables;
+﻿namespace CRM.Models;
 
-    public class CurrentCustomer
-    {
-        public int CustId { get; set; }
-        public string Name { get; set; }
-        public bool IsGuest { get; set; }
-        public SiteType? CustType { get; set; }
-        public string SiteLabel { get; set; }
-    }
+using Enumerables;
+
+public class CurrentCustomer
+{
+    public int CustId { get; set; }
+    public string Name { get; set; }
+    public bool IsGuest { get; set; }
+    public SiteType? CustType { get; set; }
+    public string SiteLabel { get; set; }
 }

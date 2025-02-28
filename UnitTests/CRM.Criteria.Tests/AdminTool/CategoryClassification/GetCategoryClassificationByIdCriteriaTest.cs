@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.AdminTool.CategoryClassification
+﻿namespace CRM.Criteria.Tests.AdminTool.CategoryClassification;
+
+using CRM.Criteria.AdminTool.CategoryClassification;
+using Xunit;
+
+public class GetCategoryClassificationByIdCriteriaTest
 {
-    using CRM.Criteria.AdminTool.CategoryClassification;
-    using Xunit;
-
-    public class GetCategoryClassificationByIdCriteriaTest
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
-        {
-            // Arrange
-            var criteria = new GetCategoryClassificationByIdCriteria();
-            var expected = "Acc_CRM_CategoryClassificationSel";
+        // Arrange
+        var criteria = new GetCategoryClassificationByIdCriteria();
+        var expected = "Acc_CRM_CategoryClassificationSel";
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = criteria.GetSettingKey();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
-        {
-            // Arrange
-            var criteria = new GetCategoryClassificationByIdCriteria();
+    [Fact]
+    public void IsValid_WhenCalled_ReturnTrue()
+    {
+        // Arrange
+        var criteria = new GetCategoryClassificationByIdCriteria();
 
-            // Act
-            var actual = criteria.IsValid();
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.Communication
+﻿namespace CRM.Criteria.Tests.Communication;
+
+using CRM.Criteria.Communication;
+using Xunit;
+
+public class GetLogByFeedbackIdCriteriaTests
 {
-    using CRM.Criteria.Communication;
-    using Xunit;
-
-    public class GetLogByFeedbackIdCriteriaTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
-        {
-            //Arrange
-            var criteria = new GetLogByFeedbackIdCriteria();
-            var expected = "Acc_CRM_CommunicationLogSel";
+        //Arrange
+        var criteria = new GetLogByFeedbackIdCriteria();
+        var expected = "Acc_CRM_CommunicationLogSel";
 
-            //Act
-            var actual = criteria.GetSettingKey();
+        //Act
+        var actual = criteria.GetSettingKey();
 
-            //Assert
-            Assert.Equal(expected, actual);
-        }
+        //Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
-        {
-            //Arrange
-            var criteria = new GetLogsByCustomerIdCriteria();
+    [Fact]
+    public void IsValid_WhenCalled_ReturnTrue()
+    {
+        //Arrange
+        var criteria = new GetLogsByCustomerIdCriteria();
 
-            //Act
-            var actual = criteria.IsValid();
+        //Act
+        var actual = criteria.IsValid();
 
-            //Assert
-            Assert.True(actual);
-        }
+        //Assert
+        Assert.True(actual);
     }
 }

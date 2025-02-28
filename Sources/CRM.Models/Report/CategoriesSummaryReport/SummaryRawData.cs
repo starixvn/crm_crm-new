@@ -1,18 +1,18 @@
-﻿namespace CRM.Models.Report.CategoriesSummaryReport
-{    public class SummaryRawData
-    {
-        public int M { get; set; }
+﻿namespace CRM.Models.Report.CategoriesSummaryReport;
 
-        public string Month { get; set; }
+public class SummaryRawData
+{
+    public int M { get; set; }
 
-        public int MainCategoryId { get; set; }
+    public string Month { get; set; }
 
-        public string MainCategory { get; set; }
+    public int MainCategoryId { get; set; }
 
-        public int SubCategoryId { get; set; }
+    public string MainCategory { get; set; }
 
-        public string SubCategory { get; set; }
+    public int SubCategoryId { get; set; }
 
-        public int NoOfIssues { get; set; }
-    }
+    public string SubCategory { get; set; }
+
+    public int NoOfIssues { get; set; }
 }

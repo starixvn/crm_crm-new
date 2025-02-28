@@ -1,22 +1,21 @@
-﻿namespace CRM.Models.AdminTool
+﻿namespace CRM.Models.AdminTool;
+
+using System;
+using Extensions.XML;
+
+[Serializable]
+[XMLName("R")]
+public class JobSettingXML
 {
-    using System;
-    using CRM.Core.Extensions.XML;
+    [XMLName("ID")]
+    public string ID { get; set; }
 
-    [Serializable]
-    [XMLName("R")]
-    public class JobSettingXML
-    {
-        [XMLName("ID")]
-        public string ID { get; set; }
+    [XMLName("SETTING")]
+    public string SETTING { get; set; }
 
-        [XMLName("SETTING")]
-        public string SETTING { get; set; }
+    [XMLName("VALUE")]
+    public string VALUE { get; set; }
 
-        [XMLName("VALUE")]
-        public string VALUE { get; set; }
-
-        [XMLName("SERVICENAME")]
-        public string SERVICENAME { get; set; }
-    }
+    [XMLName("SERVICENAME")]
+    public string SERVICENAME { get; set; }
 }

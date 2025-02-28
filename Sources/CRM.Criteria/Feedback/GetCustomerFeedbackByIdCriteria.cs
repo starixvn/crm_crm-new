@@ -1,16 +1,15 @@
-﻿namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback;
+
+using Constants;
+using Fanex.Data.Repository;
+
+public class GetCustomerFeedbackByIdCriteria : CriteriaBase
 {
-    using CRM.Core.Constants;
-    using Fanex.Data.Repository;
+    public int FeedbackId { get; set; }
 
-    public class GetCustomerFeedbackByIdCriteria : CriteriaBase
-    {
-        public int FeedbackId { get; set; }
+    public byte UserRole { get; } = Constants.UserRole;
 
-        public byte UserRole { get; } = Constants.UserRole;
+    public override string GetSettingKey() => "Acc_CRM_FeedbackSelByID";
 
-        public override string GetSettingKey() => "Acc_CRM_FeedbackSelByID";
-
-        public override bool IsValid() => FeedbackId > 0;
-    }
+    public override bool IsValid() => FeedbackId > 0;
 }

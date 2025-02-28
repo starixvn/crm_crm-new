@@ -1,124 +1,116 @@
-﻿namespace CRM.Services
+﻿namespace CRM.Services;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CRM.Criteria.Common;
+using CRM.Extensions;
+using CRM.Models;
+using CRM.Models.Common;
+using Enumerables;
+using Interfaces;
+using Microsoft.Extensions.Options;
+
+public class CommonService(
+    IBaseService baseService,
+    IOptionsSnapshot<AppSettings> appSettings)
+    : ICommonService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using CRM.Core.Enumerables;
-    using CRM.Core.Extensions;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
-    using CRM.Criteria.Common;
-    using CRM.Models;
-    using CRM.Models.Common;
-    using Microsoft.Extensions.Options;
+    private readonly AppSettings appSettings = appSettings.Value;
 
-    public class CommonService : ICommonService
+    public async Task<IEnumerable<BaseBotModel>> GetConversationBotAsync()
     {
-        private readonly IBaseService baseService;
-        private readonly AppSettings appSettings;
-
-        public CommonService(
-            IBaseService baseService,
-            IOptionsSnapshot<AppSettings> appSettings)
-        {
-            this.baseService = baseService;
-            this.appSettings = appSettings.Value;
-        }
-
-        public async Task<IEnumerable<BaseBotModel>> GetConversationBotAsync()
-        {
-            var criteria = new GetConversationBotsCriteria();
-            return await baseService.GetDataAsync<BaseBotModel>(criteria);
-        }
-
-        public async Task<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)> GetRecipientAsync(GetRecipientsCriteria criteria)
-        {
-            return await baseService.FetchMultipleAsync<RecipientModel, BotInfo>(criteria);
-        }
-
-        public async Task<IEnumerable<BaseModel>> GetRecipientTypeAsync()
-        {
-            var criteria = new GetRecipientTypesCriteria();
-            return await baseService.GetDataAsync<BaseModel>(criteria);
-        }
-
-        public async Task<IEnumerable<BaseModel>> GetBotServicesAsync()
-        {
-            var criteria = new GetBotServicesCriteria();
-            return await baseService.GetDataAsync<BaseModel>(criteria);
-        }
-
-        public async Task<IEnumerable<BaseModel>> GetSystemAsync()
-        {
-            var criteria = new GetSystemsCriteria();
-            return await baseService.GetDataAsync<BaseModel>(criteria);
-        }
-
-        public async Task<IEnumerable<BaseModel>> GetHeadlineAsync(GetHeadlinesCriteria criteria)
-        {
-            return await baseService.GetDataAsync<BaseModel>(criteria);
-        }
-
-        public IEnumerable<BaseModel> GetChatTypes()
-        {
-            return Enum.GetValues(typeof(ChatType)).Cast<ChatType>()
-                .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDesciption(type) });
-        }
-
-        public IEnumerable<BaseModel> GetMappingStatus()
-        {
-            return Enum.GetValues(typeof(MappingStatus)).Cast<MappingStatus>()
-                .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDesciption(type) });
-        }
-
-        public DateTime ConvertToClientDateTime(DateTime date)
-        {
-            var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            
-            return date.Add(timeSpan);
-        }
-
-        public DateTime ConvertToServerDateTime(DateTime date)
-        {
-            var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            return date.Subtract(timeSpan);
-        }
-
-        public DateTime ConvertClientFromTimeToServerTime(DateTime clientFromTime)
-        {
-            var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            return clientFromTime.Date.Subtract(timeSpan);
-        }
-
-        public DateTime ConvertClientToTimeToServerTime(DateTime clientToTime)
-        {
-            var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var endClientDate = GetEndOfDate(clientToTime);
-            return endClientDate.Subtract(timeSpan);
-        }
-
-        public DateTime GetEndOfDate(DateTime date)
-        {
-            date = new DateTimeOffset(date.Year, date.Month, date.Day,0,0,0,TimeSpan.Zero).AddDays(1).AddSeconds(-1).DateTime;
-            return date;
-        }
-
-        public DateTime GetStartOfDate(DateTime date)
-        {
-            date = new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero).DateTime;
-            return date;
-        }
-
-        public DateTime FirstDayOfMonth(DateTime dateTime)
-        {
-            return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime;
-        }
-
-        public DateTime LastDayOfMonth(DateTime dateTime)
-        {
-            return FirstDayOfMonth(dateTime).AddMonths(1).AddDays(-1);
-        }
-
+        var criteria = new GetConversationBotsCriteria();
+        return await baseService.GetDataAsync<BaseBotModel>(criteria);
     }
+
+    public async Task<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)> GetRecipientAsync(GetRecipientsCriteria criteria)
+    {
+        return await baseService.FetchMultipleAsync<RecipientModel, BotInfo>(criteria);
+    }
+
+    public async Task<IEnumerable<BaseModel>> GetRecipientTypeAsync()
+    {
+        var criteria = new GetRecipientTypesCriteria();
+        return await baseService.GetDataAsync<BaseModel>(criteria);
+    }
+
+    public async Task<IEnumerable<BaseModel>> GetBotServicesAsync()
+    {
+        var criteria = new GetBotServicesCriteria();
+        return await baseService.GetDataAsync<BaseModel>(criteria);
+    }
+
+    public async Task<IEnumerable<BaseModel>> GetSystemAsync()
+    {
+        var criteria = new GetSystemsCriteria();
+        return await baseService.GetDataAsync<BaseModel>(criteria);
+    }
+
+    public async Task<IEnumerable<BaseModel>> GetHeadlineAsync(GetHeadlinesCriteria criteria)
+    {
+        return await baseService.GetDataAsync<BaseModel>(criteria);
+    }
+
+    public IEnumerable<BaseModel> GetChatTypes()
+    {
+        return Enum.GetValues(typeof(ChatType)).Cast<ChatType>()
+            .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDesciption(type) });
+    }
+
+    public IEnumerable<BaseModel> GetMappingStatus()
+    {
+        return Enum.GetValues(typeof(MappingStatus)).Cast<MappingStatus>()
+            .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDesciption(type) });
+    }
+
+    public DateTime ConvertToClientDateTime(DateTime date)
+    {
+        var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+            
+        return date.Add(timeSpan);
+    }
+
+    public DateTime ConvertToServerDateTime(DateTime date)
+    {
+        var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+        return date.Subtract(timeSpan);
+    }
+
+    public DateTime ConvertClientFromTimeToServerTime(DateTime clientFromTime)
+    {
+        var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+        return clientFromTime.Date.Subtract(timeSpan);
+    }
+
+    public DateTime ConvertClientToTimeToServerTime(DateTime clientToTime)
+    {
+        var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+        var endClientDate = GetEndOfDate(clientToTime);
+        return endClientDate.Subtract(timeSpan);
+    }
+
+    public DateTime GetEndOfDate(DateTime date)
+    {
+        date = new DateTimeOffset(date.Year, date.Month, date.Day,0,0,0,TimeSpan.Zero).AddDays(1).AddSeconds(-1).DateTime;
+        return date;
+    }
+
+    public DateTime GetStartOfDate(DateTime date)
+    {
+        date = new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero).DateTime;
+        return date;
+    }
+
+    public DateTime FirstDayOfMonth(DateTime dateTime)
+    {
+        return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime;
+    }
+
+    public DateTime LastDayOfMonth(DateTime dateTime)
+    {
+        return FirstDayOfMonth(dateTime).AddMonths(1).AddDays(-1);
+    }
+
 }

@@ -1,9 +1,8 @@
-﻿namespace CRM.Models.ChatTypeMapping
-{
-    using System.Collections.Generic;
+﻿namespace CRM.Models.ChatTypeMapping;
 
-    public class GroupHeadlineDirectAccountModel : BaseModel
-    {
-        public IEnumerable<string> SubData { get; set; }
-    }
+using System.Collections.Generic;
+
+public class GroupHeadlineDirectAccountModel : BaseModel
+{
+    public IEnumerable<string> SubData { get; set; }
 }

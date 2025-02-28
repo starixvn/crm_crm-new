@@ -1,19 +1,18 @@
-﻿namespace CRM.Services
+﻿namespace CRM.Services.Interfaces;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CRM.Criteria.NotificationList;
+using CRM.Models.NotificationList;
+using Models;
+
+public interface INotificationListService
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using CRM.Core.Models;
-    using CRM.Criteria.NotificationList;
-    using CRM.Models.NotificationList;
+    Task<IEnumerable<Notification>> GetNotificationListAsync(GetNotificationListCriteria criteria);
 
-    public interface INotificationListService
-    {
-        Task<IEnumerable<Notification>> GetNotificationListAsync(GetNotificationListCriteria criteria);
+    Task<CommandResult> EditNotificationListAsync(EditNotificationListCommand command);
 
-        Task<CommandResult> EditNotificationListAsync(EditNotificationListCommand command);
+    Task<ValidationNotificationListResult> ValidateNotificationListAsync(ValidateNotificationListCriteria criteria);
 
-        Task<ValidationNotificationListResult> ValidateNotificationListAsync(ValidateNotificationListCriteria criteria);
-
-        Task<CommandResult> ResendNotificationsAsync(ResendNotificationsCommand command);
-    }
+    Task<CommandResult> ResendNotificationsAsync(ResendNotificationsCommand command);
 }

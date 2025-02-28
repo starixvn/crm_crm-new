@@ -1,10 +1,9 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum RecheckInStatus
 {
-    public enum RecheckInStatus
-    {
-        Success,
-        KickOut,
-        InvalidSite,
-        UnderMaintenance
-    }
+    Success,
+    KickOut,
+    InvalidSite,
+    UnderMaintenance
 }

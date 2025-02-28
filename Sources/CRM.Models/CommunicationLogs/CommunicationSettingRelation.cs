@@ -1,9 +1,8 @@
-﻿namespace CRM.Models.CommunicationLogs
+﻿namespace CRM.Models.CommunicationLogs;
+
+public class CommunicationSettingRelation
 {
-    public class CommunicationSettingRelation
-    {
-        public int FeedbackId { get; set; }
-        public int MainCategoryId { get; set; }
-        public int SubCategoryId { get; set; }
-    }
+    public int FeedbackId { get; set; }
+    public int MainCategoryId { get; set; }
+    public int SubCategoryId { get; set; }
 }

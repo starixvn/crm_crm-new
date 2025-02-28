@@ -1,54 +1,51 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+
+public class ChangePicLogInfo
 {
-    using System;
-    using System.IO;
-    using System.Text.RegularExpressions;
-    using System.Xml.Serialization;
+    public int LogId { get; set; }
 
-    public class ChangePicLogInfo
+    public string LogTime => $"{LogDate.ToString("MMM dd, yyyy")}\n({LogDate.ToString("hh:mm:ss tt")})";
+
+    public string Name { get; set; }
+
+    public string PicTypeName { get; set; }
+
+    public int ActionId { get; set; }
+
+    public string Action { get; set; }
+
+    public string OldValues { get; set; }
+
+    public string NewValues { get; set; }
+
+    public string EditBy { get; set; }
+
+    public DateTime LogDate { get; set; }
+
+    public PicInfoLog OldLogInfo => ConvertXmlToLogInfo(OldValues);
+
+    public PicInfoLog NewLogInfo => ConvertXmlToLogInfo(NewValues);
+
+    private static PicInfoLog ConvertXmlToLogInfo(string xml)
     {
-        public int LogId { get; set; }
-
-        public string LogTime => $"{LogDate.ToString("MMM dd, yyyy")}\n({LogDate.ToString("hh:mm:ss tt")})";
-
-        public string Name { get; set; }
-
-        public string PicTypeName { get; set; }
-
-        public int ActionId { get; set; }
-
-        public string Action { get; set; }
-
-        public string OldValues { get; set; }
-
-        public string NewValues { get; set; }
-
-        public string EditBy { get; set; }
-
-        public DateTime LogDate { get; set; }
-
-        public PicInfoLog OldLogInfo => ConvertXmlToLogInfo(OldValues);
-
-        public PicInfoLog NewLogInfo => ConvertXmlToLogInfo(NewValues);
-
-        private static PicInfoLog ConvertXmlToLogInfo(string xml)
+        if (!string.IsNullOrEmpty(xml))
         {
-            if (!string.IsNullOrEmpty(xml))
-            {
-                var regexStart = new Regex(@"<\s*[A-Za-z]");
-                var matchStart = regexStart.Match(xml);
-                var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]");
-                var matchEnd = regexEnd.Match(xml);
-                var root = xml.Substring(matchStart.Index + matchStart.Length - 1, matchEnd.Index);
-                XmlSerializer serializer = new XmlSerializer(typeof(PicInfoLog), new XmlRootAttribute(root));
+            var regexStart = new Regex(@"<\s*[A-Za-z]");
+            var matchStart = regexStart.Match(xml);
+            var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]");
+            var matchEnd = regexEnd.Match(xml);
+            var root = xml.Substring(matchStart.Index + matchStart.Length - 1, matchEnd.Index);
+            var serializer = new XmlSerializer(typeof(PicInfoLog), new XmlRootAttribute(root));
 
-                using (var stringReader = new StringReader(xml))
-                {
-                    return (PicInfoLog)serializer.Deserialize(stringReader);
-                }
-            }
-
-            return new PicInfoLog();
+            using var stringReader = new StringReader(xml);
+            return (PicInfoLog)serializer.Deserialize(stringReader);
         }
+
+        return new PicInfoLog();
     }
 }

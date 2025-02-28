@@ -1,11 +1,10 @@
-﻿namespace CRM.Core.Constants
+﻿namespace CRM.Constants;
+
+public static class LicenseeTypeConstants
 {
-    public static class LicenseeTypeConstants
-    {
-        public const byte All = 0;
+    public const byte All = 0;
 
-        public const byte Credit = 1;
+    public const byte Credit = 1;
 
-        public const byte Licensee = 2;
-    }
+    public const byte Licensee = 2;
 }

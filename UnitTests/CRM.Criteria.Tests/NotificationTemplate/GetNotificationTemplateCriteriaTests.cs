@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.NotificationTemplate
+﻿namespace CRM.Criteria.Tests.NotificationTemplate;
+
+using CRM.Criteria.NotificationTemplate;
+using Xunit;
+
+public class GetNotificationTemplateCriteriaTests
 {
-    using CRM.Criteria.NotificationTemplate;
-    using Xunit;
-
-    public class GetNotificationTemplateCriteriaTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
-        {
-            // Arrange
-            var criteria = new GetNotificationTemplateCriteria();
-            var expected = "Acc_CRM_ChatBot_NotificationTemplate_Sel";
+        // Arrange
+        var criteria = new GetNotificationTemplateCriteria();
+        var expected = "Acc_CRM_ChatBot_NotificationTemplate_Sel";
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = criteria.GetSettingKey();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
-        {
-            // Arrange
-            var criteria = new GetNotificationTemplateCriteria();
+    [Fact]
+    public void IsValid_WhenCalled_ReturnTrue()
+    {
+        // Arrange
+        var criteria = new GetNotificationTemplateCriteria();
 
-            // Act
-            var actual = criteria.IsValid();
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

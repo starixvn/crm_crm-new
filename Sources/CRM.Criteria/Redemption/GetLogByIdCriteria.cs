@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.Redemption
+﻿namespace CRM.Criteria.Redemption;
+
+using Fanex.Data.Repository;
+
+public class GetLogByIdCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public int Id { get; set; }
 
-    public class GetLogByIdCriteria : CriteriaBase
-    {
-        public int Id { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_RedemptionSel";
 
-        public override string GetSettingKey() => "Acc_CRM_RedemptionSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

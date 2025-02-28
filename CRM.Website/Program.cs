@@ -1,6 +1,4 @@
-﻿using CRM.Core.Extensions;
-using CRM.Core.Middlewares;
-using CRM.Services.Extensions;
+﻿using CRM.Services.Extensions;
 using CRM.Website;
 using Fanex.Data;
 using Fanex.Logging.Sentry.RavenClient;
@@ -13,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using ONEbook.UM.DependencyInjection;
 using System.IO;
+using CRM.Extensions;
+using CRM.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;

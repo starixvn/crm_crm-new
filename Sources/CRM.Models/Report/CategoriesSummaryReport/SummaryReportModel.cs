@@ -1,17 +1,16 @@
-﻿namespace CRM.Models.Report.CategoriesSummaryReport
+﻿namespace CRM.Models.Report.CategoriesSummaryReport;
+
+using System;
+using System.Collections.Generic;
+
+[Serializable]
+public class SummaryReportModel
 {
-    using System;
-    using System.Collections.Generic;
+    public string ReportTitle { get; set; }
 
-    [Serializable]
-    public class SummaryReportModel
-    {
-        public string ReportTitle { get; set; }
+    public IList<CategorySummary> CategorySummaries { get; set; }
 
-        public IList<CategorySummary> CategorySummaries { get; set; }
+    public IList<Summary> GrandTotals { get; set; }
 
-        public IList<Summary> GrandTotals { get; set; }
-
-        public IList<string> Months { get; set; }
-    }
+    public IList<string> Months { get; set; }
 }

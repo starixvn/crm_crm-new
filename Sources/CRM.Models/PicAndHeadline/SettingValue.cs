@@ -1,16 +1,15 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+using System.Xml.Serialization;
+
+public class SettingValue
 {
-    using System.Xml.Serialization;
+    [XmlAttribute("Id")]
+    public int Id { get; set; }
 
-    public class SettingValue
-    {
-        [XmlAttribute("Id")]
-        public int Id { get; set; }
+    [XmlAttribute("Name")]
+    public string Name { get; set; }
 
-        [XmlAttribute("Name")]
-        public string Name { get; set; }
-
-        [XmlAttribute("Value")]
-        public string Value { get; set; }
-    }
+    [XmlAttribute("Value")]
+    public string Value { get; set; }
 }

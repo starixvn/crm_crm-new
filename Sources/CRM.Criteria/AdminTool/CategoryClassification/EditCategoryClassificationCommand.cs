@@ -1,23 +1,22 @@
-﻿namespace CRM.Criteria.AdminTool.CategoryClassification
+﻿namespace CRM.Criteria.AdminTool.CategoryClassification;
+
+using Models;
+
+public class EditCategoryClassificationCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public int MainCategoryID { get; set; }
 
-    public class EditCategoryClassificationCommand : BaseNonQueryCommand
-    {
-        public int MainCategoryID { get; set; }
+    public int SubCategoryID { get; set; }
 
-        public int SubCategoryID { get; set; }
+    public string RemarkNewValue { get; set; }
 
-        public string RemarkNewValue { get; set; }
+    public int ActionType { get; set; }
 
-        public int ActionType { get; set; }
+    public int UserId { get; set; }
 
-        public int UserId { get; set; }
+    public string IP { get; set; }
 
-        public string IP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_CategoryClassificationUpd";
 
-        public override string GetSettingKey() => "Acc_CRM_CategoryClassificationUpd";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

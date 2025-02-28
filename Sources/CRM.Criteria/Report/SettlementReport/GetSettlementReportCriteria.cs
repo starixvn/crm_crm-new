@@ -1,26 +1,25 @@
-﻿namespace CRM.Criteria.Report.SettlementReport
+﻿namespace CRM.Criteria.Report.SettlementReport;
+
+using Fanex.Data;
+
+public class GetSettlementReportCriteria : BaseSitePermisionCriteria
 {
-    using Fanex.Data;
+    private readonly int minYear = 2011;
 
-    public class GetSettlementReportCriteria : BaseSitePermisionCriteria
-    {
-        private readonly int minYear = 2011;
+    public int Year { get; set; }
 
-        public int Year { get; set; }
+    public int TimeSpan { get; set; }
 
-        public int TimeSpan { get; set; }
+    [SpParam(Ignored = true)]
+    public int PageIndex { get; set; }
 
-        [SpParam(Ignored = true)]
-        public int PageIndex { get; set; }
+    [SpParam(Ignored = true)]
+    public int PageSize { get; set; }
 
-        [SpParam(Ignored = true)]
-        public int PageSize { get; set; }
+    [SpParam(Ignored = true)]
+    public bool IsGetFullReport { get; set; }
 
-        [SpParam(Ignored = true)]
-        public bool IsGetFullReport { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_Rpt_FeedbackStatisticsSettlement";
 
-        public override string GetSettingKey() => "Acc_CRM_Rpt_FeedbackStatisticsSettlement";
-
-        public override bool IsValid() => Year >= minYear && LicenseeType >= 0;
-    }
+    public override bool IsValid() => Year >= minYear && LicenseeType >= 0;
 }

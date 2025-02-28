@@ -1,14 +1,13 @@
-﻿namespace CRM.Models.Report.WagerReport
+﻿namespace CRM.Models.Report.WagerReport;
+
+using System;
+
+[Serializable]
+public class Wager
 {
-    using System;
+    public int Id { get; set; }
 
-    [Serializable]
-    public class Wager
-    {
-        public int Id { get; set; }
+    public string Name { get; set; }
 
-        public string Name { get; set; }
-
-        public int Amount { get; set; }
-    }
+    public int Amount { get; set; }
 }

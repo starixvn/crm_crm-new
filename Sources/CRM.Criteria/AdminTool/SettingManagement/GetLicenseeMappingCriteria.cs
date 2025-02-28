@@ -1,11 +1,10 @@
-﻿namespace CRM.Criteria.AdminTool.SettingManagement
-{
-    using Fanex.Data.Repository;
+﻿namespace CRM.Criteria.AdminTool.SettingManagement;
 
-    public class GetLicenseeMappingCriteria : CriteriaBase
-    {
-        public string Setting { get; set; }
-        public override string GetSettingKey() => "Acc_CRM_SourceLicenseeMappingSel";
-        public override bool IsValid() => true;
-    }
+using Fanex.Data.Repository;
+
+public class GetLicenseeMappingCriteria : CriteriaBase
+{
+    public string Setting { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_SourceLicenseeMappingSel";
+    public override bool IsValid() => true;
 }

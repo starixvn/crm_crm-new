@@ -1,15 +1,14 @@
-﻿namespace CRM.Criteria.Dashboard
+﻿namespace CRM.Criteria.Dashboard;
+
+using Fanex.Data;
+using Fanex.Data.Repository;
+
+public class GetRedemptionLogsCriteria : CriteriaBase
 {
-    using Fanex.Data;
-    using Fanex.Data.Repository;
+    [SpParam(SqlParamName = "CustId")]
+    public int CustomerId { get; set; }
 
-    public class GetRedemptionLogsCriteria : CriteriaBase
-    {
-        [SpParam(SqlParamName = "CustId")]
-        public int CustomerId { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_MainInformationRedemptionSel";
 
-        public override string GetSettingKey() => "Acc_CRM_MainInformationRedemptionSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

@@ -1,25 +1,24 @@
-﻿namespace CRM.Models.Report.SettlementReport
+﻿namespace CRM.Models.Report.SettlementReport;
+
+using System;
+using System.Collections.Generic;
+
+[Serializable]
+public class SettlementReportInfo
 {
-    using System;
-    using System.Collections.Generic;
+    public int Id { get; set; }
 
-    [Serializable]
-    public class SettlementReportInfo
-    {
-        public int Id { get; set; }
+    public string Name { get; set; }
 
-        public string Name { get; set; }
+    public PeriodRange PeriodRange { get; set; }
 
-        public PeriodRange PeriodRange { get; set; }
+    public int NumberOfIssues { get; set; }
 
-        public int NumberOfIssues { get; set; }
+    public List<SettlementReportInfo> ChildReports { get; set; }
 
-        public List<SettlementReportInfo> ChildReports { get; set; }
+    public SettlementReportInfo Total { get; set; }
 
-        public SettlementReportInfo Total { get; set; }
+    public int TotalChildReports { get; set; }
 
-        public int TotalChildReports { get; set; }
-
-        public SettlementReportInfo ChartInfo { get; set; }
-    }
+    public SettlementReportInfo ChartInfo { get; set; }
 }

@@ -1,14 +1,13 @@
-﻿namespace CRM.Models.Report.CategoriesSummaryReport
+﻿namespace CRM.Models.Report.CategoriesSummaryReport;
+
+using System;
+using System.Collections.Generic;
+[Serializable]
+public class SubCategorySummary
 {
-    using System;
-    using System.Collections.Generic;
-    [Serializable]
-    public class SubCategorySummary
-    {
-        public int SubCategoryId { get; set; }
+    public int SubCategoryId { get; set; }
 
-        public string SubCategoryName { get; set; }
+    public string SubCategoryName { get; set; }
 
-        public IList<Summary> Summaries { get; set; }
-    }
+    public IList<Summary> Summaries { get; set; }
 }

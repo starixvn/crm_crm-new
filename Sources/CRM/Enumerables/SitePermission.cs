@@ -1,10 +1,9 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum SitePermission
 {
-    public enum SitePermission
-    {
-        NA = -1,
-        Both,
-        Credit,
-        Licensee
-    }
+    NA = -1,
+    Both,
+    Credit,
+    Licensee
 }

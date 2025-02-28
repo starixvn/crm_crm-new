@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.AdminTool.FeedbackSubject
+﻿namespace CRM.Criteria.Tests.AdminTool.FeedbackSubject;
+
+using Criteria.AdminTool.FeedbackSubject;
+using Xunit;
+
+public class EditFeedbackSubjectTemplateCommandTests
 {
-    using CRM.Criteria.FeedbackSubject;
-    using Xunit;
-
-    public class EditFeedbackSubjectTemplateCommandTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
-        {
-            //Arrange
-            var criteria = new EditFeedbackSubjectTemplateCommand();
-            var expected = "Acc_CRM_SubjectTemplateUpd";
+        //Arrange
+        var criteria = new EditFeedbackSubjectTemplateCommand();
+        var expected = "Acc_CRM_SubjectTemplateUpd";
 
-            //Act
-            var actual = criteria.GetSettingKey();
+        //Act
+        var actual = criteria.GetSettingKey();
 
-            //Assert
-            Assert.Equal(expected, actual);
-        }
+        //Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
-        {
-            //Arrange
-            var criteria = new EditFeedbackSubjectTemplateCommand();
+    [Fact]
+    public void IsValid_WhenCalled_ReturnTrue()
+    {
+        //Arrange
+        var criteria = new EditFeedbackSubjectTemplateCommand();
 
-            //Act
-            var actual = criteria.IsValid();
+        //Act
+        var actual = criteria.IsValid();
 
-            //Assert
-            Assert.True(actual);
-        }
+        //Assert
+        Assert.True(actual);
     }
 }

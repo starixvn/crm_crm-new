@@ -1,58 +1,54 @@
-﻿namespace CRM.Services.UnitTests.ExportExcel.TestableClasses
+﻿namespace CRM.Services.UnitTests.ExportExcel.TestableClasses;
+
+using System.Collections.Generic;
+using CRM.Models.Report.DeletedFeedbackStatistic;
+using CRM.Models.Setting;
+using CRM.Services.ExportExcel;
+using OfficeOpenXml;
+
+public class DeletedFeedbackStatisticExcelTestable(
+    string templatePath,
+    IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks,
+    IEnumerable<Setting> mainCategories)
+    : DeletedFeedbackStatisticExcel(templatePath, deletedFeedbacks, mainCategories)
 {
-    using System.Collections.Generic;
-    using CRM.Models.Report.DeletedFeedbackStatistic;
-    using CRM.Models.Setting;
-    using CRM.Services.ExportExcel;
-    using OfficeOpenXml;
-
-    public class DeletedFeedbackStatisticExcelTestable : DeletedFeedbackStatisticExcel
+    public void Public_RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
     {
-        public DeletedFeedbackStatisticExcelTestable(
-           string templatePath,
-           IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks,
-           IEnumerable<Setting> mainCategories) : base(templatePath, deletedFeedbacks, mainCategories)
-        {
-        }
+        base.RenderTitle(templateWorksheet, worksheet);
+    }
 
-        public void Public_RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
-        {
-            base.RenderTitle(templateWorksheet, worksheet);
-        }
+    public void Public_RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+    {
+        base.RenderHeader(templateWorksheet, worksheet);
+    }
 
-        public void Public_RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
-        {
-            base.RenderHeader(templateWorksheet, worksheet);
-        }
+    public void Public_RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+    {
+        base.RenderBody(templateWorksheet, worksheet);
+    }
 
-        public void Public_RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
-        {
-            base.RenderBody(templateWorksheet, worksheet);
-        }
+    public void Public_SetColor(ExcelRange cell)
+    {
+        base.SetColor(cell);
+    }
 
-        public void Public_SetColor(ExcelRange cell)
-        {
-            base.SetColor(cell);
-        }
+    public void Public_SetBackgroundTotalRow(ExcelRange cell)
+    {
+        base.SetBackgroundTotalRow(cell);
+    }
 
-        public void Public_SetBackgroundTotalRow(ExcelRange cell)
-        {
-            base.SetBackgroundTotalRow(cell);
-        }
+    public void Public_ProcessUI(ExcelWorksheet worksheet)
+    {
+        base.ProcessUI(worksheet);
+    }
 
-        public void Public_ProcessUI(ExcelWorksheet worksheet)
-        {
-            base.ProcessUI(worksheet);
-        }
+    public void Public_SetStyle(ExcelWorksheet worksheet)
+    {
+        base.SetStyle(worksheet);
+    }
 
-        public void Public_SetStyle(ExcelWorksheet worksheet)
-        {
-            base.SetStyle(worksheet);
-        }
-
-        public void Public_SetWidthColumn(ExcelWorksheet worksheet)
-        {
-            base.SetWidthColumn(worksheet);
-        }
+    public void Public_SetWidthColumn(ExcelWorksheet worksheet)
+    {
+        base.SetWidthColumn(worksheet);
     }
 }

@@ -1,74 +1,63 @@
-﻿namespace CRM.Controllers
+﻿namespace CRM.Controllers.HeadlineNotification;
+
+using System.Threading.Tasks;
+using Constants;
+using CRM.Models.NotificationTemplate;
+using Filters;
+using Microsoft.AspNetCore.Mvc;
+using Services.HeadlineNotification;
+using Services.Interfaces;
+using static Fanex.NAP.Client.Helpers.Business.Constant;
+
+[CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Read)]
+public class NotificationTemplateController(
+    INotificationTemplateService templateService,
+    ISettingService settingService)
+    : BaseController
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using CRM.Core.Constants;
-    using CRM.Core.Filters;
-    using CRM.Core.Models;
-    using CRM.Models.NotificationTemplate;
-    using CRM.Models.Setting;
-    using CRM.Services;
-    using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Client.Helpers.Business.Constant;
-
-    [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Read)]
-    public class NotificationTemplateController : BaseController
+    [HttpPost]
+    public async Task<IActionResult> GetNotificationTemplate([FromBody] GetNotificationTemplateParam param)
     {
-        private readonly INotificationTemplateService templateService;
-        private readonly ISettingService settingService;
+        var templates = await templateService.GetAsync(param);
+        return Json(new { totalItems = param.TotalRows, data = templates });
+    }
 
-        public NotificationTemplateController(
-            INotificationTemplateService templateService,
-            ISettingService settingService)
-        {
-            this.templateService = templateService;
-            this.settingService = settingService;
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
+    public async Task<IActionResult> Create([FromBody] CreateNotificationTemplate model)
+    {
+        model.LoginIP = ClientIP;
+        var commandResult = await templateService.CreateAsync(model);
+        return Json(commandResult);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> GetNotificationTemplate([FromBody] GetNotificationTemplateParam param)
-        {
-            IEnumerable<NotificationTemplate> templates = await templateService.GetAsync(param);
-            return Json(new { totalItems = param.TotalRows, data = templates });
-        }
+    public async Task<IActionResult> GetById(int id)
+    {
+        var template = await templateService.GetByIdAsync(id);
+        return Json(template);
+    }
 
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
-        public async Task<IActionResult> Create([FromBody] CreateNotificationTemplate model)
-        {
-            model.LoginIP = ClientIP;
-            CommandResult commandResult = await templateService.CreateAsync(model);
-            return Json(commandResult);
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
+    public async Task<IActionResult> Edit([FromBody] EditNotificationTemplate model)
+    {
+        model.LoginIP = ClientIP;
+        var commandResult = await templateService.EditAsync(model);
+        return Json(commandResult);
+    }
 
-        public async Task<IActionResult> GetById(int id)
-        {
-            NotificationTemplate template = await templateService.GetByIdAsync(id);
-            return Json(template);
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
+    public async Task<IActionResult> Delete([FromBody] DeleteNotificationTemplate model)
+    {
+        model.LoginIP = ClientIP;
+        var commandResult = await templateService.DeleteAsync(model);
+        return Json(commandResult);
+    }
 
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
-        public async Task<IActionResult> Edit([FromBody] EditNotificationTemplate model)
-        {
-            model.LoginIP = ClientIP;
-            CommandResult commandResult = await templateService.EditAsync(model);
-            return Json(commandResult);
-        }
-
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
-        public async Task<IActionResult> Delete([FromBody] DeleteNotificationTemplate model)
-        {
-            model.LoginIP = ClientIP;
-            CommandResult commandResult = await templateService.DeleteAsync(model);
-            return Json(commandResult);
-        }
-
-        public async Task<IActionResult> GetLanguages()
-        {
-            IEnumerable<Setting> settings = await settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true);
-            return Json(settings);
-        }
+    public async Task<IActionResult> GetLanguages()
+    {
+        var settings = await settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true);
+        return Json(settings);
     }
 }

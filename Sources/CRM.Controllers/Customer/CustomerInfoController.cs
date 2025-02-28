@@ -1,126 +1,110 @@
-﻿namespace CRM.Controllers
+﻿namespace CRM.Controllers.Customer;
+
+using System.Threading.Tasks;
+using Constants;
+using CRM.Criteria.Customer;
+using CRM.Resources;
+using CRM.Services.Customer;
+using Fanex.NAP.Client;
+using Filters;
+using Microsoft.AspNetCore.Mvc;
+using Models;
+using Services;
+using Services.Interfaces;
+using static Fanex.NAP.Client.Helpers.Business.Constant;
+
+[CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
+public class CustomerInfoController(
+    INapSession napSession,
+    ICustomerService customerService,
+    ISettingService settingService,
+    ISessionService sessionService,
+    IPermissionService permissionService)
+    : BaseController
 {
-    using System.Threading.Tasks;
-    using CRM.Core.Constants;
-    using CRM.Core.Filters;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
-    using CRM.Criteria.Customer;
-    using CRM.Models.Customer;
-    using CRM.Resources;
-    using CRM.Services;
-    using CRM.Services.Customer;
-    using Fanex.NAP.Client;
-    using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Client.Helpers.Business.Constant;
-
-    [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
-    public class CustomerInfoController : BaseController
+    public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
     {
-        private readonly INapSession napSession;
-        private readonly ICustomerService customerService;
-        private readonly ISettingService settingService;
-        private readonly ISessionService sessionService;
-        private readonly IPermissionService permissionService;
-
-        public CustomerInfoController(
-            INapSession napSession,
-            ICustomerService customerService,
-            ISettingService settingService,
-            ISessionService sessionService,
-            IPermissionService permissionService)
+        var sitePermission = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        criteria.LicenseeType = sitePermission;
+        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+        var customerInfo = await customerService.GetCustomerInfoAsync(criteria);
+        if (customerInfo != null)
         {
-            this.napSession = napSession;
-            this.customerService = customerService;
-            this.settingService = settingService;
-            this.sessionService = sessionService;
-            this.permissionService = permissionService;
-        }
-
-        public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
-        {
-            var sitePermission = await permissionService.GetCurrentUserLicenseeTypeAsync();
-            criteria.LicenseeType = sitePermission;
-            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-            CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
-            if (customerInfo != null)
+            var custPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
+            customerInfo.SitePermission = custPermissionInfo.SitePermission;
+            customerInfo.CustomerType = custPermissionInfo.CustomerType;
+            CurrentCustomer currentCustomer = new()
             {
-                var custPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
-                customerInfo.SitePermission = custPermissionInfo.SitePermission;
-                customerInfo.CustomerType = custPermissionInfo.CustomerType;
-                CurrentCustomer currentCustomer = new()
-                {
-                    CustId = customerInfo.CustId,
-                    Name = criteria.SearchInfo,
-                    IsGuest = criteria.IsGuest,
-                    CustType = custPermissionInfo.CustomerType,
-                    SiteLabel = customerInfo.SitePermission,
-                };
-                sessionService.CurrentCustomer = currentCustomer;
-            }
-
-            var isError = criteria.ErrCode > 0 && !string.IsNullOrEmpty(criteria.ErrMsg);
-            var errorJson = new
-            {
-                criteria.ErrCode,
-                criteria.ErrMsg
+                CustId = customerInfo.CustId,
+                Name = criteria.SearchInfo,
+                IsGuest = criteria.IsGuest,
+                CustType = custPermissionInfo.CustomerType,
+                SiteLabel = customerInfo.SitePermission,
             };
-
-            return Json(isError ? errorJson : customerInfo);
+            sessionService.CurrentCustomer = currentCustomer;
         }
 
-        [HttpPost]
-        public async Task<JsonResult> UpdateCustomerSuggestion([FromBody] UpdateCustomerSuggestionCriteria criteria)
+        var isError = criteria.ErrCode > 0 && !string.IsNullOrEmpty(criteria.ErrMsg);
+        var errorJson = new
         {
-            criteria.UserID = napSession.UserId;
-            var commandResult = await customerService.UpdateCustomerSuggestionAsync(criteria);
-            return Json(commandResult);
-        }
+            criteria.ErrCode,
+            criteria.ErrMsg
+        };
 
-        public IActionResult GetCurrentCustomer()
+        return Json(isError ? errorJson : customerInfo);
+    }
+
+    [HttpPost]
+    public async Task<JsonResult> UpdateCustomerSuggestion([FromBody] UpdateCustomerSuggestionCriteria criteria)
+    {
+        criteria.UserID = napSession.UserId;
+        var commandResult = await customerService.UpdateCustomerSuggestionAsync(criteria);
+        return Json(commandResult);
+    }
+
+    public IActionResult GetCurrentCustomer()
+    {
+        return Json(sessionService.CurrentCustomer);
+    }
+
+    public async Task<IActionResult> GetSettings()
+    {
+        var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+
+        var settings = new
         {
-            return Json(sessionService.CurrentCustomer);
-        }
+            sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
+            sitesByIsLicensee = await settingService.GetAllSitesGroupByIsLicenseeAsync(licenseeType: licenseeType),
+            countries = await settingService.GetCountryAsync(SettingConstants.Active),
+            languages = await settingService.GetLanguageAsync(SettingConstants.Active),
+            sitesLicenseeInactive = await settingService.GetAllSitesLicenseeInactive(licenseeType: licenseeType)
+        };
+        return Json(settings);
+    }
 
-        public async Task<IActionResult> GetSettings()
+    [HttpPost]
+    public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
+    {
+        var result = new CommandResult();
+
+        var canEdit = await customerService.HasHostPermissionOnCustIdAsync(command.CustId);
+        if (canEdit)
         {
-            short licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-
-            var settings = new
-            {
-                sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
-                sitesByIsLicensee = await settingService.GetAllSitesGroupByIsLicenseeAsync(licenseeType: licenseeType),
-                countries = await settingService.GetCountryAsync(SettingConstants.Active),
-                languages = await settingService.GetLanguageAsync(SettingConstants.Active),
-                sitesLicenseeInactive = await settingService.GetAllSitesLicenseeInactive(licenseeType: licenseeType)
-            };
-            return Json(settings);
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            result = await customerService.UpdateCustomerInfoAsync(command);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
+        else
         {
-            var result = new CommandResult();
-
-            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(command.CustId);
-            if (canEdit)
-            {
-                command.UserId = napSession.UserId;
-                command.IP = ClientIP;
-                result = await customerService.UpdateCustomerInfoAsync(command);
-            }
-            else
-            {
-                result.Message = ViewResources.NoPermission;
-            }
-
-            return Json(result);
+            result.Message = ViewResources.NoPermission;
         }
 
-        public async Task<IActionResult> GetCustomerAutoSuggestion([FromBody] CustomerSuggestionCriteria criteria)
-        {
-            var customerInfo = await customerService.GetCustomerAutoSuggestionAsync(criteria);
-            return Json(customerInfo);
-        }
+        return Json(result);
+    }
+
+    public async Task<IActionResult> GetCustomerAutoSuggestion([FromBody] CustomerSuggestionCriteria criteria)
+    {
+        var customerInfo = await customerService.GetCustomerAutoSuggestionAsync(criteria);
+        return Json(customerInfo);
     }
 }

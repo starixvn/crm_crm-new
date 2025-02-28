@@ -1,19 +1,18 @@
-﻿namespace CRM.Services
+﻿namespace CRM.Services.Interfaces;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CRM.Criteria.NotificationType;
+using CRM.Models.NotificationType;
+using Models;
+
+public interface INotificationTypeService
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using CRM.Core.Models;
-    using CRM.Criteria.NotificationType;
-    using CRM.Models.NotificationType;
+    Task<CommandResult> CreateAsync(CreateNotificationType model);
 
-    public interface INotificationTypeService
-    {
-        Task<CommandResult> CreateAsync(CreateNotificationType model);
+    Task<CommandResult> EditAsync(EditNotificationType model);
 
-        Task<CommandResult> EditAsync(EditNotificationType model);
+    Task<CommandResult> DeleteAsync(DeleteNotificationType model);
 
-        Task<CommandResult> DeleteAsync(DeleteNotificationType model);
-
-        Task<IEnumerable<NotificationType>> GetNotificationTypeAsync(GetNotificationTypeCriteria criteria);
-    }
+    Task<IEnumerable<NotificationType>> GetNotificationTypeAsync(GetNotificationTypeCriteria criteria);
 }

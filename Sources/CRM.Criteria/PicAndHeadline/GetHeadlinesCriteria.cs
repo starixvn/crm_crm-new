@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.PicAndHeadline
+﻿namespace CRM.Criteria.PicAndHeadline;
+
+using Fanex.Data.Repository;
+
+public class GetHeadlinesCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public string Username { get; set; }
 
-    public class GetHeadlinesCriteria : CriteriaBase
-    {
-        public string Username { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_HeadlineSel";
 
-        public override string GetSettingKey() => "Acc_CRM_HeadlineSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

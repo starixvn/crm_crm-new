@@ -1,8 +1,7 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum HeadlineType
 {
-    public enum HeadlineType
-    {
-        Normal,
-        VIP
-    }
+    Normal,
+    VIP
 }

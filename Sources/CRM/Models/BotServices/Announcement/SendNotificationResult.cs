@@ -1,16 +1,15 @@
-﻿namespace CRM.Core.Models.BotServices.Announcement
-{
-    using System.Collections.Generic;
+﻿namespace CRM.Models.BotServices.Announcement;
 
-    public class SendNotificationResult
-    {
-        public int AnnouncementId { get; set; }
-        public string ConversationId { get; set; }
-        public bool IsSuccessful { get; set; }
-        public bool IsBotBlocked { get; set; }
-        public bool IsOnlyRetryImage { get; set; }
-        public bool IgnoredRetry { get; set; }
-        public List<string> ErrImages { get; set; } = new List<string>();
-        public string ErrMsg { get; set; }
-    }
+using System.Collections.Generic;
+
+public class SendNotificationResult
+{
+    public int AnnouncementId { get; set; }
+    public string ConversationId { get; set; }
+    public bool IsSuccessful { get; set; }
+    public bool IsBotBlocked { get; set; }
+    public bool IsOnlyRetryImage { get; set; }
+    public bool IgnoredRetry { get; set; }
+    public List<string> ErrImages { get; set; } = [];
+    public string ErrMsg { get; set; }
 }

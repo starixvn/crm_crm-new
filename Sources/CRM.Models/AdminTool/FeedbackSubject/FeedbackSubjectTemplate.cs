@@ -1,9 +1,8 @@
-﻿namespace CRM.Models.FeedbackSubject
+﻿namespace CRM.Models.AdminTool.FeedbackSubject;
+
+public class FeedbackSubjectTemplate
 {
-    public class FeedbackSubjectTemplate
-    {
-        public int TemplateID { get; set; }
-        public string Subject { get; set; }
-        public bool IsActive { get; set; }
-    }
+    public int TemplateID { get; set; }
+    public string Subject { get; set; }
+    public bool IsActive { get; set; }
 }

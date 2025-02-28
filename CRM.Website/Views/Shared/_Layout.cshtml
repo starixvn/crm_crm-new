@@ -1,13 +1,12 @@
-﻿@using CRM.Core.Models
-@using CRM.Core.Services
-@using CRM.Services
+﻿@using CRM.Models
+@using CRM.Services.Interfaces
 @using Fanex.NAP.Client
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
 
 @inject IOptionsSnapshot<AppSettings> appSettings
 @inject ICommonService commonService
 @inject INapSession napSession
-@inject ISessionService sessionService
 @{
     var currentClientTime = commonService.ConvertToClientDateTime(DateTime.Now);
     var currentUsername = napSession.UserName;

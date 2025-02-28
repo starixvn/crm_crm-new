@@ -1,21 +1,20 @@
-﻿namespace CRM.Criteria.InformHeadline
+﻿namespace CRM.Criteria.InformHeadline;
+
+using Fanex.Data;
+using Fanex.Data.Repository;
+
+public class GetRemovedAccountLogDetailsCriteria : CriteriaBase
 {
-    using Fanex.Data;
-    using Fanex.Data.Repository;
+    public int LogId { get; set; }
 
-    public class GetRemovedAccountLogDetailsCriteria : CriteriaBase
-    {
-        public int LogId { get; set; }
+    public int PageIndex { get; set; }
 
-        public int PageIndex { get; set; }
+    [SpParam(SqlParamName = "ItemsPerPage")]
+    public int PageSize { get; set; }
 
-        [SpParam(SqlParamName = "ItemsPerPage")]
-        public int PageSize { get; set; }
+    public int TotalRows { get; set; }
 
-        public int TotalRows { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_InformHeadlineHistorySel";
 
-        public override string GetSettingKey() => "Acc_CRM_InformHeadlineHistorySel";
-
-        public override bool IsValid() => LogId > 0;
-    }
+    public override bool IsValid() => LogId > 0;
 }

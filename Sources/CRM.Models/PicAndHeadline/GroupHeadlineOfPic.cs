@@ -1,17 +1,16 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+using System.Collections.Generic;
+
+public class GroupHeadlineOfPic
 {
-    using System.Collections.Generic;
+    public int GroupHeadlineId { get; set; }
 
-    public class GroupHeadlineOfPic
-    {
-        public int GroupHeadlineId { get; set; }
+    public string GroupHeadline { get; set; }
 
-        public string GroupHeadline { get; set; }
+    public string HeadlineType { get; set; }
 
-        public string HeadlineType { get; set; }
+    public IEnumerable<PicModel> DefaultPIC { get; set; }
 
-        public IEnumerable<PicModel> DefaultPIC { get; set; }
-
-        public IEnumerable<PicOfDirectAccount> Pics { get; set; }
-    }
+    public IEnumerable<PicOfDirectAccount> Pics { get; set; }
 }

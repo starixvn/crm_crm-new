@@ -1,11 +1,10 @@
-﻿namespace CRM.Core.Models
+﻿namespace CRM.Models;
+
+using Fanex.Data.Repository;
+
+public abstract class BaseNonQueryCommand : NonQueryCommand
 {
-    using Fanex.Data.Repository;
+    public int ErrCode { get; set; }
 
-    public abstract class BaseNonQueryCommand : NonQueryCommand
-    {
-        public int ErrCode { get; set; }
-
-        public string ErrMsg { get; set; }
-    }
+    public string ErrMsg { get; set; }
 }

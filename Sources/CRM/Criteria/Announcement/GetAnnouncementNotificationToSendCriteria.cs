@@ -1,11 +1,10 @@
-﻿namespace CRM.Core.Criteria.Announcement
+﻿namespace CRM.Criteria.Announcement;
+
+using Fanex.Data.Repository;
+
+public class GetAnnouncementNotificationToSendCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public override string GetSettingKey() => "Acc_CRM_Chatbot_Announcement_Notification_Sel";
 
-    public class GetAnnouncementNotificationToSendCriteria : CriteriaBase
-    {
-        public override string GetSettingKey() => "Acc_CRM_Chatbot_Announcement_Notification_Sel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

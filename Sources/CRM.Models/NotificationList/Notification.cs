@@ -1,54 +1,53 @@
-﻿namespace CRM.Models.NotificationList
+﻿namespace CRM.Models.NotificationList;
+
+using System;
+using System.Collections.Generic;
+
+public class Notification
 {
-    using System;
-    using System.Collections.Generic;
+    public int NotificationId { get; set; }
 
-    public class Notification
-    {
-        public int NotificationId { get; set; }
+    public string ReferenceIdList { get; set; }
 
-        public string ReferenceIdList { get; set; }
+    public string DataSource { get; set; }
 
-        public string DataSource { get; set; }
+    public int MessageId { get; set; }
 
-        public int MessageId { get; set; }
+    public string Sender { get; set; }
 
-        public string Sender { get; set; }
+    public int NotificationTypeId { get; set; }
 
-        public int NotificationTypeId { get; set; }
+    public string NotificationTypeName { get; set; }
 
-        public string NotificationTypeName { get; set; }
+    public DateTime SendDate { get; set; }
 
-        public DateTime SendDate { get; set; }
+    public string SendDateString => SendDate.ToString("MMM dd, yyyy");
 
-        public string SendDateString => SendDate.ToString("MMM dd, yyyy");
+    public string SendTimeString => SendDate.ToString("hh:mm:ss tt");
 
-        public string SendTimeString => SendDate.ToString("hh:mm:ss tt");
+    public IEnumerable<Headline> Headlines { get; set; }
 
-        public IEnumerable<Headline> Headlines { get; set; }
+    public IEnumerable<Recipient> Recipients { get; set; }
 
-        public IEnumerable<Recipient> Recipients { get; set; }
+    public string Title { get; set; }
 
-        public string Title { get; set; }
+    public string Content { get; set; }
 
-        public string Content { get; set; }
+    public string Status { get; set; }
 
-        public string Status { get; set; }
+    public string ResolvedRemark { get; set; }
 
-        public string ResolvedRemark { get; set; }
+    public string ResolvedBy { get; set; }
 
-        public string ResolvedBy { get; set; }
+    public string Reason { get; set; }
 
-        public string Reason { get; set; }
+    public string DisplayName { get; set; }
 
-        public string DisplayName { get; set; }
+    public string RelatedNotificationIds { get; set; }
 
-        public string RelatedNotificationIds { get; set; }
+    public short ChannelId { get; set; }
 
-        public short ChannelId { get; set; }
+    public string FileName { get; set; }
 
-        public string FileName { get; set; }
-
-        public string BotService => ChannelId == 1 ? "Letstalk" : "Telegram";
-    }
+    public string BotService => ChannelId == 1 ? "Letstalk" : "Telegram";
 }

@@ -1,60 +1,59 @@
-﻿namespace CRM.Criteria.Tests.Customer
+﻿namespace CRM.Criteria.Tests.Customer;
+
+using CRM.Criteria.Customer;
+using Xunit;
+
+public class UpdateOtherAccCommunicationInfoCommandTests
 {
-    using CRM.Criteria.Customer;
-    using Xunit;
-
-    public class UpdateOtherAccCommunicationInfoCommandTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
+        //Arrange
+        var criteria = new UpdateOtherAccCommunicationInfoCommand();
+        var expected = "Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo";
+
+        //Act
+        var actual = criteria.GetSettingKey();
+
+        //Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(1, 1, "tests")]
+    public void IsValid_WhenCalled_ReturnTrue(int custID, int userID, string iP)
+    {
+        // Arrange
+        var command = new UpdateOtherAccCommunicationInfoCommand
         {
-            //Arrange
-            var criteria = new UpdateOtherAccCommunicationInfoCommand();
-            var expected = "Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo";
+            CustID = custID,
+            UserID = userID,
+            IP = iP
+        };
 
-            //Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = command.IsValid();
 
-            //Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.True(actual);
+    }
 
-        [Theory]
-        [InlineData(1, 1, "tests")]
-        public void IsValid_WhenCalled_ReturnTrue(int custID, int userID, string iP)
+    [Theory]
+    [InlineData(0, 0, "")]
+    public void IsInValid_WhenCalled_ReturnFalse(int custID, int userID, string iP)
+    {
+        // Arrange
+        var command = new UpdateOtherAccCommunicationInfoCommand
         {
-            // Arrange
-            var command = new UpdateOtherAccCommunicationInfoCommand
-            {
-                CustID = custID,
-                UserID = userID,
-                IP = iP
-            };
+            CustID = custID,
+            UserID = userID,
+            IP = iP
+        };
 
-            // Act
-            var actual = command.IsValid();
+        // Act
+        var actual = command.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Theory]
-        [InlineData(0, 0, "")]
-        public void IsInValid_WhenCalled_ReturnFalse(int custID, int userID, string iP)
-        {
-            // Arrange
-            var command = new UpdateOtherAccCommunicationInfoCommand
-            {
-                CustID = custID,
-                UserID = userID,
-                IP = iP
-            };
-
-            // Act
-            var actual = command.IsValid();
-
-            // Assert
-            Assert.False(actual);
-        }
+        // Assert
+        Assert.False(actual);
     }
 }

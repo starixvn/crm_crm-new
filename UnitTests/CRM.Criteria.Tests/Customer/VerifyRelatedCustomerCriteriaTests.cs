@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.Customer
+﻿namespace CRM.Criteria.Tests.Customer;
+
+using CRM.Criteria.Customer;
+using Xunit;
+
+public class VerifyRelatedCustomerCriteriaTests
 {
-    using CRM.Criteria.Customer;
-    using Xunit;
-
-    public class VerifyRelatedCustomerCriteriaTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
-        {
-            //Arrange
-            var criteria = new VerifyRelatedCustomerCriteria();
-            var expected = "Acc_CRM_RelatedCustomerVerify";
+        //Arrange
+        var criteria = new VerifyRelatedCustomerCriteria();
+        var expected = "Acc_CRM_RelatedCustomerVerify";
 
-            //Act
-            var actual = criteria.GetSettingKey();
+        //Act
+        var actual = criteria.GetSettingKey();
 
-            //Assert
-            Assert.Equal(expected, actual);
-        }
+        //Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
-        {
-            // Arrange
-            var command = new VerifyRelatedCustomerCriteria();
+    [Fact]
+    public void IsValid_WhenCalled_ReturnTrue()
+    {
+        // Arrange
+        var command = new VerifyRelatedCustomerCriteria();
 
-            // Act
-            var actual = command.IsValid();
+        // Act
+        var actual = command.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

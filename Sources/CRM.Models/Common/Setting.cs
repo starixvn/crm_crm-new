@@ -1,28 +1,27 @@
-﻿namespace CRM.Models.Common
+﻿namespace CRM.Models.Common;
+
+using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
+
+[Serializable]
+[XmlType("Setting")]
+public class Setting : BaseModel
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Xml.Serialization;
+    [XmlAttribute("Value")]
+    public string Value { get; set; }
 
-    [Serializable]
-    [XmlType("Setting")]
-    public class Setting : BaseModel
-    {
-        [XmlAttribute("Value")]
-        public string Value { get; set; }
+    public string SettingType { get; set; }
 
-        public string SettingType { get; set; }
+    public int DisplayOrder { get; set; }
 
-        public int DisplayOrder { get; set; }
+    public bool IsChild { get; set; }
 
-        public bool IsChild { get; set; }
+    public bool IsActive { get; set; }
 
-        public bool IsActive { get; set; }
+    public int ParentId { get; set; }
 
-        public int ParentId { get; set; }
+    public string SettingSource { get; set; }
 
-        public string SettingSource { get; set; }
-
-        public List<Setting> ChildSettings { get; set; }
-    }
+    public List<Setting> ChildSettings { get; set; }
 }

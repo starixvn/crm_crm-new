@@ -1,269 +1,253 @@
-﻿namespace CRM.Services.UnitTests.ExportExcel
+﻿namespace CRM.Services.UnitTests.ExportExcel;
+
+using AutoFixture;
+using CRM.Extensions;
+using CRM.Models.Feedback;
+using CRM.Models.Setting;
+using CRM.Resources;
+using CRM.Services.UnitTests.ExportExcel.TestableClasses;
+using NSubstitute;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using Xunit;
+
+public class ManageFeedbackExcelTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using AutoFixture;
-    using CRM.Core;
-    using CRM.Models.Feedback;
-    using CRM.Models.Setting;
-    using CRM.Resources;
-    using CRM.Services.UnitTests.ExportExcel.TestableClasses;
-    using NSubstitute;
-    using OfficeOpenXml;
-    using OfficeOpenXml.Style;
-    using Xunit;
+    private readonly IFixture fixture = new Fixture();
+    private readonly FakeExcelPackage excelPackage = new();
+    private IEnumerable<FeedbackDetail> feedbacks;
+    private IEnumerable<Setting> mainCategories;
 
-    public class ManageFeedbackExcelTests
+    private const byte RowStartHeader = 4;
+    private const byte StartComToolsIndex = 7;
+
+    private const int WidthNormal = 15;
+    private const int WidthLarge = 35;
+    private const int ColumnRunningNo = 1;
+    private const int ColumnFeedback = 2;
+    private const int ColumnCustomer = 3;
+    private const int ColumnCategory = 4;
+    private const int ColumnStatus = 5;
+    private const int ColumnRelCustomer = 6;
+
+    [Fact]
+    public void RenderTitle_WhenCalled_ExpectedCopyRow()
     {
-        private readonly IFixture fixture = new Fixture();
-        private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
-        private IEnumerable<FeedbackDetail> feedbacks;
-        private IEnumerable<Setting> mainCategories;
+        //Arrange
+        var template = excelPackage.Worksheets.Add("template");
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var service = CreateExcel();
 
-        private const byte RowStartHeader = 4;
-        private const byte StartComToolsIndex = 7;
+        // Act
+        service.Public_RenderTitle(template, worksheet);
 
-        private const int WidthNormal = 15;
-        private const int WidthLarge = 35;
-        private const int ColumnRunningNo = 1;
-        private const int ColumnFeedback = 2;
-        private const int ColumnCustomer = 3;
-        private const int ColumnCategory = 4;
-        private const int ColumnStatus = 5;
-        private const int ColumnRelCustomer = 6;
-
-        [Fact]
-        public void RenderTitle_WhenCalled_ExpectedCopyRow()
-        {
-            //Arrange
-            var template = excelPackage.Worksheets.Add("template");
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateExcel();
-
-            // Act
-            service.Public_RenderTitle(template, worksheet);
-
-            // Assert
-            Assert.Equal(template.Cells[2, 1, RowStartHeader - 1, StartComToolsIndex - 1],
-                worksheet.Cells[2, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
-            Assert.Equal(string.Format(ViewResources.ManageFeedback), worksheet.Cells[1, 1].Value);
-        }
-
-        [Fact]
-        public void RenderHeader_WhenCalled_ExpectedCopyRow()
-        {
-            // Arrange
-            var templateWorksheet = excelPackage.Worksheets.Add("template");
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var excel = CreateExcel();
-
-            // Action
-            excel.Public_RenderHeader(templateWorksheet, worksheet);
-
-            // Assert
-            Assert.Equal(templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex],
-                worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex]);
-        }
-
-        [Fact]
-        public void RenderBody_WhenCalled_CallExpectedMethod()
-        {
-            //Arrange
-            var template = excelPackage.Worksheets.Add("template");
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateExcel();
-
-            // Act
-            service.Public_RenderBody(template, worksheet);
-
-            // Assert
-            service.Received().Protected("RenderRow", worksheet, Arg.Any<FeedbackDetail>(), Arg.Any<int>(), Arg.Any<int>());
-        }
-
-        [Fact]
-        public void RenderRow_CloseStatus_RenderExpectedCell()
-        {
-            // Arrange
-            var feedback = FakeFeedbackDetail();
-            feedback.Status = "Closed";
-            var feedbackCellValue = string.Format(
-                "{0}\n{1}\n{2}\n{3}\n{4}",
-                feedback.Subject,
-                "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
-                "Solving Duration: " + feedback.DurationTime,
-                string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
-            var categoryCellValue = "Special Notification\n  Abnormal Bets";
-
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateExcel();
-
-            // Act
-            service.Public_RenderRow(worksheet, feedback, 1, 1);
-
-            // Assert
-            Assert.Equal(feedback.FeedbackId, worksheet.Cells[1, 1].Value);
-            Assert.Equal(feedbackCellValue, worksheet.Cells[1, 2].Value);
-            Assert.Equal(feedback.Username, worksheet.Cells[1, 3].Value);
-            Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
-            Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
-            Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
-        }
-
-        [Fact]
-        public void RenderRow_PendingStatus_RenderExpectedCell()
-        {
-            // Arrange
-            var feedback = FakeFeedbackDetail();
-            feedback.Status = "Pending";
-            var feedbackCellValue = string.Format(
-                "{0}\n{1}\n{2}\n{3}\n{4}",
-                feedback.Subject,
-                "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
-                "Solving Duration: " + feedback.DurationTime,
-                string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
-            var categoryCellValue = "Special Notification\n  Abnormal Bets";
-
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateExcel();
-
-            // Act
-            service.Public_RenderRow(worksheet, feedback, 1, 1);
-
-            // Assert
-            Assert.Equal(feedback.FeedbackId, worksheet.Cells[1, 1].Value);
-            Assert.Equal(feedbackCellValue, worksheet.Cells[1, 2].Value);
-            Assert.Equal(feedback.Username, worksheet.Cells[1, 3].Value);
-            Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
-            Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
-            Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
-        }
-
-        [Fact]
-        public void RenderRow_AnotherStatus_RenderExpectedCell()
-        {
-            // Arrange
-            var feedback = FakeFeedbackDetail();
-            feedback.Status = "Checked";
-            var feedbackCellValue = string.Format(
-                "{0}\n{1}\n{2}\n{3}\n{4}",
-                feedback.Subject,
-                "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
-                "Solving Duration: " + feedback.DurationTime,
-                string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
-            var categoryCellValue = "Special Notification\n  Abnormal Bets";
-
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateExcel();
-
-            // Act
-            service.Public_RenderRow(worksheet, feedback, 1, 1);
-
-            // Assert
-            Assert.Equal(feedback.FeedbackId, worksheet.Cells[1, 1].Value);
-            Assert.Equal(feedbackCellValue, worksheet.Cells[1, 2].Value);
-            Assert.Equal(feedback.Username, worksheet.Cells[1, 3].Value);
-            Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
-            Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
-            Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
-        }
-
-        [Fact]
-        public void ProcessUI_WhenCalled_CallExpectedMethod()
-        {
-            //Arrange
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateExcel();
-
-            // Act
-            service.Public_ProcessUI(worksheet);
-
-            // Assert
-            service.Received().Protected("SetStyle", worksheet);
-            service.Received().Protected("SetWidthColumn", worksheet);
-        }
-
-        [Fact]
-        public void SetStyle_WhenCalled_ExpectedStyle()
-        {
-            // Arrange
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var excel = CreateExcel();
-
-            // Act
-            excel.Public_SetStyle(worksheet);
-
-            // Assert
-            Assert.Equal(ExcelHorizontalAlignment.Center,
-                worksheet.Column(1).Style.HorizontalAlignment);
-        }
-
-        [Fact]
-        public void SetWidthColumn_WhenCalled_ExpectedColumnWidth()
-        {
-            // Arrange
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var excel = CreateExcel();
-
-            // Act
-            excel.Public_SetWidthColumn(worksheet);
-
-            // Assert
-            Assert.Equal(WidthLarge, worksheet.DefaultColWidth);
-            Assert.Equal(WidthNormal, worksheet.Column(ColumnRunningNo).Width);
-            Assert.Equal(WidthLarge, worksheet.Column(ColumnFeedback).Width);
-            Assert.Equal(WidthLarge, worksheet.Column(ColumnCustomer).Width);
-            Assert.Equal(WidthLarge, worksheet.Column(ColumnCategory).Width);
-            Assert.Equal(WidthNormal, worksheet.Column(ColumnStatus).Width);
-            Assert.Equal(WidthLarge, worksheet.Column(ColumnRelCustomer).Width);
-        }
-
-        #region Helpers
-
-        private ManageFeedbackExcelTestable CreateExcel()
-        {
-            feedbacks = new List<FeedbackDetail>
-            {
-                new FeedbackDetail()
-            };
-            mainCategories = new List<Setting>
-            {
-                new Setting
-                {
-                    SettingId = 1, SettingValue = "Special Notification",
-                    ChildSettings = new List<Setting> { new Setting { SubCategoryId = 1, Name = "Abnormal Bets" } }
-                }
-            };
-            return Substitute.For<ManageFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories, ViewResources.FeedbackFromUsernameExcelName, ViewResources.ManageFeedback);
-        }
-
-        private FeedbackDetail FakeFeedbackDetail()
-        {
-            return new FeedbackDetail
-            {
-                FeedbackId = 1,
-                FeedbackDate = fixture.Create<DateTime>(),
-                ResolutionDate = fixture.Create<DateTime>(),
-                CreateDate = fixture.Create<DateTime>(),
-                SolveDate = fixture.Create<DateTime>(),
-                Subject = "Special Notification",
-                Status = "Closed",
-                RelatedCustomer = "test1,test2",
-                CreatorName = "sa",
-                ReviewerName = "sa",
-                Settings = new List<FeedbackSettingRelation>
-                {
-                    new FeedbackSettingRelation { SettingId = 1, SubSettingId = 1, SettingType = "Category" }
-                }
-            };
-        }
-
-        #endregion Helpers
+        // Assert
+        Assert.Equal(template.Cells[2, 1, RowStartHeader - 1, StartComToolsIndex - 1],
+            worksheet.Cells[2, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
+        Assert.Equal(string.Format(ViewResources.ManageFeedback), worksheet.Cells[1, 1].Value);
     }
+
+    [Fact]
+    public void RenderHeader_WhenCalled_ExpectedCopyRow()
+    {
+        // Arrange
+        var templateWorksheet = excelPackage.Worksheets.Add("template");
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var excel = CreateExcel();
+
+        // Action
+        excel.Public_RenderHeader(templateWorksheet, worksheet);
+
+        // Assert
+        Assert.Equal(templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex],
+            worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex]);
+    }
+
+    [Fact]
+    public void RenderBody_WhenCalled_CallExpectedMethod()
+    {
+        //Arrange
+        var template = excelPackage.Worksheets.Add("template");
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var service = CreateExcel();
+
+        // Act
+        service.Public_RenderBody(template, worksheet);
+
+        // Assert
+        service.Received().Protected("RenderRow", worksheet, Arg.Any<FeedbackDetail>(), Arg.Any<int>(), Arg.Any<int>());
+    }
+
+    [Fact]
+    public void RenderRow_CloseStatus_RenderExpectedCell()
+    {
+        // Arrange
+        var feedback = FakeFeedbackDetail();
+        feedback.Status = "Closed";
+        var feedbackCellValue =
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}\n{$"Reviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}"}";
+        var categoryCellValue = "Special Notification\n  Abnormal Bets";
+
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var service = CreateExcel();
+
+        // Act
+        service.Public_RenderRow(worksheet, feedback, 1, 1);
+
+        // Assert
+        Assert.Equal(feedback.FeedbackId, worksheet.Cells[1, 1].Value);
+        Assert.Equal(feedbackCellValue, worksheet.Cells[1, 2].Value);
+        Assert.Equal(feedback.Username, worksheet.Cells[1, 3].Value);
+        Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
+        Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
+        Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
+        service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
+    }
+
+    [Fact]
+    public void RenderRow_PendingStatus_RenderExpectedCell()
+    {
+        // Arrange
+        var feedback = FakeFeedbackDetail();
+        feedback.Status = "Pending";
+        var feedbackCellValue =
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}\n{$"Reviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}"}";
+        var categoryCellValue = "Special Notification\n  Abnormal Bets";
+
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var service = CreateExcel();
+
+        // Act
+        service.Public_RenderRow(worksheet, feedback, 1, 1);
+
+        // Assert
+        Assert.Equal(feedback.FeedbackId, worksheet.Cells[1, 1].Value);
+        Assert.Equal(feedbackCellValue, worksheet.Cells[1, 2].Value);
+        Assert.Equal(feedback.Username, worksheet.Cells[1, 3].Value);
+        Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
+        Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
+        Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
+        service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
+    }
+
+    [Fact]
+    public void RenderRow_AnotherStatus_RenderExpectedCell()
+    {
+        // Arrange
+        var feedback = FakeFeedbackDetail();
+        feedback.Status = "Checked";
+        var feedbackCellValue =
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}\n{$"Reviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}"}";
+        var categoryCellValue = "Special Notification\n  Abnormal Bets";
+
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var service = CreateExcel();
+
+        // Act
+        service.Public_RenderRow(worksheet, feedback, 1, 1);
+
+        // Assert
+        Assert.Equal(feedback.FeedbackId, worksheet.Cells[1, 1].Value);
+        Assert.Equal(feedbackCellValue, worksheet.Cells[1, 2].Value);
+        Assert.Equal(feedback.Username, worksheet.Cells[1, 3].Value);
+        Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
+        Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
+        Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
+        service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
+    }
+
+    [Fact]
+    public void ProcessUI_WhenCalled_CallExpectedMethod()
+    {
+        //Arrange
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var service = CreateExcel();
+
+        // Act
+        service.Public_ProcessUI(worksheet);
+
+        // Assert
+        service.Received().Protected("SetStyle", worksheet);
+        service.Received().Protected("SetWidthColumn", worksheet);
+    }
+
+    [Fact]
+    public void SetStyle_WhenCalled_ExpectedStyle()
+    {
+        // Arrange
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var excel = CreateExcel();
+
+        // Act
+        excel.Public_SetStyle(worksheet);
+
+        // Assert
+        Assert.Equal(ExcelHorizontalAlignment.Center,
+            worksheet.Column(1).Style.HorizontalAlignment);
+    }
+
+    [Fact]
+    public void SetWidthColumn_WhenCalled_ExpectedColumnWidth()
+    {
+        // Arrange
+        var worksheet = excelPackage.Worksheets.Add("data");
+        var excel = CreateExcel();
+
+        // Act
+        excel.Public_SetWidthColumn(worksheet);
+
+        // Assert
+        Assert.Equal(WidthLarge, worksheet.DefaultColWidth);
+        Assert.Equal(WidthNormal, worksheet.Column(ColumnRunningNo).Width);
+        Assert.Equal(WidthLarge, worksheet.Column(ColumnFeedback).Width);
+        Assert.Equal(WidthLarge, worksheet.Column(ColumnCustomer).Width);
+        Assert.Equal(WidthLarge, worksheet.Column(ColumnCategory).Width);
+        Assert.Equal(WidthNormal, worksheet.Column(ColumnStatus).Width);
+        Assert.Equal(WidthLarge, worksheet.Column(ColumnRelCustomer).Width);
+    }
+
+    #region Helpers
+
+    private ManageFeedbackExcelTestable CreateExcel()
+    {
+        feedbacks = new List<FeedbackDetail>
+        {
+            new()
+        };
+        mainCategories = new List<Setting>
+        {
+            new()
+            {
+                SettingId = 1, SettingValue = "Special Notification",
+                ChildSettings = [new Setting { SubCategoryId = 1, Name = "Abnormal Bets" }]
+            }
+        };
+        return Substitute.For<ManageFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories, ViewResources.FeedbackFromUsernameExcelName, ViewResources.ManageFeedback);
+    }
+
+    private FeedbackDetail FakeFeedbackDetail()
+    {
+        return new FeedbackDetail
+        {
+            FeedbackId = 1,
+            FeedbackDate = fixture.Create<DateTime>(),
+            ResolutionDate = fixture.Create<DateTime>(),
+            CreateDate = fixture.Create<DateTime>(),
+            SolveDate = fixture.Create<DateTime>(),
+            Subject = "Special Notification",
+            Status = "Closed",
+            RelatedCustomer = "test1,test2",
+            CreatorName = "sa",
+            ReviewerName = "sa",
+            Settings = new List<FeedbackSettingRelation>
+            {
+                new() { SettingId = 1, SubSettingId = 1, SettingType = "Category" }
+            }
+        };
+    }
+
+    #endregion Helpers
 }

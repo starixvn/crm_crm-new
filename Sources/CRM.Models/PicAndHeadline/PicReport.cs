@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+using System.Collections.Generic;
+
+public class PicReport
 {
-    using System.Collections.Generic;
+    public IList<PicInfo> DataList { get; set; }
 
-    public class PicReport
-    {
-        public IList<PicInfo> DataList { get; set; }
-
-        public int Total { get; set; }
-    }
+    public int Total { get; set; }
 }

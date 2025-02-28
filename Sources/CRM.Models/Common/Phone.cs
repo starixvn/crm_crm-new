@@ -1,30 +1,29 @@
-﻿namespace CRM.Models.Common
+﻿namespace CRM.Models.Common;
+
+using System;
+
+[Serializable]
+public class Phone
 {
-    using System;
+    public string CountryCode { get; set; }
 
-    [Serializable]
-    public class Phone
+    public string AreaCode { get; set; }
+
+    public string PhoneNumber { get; set; }
+
+    public override string ToString()
     {
-        public string CountryCode { get; set; }
+        var firstJoin = JoinTwoFields(CountryCode, AreaCode);
+        return JoinTwoFields(firstJoin, PhoneNumber);
+    }
 
-        public string AreaCode { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public override string ToString()
+    private static string JoinTwoFields(string name, string value)
+    {
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(value))
         {
-            string firstJoin = JoinTwoFields(CountryCode, AreaCode);
-            return JoinTwoFields(firstJoin, PhoneNumber);
+            return name + value;
         }
 
-        private static string JoinTwoFields(string name, string value)
-        {
-            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(value))
-            {
-                return name + value;
-            }
-
-            return name + " - " + value;
-        }
+        return name + " - " + value;
     }
 }

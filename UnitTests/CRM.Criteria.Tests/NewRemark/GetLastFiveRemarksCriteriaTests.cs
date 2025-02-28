@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.NewRemark
+﻿namespace CRM.Criteria.Tests.NewRemark;
+
+using CRM.Criteria.NewRemark;
+using Xunit;
+
+public class GetLastFiveRemarksCriteriaTests
 {
-    using CRM.Criteria.NewRemark;
-    using Xunit;
-
-    public class GetLastFiveRemarksCriteriaTests
+    [Fact]
+    public void GetSettingKey_ReturnCorrectSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_ReturnCorrectSettingKey()
-        {
-            // Arrange
-            var criteria = new GetLastFiveRemarksCriteria();
-            var expected = "Acc_CRM_CustomerRemarkNewSel";
+        // Arrange
+        var criteria = new GetLastFiveRemarksCriteria();
+        var expected = "Acc_CRM_CustomerRemarkNewSel";
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = criteria.GetSettingKey();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_AlwaysReturnTrue()
-        {
-            // Arrange
-            var criteria = new GetLastFiveRemarksCriteria();
+    [Fact]
+    public void IsValid_WhenCalled_AlwaysReturnTrue()
+    {
+        // Arrange
+        var criteria = new GetLastFiveRemarksCriteria();
 
-            // Act
-            var actual = criteria.IsValid();
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

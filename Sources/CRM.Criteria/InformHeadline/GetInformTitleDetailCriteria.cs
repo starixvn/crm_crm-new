@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.InformHeadline
+﻿namespace CRM.Criteria.InformHeadline;
+
+using Fanex.Data.Repository;
+
+public class GetInformTitleDetailCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public int TitleId { get; set; }
 
-    public class GetInformTitleDetailCriteria : CriteriaBase
-    {
-        public int TitleId { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_InformTitleDetail";
 
-        public override string GetSettingKey() => "Acc_CRM_InformTitleDetail";
-
-        public override bool IsValid() => TitleId > 0;
-    }
+    public override bool IsValid() => TitleId > 0;
 }

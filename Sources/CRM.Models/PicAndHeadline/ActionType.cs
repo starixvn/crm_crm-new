@@ -1,8 +1,7 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+public class ActionType
 {
-    public class ActionType
-    {
-        public int ActionTypeID { get; set; }
-        public string ActionTypeName { get; set; }
-    }
+    public int ActionTypeID { get; set; }
+    public string ActionTypeName { get; set; }
 }

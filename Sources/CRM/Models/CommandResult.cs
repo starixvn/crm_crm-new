@@ -1,9 +1,8 @@
-﻿namespace CRM.Core.Models
+﻿namespace CRM.Models;
+
+public class CommandResult
 {
-    public class CommandResult
-    {
-        public int Code { get; set; } = 1;
-        public string Message { get; set; } = "Invalid data.";
-        public bool IsSuccessful => Code == 0;
-    }
+    public int Code { get; set; } = 1;
+    public string Message { get; set; } = "Invalid data.";
+    public bool IsSuccessful => Code == 0;
 }

@@ -1,95 +1,82 @@
-﻿namespace CRM.Controllers
+﻿namespace CRM.Controllers.HeadlineNotification;
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Constants;
+using CRM.Criteria.NotificationList;
+using CRM.Criteria.NotificationType;
+using CRM.Models.NotificationList;
+using Enumerables;
+using Fanex.NAP.Client;
+using Filters;
+using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
+using static Fanex.NAP.Client.Helpers.Business.Constant;
+
+[CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Read)]
+public class NotificationListController(
+    INapSession napSession,
+    INotificationListService notificationListService,
+    INotificationTypeService notificationTypeService,
+    ICommonService commonService)
+    : BaseController
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
-    using CRM.Core.Filters;
-    using CRM.Criteria.NotificationList;
-    using CRM.Criteria.NotificationType;
-    using CRM.Models.NotificationList;
-    using CRM.Services;
-    using Fanex.NAP.Client;
-    using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Client.Helpers.Business.Constant;
-
-    [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Read)]
-    public class NotificationListController : BaseController
+    public async Task<IActionResult> GetSettings()
     {
-        private readonly INapSession napSession;
-        private readonly INotificationListService notificationListService;
-        private readonly INotificationTypeService notificationTypeService;
-        private readonly ICommonService commonService;
-
-        public NotificationListController(
-            INapSession napSession,
-            INotificationListService notificationListService,
-            INotificationTypeService notificationTypeService,
-            ICommonService commonService)
+        var result = new
         {
-            this.napSession = napSession;
-            this.notificationListService = notificationListService;
-            this.notificationTypeService = notificationTypeService;
-            this.commonService = commonService;
+            NotificationTypes = await notificationTypeService.GetNotificationTypeAsync(new GetNotificationTypeCriteria()),
+            Statuses = Enum.GetValues(typeof(NotificationStatus)).Cast<NotificationStatus>().Select(status => status.ToString())
+        };
+
+        return Json(result);
+    }
+
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Read)]
+    public async Task<IActionResult> GetGridData([FromBody]GetNotificationListCriteria param)
+    {
+        if (param.FromDate.HasValue && param.ToDate.HasValue)
+        {
+            param.FromDate = commonService.ConvertToServerDateTime(param.FromDate.Value);
+            param.ToDate = commonService.ConvertToServerDateTime(param.ToDate.Value);
         }
 
-        public async Task<IActionResult> GetSettings()
+        var notifications = await notificationListService.GetNotificationListAsync(param);
+        foreach (var notification in notifications)
         {
-            var result = new
-            {
-                NotificationTypes = await notificationTypeService.GetNotificationTypeAsync(new GetNotificationTypeCriteria()),
-                Statuses = Enum.GetValues(typeof(NotificationStatus)).Cast<NotificationStatus>().Select(status => status.ToString())
-            };
-
-            return Json(result);
+            notification.SendDate = commonService.ConvertToClientDateTime(notification.SendDate);
         }
 
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Read)]
-        public async Task<IActionResult> GetGridData([FromBody]GetNotificationListCriteria param)
-        {
-            if (param.FromDate.HasValue && param.ToDate.HasValue)
-            {
-                param.FromDate = commonService.ConvertToServerDateTime(param.FromDate.Value);
-                param.ToDate = commonService.ConvertToServerDateTime(param.ToDate.Value);
-            }
+        return Json(new { totalItems = param.TotalRows, data = notifications });
+    }
 
-            var notifications = await notificationListService.GetNotificationListAsync(param);
-            foreach (var notification in notifications)
-            {
-                notification.SendDate = commonService.ConvertToClientDateTime(notification.SendDate);
-            }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
+    public async Task<IActionResult> EditNotificationList([FromBody]EditNotificationListCommand command)
+    {
+        command.UserId = napSession.UserId;
+        var result = await notificationListService.EditNotificationListAsync(command);
+        return Json(new { resolvedBy = napSession.UserName, result });
+    }
 
-            return Json(new { totalItems = param.TotalRows, data = notifications });
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
+    public async Task<IActionResult> ValidateNotificationList([FromBody]ValidateNotificationListModel model)
+    {
+        var criteria = new ValidateNotificationListCriteria { NotificationIds = model.NotificationIds };
+        var result = await notificationListService.ValidateNotificationListAsync(criteria);
+        result.IsSingle = model.IsSingle;
+        return Json(result);
+    }
 
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
-        public async Task<IActionResult> EditNotificationList([FromBody]EditNotificationListCommand command)
-        {
-            command.UserId = napSession.UserId;
-            var result = await notificationListService.EditNotificationListAsync(command);
-            return Json(new { resolvedBy = napSession.UserName, result });
-        }
-
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
-        public async Task<IActionResult> ValidateNotificationList([FromBody]ValidateNotificationListModel model)
-        {
-            var criteria = new ValidateNotificationListCriteria { NotificationIds = model.NotificationIds };
-            var result = await notificationListService.ValidateNotificationListAsync(criteria);
-            result.IsSingle = model.IsSingle;
-            return Json(result);
-        }
-
-        [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
-        public async Task<IActionResult> ResendNotificationList([FromBody]ResendNotificationsCommand command)
-        {
-            command.UserId = napSession.UserId;
-            var result = await notificationListService.ResendNotificationsAsync(command);
-            return Json(result);
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
+    public async Task<IActionResult> ResendNotificationList([FromBody]ResendNotificationsCommand command)
+    {
+        command.UserId = napSession.UserId;
+        var result = await notificationListService.ResendNotificationsAsync(command);
+        return Json(result);
     }
 }

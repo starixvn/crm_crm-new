@@ -1,9 +1,8 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum ReviewFeedbackMode
 {
-    public enum ReviewFeedbackMode
-    {
-        NotUpdate,
-        Update,
-        Remove
-    }
+    NotUpdate,
+    Update,
+    Remove
 }

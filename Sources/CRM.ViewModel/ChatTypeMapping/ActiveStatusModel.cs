@@ -1,9 +1,8 @@
-﻿namespace CRM.ViewModels.ChatTypeMapping
-{
-    public class ActiveStatusModel
-    {
-        public int ConversationGroupId { get; set; }
+﻿namespace CRM.ViewModels.ChatTypeMapping;
 
-        public bool IsActive { get; set; }
-    }
+public class ActiveStatusModel
+{
+    public int ConversationGroupId { get; set; }
+
+    public bool IsActive { get; set; }
 }

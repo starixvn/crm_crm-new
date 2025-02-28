@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.AdminTool.SettingLog
+﻿namespace CRM.Models.AdminTool.SettingLog;
+
+public class GetSettingRelationConfirm
 {
-    public class GetSettingRelationConfirm
-    {
-        public string SettingID { get; set; }
+    public string SettingID { get; set; }
 
-        public int ParentID { get; set; }
+    public int ParentID { get; set; }
 
-        public string SettingName { get; set; }
-    }
+    public string SettingName { get; set; }
 }

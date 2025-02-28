@@ -1,14 +1,13 @@
-﻿namespace CRM.Criteria.Setting
+﻿namespace CRM.Criteria.Setting;
+
+using Fanex.Data.Repository;
+
+public class GetAllStationCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
-
-    public class GetAllStationCriteria : CriteriaBase
+    public override string GetSettingKey()
     {
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_StationList";
-        }
-
-        public override bool IsValid() => true;
+        return "Acc_CRM_StationList";
     }
+
+    public override bool IsValid() => true;
 }

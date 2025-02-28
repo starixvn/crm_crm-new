@@ -1,9 +1,8 @@
-﻿namespace CRM.Core.Constants
-{
-    public static class UserAmendment
-    {
-        public const int OST = 1;
+﻿namespace CRM.Constants;
 
-        public const int CSD = 2;
-    }
+public static class UserAmendment
+{
+    public const int OST = 1;
+
+    public const int CSD = 2;
 }

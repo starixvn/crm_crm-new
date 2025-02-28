@@ -1,15 +1,14 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+public class DirectAccountInfo
 {
-    public class DirectAccountInfo
-    {
-        public string DirectAccount { get; set; }
+    public string DirectAccount { get; set; }
 
-        public string Status { get; set; }
+    public string Status { get; set; }
 
-        public string Site { get; set; }
+    public string Site { get; set; }
 
-        public string Currency { get; set; }
+    public string Currency { get; set; }
 
-        public string Position { get; set; }
-    }
+    public string Position { get; set; }
 }

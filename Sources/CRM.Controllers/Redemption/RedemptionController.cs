@@ -1,81 +1,66 @@
-﻿namespace CRM.Controllers.Redemption
+﻿namespace CRM.Controllers.Redemption;
+
+using System.Linq;
+using System.Threading.Tasks;
+using Constants;
+using CRM.Criteria.Redemption;
+using CRM.Services;
+using CRM.Services.Redemption;
+using Enumerables;
+using Fanex.NAP.Client;
+using Filters;
+using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
+using static Fanex.NAP.Client.Helpers.Business.Constant;
+
+[CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
+public class RedemptionController(
+    INapSession napSession,
+    IRedemptionService redemptionService,
+    ISettingService settingService,
+    IBaseService baseService)
+    : BaseController
 {
-    using System.Linq;
-    using System.Threading.Tasks;
-    using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
-    using CRM.Core.Filters;
-    using CRM.Core.Services;
-    using CRM.Criteria.Redemption;
-    using CRM.Services;
-    using CRM.Services.Redemption;
-    using Fanex.NAP.Client;
-    using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Client.Helpers.Business.Constant;
-
-    [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
-    public class RedemptionController : BaseController
+    public async Task<IActionResult> GetLogsByCustomerId([FromBody] GetLogsByCustomerIdCriteria criteria)
     {
-        private readonly INapSession napSession;
-        private readonly IRedemptionService redemptionService;
-        private readonly ISettingService settingService;
-        private readonly IBaseService baseService;
+        var logs = await redemptionService.GetLogsByCustomerIdAsync(criteria);
+        return Json(logs);
+    }
 
-        public RedemptionController(
-            INapSession napSession,
-            IRedemptionService redemptionService,
-            ISettingService settingService,
-            IBaseService baseService
-        )
+    public async Task<IActionResult> GetAllStatus(bool isEdit)
+    {
+        var statuses = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);
+        var currencies = await settingService.GetCurrencyRedemptionAsync();
+        if (!isEdit)
         {
-            this.napSession = napSession;
-            this.redemptionService = redemptionService;
-            this.settingService = settingService;
-            this.baseService = baseService;
+            statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
         }
+        return Json(new { statuses, currencies });
+    }
 
+    public async Task<IActionResult> GetLogById(int id)
+    {
+        var log = await redemptionService.GetLogByIdAsync(id);
+        return Json(log);
+    }
 
-        public async Task<IActionResult> GetLogsByCustomerId([FromBody] GetLogsByCustomerIdCriteria criteria)
-        {
-            var logs = await redemptionService.GetLogsByCustomerIdAsync(criteria);
-            return Json(logs);
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Host)]
+    public async Task<IActionResult> EditRedemptionLog([FromBody] EditRedemptionLogCommand command)
+    {
+        command.UserId = napSession.UserId;
+        command.IP = ClientIP;
+        var commandResult = await baseService.ExecuteNonQueryAsync(command);
+        return Json(commandResult);
+    }
 
-        public async Task<IActionResult> GetAllStatus(bool isEdit)
-        {
-            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);
-            var currencies = await settingService.GetCurrencyRedemptionAsync();
-            if (!isEdit)
-            {
-                statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
-            }
-            return Json(new { statuses, currencies });
-        }
-
-        public async Task<IActionResult> GetLogById(int id)
-        {
-            var log = await redemptionService.GetLogByIdAsync(id);
-            return Json(log);
-        }
-
-        [HttpPost]
-        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Host)]
-        public async Task<IActionResult> EditRedemptionLog([FromBody] EditRedemptionLogCommand command)
-        {
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            var commandResult = await baseService.ExecuteNonQueryAsync(command);
-            return Json(commandResult);
-        }
-
-        [HttpPost]
-        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Host)]
-        public async Task<IActionResult> CreateRedemptionLog([FromBody] CreateRedemptionLogCommand command)
-        {
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            var commandResult = await baseService.ExecuteNonQueryAsync(command);
-            return Json(commandResult);
-        }
+    [HttpPost]
+    [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Host)]
+    public async Task<IActionResult> CreateRedemptionLog([FromBody] CreateRedemptionLogCommand command)
+    {
+        command.UserId = napSession.UserId;
+        command.IP = ClientIP;
+        var commandResult = await baseService.ExecuteNonQueryAsync(command);
+        return Json(commandResult);
     }
 }

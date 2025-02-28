@@ -1,7 +1,6 @@
-﻿namespace CRM.Models.AdminTool.CommunicationToolSetting
+﻿namespace CRM.Models.AdminTool.CommunicationToolSetting;
+
+public class EditCommunicationToolSetting : CreateCommunicationToolSetting
 {
-    public class EditCommunicationToolSetting : CreateCommunicationToolSetting
-    {
-        public int DefaultCommId { get; set; }
-    }
+    public int DefaultCommId { get; set; }
 }

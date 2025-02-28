@@ -1,13 +1,12 @@
-﻿namespace CRM.Models.Setting
+﻿namespace CRM.Models.Setting;
+
+public class Language
 {
-    public class Language
-    {
-        public int LanguageId { get; set; }
+    public int LanguageId { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public int DisplayOrder { get; set; }
+    public int DisplayOrder { get; set; }
 
-        public bool IsActive { get; set; }
-    }
+    public bool IsActive { get; set; }
 }

@@ -1,30 +1,29 @@
-﻿namespace CRM.Criteria.NotificationType
+﻿namespace CRM.Criteria.NotificationType;
+
+using Models;
+
+public class CreateNotificationTypeCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public string NotificationTypeName { get; set; }
 
-    public class CreateNotificationTypeCommand : BaseNonQueryCommand
-    {
-        public string NotificationTypeName { get; set; }
+    public string ChatTypeIds { get; set; }
 
-        public string ChatTypeIds { get; set; }
+    public string RecipientTypeIds { get; set; }
 
-        public string RecipientTypeIds { get; set; }
+    public int SystemId { get; set; }
 
-        public int SystemId { get; set; }
+    public int UserId { get; set; }
 
-        public int UserId { get; set; }
+    public string LoginIP { get; set; }
 
-        public string LoginIP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_ChatBot_NotificationType_Ins";
 
-        public override string GetSettingKey() => "Acc_CRM_ChatBot_NotificationType_Ins";
+    private bool IsValidString() => !string.IsNullOrWhiteSpace(NotificationTypeName) &&
+                                    !string.IsNullOrWhiteSpace(ChatTypeIds) &&
+                                    !string.IsNullOrWhiteSpace(RecipientTypeIds);
 
-        private bool IsValidString() => !string.IsNullOrWhiteSpace(NotificationTypeName) &&
-            !string.IsNullOrWhiteSpace(ChatTypeIds) &&
-            !string.IsNullOrWhiteSpace(RecipientTypeIds);
-
-        public override bool IsValid() =>
-             IsValidString() &&
-             UserId > 0
-             && SystemId > 0;
-    }
+    public override bool IsValid() =>
+        IsValidString() &&
+        UserId > 0
+        && SystemId > 0;
 }

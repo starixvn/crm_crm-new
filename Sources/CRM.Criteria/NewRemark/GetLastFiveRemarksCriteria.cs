@@ -1,15 +1,14 @@
-﻿namespace CRM.Criteria.NewRemark
+﻿namespace CRM.Criteria.NewRemark;
+
+using Constants;
+using Fanex.Data.Repository;
+
+public class GetLastFiveRemarksCriteria : CriteriaBase
 {
-    using CRM.Core.Constants;
-    using Fanex.Data.Repository;
+    public int UserRole { get; } = Constants.UserRole;
+    public int CustId { get; set; }
 
-    public class GetLastFiveRemarksCriteria : CriteriaBase
-    {
-        public int UserRole { get; } = Constants.UserRole;
-        public int CustId { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_CustomerRemarkNewSel";
 
-        public override string GetSettingKey() => "Acc_CRM_CustomerRemarkNewSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

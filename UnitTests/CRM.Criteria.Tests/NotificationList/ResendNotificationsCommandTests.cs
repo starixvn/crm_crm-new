@@ -1,73 +1,72 @@
-﻿namespace CRM.Criteria.Tests.NotificationList
+﻿namespace CRM.Criteria.Tests.NotificationList;
+
+using CRM.Criteria.NotificationList;
+using Xunit;
+
+public class ResendNotificationsCommandTests
 {
-    using CRM.Criteria.NotificationList;
-    using Xunit;
-
-    public class ResendNotificationsCommandTests
+    [Fact]
+    public void GetSettingKey_ReturnCorrectSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_ReturnCorrectSettingKey()
+        // Arrange
+        var command = new ResendNotificationsCommand();
+        var expected = "Acc_CRM_Chatbot_ResendNotification";
+
+        // Action
+        var actual = command.GetSettingKey();
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public void IsValid_NullOrEmptyNotificationIds_ReturnFalse(string notificationIds)
+    {
+        // Arrange
+        var command = new ResendNotificationsCommand
         {
-            // Arrange
-            var command = new ResendNotificationsCommand();
-            var expected = "Acc_CRM_Chatbot_ResendNotification";
+            NotificationIds = notificationIds
+        };
 
-            // Action
-            var actual = command.GetSettingKey();
+        // Act
+        var actual = command.IsValid();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.False(actual);
+    }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public void IsValid_NullOrEmptyNotificationIds_ReturnFalse(string notificationIds)
+    [Fact]
+    public void IsValid_UserIdNotGreaterThanZero_ReturnFalse()
+    {
+        // Arrange
+        var command = new ResendNotificationsCommand
         {
-            // Arrange
-            var command = new ResendNotificationsCommand
-            {
-                NotificationIds = notificationIds
-            };
+            UserId = 0
+        };
 
-            // Act
-            var actual = command.IsValid();
+        // Act
+        var actual = command.IsValid();
 
-            // Assert
-            Assert.False(actual);
-        }
+        // Assert
+        Assert.False(actual);
+    }
 
-        [Fact]
-        public void IsValid_UserIdNotGreaterThanZero_ReturnFalse()
+    [Fact]
+    public void IsValid_ValidParams_ReturnTrue()
+    {
+        // Arrange
+        var command = new ResendNotificationsCommand
         {
-            // Arrange
-            var command = new ResendNotificationsCommand
-            {
-                UserId = 0
-            };
+            NotificationIds = "1",
+            UserId = 1
+        };
 
-            // Act
-            var actual = command.IsValid();
+        // Act
+        var actual = command.IsValid();
 
-            // Assert
-            Assert.False(actual);
-        }
-
-        [Fact]
-        public void IsValid_ValidParams_ReturnTrue()
-        {
-            // Arrange
-            var command = new ResendNotificationsCommand
-            {
-                NotificationIds = "1",
-                UserId = 1
-            };
-
-            // Act
-            var actual = command.IsValid();
-
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

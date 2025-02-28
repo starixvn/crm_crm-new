@@ -1,9 +1,8 @@
-﻿namespace CRM.Models.NotificationCenter
-{
-    public class EditResultAdmNotiStatus
-    {
-        public int NotificationId { get; set; }
+﻿namespace CRM.Models.NotificationCenter;
 
-        public string NewStatus { get; set; }
-    }
+public class EditResultAdmNotiStatus
+{
+    public int NotificationId { get; set; }
+
+    public string NewStatus { get; set; }
 }

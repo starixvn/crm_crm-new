@@ -1,17 +1,16 @@
-﻿namespace CRM.Criteria.Common
+﻿namespace CRM.Criteria.Common;
+
+using Fanex.Data.Repository;
+
+public class GetRecipientsCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public string RecipientName { get; set; }
 
-    public class GetRecipientsCriteria : CriteriaBase
-    {
-        public string RecipientName { get; set; }
+    public int? Limit { get; set; }
 
-        public int? Limit { get; set; }
+    public int? RecipientType { get; set; }
 
-        public int? RecipientType { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_ChatBot_Recipient_Sel";
 
-        public override string GetSettingKey() => "Acc_CRM_ChatBot_Recipient_Sel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

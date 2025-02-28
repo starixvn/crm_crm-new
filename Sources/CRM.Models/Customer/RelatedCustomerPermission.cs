@@ -1,7 +1,6 @@
-﻿namespace CRM.Models.Customer
+﻿namespace CRM.Models.Customer;
+
+public class RelatedCustomerPermission : RelatedCustomer
 {
-    public class RelatedCustomerPermission : RelatedCustomer
-    {
-        public bool IsAuthorized { get; set; }
-    }
+    public bool IsAuthorized { get; set; }
 }

@@ -1,9 +1,8 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum SiteType
 {
-    public enum SiteType
-    {
-        NA,
-        Credit,
-        Licensee
-    }
+    NA,
+    Credit,
+    Licensee
 }

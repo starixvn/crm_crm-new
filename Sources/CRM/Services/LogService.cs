@@ -1,87 +1,79 @@
-﻿namespace CRM.Core.Services
+﻿namespace CRM.Services;
+
+using Fanex.Data.Repository;
+using Fanex.Logging.Extensions;
+using Models;
+using Newtonsoft.Json;
+using NLog;
+using NLog.Web;
+using System;
+using System.Threading.Tasks;
+
+public interface ICRMLogService
 {
-    using System;
-    using System.Threading.Tasks;
-    using CRM.Core.Models;
-    using Fanex.Data.Repository;
-    using Fanex.Logging.Extensions;
-    using Newtonsoft.Json;
-    using NLog;
-    using NLog.Web;
+    Task ErrorMessageAsync(string error);
 
-    public interface ICRMLogService
+    Task InfoMessageAsync(string info);
+
+    Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
+
+    Task ErrorAsync(Exception exception, ICriteria criteria);
+
+    Task ErrorAsync(Exception exception);
+
+    void LogInformation(string message);
+
+    void LogFileError(Exception exception);
+}
+
+public class CRMLogService(Fanex.Logging.ILogger logger) : ICRMLogService
+{
+    private readonly Logger nlog = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+
+    public async Task ErrorMessageAsync(string error)
     {
-        Task ErrorMessageAsync(string error);
-
-        Task InfoMessageAsync(string info);
-
-        Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
-
-        Task ErrorAsync(Exception exception, ICriteria criteria);
-
-        Task ErrorAsync(Exception exception);
-
-        void LogInformation(string message);
-
-        void LogFileError(Exception exception);
+        await logger.ErrorAsync(error);
     }
 
-    public class CRMLogService : ICRMLogService
+    public async Task InfoMessageAsync(string info)
     {
-        private readonly Fanex.Logging.ILogger logger;
-        private readonly Logger nlog = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        await logger.InfoAsync(info);
+    }
 
-        public CRMLogService(
-            Fanex.Logging.ILogger logger)
-        {
-            this.logger = logger;
-        }
+    public async Task ErrorAsync(Exception exception)
+    {
+        var logMessage = new LogMessage(exception.Message)
+            .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+            .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
+            .ToString();
+        await logger.ErrorAsync(logMessage);
+    }
 
-        public async Task ErrorMessageAsync(string error)
-        {
-            await logger.ErrorAsync(error);
-        }
+    public async Task ErrorAsync(CommandResult commandResult, ICriteria criteria)
+    {
+        var logMessage = new LogMessage($"{commandResult.Code}: {commandResult.Message}")
+            .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
+            .ToString();
+        await logger.ErrorAsync(logMessage);
+    }
 
-        public async Task InfoMessageAsync(string info)
-        {
-            await logger.InfoAsync(info);
-        }
+    public async Task ErrorAsync(Exception exception, ICriteria criteria)
+    {
+        var logMessage = new LogMessage(exception.Message)
+            .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+            .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
+            .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
+            .ToString();
+        await logger.ErrorAsync(logMessage);
+    }
 
-        public async Task ErrorAsync(Exception exception)
-        {
-            var logMessage = new LogMessage(exception.Message)
-                       .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
-                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
-                       .ToString();
-            await logger.ErrorAsync(logMessage);
-        }
+    public void LogFileError(Exception exception)
+    {
+        nlog.Error(exception);
+    }
 
-        public async Task ErrorAsync(CommandResult commandResult, ICriteria criteria)
-        {
-            var logMessage = new LogMessage(string.Format("{0}: {1}", commandResult.Code, commandResult.Message))
-                       .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
-                       .ToString();
-            await logger.ErrorAsync(logMessage);
-        }
-
-        public async Task ErrorAsync(Exception exception, ICriteria criteria)
-        {
-            var logMessage = new LogMessage(exception.Message)
-                      .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
-                      .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
-                      .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
-                      .ToString();
-            await logger.ErrorAsync(logMessage);
-        }
-
-        public void LogFileError(Exception exception)
-        {
-            nlog.Error(exception);
-        }
-
-        public void LogInformation(string message)
-        {
-            nlog.Info(message);
-        }
+    public void LogInformation(string message)
+    {
+        nlog.Info(message);
     }
 }

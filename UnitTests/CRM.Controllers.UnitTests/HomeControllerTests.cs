@@ -1,37 +1,36 @@
-﻿namespace CRM.Controllers.UnitTests
+﻿namespace CRM.Controllers.UnitTests;
+
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using NSubstitute;
+using Services;
+using Xunit;
+
+public class HomeControllerTests
 {
-    using System.Threading.Tasks;
-    using CRM.Core.Services;
-    using Microsoft.AspNetCore.Mvc;
-    using NSubstitute;
-    using Xunit;
+    private IPermissionService permissionService;
 
-    public class HomeControllerTests
+    [Fact]
+    public async Task Index_WhenCalled_ReturnExpectedViewResult()
     {
-        private IPermissionService permissionService;
+        // Arrange
+        var controller = GetController();
 
-        [Fact]
-        public async Task Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
+        // Act
+        var actual = await controller.Index();
 
-            // Act
-            var actual = await controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
-        }
-
-        #region Helpers
-
-        private HomeController GetController()
-        {
-            permissionService = Substitute.For<IPermissionService>();
-            return new HomeController(permissionService);
-        }
-
-        #endregion Helpers
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(actual);
+        Assert.Null(viewResult.ViewName);
     }
+
+    #region Helpers
+
+    private HomeController GetController()
+    {
+        permissionService = Substitute.For<IPermissionService>();
+        return new HomeController(permissionService);
+    }
+
+    #endregion Helpers
 }

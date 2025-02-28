@@ -1,40 +1,32 @@
-﻿namespace CRM.Core.Services
-{
-    using CRM.Core.Extensions;
-    using CRM.Core.Models;
-    using Microsoft.AspNetCore.Http;
+﻿namespace CRM.Services;
 
-    public interface ISessionService
+using Extensions;
+using Microsoft.AspNetCore.Http;
+using Models;
+
+public interface ISessionService
+{
+    CurrentCustomer CurrentCustomer { get; set; }
+    void ClearKey(string key);
+}
+
+public class SessionService(ISession session) : ISessionService
+{
+    private const string CurrentCustomerKey = "CurrentCustomer";
+
+
+    public SessionService(IHttpContextAccessor accessor) : this(accessor.HttpContext.Session)
     {
-        CurrentCustomer CurrentCustomer { get; set; }
-        void ClearKey(string key);
     }
 
-    public class SessionService : ISessionService
+    public CurrentCustomer CurrentCustomer
     {
-        private readonly ISession session;
-        private const string CurrentCustomerKey = "CurrentCustomer";
+        get => session.Get<CurrentCustomer>(CurrentCustomerKey);
+        set => session.Set(CurrentCustomerKey, value);
+    }
 
-
-        public SessionService(ISession session)
-        {
-            this.session = session;
-        }
-
-        public SessionService(IHttpContextAccessor accessor)
-        {
-            session = accessor.HttpContext.Session;
-        }
-
-        public CurrentCustomer CurrentCustomer
-        {
-            get => session.Get<CurrentCustomer>(CurrentCustomerKey);
-            set => session.Set(CurrentCustomerKey, value);
-        }
-
-        public void ClearKey(string key)
-        {
-            session.Remove(key);
-        }
+    public void ClearKey(string key)
+    {
+        session.Remove(key);
     }
 }

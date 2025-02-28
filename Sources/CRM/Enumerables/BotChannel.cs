@@ -1,9 +1,8 @@
-﻿namespace CRM.Core.Enumerables
+﻿namespace CRM.Enumerables;
+
+public enum BotChannel
 {
-    public enum BotChannel
-    {
-        Letstalk = 1,
-        Telegram,
-        Skype
-    }
+    Letstalk = 1,
+    Telegram,
+    Skype
 }

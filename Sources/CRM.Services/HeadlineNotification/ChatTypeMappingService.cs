@@ -1,108 +1,99 @@
-﻿namespace CRM.Services
+﻿namespace CRM.Services.HeadlineNotification;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CRM.Criteria.ChatTypeMapping;
+using CRM.Models.ChatTypeMapping;
+using Interfaces;
+using Microsoft.AspNetCore.Http;
+using Models;
+
+public class ChatTypeMappingService(IBaseService baseService, IHttpContextAccessor httpContextAccessor)
+    : IChatTypeMappingService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
-    using CRM.Criteria.ChatTypeMapping;
-    using CRM.Models.ChatTypeMapping;
-    using Microsoft.AspNetCore.Http;
-
-    public class ChatTypeMappingService : IChatTypeMappingService
+    public async Task<ValueTuple<IEnumerable<ChatTypeMappingModel>, int>> GetChatTypeMappingAsync(GetChatTypeMappingCriteria criteria)
     {
-        private readonly IBaseService baseService;
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-        public ChatTypeMappingService(IBaseService baseService, IHttpContextAccessor httpContextAccessor)
+        var data = await baseService.FetchMultipleAsync<ChatTypeMappingModel, ConversationHeadlineModel, ConversationRecipient>(criteria);
+        if (data.Item1.Any())
         {
-            this.baseService = baseService;
-            this.httpContextAccessor = httpContextAccessor;
-        }
-
-        public async Task<ValueTuple<IEnumerable<ChatTypeMappingModel>, int>> GetChatTypeMappingAsync(GetChatTypeMappingCriteria criteria)
-        {
-            var data = await baseService.FetchMultipleAsync<ChatTypeMappingModel, ConversationHeadlineModel, ConversationRecipient>(criteria);
-            if (data.Item1.Any())
+            foreach (var item in data.Item1)
             {
-                foreach (var item in data.Item1)
-                {
-                    item.Headlines = data.Item2.Where(headline => headline.ConversationGroupId == item.ConversationGroupId);
-                    item.Recipients = data.Item3.Where(recipient => recipient.ConversationGroupId == item.ConversationGroupId);
-                }
+                item.Headlines = data.Item2.Where(headline => headline.ConversationGroupId == item.ConversationGroupId);
+                item.Recipients = data.Item3.Where(recipient => recipient.ConversationGroupId == item.ConversationGroupId);
             }
-
-            return new ValueTuple<IEnumerable<ChatTypeMappingModel>, int>(data.Item1, criteria.TotalRows);
         }
 
-        public async Task<CommandResult> EditActiveStatusAsync(int conversationId, bool IsActive, int userId)
-        {
-            var criteria = new UpdateIsActiveStatusCommand
-            {
-                ConversationGroupId = conversationId,
-                IsActive = IsActive,
-                UserId = userId,
-                LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()
-            };
-
-            return await baseService.ExecuteNonQueryAsync(criteria);
-        }
-
-        public async Task<CommandResult> DeleteConversationGroupAsync(int conversationId, int userId)
-        {
-            var criteria = new DeleteConversationGroupCommand
-            {
-                ConversationGroupId = conversationId,
-                UserId = userId,
-                IsDeleted = true,
-                LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()
-            };
-
-            return await baseService.ExecuteNonQueryAsync(criteria);
-        }
-
-
-        public async Task<IEnumerable<GroupHeadlineDirectAccountModel>> GetHeadlineByRecipientAsync(string recipientIds)
-        {
-            var criteria = new GetGroupHeadlineByRecipientCriteria
-            {
-                RecipientIds = recipientIds
-            };
-            var tuple = await baseService.FetchMultipleAsync<GroupHeadlineDirectAccountModel, string>(criteria);
-            foreach (var item in tuple.Item1)
-            {
-                if (item.Id == 0)
-                {
-                    item.SubData = tuple.Item2;
-                }
-            }
-            return tuple.Item1;
-        }
-
-        public async Task<IEnumerable<IgnoreNotificationType>> GetIgnoreNotificationTypeAsync()
-        {
-            var criteria = new GetIgnoredNotificationTypeCriteria();
-            return await baseService.GetDataAsync<IgnoreNotificationType>(criteria);
-        }
-
-        public async Task<CommandResult> CreatePersonalMappingAsync(InsertPersonalMappingCommand criteria)
-        {
-            criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-            return await baseService.ExecuteNonQueryAsync(criteria);
-        }
-
-        public async Task<CommandResult> EditChatTypeMappingAsync(UpdateChatTypeMappingCommand criteria)
-        {
-            criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-            return await baseService.ExecuteNonQueryAsync(criteria);
-        }
-
-        public async Task<CommandResult> EditChatTypeMappingRemarkAsync(UpdateChatTypeMappingRemarkCommand criteria)
-        {
-            criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-            return await baseService.ExecuteNonQueryAsync(criteria);
-        }
-
+        return new ValueTuple<IEnumerable<ChatTypeMappingModel>, int>(data.Item1, criteria.TotalRows);
     }
+
+    public async Task<CommandResult> EditActiveStatusAsync(int conversationId, bool IsActive, int userId)
+    {
+        var criteria = new UpdateIsActiveStatusCommand
+        {
+            ConversationGroupId = conversationId,
+            IsActive = IsActive,
+            UserId = userId,
+            LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()
+        };
+
+        return await baseService.ExecuteNonQueryAsync(criteria);
+    }
+
+    public async Task<CommandResult> DeleteConversationGroupAsync(int conversationId, int userId)
+    {
+        var criteria = new DeleteConversationGroupCommand
+        {
+            ConversationGroupId = conversationId,
+            UserId = userId,
+            IsDeleted = true,
+            LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()
+        };
+
+        return await baseService.ExecuteNonQueryAsync(criteria);
+    }
+
+
+    public async Task<IEnumerable<GroupHeadlineDirectAccountModel>> GetHeadlineByRecipientAsync(string recipientIds)
+    {
+        var criteria = new GetGroupHeadlineByRecipientCriteria
+        {
+            RecipientIds = recipientIds
+        };
+        var tuple = await baseService.FetchMultipleAsync<GroupHeadlineDirectAccountModel, string>(criteria);
+        foreach (var item in tuple.Item1)
+        {
+            if (item.Id == 0)
+            {
+                item.SubData = tuple.Item2;
+            }
+        }
+        return tuple.Item1;
+    }
+
+    public async Task<IEnumerable<IgnoreNotificationType>> GetIgnoreNotificationTypeAsync()
+    {
+        var criteria = new GetIgnoredNotificationTypeCriteria();
+        return await baseService.GetDataAsync<IgnoreNotificationType>(criteria);
+    }
+
+    public async Task<CommandResult> CreatePersonalMappingAsync(InsertPersonalMappingCommand criteria)
+    {
+        criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        return await baseService.ExecuteNonQueryAsync(criteria);
+    }
+
+    public async Task<CommandResult> EditChatTypeMappingAsync(UpdateChatTypeMappingCommand criteria)
+    {
+        criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        return await baseService.ExecuteNonQueryAsync(criteria);
+    }
+
+    public async Task<CommandResult> EditChatTypeMappingRemarkAsync(UpdateChatTypeMappingRemarkCommand criteria)
+    {
+        criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        return await baseService.ExecuteNonQueryAsync(criteria);
+    }
+
 }

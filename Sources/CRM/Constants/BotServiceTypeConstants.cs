@@ -1,9 +1,8 @@
-﻿namespace CRM.Core.Constants
-{
-    public static class BotServiceTypeConstants
-    {
-        public const int Letstalk = 1;
+﻿namespace CRM.Constants;
 
-        public const int Telegram = 2;
-    }
+public static class BotServiceTypeConstants
+{
+    public const int Letstalk = 1;
+
+    public const int Telegram = 2;
 }

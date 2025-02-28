@@ -1,15 +1,9 @@
-﻿namespace CRM.Core.Extensions.XML
+﻿namespace CRM.Extensions.XML;
+
+using System;
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
+public sealed class XMLNameAttribute(string name) : Attribute
 {
-    using System;
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
-    public sealed class XMLNameAttribute : Attribute
-    {
-        public XMLNameAttribute(string name)
-        {
-            this.Name = name;
-        }
-
-        public string Name { get; }
-    }
+    public string Name { get; } = name;
 }
