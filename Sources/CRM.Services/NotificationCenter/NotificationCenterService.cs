@@ -24,7 +24,6 @@ public interface INotificationCenterService
     Task<CommandResult> EditResultAdmReasonAsync(int notificationId, int reasonId);
 
     Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notificationId, string sitePermission, short licenseeType);
-
     Task<IEnumerable<Models.Setting.Setting>> GetReasonListSettingAsync();
 }
 

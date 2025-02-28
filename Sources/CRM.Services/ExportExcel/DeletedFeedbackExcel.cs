@@ -8,6 +8,9 @@ using CRM.Models.Setting;
 using CRM.Resources;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class DeletedFeedbackExcel(
     string templatePath,
@@ -155,4 +158,3 @@ public class DeletedFeedbackExcel(
 
     private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
         => GetCategoryContent(settings.Where(i => i.SettingType == "Category"), mainCategories);
-}

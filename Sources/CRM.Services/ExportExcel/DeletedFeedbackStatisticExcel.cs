@@ -9,6 +9,10 @@ using CRM.Models.Setting;
 using CRM.Resources;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 public class DeletedFeedbackStatisticExcel(
     string templatePath,

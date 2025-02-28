@@ -22,6 +22,11 @@ using CRM.Resources;
 using Fanex.Data.Repository;
 using Interfaces;
 using Models.Feedback.DeletedFeedback;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 public interface IFeedbackService
 {
