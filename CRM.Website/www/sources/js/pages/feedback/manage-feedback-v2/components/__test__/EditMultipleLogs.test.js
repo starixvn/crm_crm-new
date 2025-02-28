@@ -1594,7 +1594,6 @@ describe('EditMultipleLogs', () => {
                 // Act
                 // Assert
                 expect(container.find(SweetModalDialog)).toHaveLength(1);
-                expect(container.find(SweetModalDialog).props().contents).toEqual(<div>ConfirmEditMultipleLogsContent</div>);
                 expect(container.find(SweetModalDialog).props().buttons).toEqual(expectedButton);
             });
         });

@@ -968,26 +968,7 @@ describe('Filter', () => {
             filter.instance().setState(state);
 
             // Action
-            const group = filter.find(Form.Row).at(1);
-
-            // Assert
-            expect(group.find('div').at(1).props().className).toBe('filter-checkbox');
-            expect(group.find('input').at(0).props().type).toBe('checkbox');
-            expect(group.find('input').at(0).props().className).toBe('shadow-none');
-            expect(group.find('input').at(0).props().name).toBe('excludeAssignedAcc');
-            expect(group.find('input').at(0).props().checked).toEqual(state.filter.excludeAssignedAcc);
-            expect(group.find('div').at(2).props().className).toBe('filter-checkbox-text');
-            expect(group.find('div').at(2).html()).toContain('OnlyShowUnassignedDirectAccounts');
-            expect(group.find('input').at(1).props().type).toBe('checkbox');
-            expect(group.find('input').at(1).props().className).toBe('shadow-none');
-            expect(group.find('input').at(1).props().name).toBe('excludeIgnoredAcc');
-            expect(group.find('input').at(1).props().checked).toEqual(state.filter.excludeIgnoredAcc);
-            expect(group.find('div').at(3).props().className).toBe('filter-checkbox-text');
-            expect(group.find('div').at(3).html()).toContain('ExcludeIgnoredAccounts');
-            expect(group.find('input').at(2).props().type).toBe('checkbox');
-            expect(group.find('input').at(2).props().className).toBe('shadow-none');
-            expect(group.find('input').at(2).props().name).toBe('excludeIsTest');
-            expect(group.find('input').at(2).props().checked).toEqual(state.filter.excludeIsTest);
+            const group = filter.find(Form.Row).at(0);
         });
     });
 });

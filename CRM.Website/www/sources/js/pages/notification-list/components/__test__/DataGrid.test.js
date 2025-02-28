@@ -94,7 +94,7 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find('div').first().props().className).toEqual('d-flex table-title justify-content-between align-items-center');
+            expect(dataGrid.find('div').first().props().className).toEqual('d-flex table-title-v2 justify-content-between align-items-center');
         });
 
         it('has correct second div', () => {

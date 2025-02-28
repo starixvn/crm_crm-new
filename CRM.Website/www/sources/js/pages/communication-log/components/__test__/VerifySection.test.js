@@ -80,7 +80,7 @@ describe('VerifySection', () => {
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') } };
 
             // Act
-            verify.find(Form.Control).at(1).simulate('paste', event);
+            verify.find(Form.Control).at(2).simulate('paste', event);
 
             // Assert
             expect(props.handlePasteCustomer).toHaveBeenCalledWith(event, '');
@@ -103,7 +103,7 @@ describe('VerifySection', () => {
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') } };
 
             // Act
-            verify.find(Form.Control).at(2).simulate('paste', event);
+            verify.find(Form.Control).at(3).simulate('paste', event);
 
             // Assert
             expect(props.onPasteRefTicketHandler).toHaveBeenCalledWith(event);
