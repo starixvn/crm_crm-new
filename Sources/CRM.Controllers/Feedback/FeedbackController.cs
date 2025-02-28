@@ -198,7 +198,10 @@ public class FeedbackController(
             };
         }
 
-        if (await IsNoPermissionDeleteFeedback(isDeletedFeedbackView, statusId))
+        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
+        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
+        if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
+              && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
         {
             commandResult = new CommandResult
             {
