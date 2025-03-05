@@ -29,7 +29,9 @@ export class DataGrid extends Component {
             resendFailPopup: { show: false, notificationId: null },
             deactivatePopup: { show: false, notificationId: null },
             detailNotificationPopup: { show: false, notificationId: null },
-            totalSitesPopup: { show: false, sites: null }
+            totalSitesPopup: { show: false, sites: null },
+            isShowEditReasonPopup: false,
+            data: null
         };
         this.panels = [];
     }
@@ -40,6 +42,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={13}>{LangHelper.getResource('NotificationID')}</HeaderCell>
                 <HeaderCell colWidth={22}>{LangHelper.getResource('Sites')}</HeaderCell>
                 <HeaderCell colWidth={isHost ? 90 : 100}>{LangHelper.getResource('Content')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Reason')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
                 {
@@ -53,7 +56,7 @@ export class DataGrid extends Component {
         if (this.props.gridData.data.length > 0) {
             return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
         }
-        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 7 : 6}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 8 : 7}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     onPaging = (pageIndex, pageSize) => {
@@ -342,7 +345,12 @@ export class DataGrid extends Component {
             <div className='text-padding-bottom text-line' dangerouslySetInnerHTML={{ __html: content }} />
         </div>
     );
-
+    handleOpenPopupEditReason = item => {
+        this.setState({
+            isShowEditReasonPopup: true,
+            data: item
+        });
+    }
     renderMapOstContent = item => {
         const languages = [
             { code: 'en', title: 'English' },
@@ -400,6 +408,15 @@ export class DataGrid extends Component {
                                 <div className='content'>{this.renderMapOstContent(item)}</div>
                             </Panel>
                         }
+                    </div>
+                </Cell>
+                <Cell className='text-left'>
+                    <div>
+                        {
+                            isHost && <span className="pr-2 fa fa-pencil-square-o link-click"
+                                onClick={() => this.handleOpenPopupEditReason(item)} />
+                        }
+                        <span >{item.reason}</span>
                     </div>
                 </Cell>
                 <Cell className='text-left'>

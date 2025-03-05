@@ -24,7 +24,7 @@ public class NotificationCenterController(
     IWebHostEnvironment hostingEnvironment)
     : BaseController
 {
-    private readonly string pathImages = "www/dist/images/notification-center";
+    private const string ImagePath = "www/dist/images/notification-center";
 
     [HttpPost]
     [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
@@ -102,7 +102,7 @@ public class NotificationCenterController(
 
     private string GetPathFile(string folder, string fileName = "")
     {
-        return Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
+        return Path.Combine(hostingEnvironment.ContentRootPath, ImagePath, folder, fileName);
     }
 
     private string EnsureFileFolderExists(int notificationId)
