@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import Filter from './Filter';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -22,9 +23,8 @@ export class AppContainer extends Component {
 
         return (
             <Fragment>
-                {/* <Filter/>
-                <DataGrid isHost={isHost}/> */}
-                hihihihihihihihi
+                <Filter/>
+                {/* <DataGrid isHost={isHost}/> */}
             </Fragment>
         );
     }
