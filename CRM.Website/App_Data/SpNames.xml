@@ -238,7 +238,7 @@
 		<Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
 		<Setting Key="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" SpName="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
 		<Setting Key="Acc_CRM_NewAccDetail_CheckCustomerExistsOnCRM" SpName="Acc_CRM_NewAccDetail_CheckCustomerExistsOnCRM" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
-		<Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.wsv_nap">
+		<Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBACC.bodb02.wsv_nap">
 			<Mapping DataField="CustStatus" ObjectProperty="Status" />
 		</Setting>
 		<Setting Key="Acc_CRM_CustomerUpdateBasicInfo" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.wsv_nap" />
