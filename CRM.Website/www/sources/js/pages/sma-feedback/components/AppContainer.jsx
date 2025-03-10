@@ -6,6 +6,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import Filter from './Filter';
+import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ export class AppContainer extends Component {
         return (
             <Fragment>
                 <Filter/>
-                {/* <DataGrid isHost={isHost}/> */}
+                <DataGrid isHost={true}/>
             </Fragment>
         );
     }

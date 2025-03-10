@@ -386,6 +386,7 @@
     MessageID: 'Message ID',
     NotificationCenter: 'Notification Center',
     Month: 'Month',
+    ManageSMAFeedback: 'Manage SMA Feedback',
     MultipleCustomersTooltip: 'Multiple customers can be entered, separated by commas. Ex: abc, xyz, etc.',
     Mobile: 'Mobile',
     MultipleReviewAndUpdateStatus: 'Multiple Review & Update Status',
