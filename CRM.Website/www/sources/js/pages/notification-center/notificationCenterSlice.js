@@ -46,7 +46,7 @@ export const {
     setGridData,
     setEditAdmNotification,
     setAutoRefresh,
-    setIsRefresh
+    setIsRefresh,
 } = actions;
 
 export default reducer;

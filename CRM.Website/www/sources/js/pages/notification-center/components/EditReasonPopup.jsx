@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
@@ -12,22 +13,72 @@ export class EditReasonPopup extends Component {
         super(props);
 
         this.state = {
-            data: props.data,
-            settings: props.reasonSettings,
+            selectedReason: props.reasonId,
+            reasonOptions: null,
             editResult: null,
             isSubmitting: false
         };
     }
 
+    async componentDidMount() {
+        const url = Site.resolveClientUrl('NotificationCenter/GetReasonSettingOptions');
+        await DataService.getDataAsync(url).then(response => {
+            this.setState({
+                reasonOptions: response.data
+            });
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);;
+    };
+
+    handleChangeReason = event => {
+        const value = event.target.value;
+        this.setState({
+            selectedReason: value
+        });
+    };
+
+    validateFormik = values => {
+        const errors = {};
+
+        if (!values.reasonSettingId) {
+            errors.reasonSettingId = 'Please select reason';
+        }
+        return errors;
+    }
+
+    handleSubmit = async values => {
+        this.setState({ isSubmitting: true });
+        const params = {
+            notificationId: this.props.notificationId,
+            reasonSettingId: parseInt(values.reasonSettingId, 10)
+        };
+        const url = Site.resolveClientUrl('NotificationCenter/EditResultAdmNotificationReason');
+        await DataService.postDataAsync(url, params).then(response => {
+            this.setState({ editResult: response.data });
+            if (response.data.isSuccessful) {
+                setTimeout(() => {
+                    this.props.onClose(true);
+                }, 3000);
+            } else {
+                this.setState({ isSubmitting: false });
+            }
+        }).catch(Site.handleAxiosError);
+    };
+
     renderForm = ({
         values,
-        handleChange,
+        errors,
+        touched,
         handleSubmit
     }) => {
-        const editResult = this.state.editResult;
+        const { editResult, reasonOptions, isSubmitting } = this.state;
+
+        if (reasonOptions === null) {
+            return null;
+        }
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}
@@ -35,11 +86,19 @@ export class EditReasonPopup extends Component {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" htmlFor="remark" >
+                        <Form.Label column sm="3" md="2" htmlFor="reason" >
                             {LangHelper.getResource('Reason')}
                         </Form.Label>
                         <Col sm="9" md="10">
-
+                            <Form.Control as="select" className="shadow-none reason-id-select" name='reasonSettingId' id='reasonSettingId'
+                                value={values.reasonSettingId}
+                                onChange={this.handleChangeReason} >
+                                <option value="0" hidden disabled />
+                                {
+                                    reasonOptions.map((item, key) =>
+                                        <option key={key} value={item.id}>{item.name}</option>)
+                                }
+                            </Form.Control>
                         </Col>
                     </Form.Group>
                 </Modal.Body>
@@ -55,30 +114,12 @@ export class EditReasonPopup extends Component {
         );
     };
 
-    handleSubmit = async values => {
-        this.setState({ isSubmitting: true });
-        const params = {
-            notificationId: this.state.data.notificationId,
-            reasonSettingId: values.settingId
-        };
-
-        const url = Site.resolveClientUrl('NotificationCenter/UpdateReason');
-        await DataService.postDataAsync(url, params).then(response => {
-            this.setState({ editResult: response.data });
-            if (response.data.isSuccessful) {
-                setTimeout(() => {
-                    this.props.onClose(true);
-                }, 3000);
-            } else {
-                this.setState({ isSubmitting: true });
-            }
-        }).catch(Site.handleAxiosError);
-    };
+    
 
     render() {
-        const { data } = this.state;
+        const { selectedReason } = this.state;
         const initialValues = {
-            reasonSettingId: data.settingId
+            reasonSettingId: selectedReason
         };
         return (
             <Modal show className="edit-no-of-inquiry-modal-dialog" dialogAs={DraggableModalDialog}
@@ -91,6 +132,7 @@ export class EditReasonPopup extends Component {
                 <Formik
                     enableReinitialize
                     initialValues={initialValues}
+                    validate={values => this.validateFormik(values)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}
@@ -100,4 +142,4 @@ export class EditReasonPopup extends Component {
     }
 }
 
-export default EditRemark;
+export default EditReasonPopup;

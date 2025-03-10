@@ -22,9 +22,13 @@ public class ResultAdmNotificationDetail
 
     public string Status { get; set; }
 
+    public string Reason { get; set; }
+
+    public int ReasonId { get; set; }
+
     public string Subject { get; set; }
 
     public string Remark { get; set; }
 
-    public string Filename { get; set;}
+    public string Filename { get; set; }
 }

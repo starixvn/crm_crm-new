@@ -5,7 +5,6 @@ import configureMockStore from 'redux-mock-store';
 import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { PAGING_SIZES } from '@jsroot/common/constants';
-import { Form } from 'react-bootstrap';
 import functions, { handleNewResendOptions } from '../../functions';
 import AutoRefresh from '../AutoRefresh';
 import toJson from 'enzyme-to-json';

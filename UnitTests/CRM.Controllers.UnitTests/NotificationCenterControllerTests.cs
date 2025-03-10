@@ -1,9 +1,5 @@
 ﻿namespace CRM.Controllers.UnitTests;
 
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
 using AutoFixture;
 using Constants;
 using CRM.Controllers.NotificationCenter;
@@ -18,6 +14,12 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using NSubstitute;
 using Services.ExportExcel;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using ViewModels.NotificationCenter;
 using Xunit;
 
 public class NotificationCenterControllerTests
@@ -26,7 +28,6 @@ public class NotificationCenterControllerTests
     private IExportExcelService excelService;
     private IPermissionService permissionService;
     private IWebHostEnvironment hostingEnvironment;
-
 
     private readonly Fixture fixture = new();
 
@@ -151,6 +152,51 @@ public class NotificationCenterControllerTests
     }
 
     [Fact]
+    public async Task GetReasonSettingOptions_ReturnsJsonResult_WithSettingOptions()
+    {
+        // Arrange
+        var settings = new List<Models.Setting.Setting>
+        {
+            new() { SettingId = 1, SettingValue = "Reason 1" },
+            new() { SettingId = 2, SettingValue = "Reason 2" }
+        };
+
+        // Act
+        var controller = GetController();
+        notificationCenterService.GetReasonListSettingAsync().Returns(settings);
+
+        var result = await controller.GetReasonSettingOptions();
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var settingOptions = Assert.IsAssignableFrom<IEnumerable<object>>(jsonResult.Value);
+        Assert.Equal(2, settingOptions.Count());
+    }
+
+    [Fact]
+    public async Task EditResultAdmNotificationReason_ReturnsJsonResult_WithCommandResult()
+    {
+        // Arrange
+        var viewModel = new UpdateNotificationReasonViewModel
+        {
+            NotificationId = 1,
+            ReasonSettingId = 2
+        };
+        var commandResult = new CommandResult { Code = 0 };
+
+        // Act
+        var controller = GetController();
+        notificationCenterService.EditResultAdmReasonAsync(viewModel.NotificationId, viewModel.ReasonSettingId)
+            .Returns(commandResult);
+        var result = await controller.EditResultAdmNotificationReason(viewModel);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var resultValue = Assert.IsType<CommandResult>(jsonResult.Value);
+        Assert.True(resultValue.IsSuccessful);
+    }
+
+    [Fact]
     public async Task ExportExcel_WhenCalled_ExpectReturnsFile()
     {
         // Arrange
@@ -179,6 +225,7 @@ public class NotificationCenterControllerTests
     }
 
     #region helper
+
     public NotificationCenterController GetController()
     {
         notificationCenterService = Substitute.For<INotificationCenterService>();
@@ -193,5 +240,6 @@ public class NotificationCenterControllerTests
             hostingEnvironment
         );
     }
+
     #endregion helper
 }
