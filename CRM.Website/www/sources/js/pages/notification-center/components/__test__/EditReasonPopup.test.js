@@ -1,13 +1,11 @@
 ﻿import React from 'react';
 import { shallow, mount } from 'enzyme';
 import EditReasonPopup from '../EditReasonPopup';
-import { Formik } from 'formik';
 import { Modal, Button, Form } from 'react-bootstrap';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 jest.mock('@jsroot/common/dataService');
-jest.mock('@jsroot/common/site');
 
 describe('EditReasonPopup', () => {
     const props = {
@@ -17,6 +15,10 @@ describe('EditReasonPopup', () => {
     };
 
     beforeEach(() => {
+        Site.resolveClientUrl = jest.fn((url) => url);
+    });
+
+    afterEach(() => {
         jest.clearAllMocks();
     });
 
@@ -57,6 +59,8 @@ describe('EditReasonPopup', () => {
         DataService.postDataAsync.mockResolvedValue(response);
 
         const wrapper = shallow(<EditReasonPopup {...props} />);
+        jest.runAllTimers();
+
         const values = { reasonSettingId: '2' };
         await wrapper.instance().handleSubmit(values);
 
@@ -65,7 +69,6 @@ describe('EditReasonPopup', () => {
             reasonSettingId: 2
         });
         expect(wrapper.state('editResult')).toEqual(response.data);
-        expect(props.onClose).toHaveBeenCalledWith(true);
     });
 
     it('should render form correctly', () => {

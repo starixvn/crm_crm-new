@@ -436,7 +436,7 @@ export class DataGrid extends Component {
                 <Cell className='text-left'>
                     <div>
                         {
-                            isHost && <span className="pr-2 fa fa-pencil-square-o link-click"
+                            isHost && <span className="pr-2 fa fa-pencil-square-o" style={{ cursor: "pointer" }}
                                 onClick={() => this.handleOpenPopupEditReason(item)} />
                         }
                         <span >{item.reason}</span>

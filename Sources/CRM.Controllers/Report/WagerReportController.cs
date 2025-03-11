@@ -1,9 +1,5 @@
 ﻿namespace CRM.Controllers.Report;
 
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Constants;
 using CRM.Criteria.Report.WagerReport;
 using CRM.Models.Report.WagerReport;
@@ -14,6 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models;
 using Services.ExportExcel;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
@@ -24,7 +24,6 @@ public class WagerReportController(
     : BaseController
 {
     private readonly AppSettings appSettings = appSettings.Value;
-
 
     [HttpPost]
     public async Task<IActionResult> GetWagerReport([FromBody] GetWagerReportCriteria criteria)
@@ -42,13 +41,10 @@ public class WagerReportController(
         var bytes = exportExcelService.ExportWagerReport(reports, criteria.Year);
         var reportName = string.Format(ViewResources.WagerReportExcelName, criteria.Year);
         return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
- 
     }
 
     private async Task<WagerReportModel> GetWagerReportByYears(GetWagerReportCriteria criteria)
     {
-        Wager wager = null;
-        WagerByMonth wagerByMonth = null;
         IList<WagerByMonth> wagerByMonths = new List<WagerByMonth>();
         IDictionary<string, Wager> grandTotalHash = new Dictionary<string, Wager>
         {
@@ -63,7 +59,7 @@ public class WagerReportController(
 
         foreach (var month in dataList)
         {
-            wagerByMonth = new WagerByMonth
+            var wagerByMonth = new WagerByMonth
             {
                 Month = month.Key.ToUpper(CultureInfo.InvariantCulture),
                 Wagers = new List<Wager>(),
@@ -72,7 +68,7 @@ public class WagerReportController(
 
             foreach (var item in month)
             {
-                wager = new Wager
+                var wager = new Wager
                 {
                     Name = item.SubCategory,
                     Amount = item.NoOfIssues

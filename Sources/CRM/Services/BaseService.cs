@@ -1,11 +1,11 @@
 ﻿namespace CRM.Services;
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Fanex.Data.Repository;
 using Fanex.NAP.Client.Helpers.Extensions;
 using Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public interface IBaseService
 {
@@ -18,8 +18,10 @@ public interface IBaseService
     Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria, string serverIp = "");
 
 #pragma warning disable S2436
+
     Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>>
         FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria, string serverIp = "");
+
 #pragma warning restore S2436
 
     Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command, string serverIp = "");
@@ -68,6 +70,7 @@ public class BaseService(IDynamicRepository dynamicRepository) : IBaseService
     }
 
 #pragma warning disable S2436
+
     public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>)>
         FetchMultipleAsync<TFirst, TSecond, TThird, TFour>(ICriteria criteria, string serverIp = "")
     {
@@ -79,6 +82,7 @@ public class BaseService(IDynamicRepository dynamicRepository) : IBaseService
         return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFour>>(
             new List<TFirst>(), new List<TSecond>(), new List<TThird>(), new List<TFour>());
     }
+
 #pragma warning restore S2436
 
     public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command, string serverIp = "")
@@ -89,9 +93,9 @@ public class BaseService(IDynamicRepository dynamicRepository) : IBaseService
             await dynamicRepository.ExecuteAsync(command);
 
             var properties = command.ToPropertyDictionary();
-            if (properties.ContainsKey("ErrCode"))
+            if (properties.TryGetValue("ErrCode", out var errorCodeProperty))
             {
-                commandResult.Code = int.Parse(properties["ErrCode"].ToString());
+                commandResult.Code = int.Parse(errorCodeProperty.ToString() ?? "1");
                 commandResult.Message = properties["ErrMsg"] != null ? properties["ErrMsg"].ToString() : string.Empty;
             }
         }

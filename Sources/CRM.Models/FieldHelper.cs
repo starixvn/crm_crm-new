@@ -12,13 +12,13 @@ public static class FieldHelper
         var phone = new StringBuilder();
         for (var i = 0; i < customerInfo.PhoneInfo.Count; i++)
         {
-            phone.Append(JoinCommunication(ViewResources.Phone + (i + 1).ToString(), customerInfo.PhoneInfo[i].ToString()));
+            phone.Append(JoinCommunication(ViewResources.Phone + (i + 1), customerInfo.PhoneInfo[i].ToString()));
         }
 
         var pic = new StringBuilder();
         for (var j = 0; j < customerInfo.PersonalInfoContacts.Count; j++)
         {
-            pic.Append(JoinCommunication(ViewResources.PIC + (j + 1).ToString(), customerInfo.PersonalInfoContacts[j].ToString()));
+            pic.Append(JoinCommunication(ViewResources.PIC + (j + 1), customerInfo.PersonalInfoContacts[j].ToString()));
         }
 
         return string.Format(
@@ -45,6 +45,6 @@ public static class FieldHelper
             return string.Empty;
         }
 
-        return $"{label}: {HttpUtility.HtmlEncode(value)}{"<br/>"}";
+        return $"{label}: {HttpUtility.HtmlEncode(value)}<br/>";
     }
 }
