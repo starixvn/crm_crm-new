@@ -2,7 +2,8 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
     setGridParams,
-    setGridData
+    setGridData,
+    setEditSmaFeedbackDialog
 } from './smaFeedbackSlice';
 
 const getGridData = params => async dispatch => {
@@ -16,5 +17,6 @@ const getGridData = params => async dispatch => {
 export const ActionCreators = {
     setGridParams,
     setGridData,
+    setEditSmaFeedbackDialog,
     getGridData
 };

@@ -7,6 +7,7 @@ import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
+import EditSmaFeedback from './EditSmaFeedback';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -15,17 +16,32 @@ export class AppContainer extends Component {
             policy: null
         };
     }
+    
+    handleCloseDialog = isSuccessful => {
+        this.props.setEditSmaFeedbackDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getGridData(this.props.gridParams);
+        }
+    };
 
     render() {
         // if(!this.state.policy){
         //     return null;
         // }
         const isHost = this.state.policy === Policy.Host;
+        const { editSmaFeedbackDialog } = this.props;
 
         return (
             <Fragment>
                 <Filter/>
                 <DataGrid isHost={true}/>
+                {
+                    editSmaFeedbackDialog.show &&
+                    <EditSmaFeedback reviewStatus={editSmaFeedbackDialog.reviewStatus}
+                        discussion={editSmaFeedbackDialog.discussion}
+                        onClose={this.handleCloseDialog}
+                    />
+                }
             </Fragment>
         );
     }
@@ -34,8 +50,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams } = state;
-    return { gridParams };
+    const { gridParams, editSmaFeedbackDialog } = state;
+    return { gridParams, editSmaFeedbackDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

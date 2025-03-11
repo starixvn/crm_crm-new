@@ -67,6 +67,14 @@ export class DataGrid extends Component {
         });
     };
 
+    handleEdit = item => {
+        this.props.setEditSmaFeedbackDialog({
+            show: true,
+            statusId: item.reviewStatus,
+            discussion: item.discussionSolution
+        })
+    };
+
     buildHeader = isHost => {
         return (
             <HeaderRow>
@@ -116,7 +124,11 @@ export class DataGrid extends Component {
                 <Cell>{this.renderPanelItem(item.comment, index, this.panelComment)}</Cell>
                 <Cell>{this.renderPanelItem(item.discussionSolution, index, this.panelDisCuss)}</Cell>
                 {
-                    isHost && <Cell></Cell>
+                    isHost && <Cell className="text-center">
+                        <span className="rounded-circle fa fa-pencil icon-edit"
+                            onClick={() => this.handleEdit(item)}
+                        />
+                    </Cell>
                 }
             </Row>
         )
@@ -136,7 +148,7 @@ export class DataGrid extends Component {
         //console.log('panel', this.panels);
         return (
             <Fragment>
-                <div className='d-flex table-title justify-content-between align-items-center'>
+                <div className='d-flex table-title-v2 justify-content-between align-items-center'>
                     <div>{LangHelper.getResource('ManageSMAFeedback')}</div>
                     <div>
                         {

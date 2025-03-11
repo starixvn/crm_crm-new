@@ -5,7 +5,8 @@ const initialState = {
         pageIndex: 1,
         pageSize: 100
     },
-    gridData: null
+    gridData: null,
+    editSmaFeedbackDialog: { show: false }
 };
 
 const smaFeedbackSlice = createSlice({
@@ -17,7 +18,10 @@ const smaFeedbackSlice = createSlice({
         },
         setGridData: (state, action) => {
             state.gridData = action.payload;
-        }
+        },
+        setEditSmaFeedbackDialog: (state, action) => {
+            state.editSmaFeedbackDialog = action.payload;
+        },
     }
 });
 
@@ -25,7 +29,8 @@ const { actions, reducer } = smaFeedbackSlice;
 
 export const {
     setGridParams,
-    setGridData
+    setGridData,
+    setEditSmaFeedbackDialog
 } = actions;
 
 export default reducer;
