@@ -178,8 +178,11 @@ public class ManageFeedbackExcel(
     protected static string GetFeedbackCellValue(FeedbackDetail feedback)
     {
         var creatorName = feedback.CreatorName ?? feedback.Creator;
-        var cellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + creatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}";
+        var cellValue = $"{feedback.Subject}\n{"Feedback date " +
+                                feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " +
+                                creatorName + " on " +
+                                feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " +
+                                feedback.DurationTime}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {

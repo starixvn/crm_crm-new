@@ -128,8 +128,8 @@ public class DeletedFeedbackStatisticExcel(
         for (var index = 0; index < deletedFeedbacks.Count(); index++)
         {
             rowIndex++;
-            var feebackDetails = deletedFeedbacks.ToList()[index].DeletedFeedbacks.ToList();
-            for (var indexFb = 0; indexFb < feebackDetails.Count; indexFb++)
+            var feedbackDetails = deletedFeedbacks.ToList()[index].DeletedFeedbacks.ToList();
+            for (var indexFb = 0; indexFb < feedbackDetails.Count; indexFb++)
             {
                 rowIndex++;
                 worksheet.Row(rowIndex).Height = RowHeight;
@@ -139,14 +139,10 @@ public class DeletedFeedbackStatisticExcel(
     }
 
     protected static string[] BuildCategoryContent(DeletedFeedbackStatistic deletedFeedback, IEnumerable<Setting> mainCategories)
-    {
-        return GetCategoryContent(deletedFeedback.Settings, mainCategories);
-    }
+        => GetCategoryContent(deletedFeedback.Settings, mainCategories);
 
     private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
-    {
-        return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
-    }
+        => GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
 
     public static string[] GetCategoryContentWithoutSettingType(
         IEnumerable<FeedbackSettingRelation> settings,

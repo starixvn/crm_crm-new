@@ -134,11 +134,11 @@ public class NotificationCenterService(
         return await baseService.ExecuteNonQueryAsync(command);
     }
 
-    public async Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId, string sitePermission, short licenseeType)
+    public async Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notificationId, string sitePermission, short licenseeType)
     {
         var criteria = new GetSiteTicketByIdCriteria
         {
-            NotiID = notiId,
+            NotiID = notificationId,
             SitePermission = sitePermission,
             LicenseeType = licenseeType
         };

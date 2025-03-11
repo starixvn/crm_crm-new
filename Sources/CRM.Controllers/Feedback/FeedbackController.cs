@@ -198,10 +198,7 @@ public class FeedbackController(
             };
         }
 
-        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)FeedbackStatus.Deleted;
-        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)FeedbackStatus.Deleted;
-        if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
-            && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
+        if (await IsNoPermissionDeleteFeedback(isDeletedFeedbackView, statusId))
         {
             commandResult = new CommandResult
             {
@@ -211,6 +208,14 @@ public class FeedbackController(
         }
 
         return commandResult;
+    }
+
+    private async Task<bool> IsNoPermissionDeleteFeedback(bool isDeletedFeedbackView, int statusId)
+    {
+        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)FeedbackStatus.Deleted;
+        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)FeedbackStatus.Deleted;
+        return !await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
+               && (isChangedStatusFromDeleted || isChangedStatusToDeleted);
     }
 
     private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
@@ -264,7 +269,8 @@ public class FeedbackController(
         return settings;
     }
 
-    private static IList<FeedbackSettingRelation> GetFeedbackSettingByType(IEnumerable<FeedbackSettingRelation> settings, string settingType) => settings.Where(y => y.SettingType.Equals(settingType, StringComparison.OrdinalIgnoreCase)).ToList();
+    private static IList<FeedbackSettingRelation> GetFeedbackSettingByType(IEnumerable<FeedbackSettingRelation> settings, string settingType)
+        => settings.Where(y => y.SettingType.Equals(settingType, StringComparison.OrdinalIgnoreCase)).ToList();
 
     private static IList<SettingRelation> GetExtensions(IEnumerable<SettingRelation> extensions,
         IEnumerable<FeedbackSettingRelation> settings)

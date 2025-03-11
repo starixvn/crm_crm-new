@@ -121,9 +121,7 @@ public class DeletedFeedbackExcel(
     }
 
     protected static string[] BuildCategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
-    {
-        return GetCategoryContent(feedback.Settings, mainCategories);
-    }
+        => GetCategoryContent(feedback.Settings, mainCategories);
 
     private static string GetMainCategoryName(int mainCategoryId, IEnumerable<Setting> mainCategories)
     {
@@ -143,8 +141,9 @@ public class DeletedFeedbackExcel(
 
     protected static string GetFeedbackCellValue(FeedbackDetail feedback)
     {
-        var cellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}";
+        var cellValue = $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " +
+                feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " +
+                feedback.DurationTime}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {
@@ -156,7 +155,5 @@ public class DeletedFeedbackExcel(
     }
 
     private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
-    {
-        return GetCategoryContent(settings.Where(i => i.SettingType == "Category"), mainCategories);
-    }
+        => GetCategoryContent(settings.Where(i => i.SettingType == "Category"), mainCategories);
 }
