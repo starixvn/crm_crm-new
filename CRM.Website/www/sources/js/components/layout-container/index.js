@@ -22,7 +22,7 @@ const CloneAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'annou
 const SMAPersonalMessage = lazy(() => import(/* webpackChunkName: 'sma-personal-message' */ '@jsroot/pages/add-sma-personal-message/index'));
 const NotificationCenter = lazy(() => import(/* webpackChunkName: 'notification-center' */ '@jsroot/pages/notification-center/index'));
 const ActionNotificationComponent = lazy(() => import(/* webpackChunkName: 'notification-center' */ '@jsroot/pages/notification-center/actionNotification'));
-const SMAFeedbackComponent = lazy(() => import(/* webpackChunkName: 'sma-feedback' */ '@jsroot/pages/sma-feedback/index'));
+const SMAFeedbackComponent = lazy(() => import(/* webpackChunkName: 'sma-feedback' */ '@jsroot/pages/manage-sma-feedback/index'));
 
 const ManagementComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-management' */ '@jsroot/pages/pic-and-headline/management/index'));
 const PicAssignmentComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-pic-assignment' */ '@jsroot/pages/pic-and-headline/pic-assignment/index'));
