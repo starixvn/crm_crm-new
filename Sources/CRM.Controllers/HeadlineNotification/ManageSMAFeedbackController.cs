@@ -1,39 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CRM.Constants;
-using CRM.Criteria.ManageSMAFeedback;
-using CRM.Criteria.SMAPersonalMessage;
 using CRM.Filters;
 using CRM.Models.ManageSMAFeedback;
-using CRM.Models.SMAPersonalMessage;
-using CRM.Services;
 using CRM.Services.Interfaces;
-using Fanex.NAP.Client;
 using Microsoft.AspNetCore.Mvc;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 namespace CRM.Controllers.HeadlineNotification
 {
     [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Read)]
-    public class ManageSMAFeedbackController(
-        INapSession napSession,
-        IBaseService baseService,
-        ICommonService commonService) : BaseController
+    public class ManageSMAFeedbackController(IManageSMAFeedbackService manageSmaFeedbackService) : BaseController
     {
 
         [HttpPost]
-        public async Task<IActionResult> GetGridData([FromBody] GetSMAFeedbackCriteria criteria)
+        public async Task<IActionResult> GetSMAFeedback([FromBody] GetSMAFeedbackInfo param)
         {
-            var feedbackSMAInfos = await baseService.GetDataAsync<SMAFeedbackInfo>(criteria);
-            foreach (var feedback in feedbackSMAInfos)
-            {
-                feedback.CreateTime = commonService.ConvertToClientDateTime(feedback.CreateTime);
-            }
+            var feedbackSMAInfos = await manageSmaFeedbackService.GetSMAFeedbackAsync(param);
+            return Json(new { totalItems = param.TotalRows, data = feedbackSMAInfos });
+        }
 
-            return Json(new { totalItems = criteria.TotalRows, data = feedbackSMAInfos });
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Host)]
+        public async Task<IActionResult> EditSMAFeedback([FromBody] EditSMAFeedback param)
+        {
+            var commandResult = await manageSmaFeedbackService.EditSMAFeedbackAsync(param);
+            return Json(commandResult);
         }
     }
 }
