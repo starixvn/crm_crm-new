@@ -1,5 +1,6 @@
 ﻿namespace CRM.Services.ExportExcel;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CRM.Extensions;
@@ -8,9 +9,6 @@ using CRM.Models.Setting;
 using CRM.Resources;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 public class DeletedFeedbackExcel(
     string templatePath,
@@ -44,7 +42,8 @@ public class DeletedFeedbackExcel(
         }
     }
 
-    protected internal virtual void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedbackDetail, int index, int rowIndex)
+    protected internal virtual void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedbackDetail, int index,
+        int rowIndex)
     {
         var colIndex = 1;
         var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
@@ -143,9 +142,10 @@ public class DeletedFeedbackExcel(
 
     protected static string GetFeedbackCellValue(FeedbackDetail feedback)
     {
-        var cellValue = $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " +
+        var cellValue =
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " +
                 feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n" +
-                        $"{"Solving Duration: " + feedback.DurationTime}";
+            $"{"Solving Duration: " + feedback.DurationTime}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {
@@ -156,5 +156,7 @@ public class DeletedFeedbackExcel(
         return cellValue;
     }
 
-    private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
+    private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings,
+        IEnumerable<Setting> mainCategories)
         => GetCategoryContent(settings.Where(i => i.SettingType == "Category"), mainCategories);
+}

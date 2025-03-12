@@ -15,7 +15,9 @@
         <link rel="stylesheet" href="~/css/pro/pages/auth/login.chunk.css" asp-append-version="true" />
     </environment>
 }
-@{ ViewData["Title"] = ViewResources.SignIn; }
+@{
+    ViewData["Title"] = ViewResources.SignIn;
+}
 <body>
     <div id='not-supported-browser-panel' style="display: none">
         Your browser is no longer supported. Some parts will not work & you may experience
@@ -31,21 +33,21 @@
             <img class="login-security" src="/www/dist/css/images/login/login-security.png">
         </div>
         <div class="login-right">
-            @if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+            @if (!string.IsNullOrWhiteSpace(Model.Message))
             {
                 <div id="msg">
-                    <span id="inner-msg">@ViewBag.Message</span>
+                    <span id="inner-msg">@Model.Message</span>
                 </div>
             }
-            <form action="@Url.Content("~/Auth/SignIn")" method="POST" id="frmLogin" name="frmLogin" autocomplete="off">
+            <form asp-controller="Auth" method="POST" id="login-form" name="frmLogin" autocomplete="off">
                 @Html.AntiForgeryToken()
-                <input id="loginToken" name="loginToken" value="@ViewBag.LoginToken" type="hidden" />
+                <input id="loginToken" name="loginToken" value="@Model.FormToken" type="hidden" />
                 <span class="header-text">Login to your account</span>
                 <div class="form-input">
                     <span class="input-name">Account</span>
                     <div class="field-password">
                         <span class="icon-user"></span>
-                        <input type="text" id="username" name="username" autocomplete="off" required placeholder="Enter your username"/>
+                        <input type="text" id="username" name="username" autocomplete="off" required placeholder="Enter your username" />
                     </div>
                 </div>
                 <div class="form-input">
@@ -64,12 +66,14 @@
     </div>
     <script src="~/lib/CryptoJS.js" asp-append-version="true"></script>
     <script>
-        const form = document.getElementById('frmLogin');
+        const form = document.getElementById('login-form');
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             var password = document.getElementById('password').value;
+            var loginToken = document.getElementById('loginToken').value;
             var encryptedPassword = CryptoJS.CfsEnCode(password);
-            document.getElementById('password').value = encryptedPassword;
+            var hashPwd = CryptoJS.SHA256(encryptedPassword + loginToken);
+            document.getElementById('password').value = hashPwd;
             form.submit();
         });
 
