@@ -21,15 +21,15 @@ namespace CRM.Services.HeadlineNotification
                 Username = param.Username,
 
             };
-            var feedbackSMAInfos = await baseService.GetDataAsync<SMAFeedbackInfo>(criteria);
+            var smaFeedbackInfos = await baseService.GetDataAsync<SMAFeedbackInfo>(criteria);
             param.TotalRows = criteria.TotalRows;
 
-            foreach (var feedback in feedbackSMAInfos)
+            foreach (var feedback in smaFeedbackInfos)
             {
                 feedback.CreateTime = commonService.ConvertToClientDateTime(feedback.CreateTime);
             }
 
-            return feedbackSMAInfos;
+            return smaFeedbackInfos;
         }
 
         public async Task<CommandResult> EditSMAFeedbackAsync(EditSMAFeedback param)

@@ -645,4 +645,7 @@
   <data name="Account" xml:space="preserve">
     <value>Account</value>
   </data>
+  <data name="ManageSMAFeedback_ExcelTile" xml:space="preserve">
+    <value>ManageSMAFeedback_{0}_{1}</value>
+  </data>
 </root>
