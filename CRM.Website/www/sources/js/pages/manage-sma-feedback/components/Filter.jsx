@@ -7,9 +7,8 @@ import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
-import { isHavePermissionOnSite, isHaveLicenseePermissionOnSite } from '@jsroot/common/shareScripts';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import WithNavigation from '@jsroot/components/WithNavigation';
 
 export class Filter extends Component {
     constructor(props) {
@@ -57,6 +56,13 @@ export class Filter extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        if (isHavePermissionOnSite()) {
+            const { fromDate, toDate, statuses, username } = this.state.filter;
+            const params = { fromDate, toDate, statuses, username };
+
+            this.props.setGridParams(params);
+            this.props.getGridData(params);
+        }
     };
 
     render() {

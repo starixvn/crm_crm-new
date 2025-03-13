@@ -38,8 +38,22 @@ export default class EditSmaFeedback extends Component {
         return errors;
     };
 
-    handleSubmit = () => {
+    handleSubmit = async () => {
+        this.formik.setSubmitting(true);
 
+        const { reviewStatus, discussion } = this.formik.values;
+        const params = { reviewStatus, discussion };
+        await this.props.editSMAFeedback(params).then(() => {
+            this.handleClosePopup();
+            if (this.props.editSMAFeedbackResult.isSuccessful) {
+                this.setState({ editResult: this.props.editSMAFeedbackResult.message });
+                setTimeout(() => {
+                    this.props.setEditSmaFeedbackDialog(null);
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
     };
 
     renderForm = ({
