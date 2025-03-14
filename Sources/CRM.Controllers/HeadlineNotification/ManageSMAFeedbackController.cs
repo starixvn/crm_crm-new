@@ -2,7 +2,7 @@
 using CRM.Constants;
 using CRM.Extensions;
 using CRM.Filters;
-using CRM.Models.ManageSMAFeedback;
+using CRM.Models.ManageSmaFeedback;
 using CRM.Resources;
 using CRM.Services.ExportExcel;
 using CRM.Services.Interfaces;
@@ -12,29 +12,29 @@ using static Fanex.NAP.Client.Helpers.Business.Constant;
 namespace CRM.Controllers.HeadlineNotification
 {
     [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Read)]
-    public class ManageSMAFeedbackController(IManageSMAFeedbackService manageSmaFeedbackService, IExportExcelService excelService) : BaseController
+    public class ManageSmaFeedbackController(IManageSmaFeedbackService manageSmaFeedbackService, IExportExcelService excelService) : BaseController
     {
 
         [HttpPost]
-        public async Task<IActionResult> GetSMAFeedback([FromBody] GetSMAFeedbackInfo param)
+        public async Task<IActionResult> GetSmaFeedback([FromBody] GetSmaFeedbackInfo param)
         {
-            var smaFeedbackInfos = await manageSmaFeedbackService.GetSMAFeedbackAsync(param);
+            var smaFeedbackInfos = await manageSmaFeedbackService.GetSmaFeedbackAsync(param);
             return Json(new { totalItems = param.TotalRows, data = smaFeedbackInfos });
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Host)]
-        public async Task<IActionResult> EditSMAFeedback([FromBody] EditSMAFeedback param)
+        public async Task<IActionResult> EditSmaFeedback([FromBody] EditSmaFeedback param)
         {
-            var commandResult = await manageSmaFeedbackService.EditSMAFeedbackAsync(param);
+            var commandResult = await manageSmaFeedbackService.EditSmaFeedbackAsync(param);
             return Json(commandResult);
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Host)]
-        public async Task<IActionResult> ExportExcel([FromBody] GetSMAFeedbackInfo param)
+        public async Task<IActionResult> ExportExcel([FromBody] GetSmaFeedbackInfo param)
         {
-            var smaFeedbackInfos = await manageSmaFeedbackService.GetSMAFeedbackAsync(param);
+            var smaFeedbackInfos = await manageSmaFeedbackService.GetSmaFeedbackAsync(param);
             var reportName = string.Format(ViewResources.ManageSMAFeedback_ExcelTile, param.FromDate.ToShortDateFormat(), param.ToDate.ToShortDateFormat());
             var bytes = excelService.ExportManageSMAFeedback(smaFeedbackInfos, reportName);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");

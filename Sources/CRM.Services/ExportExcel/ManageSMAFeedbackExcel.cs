@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CRM.Models.ManageSMAFeedback;
+using CRM.Models.ManageSmaFeedback;
 using CRM.Resources;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
 namespace CRM.Services.ExportExcel
 {
-    public class ManageSMAFeedbackExcel(string templatePath, IEnumerable<SMAFeedbackInfo> smaFeedbackInfos, string titleExcel)
+    public class ManageSmaFeedbackExcel(string templatePath, IEnumerable<SmaFeedbackInfo> smaFeedbackInfos, string titleExcel)
         : ExcelBase(templatePath, 0, ViewResources.ManageSMAFeedback_ExcelTile)
     {
         private const byte RowStartHeader = 4;
@@ -44,7 +44,7 @@ namespace CRM.Services.ExportExcel
             }
         }
 
-        protected internal virtual void RenderRow(ExcelWorksheet worksheet, SMAFeedbackInfo smaFeedbackInfo, int index, int rowIndex)
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, SmaFeedbackInfo smaFeedbackInfo, int index, int rowIndex)
         {
             var colIndex = 1;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.CreateTime;

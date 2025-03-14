@@ -2,7 +2,7 @@
 
 namespace CRM.Criteria.ManageSMAFeedback
 {
-    public class EditSMAFeedbackCommand : BaseNonQueryCommand
+    public class EditSmaFeedbackCommand : BaseNonQueryCommand
     {
         public int FeedbackId { get; set; }
 

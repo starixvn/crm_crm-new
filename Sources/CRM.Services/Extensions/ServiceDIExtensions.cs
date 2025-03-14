@@ -59,6 +59,6 @@ public static class ServiceDIExtensions
         services.AddSingleton<IPermissionService, PermissionService>();
         services.AddScoped<ICategoryClassificationService, CategoryClassificationService>();
         services.AddScoped<INotificationCenterService, NotificationCenterService>();
-        services.AddScoped<IManageSMAFeedbackService, ManageSMAFeedbackService>();
+        services.AddScoped<IManageSmaFeedbackService, ManageSmaFeedbackService>();
     }
 }

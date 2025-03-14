@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CRM.Models.ManageSMAFeedback
+namespace CRM.Models.ManageSmaFeedback
 {
-    public class SMAFeedbackInfo
+    public class SmaFeedbackInfo
     {
         public int FeedbackId { get; set; }
 

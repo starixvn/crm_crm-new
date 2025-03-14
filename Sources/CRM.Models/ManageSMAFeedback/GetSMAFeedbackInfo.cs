@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CRM.Models.ManageSMAFeedback
+namespace CRM.Models.ManageSmaFeedback
 {
-    public class GetSMAFeedbackInfo
+    public class GetSmaFeedbackInfo
     {
         public DateTime FromDate { get; set; }
 

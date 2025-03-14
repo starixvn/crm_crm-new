@@ -3,7 +3,7 @@ using Fanex.Data.Repository;
 
 namespace CRM.Criteria.ManageSMAFeedback
 {
-    public class GetSMAFeedbackCriteria : CriteriaBase
+    public class GetSmaFeedbackCriteria : CriteriaBase
     {
         public DateTime? FromDate { get; set; }
 

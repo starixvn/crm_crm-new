@@ -4,36 +4,27 @@ import {
     setGridParams,
     setGridData,
     setEditSmaFeedbackDialog,
-    setSMAFeedbacks,
-    setEditSMAFeedback
+    setEditSmaFeedback
 } from './smaFeedbackSlice';
 
 const getGridData = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('NotificationCenter/GetResultAdmNotification');
-    await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setGridData(response.data));
-    }).then(() => Site.unblockUI());
-};
-
-const getSMAFeedbacks = params => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl('ManageSMAFeedback/GetSMAFeedback');
+    const url = Site.resolveClientUrl('ManageSmaFeedback/GetSmaFeedback');
     DataService.postDataAsync(url, params).then(response => {
-        dispatch(setSMAFeedbacks(response.data));
+        dispatch(setGridData(response.data));
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
-const editSMAFeedback = data => async dispatch => {
-    const url = Site.resolveClientUrl('ManageSMAFeedback/EditSMAFeedback');
+const editSmaFeedback = data => async dispatch => {
+    const url = Site.resolveClientUrl('ManageSmaFeedback/EditSmaFeedback');
     await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditSMAFeedback(response.data));
+        dispatch(setEditSmaFeedback(response.data));
     });
 };
 
 const exportExcel = params => async () => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('ManageSMAFeedback/ExportExcel');
+    const url = Site.resolveClientUrl('ManageSmaFeedback/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
@@ -45,7 +36,6 @@ export const ActionCreators = {
     setGridData,
     setEditSmaFeedbackDialog,
     getGridData,
-    getSMAFeedbacks,
-    editSMAFeedback,
+    editSmaFeedback,
     exportExcel
 };

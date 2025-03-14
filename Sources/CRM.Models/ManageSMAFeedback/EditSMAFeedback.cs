@@ -1,6 +1,6 @@
-﻿namespace CRM.Models.ManageSMAFeedback
+﻿namespace CRM.Models.ManageSmaFeedback
 {
-    public class EditSMAFeedback
+    public class EditSmaFeedback
     {
         public int FeedbackId { get; set; }
 

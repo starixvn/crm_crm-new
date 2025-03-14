@@ -158,7 +158,7 @@ export class DataGrid extends Component {
                         }
                         <span
                             className='fa fa-file-excel-o ml-3 icon-excel'
-                           // onClick={() => functions.exportExcel(this.props.gridParams)}
+                           onClick={() => this.props.exportExcel(this.props.gridParams)}
                         />
                     </div>
                 </div>

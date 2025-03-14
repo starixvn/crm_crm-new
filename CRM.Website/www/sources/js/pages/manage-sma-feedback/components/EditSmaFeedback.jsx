@@ -43,10 +43,10 @@ export default class EditSmaFeedback extends Component {
 
         const { reviewStatus, discussion } = this.formik.values;
         const params = { reviewStatus, discussion };
-        await this.props.editSMAFeedback(params).then(() => {
+        await this.props.editSmaFeedback(params).then(() => {
             this.handleClosePopup();
-            if (this.props.editSMAFeedbackResult.isSuccessful) {
-                this.setState({ editResult: this.props.editSMAFeedbackResult.message });
+            if (this.props.editSmaFeedbackResult.isSuccessful) {
+                this.setState({ editResult: this.props.editSmaFeedbackResult.message });
                 setTimeout(() => {
                     this.props.setEditSmaFeedbackDialog(null);
                 }, 3000);

@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CRM.Models;
-using CRM.Models.ManageSMAFeedback;
+using CRM.Models.ManageSmaFeedback;
 
 namespace CRM.Services.Interfaces
 {
-    public interface IManageSMAFeedbackService
+    public interface IManageSmaFeedbackService
     {
-        Task<IEnumerable<SMAFeedbackInfo>> GetSMAFeedbackAsync(GetSMAFeedbackInfo param);
+        Task<IEnumerable<SmaFeedbackInfo>> GetSmaFeedbackAsync(GetSmaFeedbackInfo param);
 
-        Task<CommandResult> EditSMAFeedbackAsync(EditSMAFeedback param);
+        Task<CommandResult> EditSmaFeedbackAsync(EditSmaFeedback param);
     }
 }
