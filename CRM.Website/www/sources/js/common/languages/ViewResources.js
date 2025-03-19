@@ -256,6 +256,7 @@
     FromDate: 'From Date',
     FromMonth: 'From Month',
     FirstName: 'First Name',
+    FirstResponseTime: '1st Response Time',
     FeedbackDate: 'Feedback Date',
     Fax: 'Fax',
     FillEventDetails: 'Fill Event Details',
