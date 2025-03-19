@@ -23,11 +23,14 @@ export const validateFormik = (values, customerDetail, settings, state) => {
             LangHelper.getResource('ResolutionTime'));
     }
 
-    if (customerDetail !== null && moment(values.feedbackDate).isAfter(moment(values.firstResponseTime))) {
+    var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionTime)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
+
+    if (customerDetail !== null && isNotValidFirstRT) {
         errors.feedbackDate = LangHelper.formatString(
-            LangHelper.getResource('FieldLessThanOrEqualTo'),
+            LangHelper.getResource('FieldLessGreaterThanOrEqualTo'),
+            LangHelper.getResource('FirstResponseTime'),
             LangHelper.getResource('FeedbackDate'),
-            LangHelper.getResource('FirstResponseTime'));
+            LangHelper.getResource('ResolutionTime'));
     }
 
     if (values.communication.length === 0) {
@@ -149,7 +152,6 @@ export const initValues = (settings, customerInfo) =>{
     const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
     const firstResponseTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
-    firstResponseTime.setMinutes(firstResponseTime.getMinutes() + 1);
 
     const initialValues = {
         identityInformation: '',
@@ -240,7 +242,6 @@ export const initValuesAddCustomerFb = (settings, customerDetail, customerInfo) 
     const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
     const firstResponseTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
-    firstResponseTime.setMinutes(firstResponseTime.getMinutes() + 1);
 
     const initialValues = {
         feedbackDate: feedbackDate,
