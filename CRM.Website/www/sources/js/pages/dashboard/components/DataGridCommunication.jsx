@@ -137,6 +137,7 @@ export class DataGridCommunication extends Component {
             subProductOptions,
             betTypeOptions,
             relatedCustomers,
+            feedbackId: data.log.feedbackId,
             statusId: data.log.statusId,
             roleId: data.log.roleId,
             siteId: data.log.siteId,

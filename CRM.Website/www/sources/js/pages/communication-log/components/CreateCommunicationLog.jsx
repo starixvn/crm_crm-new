@@ -477,6 +477,7 @@ export class CreateCommunicationLog extends Component {
         Site.blockUI();
         this.setState({ checkDuplicateDialog: { show: false } });
         const { params } = this.state.confirmCreateDialog;
+        params.sourceFeedbackID = this.props.options?.feedbackId ?? 0;
         await DataService.postDataAsync(url, params).then(response => {
             Site.unblockUI();
             this.setState({ createResult: response.data, confirmCreateDialog: { show: false } });

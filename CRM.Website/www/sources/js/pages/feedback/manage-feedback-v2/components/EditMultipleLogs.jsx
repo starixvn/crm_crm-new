@@ -1083,7 +1083,7 @@ export class EditMultipleLogs extends Component {
                         title={LangHelper.getResource('ConfirmMultipleUpdates')}
                         contents={
                             <>
-                                <ReminderRating value={this.formik?.values.rating}/>
+                                {isCheck.rating && <ReminderRating value={this.formik?.values.rating}/>}
                                 <div>{LangHelper.getResource('ConfirmEditMultipleLogsContent')}</div>
                             </>
                         }

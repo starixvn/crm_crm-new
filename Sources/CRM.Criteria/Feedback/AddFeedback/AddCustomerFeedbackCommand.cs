@@ -12,6 +12,7 @@
     public class AddCustomerFeedbackCommand : BaseNonQueryCommand
     {
         public int CustId { get; set; }
+        public int SourceFeedbackID { get; set; }
 
         [SpParam(SqlParamName = "RefCode2")]
         public string RefCode { get; set; }
