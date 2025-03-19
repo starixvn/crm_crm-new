@@ -11,7 +11,7 @@ using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Feedback;
 using CRM.ViewModels.Feedback;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;

@@ -9,7 +9,7 @@ using CRM.Criteria.Common;
 using CRM.Extensions;
 using CRM.Models;
 using CRM.Models.Common;
-using Enumerables;
+using Enum;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NSubstitute;

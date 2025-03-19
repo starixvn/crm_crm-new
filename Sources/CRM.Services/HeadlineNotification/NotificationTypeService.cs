@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CRM.Criteria.NotificationType;
 using CRM.Extensions;
 using CRM.Models.NotificationType;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Interfaces;
 using Microsoft.AspNetCore.Http;

@@ -92,7 +92,7 @@ public class ManageFeedbackController(
 
         if (!isEdit || !isHostDeleteFbPermision)
         {
-            statuses = statuses.Where(x => x.StatusId != (int)Enumerables.FeedbackStatus.Deleted);
+            statuses = statuses.Where(x => x.StatusId != (int)Enum.FeedbackStatus.Deleted);
         }
 
         return statuses;

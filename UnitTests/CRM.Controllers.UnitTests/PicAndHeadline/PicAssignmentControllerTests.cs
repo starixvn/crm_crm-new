@@ -14,7 +14,7 @@ using CRM.Models.PicAndHeadline;
 using CRM.Models.Setting;
 using CRM.Resources;
 using CRM.Services;
-using Enumerables;
+using Enum;
 using Extensions.XML;
 using Fanex.NAP.Client;
 using Microsoft.AspNetCore.Http;

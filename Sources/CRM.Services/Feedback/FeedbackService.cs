@@ -104,7 +104,8 @@ public class FeedbackService(
     public async Task<CustomerFeedbackModel> GetCustomerFeedbackDataByIdAsync(ICriteria criteria)
     {
         var (customerFeedback, fbCommunicationTools, fbSettingRelations, relatedCustomerPermission) =
-            await baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(criteria);
+            await baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool,
+                FeedbackSettingRelation, RelatedCustomerPermission>(criteria);
 
         var customerFeedbackModel = new CustomerFeedbackModel
         {
@@ -156,11 +157,10 @@ public class FeedbackService(
             GrandTotals = grandTotals
         };
         var previousCategory = 0;
-        var categoryId = 0;
         FeedbackCategory feedbackCategory = null;
         while (reader.Read())
         {
-            categoryId = int.Parse(reader["MainCategoryId"].ToString());
+            var categoryId = int.Parse(reader["MainCategoryId"].ToString());
             if (categoryId != previousCategory)
             {
                 previousCategory = categoryId;

@@ -14,7 +14,7 @@ using CRM.Models.Setting;
 using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Customer;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

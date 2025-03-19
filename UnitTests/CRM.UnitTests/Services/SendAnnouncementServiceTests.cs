@@ -8,7 +8,7 @@ using AutoFixture;
 using Constants;
 using CRM.Criteria.Announcement;
 using CRM.Services;
-using Enumerables;
+using Enum;
 using Microsoft.Extensions.Configuration;
 using Models.BotServices.Announcement;
 using Newtonsoft.Json;

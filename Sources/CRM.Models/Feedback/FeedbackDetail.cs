@@ -1,5 +1,7 @@
 ﻿namespace CRM.Models.Feedback;
 
+using CRM.Extensions;
+using Enum;
 using System;
 using System.Collections.Generic;
 
@@ -47,4 +49,8 @@ public class FeedbackDetail
     public IList<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
 
     public string DurationTime { get; set; }
+
+    public int Rating { get; set; }
+
+    public string RatingDescription => EnumHelper.GetDesciption((FeedbackRating)Rating);
 }

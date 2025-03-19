@@ -6,7 +6,7 @@ using Constants;
 using CRM.Criteria.Redemption;
 using CRM.Services;
 using CRM.Services.Redemption;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;

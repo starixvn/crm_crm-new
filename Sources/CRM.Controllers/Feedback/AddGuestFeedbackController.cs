@@ -6,7 +6,7 @@ using Constants;
 using CRM.Criteria.Feedback.AddFeedback;
 using CRM.Services;
 using CRM.ViewModels.Feedback;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;

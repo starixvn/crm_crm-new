@@ -9,7 +9,7 @@ using CRM.Criteria.NotificationList;
 using CRM.Criteria.NotificationType;
 using CRM.Models.NotificationList;
 using CRM.Models.NotificationType;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using HeadlineNotification;
 using Microsoft.AspNetCore.Mvc;

@@ -11,7 +11,6 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { MaximumDisplayRelatedCustomer, PAGING_SIZES } from '@jsroot/common/constants';
 
-
 export class Details extends Component {
     constructor(props) {
         super(props);
@@ -95,17 +94,19 @@ export class Details extends Component {
         const feedbackDateFormat = DateTimeService.toShortDateTimeFormat(item.feedbackDate);
         const createDateFormatDate = DateTimeService.toShortDateTimeFormat(item.createDate);
         const solveDateFormatDate = DateTimeService.toShortDateTimeFormat(item.solveDate);
+        const rating = item.rating ? item.rating + ' (' + item.ratingDescription + ')' : item.ratingDescription;
         return (
             <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${this.renderStatus(item.status)}`}>
                 <Cell>
                     <div>
-                        <span className="pr-3"/>
+                        <span className="pr-4" />
                         <strong>{item.subject}</strong>
                     </div>
-                    <div className="pl-3">
+                    <div className="pl-4">
                         <div className="py-1">Feedback date <strong>{feedbackDateFormat}</strong></div>
                         <div className="py-1">By<strong> {item.creator} </strong>on {createDateFormatDate}</div>
                         <div className="py-1">Solving Duration: {item.durationTime}</div>
+                        <div className="py-1">Rating: {rating}</div>
                         {
                             item.reviewerName &&
                             <div className="info">Reviewed by <strong> {item.reviewerName} </strong> on {solveDateFormatDate}</div>
@@ -120,8 +121,8 @@ export class Details extends Component {
         );
     };
 
-    renderStatus = status =>{
-        if(status === 'Pending') {
+    renderStatus = status => {
+        if (status === 'Pending') {
             return 'pending';
         }
         return status === 'Closed' ? 'closed' : '';
@@ -166,7 +167,7 @@ export class Details extends Component {
         );
     };
 
-    renderForm = () =>{
+    renderForm = () => {
         const { details } = this.props;
         const { pageIndex, pageSize } = this.props.gridParamDetails;
         const pagingOption = {
@@ -178,17 +179,17 @@ export class Details extends Component {
         return (
             <Modal.Body>
                 {this.renderTableTitle(this.props.gridParamDetails)}
-                    <Table
-                        width={1150}
-                        autoWidth={false}
-                        isPaging
-                        pageOption={pagingOption}
-                        onPaging={this.onPaging}
-                        header={this.buildHeader()}
-                        body={this.buildBody()}
-                        containerPadding={10}
-                        shouldResetScrollPosition={false}
-                    />
+                <Table
+                    width={1150}
+                    autoWidth={false}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPaging}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    containerPadding={10}
+                    shouldResetScrollPosition={false}
+                />
             </Modal.Body>
         );
     };

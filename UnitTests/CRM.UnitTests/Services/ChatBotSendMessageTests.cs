@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using CRM.Services;
-using Enumerables;
+using Enum;
 using Fanex.Caching;
 using Helpers;
 using Models.BotServices;

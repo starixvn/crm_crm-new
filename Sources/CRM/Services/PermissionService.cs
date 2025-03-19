@@ -1,7 +1,6 @@
 ﻿namespace CRM.Services;
 
 using Constants;
-using Enumerables;
 using Fanex.NAP.Client;
 using Fanex.NAP.Client.Configuration;
 using Fanex.NAP.Client.Models.ValueObject;
@@ -11,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Enum;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 public interface IPermissionService

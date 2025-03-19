@@ -7,7 +7,7 @@ using Constants;
 using CRM.Criteria.NotificationList;
 using CRM.Criteria.NotificationType;
 using CRM.Models.NotificationList;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;

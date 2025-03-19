@@ -11,7 +11,7 @@ using CRM.Services;
 using CRM.Services.Customer;
 using CRM.Services.Feedback;
 using CRM.ViewModels.Feedback;
-using Enumerables;
+using Enum;
 using Fanex.Logging.Extensions;
 using Fanex.NAP.Client;
 using Filters;
@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
-using FeedbackStatus = Enumerables.FeedbackStatus;
+using FeedbackStatus = Enum.FeedbackStatus;
 
 public class FeedbackController(
     INapSession napSession,

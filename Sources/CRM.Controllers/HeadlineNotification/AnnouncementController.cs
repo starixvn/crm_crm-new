@@ -6,7 +6,6 @@ using CRM.Criteria.PicAndHeadline;
 using CRM.Models;
 using CRM.Services;
 using CRM.Services.Interfaces;
-using Enumerables;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Enum;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Read)]

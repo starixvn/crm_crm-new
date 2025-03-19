@@ -5,7 +5,7 @@ using Constants;
 using CRM.Criteria.Common;
 using CRM.Criteria.NotificationType;
 using CRM.Services;
-using Enumerables;
+using Enum;
 using Microsoft.AspNetCore.Mvc;
 using Models.AdminTool.FeedbackSubject;
 using Services.AdminTool;

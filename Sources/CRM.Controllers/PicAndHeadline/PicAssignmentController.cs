@@ -8,7 +8,7 @@ using Constants;
 using CRM.Criteria.PicAndHeadline;
 using CRM.Models.PicAndHeadline;
 using CRM.Resources;
-using Enumerables;
+using Enum;
 using Extensions.XML;
 using Fanex.NAP.Client;
 using Filters;

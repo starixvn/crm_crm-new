@@ -8,7 +8,7 @@ using AutoFixture;
 using CRM.Criteria.NotificationType;
 using CRM.Models;
 using CRM.Models.NotificationType;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using HeadlineNotification;
 using Microsoft.AspNetCore.Http;

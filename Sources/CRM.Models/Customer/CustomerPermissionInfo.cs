@@ -1,6 +1,6 @@
 ﻿namespace CRM.Models.Customer;
 
-using Enumerables;
+using Enum;
 
 public class CustomerPermissionInfo
 {

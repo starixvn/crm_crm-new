@@ -7,7 +7,7 @@ using CRM.Criteria.Feedback.AddFeedback;
 using CRM.Resources;
 using CRM.Services;
 using CRM.ViewModels.Feedback;
-using Enumerables;
+using Enum;
 using Extensions.XML;
 using Fanex.Logging.Extensions;
 using Fanex.NAP.Client;

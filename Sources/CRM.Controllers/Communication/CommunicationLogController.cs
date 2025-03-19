@@ -9,7 +9,6 @@ using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Communication;
 using CRM.ViewModels.Feedback;
-using Enumerables;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +17,7 @@ using Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Enum;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]

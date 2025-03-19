@@ -2,7 +2,6 @@
 
 export const PAGING_SIZES = [100, 200, 300, 400, 500, 1000];
 
-
 export const MEDIUM_PAGING_SIZES = [50, 100, 200, 500];
 
 export const SMALL_PAGING_SIZES = [1, 5, 7, 10];
@@ -136,14 +135,14 @@ export const DefaultLanguages = {
 };
 
 export const DateTypeOption = [
-    {id: 0, name: 'Today'},
-    {id: 1, name: 'Yesterday'},
-    {id: 2, name: 'This Week'},
-    {id: 3, name: 'Last Week'},
-    {id: 4, name: 'This Month'},
-    {id: 5, name: 'Last Month'},
-    {id: 6, name: 'This Year'},
-    {id: 7, name: 'Specific Dates'}
+    { id: 0, name: 'Today' },
+    { id: 1, name: 'Yesterday' },
+    { id: 2, name: 'This Week' },
+    { id: 3, name: 'Last Week' },
+    { id: 4, name: 'This Month' },
+    { id: 5, name: 'Last Month' },
+    { id: 6, name: 'This Year' },
+    { id: 7, name: 'Specific Dates' }
 ];
 
 export const DateType = {
@@ -157,7 +156,6 @@ export const DateType = {
     SpecificDates: 7
 };
 
-
 export const FeedbackSelectionType = [
     { name: 'By Creator', id: 1 },
     { name: 'By Country', id: 2 },
@@ -168,7 +166,8 @@ export const FeedbackSelectionType = [
     { name: 'By Product', id: 7 },
     { name: 'By Category', id: 8 },
     { name: 'By Licensees', id: 9 },
-    { name: 'By CommunicationTool', id: 10 }
+    { name: 'By CommunicationTool', id: 10 },
+    { name: 'By Rating', id: 11 }
 ];
 
 export const ReportBy = [
@@ -177,17 +176,17 @@ export const ReportBy = [
 ];
 
 export const SubMainMenu = [
-    {id: 1, url: '/Dashboard'},
-    {id: 2, url: '/Detail'},
-    {id: 3, url: '/Communication'},
-    {id: 4, url: '/SpecialRemark'},
-    {id: 5, url: '/Remark'},
-    {id: 6, url: '/Redemption'},
-    {id: 7, url: '/ActionLog'}
+    { id: 1, url: '/Dashboard' },
+    { id: 2, url: '/Detail' },
+    { id: 3, url: '/Communication' },
+    { id: 4, url: '/SpecialRemark' },
+    { id: 5, url: '/Remark' },
+    { id: 6, url: '/Redemption' },
+    { id: 7, url: '/ActionLog' }
 ];
 
-export const DetailMenu = [    
-    { id: 1, url: '/LatestFeedback', title: 'LatestFeedback'},
+export const DetailMenu = [
+    { id: 1, url: '/LatestFeedback', title: 'LatestFeedback' },
     { id: 2, url: '/AddFeedback', title: 'AddFeedback' },
     { id: 3, url: '/ManageFeedback', title: 'ManageFeedback' },
     { id: 4, url: '/Communication', title: 'CommunicationLog' },
@@ -202,14 +201,14 @@ export const DetailMenu = [
 export const Languages = ['EN', 'SC', 'TC', 'TH', 'YN'];
 
 export const Statuses = [
-    {id: 'Planned', name: 'Planned', checked: true},
-    {id: 'Cancelled', name: 'Cancelled', checked: true},
-    {id: 'Completed', name: 'Completed', checked: true},
-    {id: 'In-Progress', name: 'In-Progress', checked: true},
-    {id: 'Draft', name: 'Draft', checked: true}
+    { id: 'Planned', name: 'Planned', checked: true },
+    { id: 'Cancelled', name: 'Cancelled', checked: true },
+    { id: 'Completed', name: 'Completed', checked: true },
+    { id: 'In-Progress', name: 'In-Progress', checked: true },
+    { id: 'Draft', name: 'Draft', checked: true }
 ];
 
-export const IsRemoveDatagridRedemption = true;export const IsRemoveVerify = true;
+export const IsRemoveDatagridRedemption = true; export const IsRemoveVerify = true;
 export const IsLastFiveRemarks = true;
 export const RemovePageUrl = ['DirectCustomerReport', 'CustomerReport', 'WagerReport', 'RedemptionStatisticsReport'];
 export const BotServices = [

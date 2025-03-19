@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CRM.Services;
-using Enumerables;
+using Enum;
 using Microsoft.Extensions.Configuration;
 using Models.BotServices.Announcement;
 

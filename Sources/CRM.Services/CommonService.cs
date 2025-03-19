@@ -8,7 +8,7 @@ using CRM.Criteria.Common;
 using CRM.Extensions;
 using CRM.Models;
 using CRM.Models.Common;
-using Enumerables;
+using Enum;
 using Interfaces;
 using Microsoft.Extensions.Options;
 

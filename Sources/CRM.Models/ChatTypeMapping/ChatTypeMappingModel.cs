@@ -1,8 +1,8 @@
 ﻿namespace CRM.Models.ChatTypeMapping;
 
-using Enumerables;
 using Extensions;
 using System.Collections.Generic;
+using Enum;
 
 public class ChatTypeMappingModel
 {
