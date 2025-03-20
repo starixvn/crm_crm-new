@@ -264,6 +264,13 @@
             }
         }
     }
+
+    .disable-field {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: .7;
+        background-color: #fff;
+    }
 }
 
 #view-category-classification [class$="inner"]{
