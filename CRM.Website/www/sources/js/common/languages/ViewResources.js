@@ -249,7 +249,7 @@
     FeedbackSubjectManagement: 'Feedback Subject Management',
     FeedbackSubjectTemplateContent: 'Feedback Subject Template Content',
     FieldLessThanOrEqualTo: '{0} must be less than or equal to {1}!',
-    FieldBetween: '{0} must be between {1} and {2} (inclusive)!',
+    FieldBetween: '{0} must be between {1} and {2}!',
     FieldMaxLength: '{0} must not over {1} characters long!',
     FieldRequired: '{0} is required!',
     FileAttachment: 'File Attachment',
