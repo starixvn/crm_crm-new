@@ -130,9 +130,13 @@ class Details extends PureComponent {
     handleChangeResolutionDate = value => {
         this.props.setFieldValue('resolutionDate', value);
     }
+
+    handleChangeFirstResponseTime = value => {
+        this.props.setFieldValue('firstResponseTime', value);
+    }
     
     render() {
-        const {values, touched, errors, extensionOptions,
+        const {values, touched, errors,
             communicationToolOptions, mainCategoryOptions, subCategoryOptions,
             setFieldValue, onChangeMainCategory } = this.props;
         return (
@@ -156,6 +160,23 @@ class Details extends PureComponent {
                     </Col>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="firstResponseTime">
+                                {LangHelper.getResource('FirstResponseTime')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <div className='react-datepicker-wrapper-container form-control-wrapper'>
+                                    <DatePicker timeInputLabel="Time:" showTimeInput useShortMonthInDropdown
+                                        peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                        isInvalid={touched.firstResponseTime && errors.firstResponseTime}
+                                        selected={values.firstResponseTime}
+                                        onChange={value => this.handleChangeFirstResponseTime(value)}
+                                    />
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
                             <Form.Label column sm="4" md="4" htmlFor="resolutionDate">
                                 {LangHelper.getResource('ResolutionTime')}
                             </Form.Label>
@@ -167,25 +188,6 @@ class Details extends PureComponent {
                                         onChange={value => this.handleChangeResolutionDate(value)}
                                     />
                                 </div>
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                    <Col sm="4" md="4">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="extensionIds">
-                                {LangHelper.getResource('Station')}
-                            </Form.Label>
-                            <Col sm="8" md="8">
-                                <MultipleSelect
-                                    dataSource={extensionOptions}
-                                    keyField='id' valueField='value'
-                                    hasAllOption={extensionOptions.length > 0}
-                                    isAllTextShown={extensionOptions.length > 0}
-                                    hasSearchBox isNAOption
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        setFieldValue('extensionIds', selectedItemsKey);
-                                    }}
-                                />
                             </Col>
                         </Form.Group>
                     </Col>

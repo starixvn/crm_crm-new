@@ -27,7 +27,7 @@ export const validateFormik = (values, customerDetail, settings, state) => {
 
     if (customerDetail !== null && isNotValidFirstRT) {
         errors.firstResponseTime = LangHelper.formatString(
-            LangHelper.getResource('FieldLessGreaterThanOrEqualTo'),
+            LangHelper.getResource('FieldBetween'),
             LangHelper.getResource('FirstResponseTime'),
             LangHelper.getResource('FeedbackDate'),
             LangHelper.getResource('ResolutionTime'));

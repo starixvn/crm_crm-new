@@ -9,12 +9,13 @@ import { validateNoOfInquiry, ratings } from '../common.functions';
 import Details from './Details';
 import CommentInfo from './CommentInfo';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 
 export default class FeedbackInfo extends PureComponent {
     renderRoleSection = () => {
         const { values, touched, errors, setFieldValue, handleChange, settings, relatedCustomers, feedbackSubjectTemplates,
             onChangeCheckboxHasRelatedCustomer, onPasteCustomer, onVerifyRelatedCustomer, onDeleteCustomer,
-            onGetFeedbackSubjectTemplates ,handleChangeInput ,fieldInput
+            onGetFeedbackSubjectTemplates ,handleChangeInput ,fieldInput, extensionOptions
         } = this.props;
         const { roles, countries } = settings;
         return (
@@ -63,6 +64,25 @@ export default class FeedbackInfo extends PureComponent {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="extensionIds">
+                                {LangHelper.getResource('Station')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    dataSource={extensionOptions}
+                                    keyField='id' valueField='value'
+                                    hasAllOption={extensionOptions.length > 0}
+                                    isAllTextShown={extensionOptions.length > 0}
+                                    hasSearchBox isNAOption
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        setFieldValue('extensionIds', selectedItemsKey);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
                             <Form.Label column sm="4" md="4" htmlFor="rating">

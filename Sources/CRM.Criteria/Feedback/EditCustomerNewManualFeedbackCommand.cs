@@ -31,6 +31,8 @@
 
         public DateTime ResolutionDate { get; set; }
 
+        public DateTime FirstResponseTime { get; set; }
+
         [SpParam(SqlParamName = "CommunicationID")]
         public string CommunicationToolIds { get; set; }
 

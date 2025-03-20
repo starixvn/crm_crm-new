@@ -257,6 +257,7 @@ export class AppContainer extends Component {
             // feedback info
             feedbackDate: new Date(feedback.feedbackDate),
             resolutionDate: new Date(feedback.resolutionDate),
+            firstResponseTime: new Date(feedback.firstResponseTime),
             extensionIds: feedbackSettings.extensionIds.join(','),
             communicationToolIds: feedbackSettings.communicationToolIds.join(','),
             mainCategoryIds: feedbackSettings.mainCategoryIds.join(','),
@@ -286,7 +287,8 @@ export class AppContainer extends Component {
             customerNameInput: '',
             reviewNameInput: '',
             latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools),
-            rating: feedback.rating ? feedback.rating : 0
+            rating: feedback.rating ? feedback.rating : 0,
+            firstResponseTime: new Date(feedback.firstResponseTime),
         };
     };
 
@@ -522,6 +524,16 @@ export class AppContainer extends Component {
         if (moment(values.feedbackDate).isAfter(moment(values.resolutionDate))) {
             errors.feedbackDate = LangHelper.formatString(
                 LangHelper.getResource('FieldLessThanOrEqualTo'),
+                LangHelper.getResource('FeedbackDate'),
+                LangHelper.getResource('ResolutionTime'));
+        }
+
+        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionTime)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
+
+        if (isNotValidFirstRT) {
+            errors.firstResponseTime = LangHelper.formatString(
+                LangHelper.getResource('FieldBetween'),
+                LangHelper.getResource('FirstResponseTime'),
                 LangHelper.getResource('FeedbackDate'),
                 LangHelper.getResource('ResolutionTime'));
         }
@@ -868,6 +880,7 @@ export class AppContainer extends Component {
             // feedback info
             feedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
             resolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionDate),
+            firstResponseTime: DateTimeService.toLongDateTimeFormat(values.firstResponseTime),    
             extensionIds: this.getExtensionParams(values.extensionIds, this.state.settings.extensionNA),
             communicationToolIds: values.communicationToolIds,
             products: getProductParams(values.productIds.length > 0 ? values.productIds.split(',') : [],
@@ -953,6 +966,7 @@ export class AppContainer extends Component {
             // feedback info
             feedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
             resolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionDate),
+            firstResponseTime: DateTimeService.toLongDateTimeFormat(values.firstResponseTime),
             extensionIds: this.getExtensionParams(values.extensionIds, this.state.settings.extensionNA),
             communicationToolIds: values.communicationToolIds,
             products: getProductParams(values.productIds.length > 0 ? values.productIds.split(',') : [],

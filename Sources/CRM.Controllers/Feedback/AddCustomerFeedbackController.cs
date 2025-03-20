@@ -110,6 +110,7 @@
                     command.IP = ClientIP;
                     command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
                     command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+                    command.FirstResponseTime = commonService.ConvertToServerDateTime(command.FirstResponseTime);
                     command.IsCommunicationLog = false;
                     command.NewCommunicationTools = command.IsHeadline ? XMLNewHeadlineCommunicationTools(command) : XMLNewNormalCommunicationTools(command);
                     var result = await baseService.ExecuteNonQueryAsync(command);
