@@ -46,7 +46,7 @@
 
         public DateTime ResolutionDate { get; set; }
 
-        public DateTime FirstResponseTime { get; set; }
+        public DateTime? FirstResponseTime { get; set; }
 
         public string CommunicationID { get; set; }
 

@@ -203,7 +203,7 @@
             command.IP = ClientIP;
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-            command.FirstResponseTime = commonService.ConvertToServerDateTime(command.FeedbackDate);
+            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
             command.IsCommunicationLog = true;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
