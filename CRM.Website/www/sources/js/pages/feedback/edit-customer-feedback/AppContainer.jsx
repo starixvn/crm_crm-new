@@ -528,7 +528,7 @@ export class AppContainer extends Component {
                 LangHelper.getResource('ResolutionTime'));
         }
 
-        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionTime)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
+        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionDate)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
 
         if (isNotValidFirstRT) {
             errors.firstResponseTime = LangHelper.formatString(
