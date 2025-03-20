@@ -528,14 +528,16 @@ export class AppContainer extends Component {
                 LangHelper.getResource('ResolutionTime'));
         }
 
-        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionDate)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
+        if (values.firstResponseTime){
+            var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionDate)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
 
-        if (isNotValidFirstRT) {
-            errors.firstResponseTime = LangHelper.formatString(
-                LangHelper.getResource('FieldBetween'),
-                LangHelper.getResource('FirstResponseTime'),
-                LangHelper.getResource('FeedbackDate'),
-                LangHelper.getResource('ResolutionTime'));
+            if (isNotValidFirstRT) {
+                errors.firstResponseTime = LangHelper.formatString(
+                    LangHelper.getResource('FieldBetween'),
+                    LangHelper.getResource('FirstResponseTime'),
+                    LangHelper.getResource('FeedbackDate'),
+                    LangHelper.getResource('ResolutionTime'));
+            }
         }
 
         if (values.communicationToolIds.length === 0) {

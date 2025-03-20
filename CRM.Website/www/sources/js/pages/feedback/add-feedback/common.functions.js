@@ -23,14 +23,16 @@ export const validateFormik = (values, customerDetail, settings, state) => {
             LangHelper.getResource('ResolutionTime'));
     }
 
-    var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionTime)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
+    if (values.firstResponseTime) {
+        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionTime)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
 
-    if (customerDetail !== null && isNotValidFirstRT) {
-        errors.firstResponseTime = LangHelper.formatString(
-            LangHelper.getResource('FieldBetween'),
-            LangHelper.getResource('FirstResponseTime'),
-            LangHelper.getResource('FeedbackDate'),
-            LangHelper.getResource('ResolutionTime'));
+        if (customerDetail !== null && isNotValidFirstRT) {
+            errors.firstResponseTime = LangHelper.formatString(
+                LangHelper.getResource('FieldBetween'),
+                LangHelper.getResource('FirstResponseTime'),
+                LangHelper.getResource('FeedbackDate'),
+                LangHelper.getResource('ResolutionTime'));
+        }
     }
 
     if (values.communication.length === 0) {
