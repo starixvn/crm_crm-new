@@ -190,6 +190,7 @@ export default class Detail extends PureComponent {
                                         <DatePicker
                                             selected={values.firstResponseTime} timeInputLabel="Time:"
                                             dateFormat="MMM dd, yyyy hh:mm aa"
+                                            isInvalid={touched.firstResponseTime && errors.firstResponseTime}
                                             dropdownMode="select" showMonthDropdown useShortMonthInDropdown
                                             showYearDropdown showTimeInput
                                             onChange={value => handleChangeFirstResponseTime(value)}
