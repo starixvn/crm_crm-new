@@ -759,11 +759,11 @@ export class EditMultipleLogs extends Component {
     handleFirstResponseTime = value => this.formik.setFieldValue('firstResponseTime', value);
 
     renderMultipleLogs = (errors, values, handleChange, touched, setFieldValue) => {
-        const { settings, extensionOptions, communicationToolOptions, feedbackSubjectTemplates } = this.state;
+        const { settings, communicationToolOptions, feedbackSubjectTemplates } = this.state;
         const { isCheck } = this.state;
         const { responses, languages } = settings;
         const isNotCheckedAll = Object.values(isCheck).filter(value => !value).length > 0;
-        console.log('values.firstResponseTime', values.firstResponseTime);
+
         return (
             <div>
                 <div className="panel-group border-bottom-0">
@@ -825,7 +825,7 @@ export class EditMultipleLogs extends Component {
                                     name='firstResponseTime'
                                     onChange={this.handleChangeCheckbox}
                                     checked={values.firstResponseTime ? isCheck.firstResponseTime : false}
-                                    disabled={values.firstResponseTime ? !isCheck.firstResponseTime : true}
+                                    disabled={values.firstResponseTime ? false : true}
                                 />
                             </Col>
                         </Form.Group>
@@ -948,7 +948,6 @@ export class EditMultipleLogs extends Component {
         handleSubmit,
         isSubmitting
     }) => {
-        console.log('values', values);
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -1079,7 +1078,6 @@ export class EditMultipleLogs extends Component {
         const communicationSettings = this.getCommunicationSettings(communicationLog, settings);
         const usernames = this.state.feedbackArr.map(x => x.username).join(', ');
         const init = getInitFormik(communicationLog, communicationSettings, usernames);
-        console.log('init', init);
         return init;
     };
 
