@@ -12,6 +12,7 @@
         public DateTime FeedbackDate { get; set; }
         public DateTime ResolutionDate { get; set; }
         public DateTime SolveDate { get; set; }
+        public DateTime? FirstResponseTime { get; set; }
 
         public BaseModel Extension { get; set; }
         public BaseModel Communication { get; set; }

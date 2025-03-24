@@ -23,6 +23,18 @@ export const validateFormik = (values, customerDetail, settings, state) => {
             LangHelper.getResource('ResolutionTime'));
     }
 
+    if (values.firstResponseTime) {
+        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionTime)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
+
+        if (customerDetail !== null && isNotValidFirstRT) {
+            errors.firstResponseTime = LangHelper.formatString(
+                LangHelper.getResource('FieldBetween'),
+                LangHelper.getResource('FirstResponseTime'),
+                LangHelper.getResource('FeedbackDate'),
+                LangHelper.getResource('ResolutionTime'));
+        }
+    }
+
     if (values.communication.length === 0) {
         errors.communication = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Communication'));
     }
@@ -141,11 +153,13 @@ export const initValues = (settings, customerInfo) =>{
     const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
+    const firstResponseTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
 
     const initialValues = {
         identityInformation: '',
         feedbackDate: feedbackDate,
         resolutionTime: resolutionTime,
+        firstResponseTime: firstResponseTime,
         communication: '',
         category: '',
         subCategory: '',
@@ -229,10 +243,12 @@ export const initValuesAddCustomerFb = (settings, customerDetail, customerInfo) 
     const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
+    const firstResponseTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
 
     const initialValues = {
         feedbackDate: feedbackDate,
         resolutionTime: resolutionTime,
+        firstResponseTime: firstResponseTime,
         communication: '',
         category: '',
         subCategory: '',
@@ -339,6 +355,7 @@ export const getParams = (values, customerDetail, settings, state) =>{
         LicenseeType: parseInt(customerInfo.licenseeType, 10),
         FeedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
         ResolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionTime),
+        FirstResponseTime: DateTimeService.toLongDateTimeFormat(values.firstResponseTime),
         CommunicationID: values.communication,
         Products: getProductParams(values.product.length > 0 ? values.product.split(',') : [],
             values.subProduct.length > 0 ? values.subProduct.split(',') : [],

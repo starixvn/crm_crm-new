@@ -171,6 +171,10 @@ export class CreateForm extends Component {
         this.formik.setFieldValue('resolutionTime', resolutionTime);
     };
 
+    handleChangeFirstResponseTime = (firstResponseTime) => {
+        this.formik.setFieldValue('firstResponseTime', firstResponseTime);
+    };
+
     handleCommunicationChange = (currentItem, selectedItemsKey, setFieldValue) => {
         setFieldValue('communication', selectedItemsKey);
         const { communicationTools } = this.props.settings;
@@ -559,8 +563,8 @@ export class CreateForm extends Component {
                 <Collapse in={!collapse.isShowDetailsOption}>
                     <div className={`panel-group ${BorderStyle.bottom}`} id="collapse-expand-show-detail">
                         <Detail
-                            settings={this.props.settings} customerDetail={customerDetail} handleChange={handleChange}
-                            values={values} errors={errors} touched={touched} setFieldValue={setFieldValue} handleChangeFeedbackTime={this.handleChangeFeedbackTime}
+                            settings={this.props.settings} customerDetail={customerDetail} handleChange={handleChange} values={values} errors={errors} touched={touched}
+                            setFieldValue={setFieldValue} handleChangeFeedbackTime={this.handleChangeFeedbackTime} handleChangeFirstResponseTime={this.handleChangeFirstResponseTime}
                             handleChangeResolutionTime={this.handleChangeResolutionTime} handleCommunicationChange={this.handleCommunicationChange}
                             subCategoriesOptions={this.state.subCategoriesOptions} subProductOptions={this.state.subProductOptions}
                             betTypeOptions={this.state.betTypeOptions} renderOptions={this.renderOptions} mainCategoriesHandleChange={this.mainCategoriesHandleChange}

@@ -92,6 +92,7 @@
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
+                feedback.FirstResponseTime = feedback.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(feedback.FirstResponseTime.Value) : null;
                 feedback.RelatedCustomers = customerFeedbackModel.RelatedCustomerPermission.OrderBy(x => x.Username);
                 feedback.Settings = customerFeedbackModel.FeedbackSettingRelation.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
                 feedback.LatestFeedbackCommunicationTools = customerFeedbackModel.FeedbackCommunicationTool;
@@ -271,6 +272,7 @@
         {
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
@@ -278,6 +280,7 @@
         {
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
