@@ -25,6 +25,8 @@
         [SpParam(SqlParamName = "resolutiondate")]
         public DateTime EndTime { get; set; }
 
+        public DateTime? FirstResponseTime { get; set; }
+
         [SpParam(SqlParamName = "stationid")]
         public string ExtensionIds { get; set; }
 

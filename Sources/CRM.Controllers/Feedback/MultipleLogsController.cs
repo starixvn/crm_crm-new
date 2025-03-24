@@ -54,6 +54,7 @@
             command.IP = ClientIP;
             command.StartTime = commonService.ConvertToServerDateTime(command.StartTime);
             command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
+            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }
