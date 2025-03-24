@@ -10,7 +10,7 @@ import { changeSiteSetting } from '@jsroot/common/shareScripts';
 export default class DropdownDetail extends PureComponent {
     renderCreateCommunication = () => {
         const { values, touched, errors, handleChange, setFieldValue, onChangeStartTime, onChangeEndTime,
-            handleChangeCommunicationTool, communicationTools, extensions } = this.props;
+            handleChangeCommunicationTool, communicationTools, onChangeFirstResponseTime } = this.props;
         const { languages, responses } = this.props.allSettings;
         return (
             <div>
@@ -34,6 +34,23 @@ export default class DropdownDetail extends PureComponent {
                     </Col>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="firstResponseTime">{LangHelper.getResource('FirstResponseTime')}</Form.Label>
+                            <Col sm="8" md="8" className={`react-datepicker-wrapper-container form-control-wrapper ${!values.firstResponseTime ? 'disable-field' : ''}`}>
+                                <DatePicker isInvalid={touched.firstResponseTime && errors.firstResponseTime}
+                                    timeInputLabel="Time:"
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    useShortMonthInDropdown
+                                    showYearDropdown
+                                    showTimeInput
+                                    selected={values.firstResponseTime}
+                                    onChange={value => onChangeFirstResponseTime(value)}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    {/* <Col sm="6" md="6">
+                        <Form.Group as={Row}>
                             <Form.Label column sm="4" md="4" htmlFor="ext">Ext</Form.Label>
                             <Col sm="8" md="8">
                                 <MultipleSelect
@@ -48,7 +65,7 @@ export default class DropdownDetail extends PureComponent {
                                 />
                             </Col>
                         </Form.Group>
-                    </Col>
+                    </Col> */}
                 </Form.Group>
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">

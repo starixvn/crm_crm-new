@@ -17,6 +17,18 @@ export const validateFormik = (values, contents, verifySection, settings) => {
             LangHelper.getResource('StartTime'),LangHelper.getResource('EndTime'));
     }
 
+    if (values.firstResponseTime) {
+        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.endTime)) || moment(values.firstResponseTime).isBefore(moment(values.startTime));
+
+        if (isNotValidFirstRT) {
+            errors.firstResponseTime = LangHelper.formatString(
+                LangHelper.getResource('FieldBetween'),
+                LangHelper.getResource('FirstResponseTime'),
+                LangHelper.getResource('StartTime'),
+                LangHelper.getResource('EndTime'));
+        }
+    }
+
     if (values.communicationToolIds.length === 0) {
         errors.communicationToolIds = LangHelper.formatString( LangHelper.getResource('FieldRequired'),
             LangHelper.getResource('CommunicationTool'));
