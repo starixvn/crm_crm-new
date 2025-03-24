@@ -26,7 +26,7 @@ export const validateFormik = (values, customerDetail, settings, state) => {
     if (values.firstResponseTime) {
         var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionTime)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
 
-        if (customerDetail !== null && isNotValidFirstRT) {
+        if (isNotValidFirstRT) {
             errors.firstResponseTime = LangHelper.formatString(
                 LangHelper.getResource('FieldBetween'),
                 LangHelper.getResource('FirstResponseTime'),

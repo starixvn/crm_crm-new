@@ -103,6 +103,7 @@
             command.IP = ClientIP;
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
             var result = await baseService.ExecuteNonQueryAsync(command);
             return Json(result);
         }

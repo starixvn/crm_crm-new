@@ -179,27 +179,22 @@ export default class Detail extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
-                    {
-                        customerDetail !== null &&
-                        (
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="firstResponseTime">{LangHelper.getResource('FirstResponseTime')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
-                                        <DatePicker
-                                            selected={values.firstResponseTime} timeInputLabel="Time:"
-                                            dateFormat="MMM dd, yyyy hh:mm aa"
-                                            isInvalid={touched.firstResponseTime && errors.firstResponseTime}
-                                            dropdownMode="select" showMonthDropdown useShortMonthInDropdown
-                                            showYearDropdown showTimeInput
-                                            onChange={value => handleChangeFirstResponseTime(value)}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="firstResponseTime">{LangHelper.getResource('FirstResponseTime')}
+                            </Form.Label>
+                            <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
+                                <DatePicker
+                                    selected={values.firstResponseTime} timeInputLabel="Time:"
+                                    dateFormat="MMM dd, yyyy hh:mm aa"
+                                    isInvalid={touched.firstResponseTime && errors.firstResponseTime}
+                                    dropdownMode="select" showMonthDropdown useShortMonthInDropdown
+                                    showYearDropdown showTimeInput
+                                    onChange={value => handleChangeFirstResponseTime(value)}
+                                />
                             </Col>
-                        )
-                    }
+                        </Form.Group>
+                    </Col>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
                             <Form.Label column sm="4" md="4" htmlFor="resolutionTime">{LangHelper.getResource('ResolutionTime')}
@@ -215,28 +210,6 @@ export default class Detail extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
-                    {
-                        customerDetail === null &&
-                        (
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="extension">
-                                        {LangHelper.getResource('Station')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.extension && errors.extension}
-                                            dataSource={extensions} hasSearchBox isNAOption
-                                            keyField='id' valueField='value' isAllTextShown
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                setFieldValue('extension', selectedItemsKey);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        )
-                    }
                 </Form.Group>
                 {this.renderDetailDropdown()}
                 <Form.Group as={Row}>
@@ -324,28 +297,23 @@ export default class Detail extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
-                    {
-                        customerDetail !== null &&
-                        (
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="extension">
-                                        {LangHelper.getResource('Station')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.extension && errors.extension}
-                                            dataSource={extensions} hasSearchBox isNAOption
-                                            keyField='id' valueField='value' isAllTextShown
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                setFieldValue('extension', selectedItemsKey);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="extension">
+                                {LangHelper.getResource('Station')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    isInvalid={touched.extension && errors.extension}
+                                    dataSource={extensions} hasSearchBox isNAOption
+                                    keyField='id' valueField='value' isAllTextShown
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        setFieldValue('extension', selectedItemsKey);
+                                    }}
+                                />
                             </Col>
-                        )
-                    }
+                        </Form.Group>
+                    </Col>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
                             <Form.Label column sm="4" md="4" htmlFor="rating">{LangHelper.getResource('Rating')}</Form.Label>
