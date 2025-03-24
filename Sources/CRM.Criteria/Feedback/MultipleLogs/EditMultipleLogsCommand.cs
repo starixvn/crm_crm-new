@@ -40,6 +40,10 @@
 
         public bool IsUpdateResolutionDate { get; set; }
 
+        public DateTime? FirstResponseTime { get; set; }
+
+        public bool IsUpdateFirstResponseTime { get; set; }
+
         public string CommunicationId { get; set; }
 
         public bool IsUpdateCommunicationId { get; set; }
