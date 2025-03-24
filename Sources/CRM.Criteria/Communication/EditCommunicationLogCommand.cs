@@ -28,6 +28,8 @@
         [SpParam(SqlParamName = "ResolutionDate")]
         public DateTime EndTime { get; set; }
 
+        public DateTime? FirstResponseTime { get; set; }
+
         [SpParam(SqlParamName = "CommunicationId")]
         public string CommunicationToolIds { get; set; }
 

@@ -40,6 +40,8 @@
 
         public DateTime ResolutionDate { get; set; }
 
+        public DateTime? FirstResponseTime { get; set; }
+
         public string Handler { get; set; }
 
         public string Reviewer { get; set; }

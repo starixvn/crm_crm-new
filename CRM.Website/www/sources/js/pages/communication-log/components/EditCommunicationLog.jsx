@@ -197,6 +197,7 @@ export class EditCommunicationLog extends Component {
             customerNameInput: '',
             startTime: new Date(log.feedbackDate),
             endTime: new Date(log.resolutionDate),
+            firstResponseTime: log.firstResponseTime ? new Date(log.firstResponseTime) : null,
             extensionIds: logSettings.extensionIds.join(','),
             communicationToolIds: isExistCommunication ? communicationJoins : '',
             mainCategoryIds: logSettings.mainCategoryIds.join(','),
@@ -259,6 +260,7 @@ export class EditCommunicationLog extends Component {
             customerId: values.customerId,
             startTime: DateTimeService.toLongDateTimeFormat(values.startTime),
             endTime: DateTimeService.toLongDateTimeFormat(values.endTime),
+            firstResponseTime: values.firstResponseTime ? DateTimeService.toLongDateTimeFormat(values.firstResponseTime) : null,
             extensionIds: values.extensionIds !== '' ? values.extensionIds : settings.extensionNA.id,
             communicationToolIds: values.communicationToolIds,
             products: getProductParams(productIds.length > 0 ? productIds : [],
@@ -492,6 +494,10 @@ export class EditCommunicationLog extends Component {
         this.formik.setFieldValue('endTime', selectedTime);
     };
 
+    onChangeFirstResponseTime = selectedTime => {
+        this.formik.setFieldValue('firstResponseTime', selectedTime);
+    }
+
     handlePasteCustomer = (event, data) => {
         const customer = data?.trim();
         const item = (event.clipboardData || window.clipboardData).getData('text')
@@ -548,14 +554,14 @@ export class EditCommunicationLog extends Component {
                                 allSettings={settings} {...{ values, errors, touched, setFieldValue, handleChange }}
                                 handleChangeSubProduct={handleChangeSubProduct} setStateSubProduct={this.setStateSubProduct} setStateBetType={this.setStateBetType}
                                 onChangeStartTime={this.onChangeStartTime} onChangeEndTime={this.onChangeEndTime} handleChangeMainCategory={this.handleChangeMainCategory}
-                                handleChangeProduct={handleChangeProduct} handleChangeCommunicationTool={this.handleChangeCommunicationTool}
+                                handleChangeProduct={handleChangeProduct} handleChangeCommunicationTool={this.handleChangeCommunicationTool} onChangeFirstResponseTime={this.onChangeFirstResponseTime}
                                 extensions={extensionOptions} communicationTools={communicationToolOptions} mainCategories={mainCategoryOptions} subCategories={subCategoryOptions}
                                 products={productOptions} subProducts={subProductOptions} betTypes={betTypeOptions}
                             />
                             <VerifySection
                                 handleVerifyCreateRelatedCustomer={this.handleVerifyRelatedCustomer} relatedCustomers={relatedCustomers}
                                 deleteVerifyCreateCustomer={this.deleteVerifyEditCustomer} handlePasteCustomer={this.handlePasteCustomer}
-                                handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection}
+                                handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection} extensions={extensionOptions}
                                 feedbackSubjectTemplates={this.state.feedbackSubjectTemplates} handleGetFeedbackSubjectTemplates={this.handleGetFeedbackSubjectTemplates}
                                 isValidSubject={touched.subject && errors.subject} isValidCustomerInput={touched.customerNameInput && errors.customerNameInput}
                             />
