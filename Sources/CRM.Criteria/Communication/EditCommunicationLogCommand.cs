@@ -28,6 +28,7 @@
         [SpParam(SqlParamName = "ResolutionDate")]
         public DateTime EndTime { get; set; }
 
+        [SpParam(AllowNull = true)]
         public DateTime? FirstResponseTime { get; set; }
 
         [SpParam(SqlParamName = "CommunicationId")]

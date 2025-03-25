@@ -37,6 +37,7 @@
 
         public DateTime ResolutionDate { get; set; }
 
+        [SpParam(AllowNull = true)]
         public DateTime? FirstResponseTime { get; set; }
 
         public string CommunicationID { get; set; }
