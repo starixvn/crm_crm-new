@@ -243,7 +243,7 @@ export class DataGridCommunication extends Component {
                 <Cell>{item.subject}</Cell>
                 <Cell className='text-center'>{item.status}</Cell>
                 <Cell className='text-center'>
-                    {item.duration.replace(/\s+/g, '')}
+                    {item.duration?.replace(/\s+/g, '')}
                 </Cell>
                 <Cell className='text-left'>{item.handler}</Cell>
                 <Cell className='text-left'>{item.reviewer}</Cell>
