@@ -140,10 +140,10 @@ export class CreateCommunicationLog extends Component {
         const { options, customerInfo } = this.props;
         const { allSettings } = this.state;
         const date = new Date();
-        const startTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
-        const endTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
+        const startTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(date)));
+        const endTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(date)));
         endTime.setMinutes(endTime.getMinutes() + 1);
-        const firstResponseTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
+        const firstResponseTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(date)));
         const initTools = this.getInitDataTool(options, allSettings);
         const initSite = this.getInitDataSite(options);
 
