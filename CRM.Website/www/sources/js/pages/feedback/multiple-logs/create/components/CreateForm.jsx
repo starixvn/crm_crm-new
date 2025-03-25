@@ -217,7 +217,7 @@ export class CreateForm extends Component {
     };
 
     handleChangeFirstResponseTime = endTime => {
-        this.formik.setFieldValue('endTime', endTime);
+        this.formik.setFieldValue('firstResponseTime', endTime);
     };
 
     handleChangeCommunicationTool = (setFieldValue, currentItem, selectedItemsKey) => {
