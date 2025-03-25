@@ -681,6 +681,7 @@ export class CreateCommunicationLog extends Component {
                                 subCategories={subCategories} subProducts={subProducts} betTypes={betTypes} extensions={allSettings.extensions}
                             />
                             <VerifySection
+                                {...{ values, errors, touched, setFieldValue, handleChange }}
                                 handleVerifyCreateRelatedCustomer={this.handleVerifyCreateRelatedCustomer} relatedCustomers={relatedCustomers}
                                 deleteVerifyCreateCustomer={this.deleteVerifyCreateCustomer} balanceUpday={balanceUpday} handlePasteCustomer={this.handlePasteCustomer}
                                 onPasteRefTicketHandler={this.onPasteRefTicketHandler} handleChangeRefTicket={this.handleChangeRefTicket}

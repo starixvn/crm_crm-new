@@ -559,6 +559,7 @@ export class EditCommunicationLog extends Component {
                                 products={productOptions} subProducts={subProductOptions} betTypes={betTypeOptions}
                             />
                             <VerifySection
+                                {...{ values, errors, touched, setFieldValue, handleChange }}
                                 handleVerifyCreateRelatedCustomer={this.handleVerifyRelatedCustomer} relatedCustomers={relatedCustomers}
                                 deleteVerifyCreateCustomer={this.deleteVerifyEditCustomer} handlePasteCustomer={this.handlePasteCustomer}
                                 handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection} extensions={extensionOptions}

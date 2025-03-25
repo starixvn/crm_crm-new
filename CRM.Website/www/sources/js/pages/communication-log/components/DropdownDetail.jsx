@@ -49,23 +49,6 @@ export default class DropdownDetail extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
-                    {/* <Col sm="6" md="6">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="ext">Ext</Form.Label>
-                            <Col sm="8" md="8">
-                                <MultipleSelect
-                                    keyField='id' valueField='value'
-                                    hasSearchBox isNAOption
-                                    dataSource={extensions}
-                                    hasAllOption={extensions.length > 0}
-                                    isAllTextShown={extensions.length > 0}
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        setFieldValue('extensionIds', selectedItemsKey);
-                                    }}
-                                />
-                            </Col>
-                        </Form.Group>
-                    </Col> */}
                 </Form.Group>
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">

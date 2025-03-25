@@ -19,7 +19,7 @@ export default class VerifySection extends PureComponent {
     }
     
     render() {
-    const { handleVerifyCreateRelatedCustomer, relatedCustomers, deleteVerifyCreateCustomer, balanceUpday, extensions,
+    const { handleVerifyCreateRelatedCustomer, relatedCustomers, deleteVerifyCreateCustomer, balanceUpday, extensions, setFieldValue,
         handleChangeRefTicket, handleClickFillEvent, feedbackSubjectTemplates, verifySection, onPasteRefTicketHandler,
         handlePasteCustomer, handleChangeVerifySection, isValidSubject, isValidCustomerInput, handleGetFeedbackSubjectTemplates } = this.props;
 

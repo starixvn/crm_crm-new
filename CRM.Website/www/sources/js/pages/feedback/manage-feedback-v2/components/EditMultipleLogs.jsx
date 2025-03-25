@@ -660,7 +660,7 @@ export class EditMultipleLogs extends Component {
         );
     };
 
-    renderSelectOptions = (values, handleChange) => {
+    renderSelectOptions = (values, handleChange, setFieldValue) => {
         const { licenseeTypes } = this.state.settings;
         const { isCheck, extensionOptions } = this.state;
         return (
@@ -908,7 +908,7 @@ export class EditMultipleLogs extends Component {
                             </Col>
                         </Form.Group>
                         {this.renderDropdownDetail(errors, values, handleChange, touched, setFieldValue)}
-                        {this.renderSelectOptions(values, handleChange)}
+                        {this.renderSelectOptions(values, handleChange, setFieldValue)}
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" htmlFor="subject" className="required">
                                 {LangHelper.getResource('Subject')}
