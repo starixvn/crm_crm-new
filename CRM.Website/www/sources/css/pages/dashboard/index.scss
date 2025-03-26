@@ -276,4 +276,10 @@
             }
         }
     }
+
+    .disable-field {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: .7;
+    }
 }
