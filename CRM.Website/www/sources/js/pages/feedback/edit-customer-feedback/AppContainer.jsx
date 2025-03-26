@@ -255,9 +255,9 @@ export class AppContainer extends Component {
             isVIP: feedback.isVIP,
             custType: feedback.customerType,
             // feedback info
-            feedbackDate: new Date(feedback.feedbackDate),
-            resolutionDate: new Date(feedback.resolutionDate),
-            firstResponseTime: feedback.firstResponseTime ? new Date(feedback.firstResponseTime) : null,
+            feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(feedback.feedbackDate)),
+            resolutionDate: new Date(DateTimeService.toShortDateTimeFormat(feedback.resolutionDate)),
+            firstResponseTime: feedback.firstResponseTime ? new Date(DateTimeService.toShortDateTimeFormat(feedback.firstResponseTime)) : null,
             extensionIds: feedbackSettings.extensionIds.join(','),
             communicationToolIds: feedbackSettings.communicationToolIds.join(','),
             mainCategoryIds: feedbackSettings.mainCategoryIds.join(','),
@@ -288,7 +288,6 @@ export class AppContainer extends Component {
             reviewNameInput: '',
             latestFeedbackCommunicationTools: this.getLatestFeedbackCommunicationTools(feedback.latestFeedbackCommunicationTools),
             rating: feedback.rating ? feedback.rating : 0,
-            firstResponseTime: feedback.firstResponseTime ? new Date(feedback.firstResponseTime) : null,
         };
     };
 
@@ -880,9 +879,9 @@ export class AppContainer extends Component {
             refCode2: fieldInput.refCode2,
             licenseeTypeId: fieldInput.licenseeTypeId,
             // feedback info
-            feedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
-            resolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionDate),
-            firstResponseTime: values.firstResponseTime ? DateTimeService.toLongDateTimeFormat(values.firstResponseTime) : null,    
+            feedbackDate: DateTimeService.toShortDateTimeFormat(values.feedbackDate),
+            resolutionDate: DateTimeService.toShortDateTimeFormat(values.resolutionDate),
+            firstResponseTime: values.firstResponseTime ? DateTimeService.toShortDateTimeFormat(values.firstResponseTime) : null,    
             extensionIds: this.getExtensionParams(values.extensionIds, this.state.settings.extensionNA),
             communicationToolIds: values.communicationToolIds,
             products: getProductParams(values.productIds.length > 0 ? values.productIds.split(',') : [],
@@ -966,9 +965,9 @@ export class AppContainer extends Component {
             BBM: fieldInput.zalo,
             isVIP: fieldInput.isVIP,
             // feedback info
-            feedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
-            resolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionDate),
-            firstResponseTime: values.firstResponseTime ? DateTimeService.toLongDateTimeFormat(values.firstResponseTime) : null,
+            feedbackDate: DateTimeService.toShortDateTimeFormat(values.feedbackDate),
+            resolutionDate: DateTimeService.toShortDateTimeFormat(values.resolutionDate),
+            firstResponseTime: values.firstResponseTime ? DateTimeService.toShortDateTimeFormat(values.firstResponseTime) : null,
             extensionIds: this.getExtensionParams(values.extensionIds, this.state.settings.extensionNA),
             communicationToolIds: values.communicationToolIds,
             products: getProductParams(values.productIds.length > 0 ? values.productIds.split(',') : [],
