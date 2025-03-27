@@ -62,6 +62,7 @@
                 communicationLog = communicationLogInfos.First();
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
                 communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
+                communicationLog.FirstResponseTime = communicationLog.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(communicationLog.FirstResponseTime.Value) : null;
                 communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
                 communicationLog.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
                 communicationLog.Settings = settingItems.ToList();

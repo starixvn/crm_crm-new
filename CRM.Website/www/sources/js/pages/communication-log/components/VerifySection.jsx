@@ -5,6 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import VerifyCustomer from '@jsroot/components/VerifyCustomer';
 import { validateNoOfInquiry, ratings } from '../../feedback/common.functions';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 
 export default class VerifySection extends PureComponent {
     validateRefInput = event =>{
@@ -18,7 +19,7 @@ export default class VerifySection extends PureComponent {
     }
     
     render() {
-    const { handleVerifyCreateRelatedCustomer, relatedCustomers, deleteVerifyCreateCustomer, balanceUpday,
+    const { handleVerifyCreateRelatedCustomer, relatedCustomers, deleteVerifyCreateCustomer, balanceUpday, extensions, setFieldValue,
         handleChangeRefTicket, handleClickFillEvent, feedbackSubjectTemplates, verifySection, onPasteRefTicketHandler,
         handlePasteCustomer, handleChangeVerifySection, isValidSubject, isValidCustomerInput, handleGetFeedbackSubjectTemplates } = this.props;
 
@@ -36,6 +37,25 @@ export default class VerifySection extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
+                    <Col sm="6" md="6">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="ext">Ext</Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    keyField='id' valueField='value'
+                                    hasSearchBox isNAOption
+                                    dataSource={extensions}
+                                    hasAllOption={extensions.length > 0}
+                                    isAllTextShown={extensions.length > 0}
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        setFieldValue('extensionIds', selectedItemsKey);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
                             <Form.Label column sm="4" md="4" htmlFor="rating">{LangHelper.getResource('Rating')}</Form.Label>

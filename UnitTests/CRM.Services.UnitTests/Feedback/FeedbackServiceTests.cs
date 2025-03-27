@@ -78,7 +78,8 @@
                 new CustomerFeedback
                 {
                     FeedbackId = 1, SiteId = 1, FeedbackDate = date,
-                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                    ResolutionDate = date, SolveDate = date, CreateDate = date,
+                    FirstResponseTime = date
                 }
             };
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
@@ -130,7 +131,8 @@
                 new CustomerFeedback
                 {
                     FeedbackId = 1, SiteId = 1, FeedbackDate = date,
-                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                    ResolutionDate = date, SolveDate = date, CreateDate = date,
+                    FirstResponseTime = date
                 }
             };
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
@@ -384,7 +386,8 @@
                 new CommunicationLog
                 {
                     FeedbackDate = date,
-                    ResolutionDate = date, SolveDate = date
+                    ResolutionDate = date, SolveDate = date,
+                    FirstResponseTime = date
                 }
             };
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();

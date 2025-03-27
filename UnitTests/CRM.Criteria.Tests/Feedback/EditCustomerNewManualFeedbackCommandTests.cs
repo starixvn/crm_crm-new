@@ -68,6 +68,7 @@
                 Birthday = new DateTime(),
                 FeedbackDate = new DateTime(),
                 ResolutionDate = new DateTime(),
+                FirstResponseTime = new DateTime(),
                 LanguageID = 1,
                 ExtensionIds = "1",
                 RoleID = 1,

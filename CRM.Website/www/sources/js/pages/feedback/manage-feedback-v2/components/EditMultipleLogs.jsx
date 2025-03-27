@@ -58,6 +58,7 @@ export class EditMultipleLogs extends Component {
             isCheck: {
                 startTime: false,
                 endTime: false,
+                firstResponseTime: false,
                 ext: false,
                 response: false,
                 communication: false,
@@ -295,6 +296,7 @@ export class EditMultipleLogs extends Component {
                 ... this.state.isCheck,
                 startTime: isChecked,
                 endTime: isChecked,
+                firstResponseTime: this.formik.values.firstResponseTime ? isChecked : false,
                 ext: isChecked,
                 response: isChecked,
                 communication: isChecked,
@@ -658,9 +660,9 @@ export class EditMultipleLogs extends Component {
         );
     };
 
-    renderSelectOptions = (values, handleChange) => {
+    renderSelectOptions = (values, handleChange, setFieldValue) => {
         const { licenseeTypes } = this.state.settings;
-        const { isCheck } = this.state;
+        const { isCheck, extensionOptions } = this.state;
         return (
             <div>
                 <Form.Group as={Row}>
@@ -697,6 +699,28 @@ export class EditMultipleLogs extends Component {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2" htmlFor="extensionIds">
+                        {LangHelper.getResource('Ext')}
+                    </Form.Label>
+                    <Col sm="4" md="4" className="d-flex">
+                        <div className={`pr-2 ${this.isDisabledField(isCheck.ext)}`}>
+                            <MultipleSelect
+                                hasAllOption={extensionOptions.length > 0}
+                                isAllTextShown={extensionOptions.length > 0}
+                                dataSource={extensionOptions}
+                                keyField='id' valueField='value'
+                                hasSearchBox isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    setFieldValue('extensionIds', selectedItemsKey);
+                                }}
+                            />
+                        </div>
+                        <input type='checkbox'
+                            name='ext'
+                            onChange={this.handleChangeCheckbox}
+                            checked={isCheck.ext}
+                        />
+                    </Col>
                     <Form.Label column sm="2" md="2" htmlFor="rating">
                         {LangHelper.getResource('Rating')}
                     </Form.Label>
@@ -725,15 +749,21 @@ export class EditMultipleLogs extends Component {
         return '';
     };
 
+    isDisabledFirstResponse = (firstResponseTime, checked) => 
+        firstResponseTime === null || (firstResponseTime && !checked) ? 'disabled-filed' : '';
+
     handleStartTime = value => this.formik.setFieldValue('startTime', value);
 
     handleEndTime = value => this.formik.setFieldValue('endTime', value);
 
+    handleFirstResponseTime = value => this.formik.setFieldValue('firstResponseTime', value);
+
     renderMultipleLogs = (errors, values, handleChange, touched, setFieldValue) => {
-        const { settings, extensionOptions, communicationToolOptions, feedbackSubjectTemplates } = this.state;
+        const { settings, communicationToolOptions, feedbackSubjectTemplates } = this.state;
         const { isCheck } = this.state;
         const { responses, languages } = settings;
         const isNotCheckedAll = Object.values(isCheck).filter(value => !value).length > 0;
+
         return (
             <div>
                 <div className="panel-group border-bottom-0">
@@ -780,26 +810,22 @@ export class EditMultipleLogs extends Component {
                                     checked={isCheck.startTime}
                                 />
                             </Col>
-                            <Form.Label column sm="2" md="2" htmlFor="extensionIds">
-                                {LangHelper.getResource('Ext')}
+                            <Form.Label column sm="2" md="2" htmlFor="firstResponseTime">
+                                {LangHelper.getResource('FirstResponseTime')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${this.isDisabledField(isCheck.ext)}`}>
-                                    <MultipleSelect
-                                        hasAllOption={extensionOptions.length > 0}
-                                        isAllTextShown={extensionOptions.length > 0}
-                                        dataSource={extensionOptions}
-                                        keyField='id' valueField='value'
-                                        hasSearchBox isNAOption
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            setFieldValue('extensionIds', selectedItemsKey);
-                                        }}
+                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${this.isDisabledFirstResponse(values.firstResponseTime, isCheck.firstResponseTime)}`}>
+                                    <DatePicker timeInputLabel="Time:" showTimeInput isInvalid={touched.firstResponseTime && errors.firstResponseTime}
+                                        selected={values.firstResponseTime} useShortMonthInDropdown
+                                        peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                        onChange={value => this.handleFirstResponseTime(value)}
                                     />
                                 </div>
                                 <input type='checkbox'
-                                    name='ext'
+                                    name='firstResponseTime'
                                     onChange={this.handleChangeCheckbox}
-                                    checked={isCheck.ext}
+                                    checked={values.firstResponseTime ? isCheck.firstResponseTime : false}
+                                    disabled={values.firstResponseTime ? false : true}
                                 />
                             </Col>
                         </Form.Group>
@@ -882,7 +908,7 @@ export class EditMultipleLogs extends Component {
                             </Col>
                         </Form.Group>
                         {this.renderDropdownDetail(errors, values, handleChange, touched, setFieldValue)}
-                        {this.renderSelectOptions(values, handleChange)}
+                        {this.renderSelectOptions(values, handleChange, setFieldValue)}
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" htmlFor="subject" className="required">
                                 {LangHelper.getResource('Subject')}
@@ -966,6 +992,8 @@ export class EditMultipleLogs extends Component {
             isUpdateFeedbackDate: isCheck.startTime,
             resolutionDate: DateTimeService.toLongDateTimeFormat(values.endTime),
             isUpdateResolutionDate: isCheck.endTime,
+            firstResponseTime: values.firstResponseTime ? DateTimeService.toLongDateTimeFormat(values.firstResponseTime) : null,
+            isUpdateFirstResponseTime: values.firstResponseTime ? isCheck.firstResponseTime : false,
             stationId: this.getExtensionParams(values.extensionIds, this.state.settings.extensionNA),
             isUpdateStationId: isCheck.ext,
             roleId: values.roleId,

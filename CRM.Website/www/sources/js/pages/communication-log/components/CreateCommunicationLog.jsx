@@ -140,9 +140,10 @@ export class CreateCommunicationLog extends Component {
         const { options, customerInfo } = this.props;
         const { allSettings } = this.state;
         const date = new Date();
-        const startTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
-        const endTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
+        const startTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(date)));
+        const endTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(date)));
         endTime.setMinutes(endTime.getMinutes() + 1);
+        const firstResponseTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(date)));
         const initTools = this.getInitDataTool(options, allSettings);
         const initSite = this.getInitDataSite(options);
 
@@ -153,6 +154,7 @@ export class CreateCommunicationLog extends Component {
             subject: '',
             startTime,
             endTime,
+            firstResponseTime,
             statusId: options ? options.statusId : allSettings.statuses[0].statusId,
             roleId: options ? options.roleId : customerInfo.roleId,
             licenseeTypeId: options ? options.licenseeTypeId : customerInfo.licenseeType,
@@ -231,6 +233,10 @@ export class CreateCommunicationLog extends Component {
 
     onChangeEndTime = selectedTime => {
         this.formik.setFieldValue('endTime', selectedTime);
+    };
+
+    onChangeFirstResponseTime = selectedTime => {
+        this.formik.setFieldValue('firstResponseTime', selectedTime);
     };
 
     updateTimeAndToolPrefix = () => {
@@ -417,6 +423,7 @@ export class CreateCommunicationLog extends Component {
             LicenseeType: values.licenseeTypeId,
             FeedbackDate: DateTimeService.toLongDateTimeFormat(values.startTime),
             ResolutionDate: DateTimeService.toLongDateTimeFormat(values.endTime),
+            FirstResponseTime: values.firstResponseTime ? DateTimeService.toLongDateTimeFormat(values.firstResponseTime) : null,
             CommunicationID: values.communicationToolIds,
             Products: getProductParams(productIds.length > 0 ? productIds : [],
                 values.subProductIds.length > 0 ? values.subProductIds.split(',') : [],
@@ -666,7 +673,7 @@ export class CreateCommunicationLog extends Component {
                         <div className="panel-content">
                             <DropdownDetail
                                 allSettings={allSettings} {...{ values, errors, touched, setFieldValue, handleChange }}
-                                onChangeStartTime={this.onChangeStartTime} onChangeEndTime={this.onChangeEndTime}
+                                onChangeStartTime={this.onChangeStartTime} onChangeEndTime={this.onChangeEndTime} onChangeFirstResponseTime={this.onChangeFirstResponseTime}
                                 setStateBetType={this.setStateBetType} setStateSubProduct={this.setStateSubProduct}
                                 handleChangeCommunicationTool={this.handleChangeCommunicationTool} handleChangeProduct={handleChangeProduct}
                                 handleChangeSubProduct={handleChangeSubProduct} handleChangeMainCategory={this.handleChangeMainCategory}
@@ -674,12 +681,13 @@ export class CreateCommunicationLog extends Component {
                                 subCategories={subCategories} subProducts={subProducts} betTypes={betTypes} extensions={allSettings.extensions}
                             />
                             <VerifySection
+                                {...{ values, errors, touched, setFieldValue, handleChange }}
                                 handleVerifyCreateRelatedCustomer={this.handleVerifyCreateRelatedCustomer} relatedCustomers={relatedCustomers}
                                 deleteVerifyCreateCustomer={this.deleteVerifyCreateCustomer} balanceUpday={balanceUpday} handlePasteCustomer={this.handlePasteCustomer}
                                 onPasteRefTicketHandler={this.onPasteRefTicketHandler} handleChangeRefTicket={this.handleChangeRefTicket}
                                 handleClickFillEvent={this.handleClickFillEvent} feedbackSubjectTemplates={this.state.feedbackSubjectTemplates}
                                 handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection} handleGetFeedbackSubjectTemplates={this.handleGetFeedbackSubjectTemplates}
-                                isValidSubject={touched.subject && errors.subject} isValidCustomerInput={touched.customerNameInput && errors.customerNameInput}
+                                isValidSubject={touched.subject && errors.subject} isValidCustomerInput={touched.customerNameInput && errors.customerNameInput} extensions={allSettings.extensions}
                             />
                         </div>
                     </div>

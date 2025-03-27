@@ -40,6 +40,7 @@
                 UpdateReviewedMode = 1,
                 IsUpdateFeedbackDate = true,
                 IsUpdateResolutionDate = true,
+                IsUpdateFirstResponseTime = true,
                 CommunicationId = "1",
                 IsUpdateCommunicationId = true,
                 StationId = "1",

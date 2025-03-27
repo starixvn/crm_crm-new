@@ -164,7 +164,7 @@ class Details extends PureComponent {
                                 {LangHelper.getResource('FirstResponseTime')}
                             </Form.Label>
                             <Col sm="8" md="8">
-                                <div className={`react-datepicker-wrapper-container form-control-wrapper ${!values.firstResponseTime ? 'disable-field' : ''}`}>
+                                <div className={`react-datepicker-wrapper-container form-control-wrapper`}>
                                     <DatePicker timeInputLabel="Time:" showTimeInput useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                         isInvalid={touched.firstResponseTime && errors.firstResponseTime}

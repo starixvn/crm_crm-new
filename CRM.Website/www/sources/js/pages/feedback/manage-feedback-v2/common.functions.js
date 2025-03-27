@@ -29,6 +29,7 @@ export const getInitFormik = (communicationLog, communicationSettings, usernames
         solution: communicationLog.solution,
         startTime: new Date(communicationLog.feedbackDate),
         endTime: new Date(communicationLog.resolutionDate),
+        firstResponseTime: communicationLog.firstResponseTime ? new Date(communicationLog.firstResponseTime) : null,
         review: communicationLog.review,
         reviewer: communicationLog.reviewer,
         solveDate: DateTimeService.toShortDateTimeFormat(communicationLog.solveDate),
@@ -44,6 +45,18 @@ export const getValidateFormik = (isCheck, values, settings) => {
             LangHelper.getResource('FieldLessThanOrEqualTo'),
             LangHelper.getResource('StartTime'),
             LangHelper.getResource('EndTime'));
+    }
+
+    if (values.firstResponseTime) {
+        var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.endTime)) || moment(values.firstResponseTime).isBefore(moment(values.startTime));
+
+        if (isNotValidFirstRT) {
+            errors.firstResponseTime = LangHelper.formatString(
+                LangHelper.getResource('FieldBetween'),
+                LangHelper.getResource('FirstResponseTime'),
+                LangHelper.getResource('StartTime'),
+                LangHelper.getResource('EndTime'));
+        }
     }
 
     if (isCheck.communication && values.communicationToolIds.length === 0) {

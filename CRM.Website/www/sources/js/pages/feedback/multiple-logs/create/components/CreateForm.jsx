@@ -73,11 +73,13 @@ export class CreateForm extends Component {
         const startTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         const endTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         endTime.setMinutes(endTime.getMinutes() + 1);
+        const firstResponseTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
 
         return {
             customerNameInput: '',
             startTime,
             endTime,
+            firstResponseTime,
             extensionIds: settings.extensionNA.id.toString(),
             languageId: settings.languages[0].languageId,
             countryId: settings.countries[0].id,
@@ -214,6 +216,10 @@ export class CreateForm extends Component {
         this.formik.setFieldValue('endTime', endTime);
     };
 
+    handleChangeFirstResponseTime = firstResponseTime => {
+        this.formik.setFieldValue('firstResponseTime', firstResponseTime);
+    };
+
     handleChangeCommunicationTool = (setFieldValue, currentItem, selectedItemsKey) => {
         setFieldValue('communicationToolIds', selectedItemsKey);
 
@@ -323,6 +329,18 @@ export class CreateForm extends Component {
 
         if (moment(values.startTime).isAfter(moment(values.endTime))) {
             errors.startTime = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('StartTime'), LangHelper.getResource('EndTime'));
+        }
+
+        if (values.firstResponseTime) {
+            var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.endTime)) || moment(values.firstResponseTime).isBefore(moment(values.startTime));
+
+            if (isNotValidFirstRT) {
+                errors.firstResponseTime = LangHelper.formatString(
+                    LangHelper.getResource('FieldBetween'),
+                    LangHelper.getResource('FirstResponseTime'),
+                    LangHelper.getResource('StartTime'),
+                    LangHelper.getResource('EndTime'));
+            }
         }
 
         if (!values.isUseDefaultCommunicationTool && values.communicationToolIds.length === 0) {
@@ -463,6 +481,7 @@ export class CreateForm extends Component {
             customers: this.getCustomers(),
             startTime: DateTimeService.toLongDateTimeFormat(values.startTime),
             endTime: DateTimeService.toLongDateTimeFormat(values.endTime),
+            firstResponseTime: values.firstResponseTime ? DateTimeService.toLongDateTimeFormat(values.firstResponseTime) : null,
             communicationToolIds: values.isUseDefaultCommunicationTool ? '' : values.communicationToolIds,
             languageId: values.isUseDefaultLanguage ? 0 : parseInt(values.languageId),
             countryName: values.isUseDefaultCountry ? '' : this.getCountryName(parseInt(values.countryId)),
@@ -503,7 +522,7 @@ export class CreateForm extends Component {
     }) => {
         const { createMultipleLogsResult , subCategoryOptions } = this.state;
         const { settings, verifyCustomerResults } = this.props;
-        const { communicationTools , extensions , mainCategories } = settings;
+        const { communicationTools , mainCategories } = settings;
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -571,6 +590,23 @@ export class CreateForm extends Component {
                             </Col>
                             <Col sm="4" md="4">
                                 <Form.Group className="pt-2 custom-form-group">
+                                    <Form.Label className="custom-label">{LangHelper.getResource('FirstResponseTime')}</Form.Label>
+                                    <Form.Group className="custom-input">
+                                        <div className="react-datepicker-wrapper-container form-control-wrapper w-100">
+                                            <DatePicker isInvalid={touched.firstResponseTime && errors.firstResponseTime}
+                                                selected={values.firstResponseTime}
+                                                timeInputLabel="Time:"
+                                                useShortMonthInDropdown
+                                                dateFormat="MMM dd, yyyy hh:mm aa"
+                                                showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                                onChange={value => this.handleChangeFirstResponseTime(value)}
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Form.Group>
+                            </Col>
+                            <Col sm="4" md="4">
+                                <Form.Group className="pt-2 custom-form-group">
                                     <Form.Label className="custom-label">{LangHelper.getResource('EndTime')}</Form.Label>
                                     <Form.Group className="custom-input">
                                         <div className="react-datepicker-wrapper-container form-control-wrapper w-100">
@@ -581,25 +617,6 @@ export class CreateForm extends Component {
                                                 dateFormat="MMM dd, yyyy hh:mm aa"
                                                 showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                                 onChange={value => this.handleChangeEndTime(value)}
-                                            />
-                                        </div>
-                                    </Form.Group>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group className="pt-2 custom-form-group">
-                                    <Form.Label className="custom-label">Ext</Form.Label>
-                                    <Form.Group className="custom-input">
-                                        <div className="w-100">
-                                            <MultipleSelect
-                                                dataSource={extensions}
-                                                keyField='id' valueField='value'
-                                                hasAllOption={extensions.length > 0}
-                                                isAllTextShown={extensions.length > 0}
-                                                hasSearchBox isNAOption
-                                                onChange={(currentItem, selectedItemsKey) => {
-                                                    setFieldValue('extensionIds', selectedItemsKey);
-                                                }}
                                             />
                                         </div>
                                     </Form.Group>
@@ -776,7 +793,7 @@ export class CreateForm extends Component {
 
     renderProductSection = (values, touched, errors, setFieldValue, handleChange) => {
         const { settings, feedbackSubjectTemplates } = this.props;
-        const { responses , languages , countries } = settings;
+        const { responses , languages , countries, extensions } = settings;
         return (
             <>
                 <Col sm="4" md="4">
@@ -890,6 +907,25 @@ export class CreateForm extends Component {
                         <Form.Group className="custom-input">
                             <Form.Control as="select" disabled size="sm" className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
                             </Form.Control>
+                        </Form.Group>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group className="pt-2 custom-form-group">
+                        <Form.Label className="custom-label">Ext</Form.Label>
+                        <Form.Group className="custom-input">
+                            <div className="w-100">
+                                <MultipleSelect
+                                    dataSource={extensions}
+                                    keyField='id' valueField='value'
+                                    hasAllOption={extensions.length > 0}
+                                    isAllTextShown={extensions.length > 0}
+                                    hasSearchBox isNAOption
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        setFieldValue('extensionIds', selectedItemsKey);
+                                    }}
+                                />
+                            </div>
                         </Form.Group>
                     </Form.Group>
                 </Col>
