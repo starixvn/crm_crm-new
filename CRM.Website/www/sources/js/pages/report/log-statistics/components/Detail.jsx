@@ -101,7 +101,7 @@ export class Detail extends Component {
                 <Cell className='text-center'>{item.startTime}</Cell>
                 <Cell className='text-center'>{item.endTime}</Cell>
                 <Cell className='text-center'>{item.durationTime}</Cell>
-                <Cell className='text-center'>{item.firstResponseTime}</Cell>
+                <Cell className='text-center'>{item.firstResponseFormatTime}</Cell>
                 <Cell className='text-center'>{item.durationFirstTime}</Cell>
                 <Cell className='text-center'>{item.userName}</Cell>
                 <Cell className='text-center'>{item.siteName}</Cell>
