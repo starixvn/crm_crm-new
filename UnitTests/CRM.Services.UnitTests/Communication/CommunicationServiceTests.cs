@@ -54,7 +54,8 @@
                 {
                     FeedbackDate = date,
                     ResolutionDate = date,
-                    SolveDate = date
+                    SolveDate = date,
+                    FirstResponseTime = date
                 }
             };
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
