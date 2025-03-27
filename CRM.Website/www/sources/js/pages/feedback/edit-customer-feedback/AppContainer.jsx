@@ -528,7 +528,7 @@ export class AppContainer extends Component {
         }
 
         if (values.firstResponseTime){
-            var isNotValidFirstRT = moment(values.firstResponseTime).isAfter(moment(values.resolutionDate)) || moment(values.firstResponseTime).isBefore(moment(values.feedbackDate));
+            var isNotValidFirstRT = moment(values.firstResponseTime).startOf('minute').isAfter(moment(values.resolutionDate).startOf('minute')) || moment(values.firstResponseTime).startOf('minute').isBefore(moment(values.feedbackDate).startOf('minute'));
 
             if (isNotValidFirstRT) {
                 errors.firstResponseTime = LangHelper.formatString(
