@@ -255,9 +255,9 @@ export class AppContainer extends Component {
             isVIP: feedback.isVIP,
             custType: feedback.customerType,
             // feedback info
-            feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(feedback.feedbackDate)),
-            resolutionDate: new Date(DateTimeService.toShortDateTimeFormat(feedback.resolutionDate)),
-            firstResponseTime: feedback.firstResponseTime ? new Date(DateTimeService.toShortDateTimeFormat(feedback.firstResponseTime)) : null,
+            feedbackDate: new Date(feedback.feedbackDate),
+            resolutionDate: new Date(feedback.resolutionDate),
+            firstResponseTime: feedback.firstResponseTime ? new Date(feedback.firstResponseTime) : null,
             extensionIds: feedbackSettings.extensionIds.join(','),
             communicationToolIds: feedbackSettings.communicationToolIds.join(','),
             mainCategoryIds: feedbackSettings.mainCategoryIds.join(','),
