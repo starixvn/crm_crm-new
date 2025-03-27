@@ -70,9 +70,15 @@
 
         public DateTime FeedbackDate { get; set; }
 
+        public DateTime? FirstResponseTime { get; set; }
+
         public string StartTime => FeedbackDate.ToString("hh:mm tt");
 
         public string EndTime => ResolutionDate.ToString("hh:mm tt");
+
+        public string FirstResponseFormatTime => FirstResponseTime?.ToString("hh:mm tt") ?? string.Empty;
+
+        public string DurationFirstTime => FirstResponseTime.HasValue ? GetResolvingFirstTime() : string.Empty;
 
         public string DurationTime => ResolutionDate != DateTimeOffset.MinValue.DateTime ? GetResolvingTime() : string.Empty;
 
@@ -149,6 +155,12 @@
         private string GetResolvingTime()
         {
             var totalDays = ResolutionDate - FeedbackDate;
+            return string.Format("{0:dd\\:hh\\:mm}", totalDays);
+        }
+
+        private string GetResolvingFirstTime()
+        {
+            var totalDays = FirstResponseTime - FeedbackDate;
             return string.Format("{0:dd\\:hh\\:mm}", totalDays);
         }
 

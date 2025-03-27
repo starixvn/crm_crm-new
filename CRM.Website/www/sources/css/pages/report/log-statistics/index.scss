@@ -110,13 +110,14 @@
 
             .header-content, .body-content {
                 table {
-                    width: 3344px !important;
+                    width: 3544px !important;
                 }
             }
 
             table tr {
                 th:first-child, td:first-child, th:nth-child(2), td:nth-child(2),
-                th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5) {
+                th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4),
+                th:nth-child(5), td:nth-child(5), th:nth-child(6), td:nth-child(6), th:nth-child(7), td:nth-child(7) {
                     position: sticky;
                     overflow-y: auto;
                 }
@@ -126,19 +127,27 @@
                 }
 
                 th:nth-child(2), td:nth-child(2) {
-                    left: 118px;
+                    left: 110px;
                 }
 
                 th:nth-child(3), td:nth-child(3) {
-                    left: 216px;
+                    left: 202px;
                 }
 
                 th:nth-child(4), td:nth-child(4) {
-                    left: 315px;
+                    left: 294px;
                 }
 
                 th:nth-child(5), td:nth-child(5) {
-                    left: 413px;
+                    left: 386px;
+                }
+
+                th:nth-child(6), td:nth-child(6) {
+                    left: 534px;
+                }
+
+                th:nth-child(7), td:nth-child(7) {
+                    left: 681px;
                 }
             }
 

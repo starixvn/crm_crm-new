@@ -13,7 +13,7 @@
     {
         private const byte RowStartBody = 5;
         private const byte RowStartHeader = 4;
-        private const byte TotalColumns = 24;
+        private const byte TotalColumns = 26;
 
         private readonly StatisticsDetailReportByDateModel logStatisticsDetail;
         private readonly IEnumerable<Setting> mainCategories;
@@ -69,8 +69,9 @@
 
                 return new object[] {
                     data.FeedbackDate.ToString("MMM dd, yyyy"), data.StartTime, data.EndTime,
-                    data.DurationTime, data.UserName, data.SiteName, communicationValue, extensionValue,
-                    data.Role, RemoveHtmlTags(data.IsNewFeedback  ? CheckPerNewHeadlineContact(data) : data.Contact), productValue == "N/A." ? "N/A" : productValue,
+                    data.DurationTime, data.FirstResponseFormatTime, data.DurationFirstTime, data.UserName,
+                    data.SiteName, communicationValue, extensionValue, data.Role,
+                    RemoveHtmlTags(data.IsNewFeedback  ? CheckPerNewHeadlineContact(data) : data.Contact), productValue == "N/A." ? "N/A" : productValue,
                     subproductValue == "N/A." ? "N/A" : subproductValue, data.CountryName,
                     mainCategoryValue, subCategoryValue, RemoveHtmlTags(data.RemarkText),
                     RemoveHtmlTags(data.Solution), data.NoInquiries, data.Rating , data.Status,
@@ -91,16 +92,18 @@
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthSmall = 15;
+            const int WidthNormalSmall = 18;
             const int WidthNormal = 25;
             const int WidthLarge = 35;
             const int WidthExtraLarge = 45;
-            const int ColumnCustomer = 5;
-            const int ColumnContactInfo = 10;
-            const int ColumnCategory = 14;
-            const int ColumnSubCategory = 15;
-            const int ColumnComplaints = 16;
-            const int ColumnSolution = 17;
-            const int ColumnCreatedTime = 24;
+            const int ColumnFirstResponse = 5;
+            const int ColumnCustomer = 7;
+            const int ColumnContactInfo = 12;
+            const int ColumnCategory = 16;
+            const int ColumnSubCategory = 17;
+            const int ColumnComplaints = 18;
+            const int ColumnSolution = 19;
+            const int ColumnCreatedTime = 26;
 
             worksheet.DefaultColWidth = WidthSmall;
             worksheet.Column(ColumnCustomer).Width = WidthLarge;
@@ -110,6 +113,7 @@
             worksheet.Column(ColumnComplaints).Width = WidthExtraLarge;
             worksheet.Column(ColumnSolution).Width = WidthExtraLarge;
             worksheet.Column(ColumnCreatedTime).Width = WidthNormal;
+            worksheet.Column(ColumnFirstResponse).Width = WidthNormalSmall;
         }
 
         private string GetCommunicationValue(int id)

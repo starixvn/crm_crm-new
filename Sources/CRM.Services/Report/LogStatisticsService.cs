@@ -88,6 +88,7 @@
             {
                 report.FeedbackDate = commonService.ConvertToClientDateTime(report.FeedbackDate);
                 report.ResolutionDate = commonService.ConvertToClientDateTime(report.ResolutionDate);
+                report.FirstResponseTime = report.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(report.FirstResponseTime.Value) : null;
                 report.CreateDate = commonService.ConvertToClientDateTime(report.CreateDate);
                 report.NewContact = GetNewFeedbackCommunicationTool(communicationTools, report.FeedbackID);
                 report.IsHeadline = communicationTools.FirstOrDefault(x => x.FeedbackID.Equals(report.FeedbackID))?.isHeadline ?? false;
