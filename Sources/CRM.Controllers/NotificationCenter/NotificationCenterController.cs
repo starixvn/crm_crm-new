@@ -51,7 +51,7 @@ public class NotificationCenterController(
             {
                 Id = i.SettingId,
                 Name = i.SettingValue
-            });
+            }).OrderBy(o => o.Name);
         return Json(settingOptions);
     }
 
