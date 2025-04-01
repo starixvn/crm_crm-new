@@ -27,6 +27,7 @@ export class Filter extends Component {
                 username: ''
             }
         }
+        this.maxDate = toDate;
     }
 
     componentDidMount() {

@@ -110,10 +110,8 @@ export default class EditSmaFeedback extends Component {
     };
 
     render() {
-        // if (this.props.data.reviewStatus === null) {
-        //     return null;
-        // }
-        const { reviewStatus, discussion, functionID, createdDate, custID } = this.props.data;
+        const { discussion, functionID, createdDate, custID } = this.props.data;
+        const reviewStatus = this.props.data.reviewStatus ? this.props.data.reviewStatus : statusOptions[0].id;
         const initialValues = { reviewStatus, discussion, functionID, createdDate, custID };
 
         return (

@@ -108,9 +108,17 @@ export class DataGrid extends Component {
         )
     };
 
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params.pageIndex = pageIndex;
+        params.pageSize = pageSize;
+        this.props.setGridParams(params);
+        this.props.getGridData({ ...params });
+    };
+
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
-             return null;
+            return null;
         }
         const { isHost } = this.props;
         const { pageIndex, pageSize } = this.props.gridParams;
