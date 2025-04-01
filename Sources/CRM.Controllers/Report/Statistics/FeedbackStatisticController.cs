@@ -21,8 +21,29 @@ public class FeedbackStatisticController(
     IPermissionService permissionService)
     : BaseController
 {
+    //[HttpPost]
+    //public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
+    //{
+    //    var title = string.Format(ViewResources.FeedbackStatisticTitle,
+    //        criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+    //    criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+    //    criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+    //    criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+    //    criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+
+    //    var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+    //    feedbackStatistic.Title = title;
+    //    feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
+    //    if (feedbackStatistic.TotalItems > 0)
+    //    {
+    //        feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+    //    }
+
+    //    return Json(feedbackStatistic);
+    //}
+
     [HttpPost]
-    public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
+    public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackRatingStatisticCriteria criteria)
     {
         var title = string.Format(ViewResources.FeedbackStatisticTitle,
             criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
@@ -31,12 +52,12 @@ public class FeedbackStatisticController(
         criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
         criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-        var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+        var feedbackStatistic = await feedbackService.GetFeedbackRatingStatisticAsync(criteria);
         feedbackStatistic.Title = title;
-        feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
+        feedbackStatistic.TotalItems = feedbackStatistic.Records.Count;
         if (feedbackStatistic.TotalItems > 0)
         {
-            feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            feedbackStatistic.Records = feedbackStatistic.Records.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
         }
 
         return Json(feedbackStatistic);

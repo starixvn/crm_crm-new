@@ -18,15 +18,11 @@ using CRM.Models.Feedback;
 using CRM.Models.Feedback.LatestFeedback;
 using CRM.Models.Report.DeletedFeedbackStatistic;
 using CRM.Models.Report.FeedbackStatistic;
+using CRM.Models.Report.FeedbackStatistic.FeedbackRating;
 using CRM.Resources;
 using Fanex.Data.Repository;
 using Interfaces;
 using Models.Feedback.DeletedFeedback;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 public interface IFeedbackService
 {
@@ -35,6 +31,8 @@ public interface IFeedbackService
     Task<IEnumerable<DeletedFeedbackStatistic>> GetDeletedFeedbackStatisticAsync(ICriteria criteria);
 
     Task<FeedbackStatisticInfo> GetFeedbackStatisticAsync(ICriteria criteria);
+
+    Task<FeedbackRatingReport> GetFeedbackRatingStatisticAsync(ICriteria criteria);
 
     Task<IEnumerable<FeedbackDeleted>> GetLatestFeedbackAsync(ICriteria criteria);
 
@@ -138,6 +136,59 @@ public class FeedbackService(
         var dataset = await dynamicRepository.FetchDataSetAsync(criteria);
 
         return dataset.Tables.Count < 2 ? new FeedbackStatisticInfo() : ReadFeedbackStatistic(dataset.Tables[0].CreateDataReader(), dataset.Tables[1].CreateDataReader());
+    }
+
+    public async Task<FeedbackRatingReport> GetFeedbackRatingStatisticAsync(ICriteria criteria)
+    {
+        FeedbackRatingReport reportData = null;
+        var dataset = await dynamicRepository.FetchDataSetAsync(criteria);
+        if (dataset.Tables.Count > 0)
+        {
+            var dataReader = dataset.Tables[0].CreateDataReader();
+            var dataReader2 = dataset.Tables.Count > 1 ? dataset.Tables[1].CreateDataReader() : null;
+            reportData = ReadFeedbackRatingStatistic(dataReader, dataReader2);
+        }
+        return reportData;
+    }
+
+    private static FeedbackRatingReport ReadFeedbackRatingStatistic(IDataReader reader, IDataReader reader2)
+    {
+        var feedbackRatingRecords = new List<FeedbackRatingRecord>();
+        var dynamicTittles = new List<BaseModel>();
+        for (var i = 0; i < reader.FieldCount; i++)
+        {
+            dynamicTittles.Add(new BaseModel { Name = reader.GetName(0) });
+        }
+
+        while (reader.Read())
+        {
+            var feedbackRatingRecord = new FeedbackRatingRecord
+            {
+                ColumnData = reader.GetString(0),
+                Excellent = reader.GetInt32(1),
+                Good = reader.GetInt32(2),
+                Neutral = reader.GetInt32(3),
+                Poor = reader.GetInt32(4),
+                VeryPoor = reader.GetInt32(5),
+                NARating = reader.GetInt32(6)
+            };
+
+            feedbackRatingRecords.Add(feedbackRatingRecord);
+        }
+
+        if (reader2 != null)
+        {
+            while (reader2.Read())
+            {
+                dynamicTittles[0].Id = reader2.GetInt32(0);
+            }
+        }
+
+        return new FeedbackRatingReport
+        {
+            DynamicColumns = dynamicTittles,
+            Records = feedbackRatingRecords
+        };
     }
 
     private static FeedbackStatisticInfo ReadFeedbackStatistic(IDataReader reader, IDataReader reader2)
