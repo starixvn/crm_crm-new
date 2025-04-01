@@ -9,6 +9,7 @@
 
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
+        public DateTime? FirstResponseTime { get; set; }
         public short SiteType { get; set; }
         public string ProductId { get; set; }
         public string MainCategoryId { get; set; }

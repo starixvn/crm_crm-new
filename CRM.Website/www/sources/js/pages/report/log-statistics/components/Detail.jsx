@@ -29,7 +29,9 @@ export class Detail extends Component {
                 <HeaderCell colWidth={10}>{LangHelper.getResource('StartTime')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('EndTime')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Duration')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Customer')}</HeaderCell>
+                <HeaderCell colWidth={16}>{LangHelper.getResource('FirstResponseTime')}</HeaderCell>
+                <HeaderCell colWidth={16}>{LangHelper.getResource('DurationResponseTime')}</HeaderCell>
+                <HeaderCell colWidth={18}>{LangHelper.getResource('Customer')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Site')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('TypeOfContact')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('EXT')}</HeaderCell>
@@ -99,6 +101,8 @@ export class Detail extends Component {
                 <Cell className='text-center'>{item.startTime}</Cell>
                 <Cell className='text-center'>{item.endTime}</Cell>
                 <Cell className='text-center'>{item.durationTime}</Cell>
+                <Cell className='text-center'>{item.firstResponseFormatTime}</Cell>
+                <Cell className='text-center'>{item.durationFirstTime}</Cell>
                 <Cell className='text-center'>{item.userName}</Cell>
                 <Cell className='text-center'>{item.siteName}</Cell>
                 <Cell className='text-center'>{communicationValue}</Cell>

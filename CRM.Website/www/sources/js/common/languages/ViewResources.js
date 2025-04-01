@@ -171,6 +171,7 @@
     Duplicate: 'Duplicate',
     Duplicated: 'Duplicated',
     Duration: 'Duration',
+    DurationResponseTime: '1st Response Dur.',
     DeActiveFeedBackSubjectTemplateSuccessfully: 'Deactivate feedback subject template successfully!',
     DeActiveStatusSettingSuccess: 'Deactivate status setting successfully!',
     Details: 'Details',
