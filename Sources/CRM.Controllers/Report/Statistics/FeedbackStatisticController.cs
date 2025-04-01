@@ -1,5 +1,7 @@
 ﻿namespace CRM.Controllers.Report.Statistics;
 
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using CRM.Controllers;
 using CRM.Criteria.Report.FeedbackStatistic;
@@ -10,8 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Services;
 using Services.ExportExcel;
 using Services.Interfaces;
-using System.Linq;
-using System.Threading.Tasks;
 
 public class FeedbackStatisticController(
     IFeedbackService feedbackService,

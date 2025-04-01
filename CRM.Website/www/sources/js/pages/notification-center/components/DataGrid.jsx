@@ -40,13 +40,16 @@ export class DataGrid extends Component {
         this.panels = [];
     }
 
-    buildHeader = isHost => {
+    buildHeader = (isHost, isOstUser) => {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('NotificationID')}</HeaderCell>
                 <HeaderCell colWidth={22}>{LangHelper.getResource('Sites')}</HeaderCell>
                 <HeaderCell colWidth={isHost ? 90 : 100}>{LangHelper.getResource('Content')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Reason')}</HeaderCell>
+                {
+                    isOstUser &&
+                    <HeaderCell colWidth={15}>{LangHelper.getResource('Reason')}</HeaderCell>
+                }
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('SenderSendDateGMT8')}</HeaderCell>
                 {
@@ -56,11 +59,13 @@ export class DataGrid extends Component {
         )
     };
 
-    buildBody = isHost => {
+    buildBody = (isHost, isOstUser = false) => {
         if (this.props.gridData.data.length > 0) {
-            return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
+            return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost, isOstUser));
         }
-        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 8 : 7}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        const additonalNoDataColSpan = isOstUser ? 1 : 0;
+        const colSpan = isHost ? 8 - additonalNoDataColSpan : 7 - additonalNoDataColSpan;
+        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={colSpan}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     onPaging = (pageIndex, pageSize) => {
@@ -394,7 +399,7 @@ export class DataGrid extends Component {
         );
     };
 
-    renderRow = (item, index, isHost) => {
+    renderRow = (item, index, isHost, isOstUser = false) => {
         const isExistContent = item.content_en || item.content_cs || item.content_ch || item.content_zhcn;
 
         return (
@@ -433,15 +438,18 @@ export class DataGrid extends Component {
                         }
                     </div>
                 </Cell>
-                <Cell className='text-left'>
-                    <div>
-                        {
-                            isHost && <span className="pr-2 fa fa-pencil-square-o" style={{ cursor: "pointer" }}
-                                onClick={() => this.handleOpenPopupEditReason(item)} />
-                        }
-                        <span >{item.reason}</span>
-                    </div>
-                </Cell>
+                {
+                    isOstUser &&
+                    <Cell className='text-left'>
+                        <div>
+                            {
+                                isHost && <span className="pr-2 fa fa-pencil-square-o" style={{ cursor: "pointer" }}
+                                    onClick={() => this.handleOpenPopupEditReason(item)} />
+                            }
+                            <span >{item.reason}</span>
+                        </div>
+                    </Cell>
+                }
                 <Cell className='text-left'>
                     <div className={`status-button status-${item.status}`}></div>
                 </Cell>
@@ -470,7 +478,7 @@ export class DataGrid extends Component {
             return null;
         }
         const { totalItems } = this.props.gridData;
-        const { pageIndex, pageSize } = this.props.gridParams;
+        const { pageIndex, pageSize, isOstUser } = this.props.gridParams;
         const { isHost } = this.props;
         const { cancelPopup, resendFailPopup, deactivatePopup, detailNotificationPopup, totalSitesPopup, isShowEditReasonPopup, reasonPopup } = this.state;
         const detailParam = { notificationId: detailNotificationPopup.notificationId, isOstUser: this.props.gridParams.isOstUser };
@@ -490,8 +498,8 @@ export class DataGrid extends Component {
                     minWidth={960}
                     maxWidth={document.getElementById('right-row-container').clientWidth}
                     autoWidth
-                    header={this.buildHeader(isHost)}
-                    body={this.buildBody(isHost)}
+                    header={this.buildHeader(isHost, isOstUser)}
+                    body={this.buildBody(isHost, isOstUser)}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}

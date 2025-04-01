@@ -1,15 +1,14 @@
 ﻿namespace CRM.Services.ExportExcel;
 
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using CRM.Models.Feedback;
 using CRM.Models.Report.DeletedFeedbackStatistic;
 using CRM.Models.Setting;
 using CRM.Resources;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 
 public class DeletedFeedbackStatisticExcel(
     string templatePath,
@@ -58,7 +57,7 @@ public class DeletedFeedbackStatisticExcel(
                 countLastItem++;
                 colIndex = 1;
                 var categoryContents = BuildCategoryContent(feedback, mainCategories);
-                var categoryCellValue = String.Join("\n\n", categoryContents);
+                var categoryCellValue = string.Join("\n\n", categoryContents);
                 worksheet.Cells[rowIndex, colIndex++].Value = feedback.CreateDate.ToString("MMM dd, yyyy");
                 worksheet.Cells[rowIndex, colIndex++].Value = feedback.Handler;
                 worksheet.Cells[rowIndex, colIndex++].Value = feedback.Deletor;

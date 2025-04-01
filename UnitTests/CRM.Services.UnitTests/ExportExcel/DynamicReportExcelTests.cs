@@ -79,7 +79,7 @@ public class DynamicReportExcelTests
     public void RenderRow_WithStatusIsClosed_RenderExpectedCell()
     {
         // Arrange
-        var dynamicReport= FakeDynamicReportInfo("Closed");
+        var dynamicReport = FakeDynamicReportInfo("Closed");
 
         var worksheet = excelPackage.Worksheets.Add("data");
         var data = dynamicReport.ChildReports[0];
@@ -92,7 +92,7 @@ public class DynamicReportExcelTests
         Assert.Equal(1, worksheet.Cells[1, 1].Value);
         Assert.Equal(data.FeedbackId, worksheet.Cells[1, 2].Value);
         Assert.Equal(data.FeedbackDate.ToLongDateTimeFormat(), worksheet.Cells[1, 3].Value);
-        Assert.Equal(String.Empty, worksheet.Cells[1, 4].Value);
+        Assert.Equal(string.Empty, worksheet.Cells[1, 4].Value);
         Assert.Equal(data.Subject, worksheet.Cells[1, 5].Value);
         Assert.Equal(data.Status, worksheet.Cells[1, 6].Value);
         Assert.Equal(data.Duration, worksheet.Cells[1, 7].Value);

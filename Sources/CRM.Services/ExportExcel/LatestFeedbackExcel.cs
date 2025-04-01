@@ -1,14 +1,14 @@
 ﻿namespace CRM.Services.ExportExcel;
 
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using CRM.Extensions;
 using CRM.Models.Feedback;
 using CRM.Models.Setting;
 using CRM.Resources;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 
 public class LatestFeedbackExcel(
     string templatePath,
@@ -146,8 +146,8 @@ public class LatestFeedbackExcel(
     private static string GetFeedbackCellValue(FeedbackDetail feedback)
     {
         var cellValue = $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By "
-                + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: "
-                + feedback.DurationTime}";
+                + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n"
+                + $"{"Solving Duration: " + feedback.DurationTime}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {

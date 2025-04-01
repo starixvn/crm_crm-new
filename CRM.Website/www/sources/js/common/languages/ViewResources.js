@@ -343,6 +343,7 @@
     SettingExistedAlready: 'Setting existed already',
     UpdateSettingSuccess: 'Update Setting successfully!',
     UpdateRemark: 'Update Remark',
+    UpdateReason: 'Update Reason',
     KeepAssign: 'Keep Assign',
     KeptForReference: 'Kept for reference',
     LastFiveSpecialRemark: 'Last 5 Special Remark',

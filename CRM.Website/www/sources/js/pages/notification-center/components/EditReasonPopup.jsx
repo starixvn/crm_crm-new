@@ -114,8 +114,6 @@ export class EditReasonPopup extends Component {
         );
     };
 
-    
-
     render() {
         const { selectedReason } = this.state;
         const initialValues = {
@@ -127,7 +125,7 @@ export class EditReasonPopup extends Component {
                 onHide={() => this.props.onClose(false)}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as="div">{LangHelper.getResource('UpdateRemark')}</Modal.Title>
+                    <Modal.Title as="div">{LangHelper.getResource('UpdateReason')}</Modal.Title>
                 </Modal.Header>
                 <Formik
                     enableReinitialize
