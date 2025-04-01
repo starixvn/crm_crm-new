@@ -705,6 +705,7 @@
     Welcome: 'Welcome',
     SignOut: 'Sign Out',
     PleaseInputUseCommunicationType: 'Communication Type',
+    PleaseChooseReviewStatus: 'Please choose review status',
     PostCode: 'Post Code',
     Parameters: 'Parameters',
     Push: 'Push',

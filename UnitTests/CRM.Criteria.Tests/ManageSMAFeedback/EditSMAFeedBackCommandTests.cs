@@ -1,4 +1,5 @@
 ﻿using CRM.Criteria.ManageSMAFeedback;
+using Telegram.Bot.Types;
 using Xunit;
 
 namespace CRM.Criteria.Tests.ManageSMAFeedback
@@ -36,19 +37,19 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
         {
             // Arrange
             var command = new EditSmaFeedbackCommand();
-            var feedbackId = 1;
+            var custID = 1;
             var reviewStatus = "Approved";
-            var discussionSolution = "Solution discussed";
+            var discussion = "Solution discussed";
 
             // Act
-            command.FeedbackId = feedbackId;
+            command.CustID = custID;
             command.ReviewStatus = reviewStatus;
-            command.DiscussionSolution = discussionSolution;
+            command.Discussion = discussion;
 
             // Assert
-            Assert.Equal(feedbackId, command.FeedbackId);
+            Assert.Equal(custID, command.CustID);
             Assert.Equal(reviewStatus, command.ReviewStatus);
-            Assert.Equal(discussionSolution, command.DiscussionSolution);
+            Assert.Equal(discussion, command.Discussion);
         }
     }
 }

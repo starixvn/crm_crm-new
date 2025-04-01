@@ -26,7 +26,7 @@ namespace CRM.Services.UnitTests
             var param = fixture.Create<GetSmaFeedbackInfo>();
             var feedbackInfos = new List<SmaFeedbackInfo>
             {
-                new() { FeedbackId = 1, CreateTime = DateTime.Now, Username = "testuser" }
+                new() { CustID = 1, CreatedDate = DateTime.Now, Username = "testuser" }
             };
             baseService.GetDataAsync<SmaFeedbackInfo>(Arg.Any<GetSmaFeedbackCriteria>()).Returns(feedbackInfos);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(DateTime.Now);

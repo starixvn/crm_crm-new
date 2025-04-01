@@ -36,7 +36,7 @@ namespace CRM.Controllers.UnitTests
             param.TotalRows = 1;
             var feedbackInfos = new List<SmaFeedbackInfo>
             {
-                new SmaFeedbackInfo { FeedbackId = 1, Username = "testuser" }
+                new SmaFeedbackInfo { CustID = 1, Username = "testuser" }
             };
             manageSmaFeedbackService.GetSmaFeedbackAsync(param).Returns(feedbackInfos);
 
@@ -57,9 +57,9 @@ namespace CRM.Controllers.UnitTests
             var controller = GetController();
             var param = new EditSmaFeedback
             {
-                FeedbackId = 1,
+                CustID = 1,
                 ReviewStatus = "Approved",
-                DiscussionSolution = "Solution discussed"
+                Discussion = "Solution discussed"
             };
             var commandResult = new CommandResult { Code = 0, Message = "Success" };
             manageSmaFeedbackService.EditSmaFeedbackAsync(param).Returns(commandResult);
@@ -83,7 +83,7 @@ namespace CRM.Controllers.UnitTests
             var param = fixture.Create<GetSmaFeedbackInfo>();
             var feedbackInfos = new List<SmaFeedbackInfo>
             {
-                new SmaFeedbackInfo { FeedbackId = 1, Username = "testuser" }
+                new SmaFeedbackInfo { CustID = 1, Username = "testuser" }
             };
             var expected = fixture.Create<byte[]>();
             manageSmaFeedbackService.GetSmaFeedbackAsync(param).Returns(feedbackInfos);
