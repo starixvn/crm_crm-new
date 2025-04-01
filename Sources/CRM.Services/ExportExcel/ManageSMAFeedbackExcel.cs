@@ -47,14 +47,14 @@ namespace CRM.Services.ExportExcel
         protected internal virtual void RenderRow(ExcelWorksheet worksheet, SmaFeedbackInfo smaFeedbackInfo, int index, int rowIndex)
         {
             var colIndex = 1;
-            worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.CreateTime;
+            worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.CreatedDate;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Username;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Level;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Site;
-            worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Function;
+            worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.FuncName;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.ReviewStatus;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Comment;
-            worksheet.Cells[rowIndex, colIndex].Value = smaFeedbackInfo.DiscussionSolution;
+            worksheet.Cells[rowIndex, colIndex].Value = smaFeedbackInfo.Discussion;
         }
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)

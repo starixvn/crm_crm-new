@@ -3,7 +3,7 @@ using Fanex.Data.Repository;
 
 namespace CRM.Criteria.ManageSMAFeedback
 {
-    public class GetSmaFeedbackCriteria : CriteriaBase
+    public class GetSmaFeedbackCriteria : BaseSitePermisionCriteria
     {
         public DateTime? FromDate { get; set; }
 
@@ -13,13 +13,13 @@ namespace CRM.Criteria.ManageSMAFeedback
 
         public string Username { get; set; }
 
-        public int PageSize { get; set; }
+        public int ItemsPerPage { get; set; }
 
         public int PageIndex { get; set; }
 
         public int TotalRows { get; set; }
 
-        public override string GetSettingKey() => "";
+        public override string GetSettingKey() => "Acc_CRM_ManageSMAFeedback";
 
         public override bool IsValid() => true;
     }

@@ -1,14 +1,19 @@
-﻿using CRM.Models;
+﻿using System;
+using CRM.Models;
 
 namespace CRM.Criteria.ManageSMAFeedback
 {
     public class EditSmaFeedbackCommand : BaseNonQueryCommand
     {
-        public int FeedbackId { get; set; }
+        public int CustID { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public int FunctionID { get; set; }
 
         public string ReviewStatus { get; set; }
 
-        public string DiscussionSolution { get; set; }
+        public string Discussion { get; set; }
 
         public override string GetSettingKey() => "";
 

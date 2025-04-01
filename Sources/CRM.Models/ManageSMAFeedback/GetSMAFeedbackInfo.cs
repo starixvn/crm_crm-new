@@ -12,6 +12,10 @@ namespace CRM.Models.ManageSmaFeedback
 
         public string Username { get; set; }
 
+        public string SitePermission { get; set; }
+
+        public short LicenseeType { get; set; }
+
         public int PageSize { get; set; }
 
         public int PageIndex { get; set; }

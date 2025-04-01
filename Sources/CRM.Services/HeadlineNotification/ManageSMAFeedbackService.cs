@@ -16,17 +16,18 @@ namespace CRM.Services.HeadlineNotification
                 FromDate = param.FromDate,
                 ToDate = param.ToDate,
                 PageIndex = param.PageIndex,
-                PageSize = param.PageSize,
+                ItemsPerPage = param.PageSize,
                 ReviewStatus = param.ReviewStatus,
                 Username = param.Username,
-
+                SitePermission = param.SitePermission,
+                LicenseeType = param.LicenseeType
             };
             var smaFeedbackInfos = await baseService.GetDataAsync<SmaFeedbackInfo>(criteria);
             param.TotalRows = criteria.TotalRows;
 
             foreach (var feedback in smaFeedbackInfos)
             {
-                feedback.CreateTime = commonService.ConvertToClientDateTime(feedback.CreateTime);
+                feedback.CreatedDate = commonService.ConvertToClientDateTime(feedback.CreatedDate);
             }
 
             return smaFeedbackInfos;
@@ -36,9 +37,11 @@ namespace CRM.Services.HeadlineNotification
         {
             var command = new EditSmaFeedbackCommand
             {
-                FeedbackId = param.FeedbackId,
+                CustID = param.CustID,
+                CreatedDate = commonService.ConvertToServerDateTime(param.CreatedDate),
+                FunctionID = param.FunctionID,
                 ReviewStatus = param.ReviewStatus,
-                DiscussionSolution = param.DiscussionSolution,
+                Discussion = param.Discussion,
             };
             return await baseService.ExecuteNonQueryAsync(command);
         }

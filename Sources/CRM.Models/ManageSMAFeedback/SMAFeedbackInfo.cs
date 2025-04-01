@@ -4,9 +4,9 @@ namespace CRM.Models.ManageSmaFeedback
 {
     public class SmaFeedbackInfo
     {
-        public int FeedbackId { get; set; }
+        public int CustID { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public string Username { get; set; }
 
@@ -14,12 +14,14 @@ namespace CRM.Models.ManageSmaFeedback
 
         public string Site { get; set; }
 
-        public string Function { get; set; }
+        public int FuncID { get; set; }
+
+        public string FuncName { get; set; }
 
         public string ReviewStatus { get; set; }
 
         public string Comment { get; set; }
 
-        public string DiscussionSolution { get; set; }
+        public string Discussion { get; set; }
     }
 }

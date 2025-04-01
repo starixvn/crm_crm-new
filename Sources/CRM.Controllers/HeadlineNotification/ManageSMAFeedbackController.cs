@@ -4,6 +4,7 @@ using CRM.Extensions;
 using CRM.Filters;
 using CRM.Models.ManageSmaFeedback;
 using CRM.Resources;
+using CRM.Services;
 using CRM.Services.ExportExcel;
 using CRM.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,19 @@ using static Fanex.NAP.Client.Helpers.Business.Constant;
 namespace CRM.Controllers.HeadlineNotification
 {
     [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Read)]
-    public class ManageSmaFeedbackController(IManageSmaFeedbackService manageSmaFeedbackService, IExportExcelService excelService) : BaseController
+    public class ManageSmaFeedbackController(
+        IManageSmaFeedbackService manageSmaFeedbackService,
+        IPermissionService permissionService,
+        IExportExcelService excelService) : BaseController
     {
 
         [HttpPost]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> GetSmaFeedback([FromBody] GetSmaFeedbackInfo param)
         {
+            param.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            param.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+
             var smaFeedbackInfos = await manageSmaFeedbackService.GetSmaFeedbackAsync(param);
             return Json(new { totalItems = param.TotalRows, data = smaFeedbackInfos });
         }
@@ -31,9 +39,12 @@ namespace CRM.Controllers.HeadlineNotification
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> ExportExcel([FromBody] GetSmaFeedbackInfo param)
         {
+            param.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            param.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+
             var smaFeedbackInfos = await manageSmaFeedbackService.GetSmaFeedbackAsync(param);
             var reportName = string.Format(ViewResources.ManageSMAFeedback_ExcelTile, param.FromDate.ToShortDateFormat(), param.ToDate.ToShortDateFormat());
             var bytes = excelService.ExportManageSMAFeedback(smaFeedbackInfos, reportName);
