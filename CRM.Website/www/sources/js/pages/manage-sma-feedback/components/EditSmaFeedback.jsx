@@ -10,6 +10,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '../../../components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import { statusOptions } from '../common.functions';
 
 export default class EditSmaFeedback extends Component {
     constructor(props) {
@@ -17,16 +18,6 @@ export default class EditSmaFeedback extends Component {
 
         this.state = {
         };
-
-        this.statusesOptions = [
-            { id: 1, name: 'New' },
-            { id: 2, name: 'Completed' },
-            { id: 3, name: 'Ignore' },
-            { id: 4, name: 'Under Discussion' },
-            { id: 5, name: 'CSD Take Over' },
-            { id: 6, name: 'Wing Take Over' },
-            { id: 7, name: 'No Reply' }
-        ]
     }
 
     validateFormik = values => {
@@ -38,22 +29,27 @@ export default class EditSmaFeedback extends Component {
         return errors;
     };
 
+    getParams = () => {
+        const { reviewStatus, discussion, functionID, createdDate, custID } = this.formik.values;
+        return { reviewStatus, discussion, functionID, createdDate, custID };
+    };
+
     handleSubmit = async () => {
         this.formik.setSubmitting(true);
 
-        const { reviewStatus, discussion } = this.formik.values;
-        const params = { reviewStatus, discussion };
-        await this.props.editSmaFeedback(params).then(() => {
-            this.handleClosePopup();
-            if (this.props.editSmaFeedbackResult.isSuccessful) {
-                this.setState({ editResult: this.props.editSmaFeedbackResult.message });
-                setTimeout(() => {
-                    this.props.setEditSmaFeedbackDialog(null);
-                }, 3000);
-            } else {
-                this.formik.setSubmitting(false);
-            }
-        });
+        const params = this.getParams();
+        console.log('params', params);
+        // await this.props.editSmaFeedback(params).then(() => {
+        //     this.handleClosePopup();
+        //     if (this.props.editSmaFeedbackResult.isSuccessful) {
+        //         this.setState({ editResult: this.props.editSmaFeedbackResult.message });
+        //         setTimeout(() => {
+        //             this.props.setEditSmaFeedbackDialog(null);
+        //         }, 3000);
+        //     } else {
+        //         this.formik.setSubmitting(false);
+        //     }
+        // });
     };
 
     renderForm = ({
@@ -85,7 +81,7 @@ export default class EditSmaFeedback extends Component {
                                 onChange={handleChange}
                             >
                                 {
-                                    this.statusesOptions.map(item =>
+                                    statusOptions.map(item =>
                                     (<option key={item.reviewStatus} value={item.reviewStatus}>
                                         {item.name}
                                     </option>)
@@ -114,14 +110,12 @@ export default class EditSmaFeedback extends Component {
     };
 
     render() {
-        if (this.props.reviewStatus === null) {
-            return null;
-        }
+        // if (this.props.data.reviewStatus === null) {
+        //     return null;
+        // }
+        const { reviewStatus, discussion, functionID, createdDate, custID } = this.props.data;
+        const initialValues = { reviewStatus, discussion, functionID, createdDate, custID };
 
-        const initialValues = {
-            reviewStatus: this.props.reviewStatus,
-            discussion: this.props.discussion
-        };
         return (
             <Modal show className="edit-sma-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="md" centered

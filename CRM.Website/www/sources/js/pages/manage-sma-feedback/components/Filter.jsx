@@ -9,33 +9,29 @@ import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import { statusOptions } from '../common.functions';
 
 export class Filter extends Component {
     constructor(props) {
         super(props);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const fromDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(yesterday)));
+        const toDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
 
         this.state = {
             filter: {
-                fromDate: null,
-                toDate: null,
+                fromDate,
+                toDate,
                 statuses: [],
                 username: ''
             }
         }
-
-        this.statusOptions = [
-            {id: 'New', name: 'New', checked: true},
-            {id: 'Sent', name: 'Sent', checked: true},
-            {id: 'Failed', name: 'Failed', checked: true},
-            {id: 'Cancelled', name: 'Cancelled', checked: true},
-            {id: 'Draft', name: 'Draft', checked: true},
-            {id: 'Sending', name: 'Sending', checked: true},
-        ];
     }
 
     componentDidMount() {
         this.setState({
-            filter: {...this.state.filter, statuses: this.statusOptions.map(x=> x.name).join(',')}
+            filter: {...this.state.filter, statuses: statusOptions.map(x=> x.name).join(',')}
         });
     }
 
@@ -54,12 +50,26 @@ export class Filter extends Component {
         this.handleChange('toDate', end);
     };
 
+    getParams = () => {
+        const { fromDate, toDate, statuses, username } = this.state.filter;
+        return {
+            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
+            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
+            statuses: statuses.split(',').length === statusOptions.length ? null : statuses,
+            username,
+            pageIndex: this.props.gridParams.pageIndex,
+            pageSize: this.props.gridParams.pageSize
+        };
+    };
+
     handleSubmit = event => {
         event.preventDefault();
+        if (!this.state.filter.statuses) {
+            toast.error(LangHelper.getResource('PleaseChooseReviewStatus'));
+            return;
+        }
         if (isHavePermissionOnSite()) {
-            const { fromDate, toDate, statuses, username } = this.state.filter;
-            const params = { fromDate, toDate, statuses, username };
-
+            const params = this.getParams();
             this.props.setGridParams(params);
             this.props.getGridData(params);
         }
@@ -92,7 +102,7 @@ export class Filter extends Component {
                         <Form.Label htmlFor="status">{LangHelper.getResource('ReviewStatus')}</Form.Label>
                         <div className='form-control-wrapper status-match-date'>
                             <MultipleSelect
-                                dataSource={this.statusOptions}
+                                dataSource={statusOptions}
                                 keyField='id'
                                 valueField='name'
                                 maxDisplayItemCount={2}

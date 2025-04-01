@@ -24,39 +24,11 @@ export class DataGrid extends Component {
         };
         this.panelComment = [];
         this.panelDisCuss = [];
-
-        this.data = [
-            {
-                createdDate: '2025-03-09',
-                username: 'John Doe',
-                level: '1',
-                site: 'Site 1',
-                function: 'Function 1',
-                reviewStatus: 'Review Status 1',
-                comment: 'Comment 1 Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1',
-                discussionSolution: 'Discussion Solution 1 Discussion Solution 1 Discussion Solution 1 Discussion Solution 1',
-            },
-            {
-                createdDate: '2025-03-09',
-                username: 'John Doe rrr',
-                level: '2',
-                site: 'Site 2',
-                function: 'Function 2',
-                reviewStatus: 'Review Status 2',
-                comment: 'Comment 2 Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1Comment 1',
-                discussionSolution: 'Discussion Solution 2 Discussion Solution 1 Discussion Solution 1 Discussion Solution 1',
-            }
-        ];
     }
 
     toggleAllPanel = () => {
         this.setState(prevState => ({ expandAllPanel: !prevState.expandAllPanel }), () => {
-            // if (this.props.gridData.data.length) {
-            //     this.panels.filter(x => x && (x.state.isOpen !== this.state.expandAllPanel)).forEach(panel => {
-            //         panel.set(this.state.expandAllPanel);
-            //     });
-            // }
-            if (this.data.length) {
+            if (this.props.gridData.data.length) {
                 this.panelComment.filter(x => x && (x.state.isOpen !== this.state.expandAllPanel)).forEach(panel => {
                     panel.set(this.state.expandAllPanel);
                 });
@@ -70,22 +42,25 @@ export class DataGrid extends Component {
     handleEdit = item => {
         this.props.setEditSmaFeedbackDialog({
             show: true,
-            statusId: item.reviewStatus,
-            discussion: item.discussionSolution
+            custID: item.custID,
+            createdDate: item.createdDate,
+            functionID: item.funcID,
+            reviewStatus: item.reviewStatus,
+            discussion: item.discussion
         })
     };
 
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={13}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
-                <HeaderCell colWidth={22}>{LangHelper.getResource('Username')}</HeaderCell>
+                <HeaderCell colWidth={14}>{LangHelper.getResource('createdDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Level')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Function')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('ReviewStatus')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Comment')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('DiscussionSolution')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('Site')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Function')}</HeaderCell>
+                <HeaderCell colWidth={12}>{LangHelper.getResource('ReviewStatus')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('Comment')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('discussion')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={12}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
@@ -94,11 +69,10 @@ export class DataGrid extends Component {
     };
 
     buildBody = isHost => {
-        //if (this.props.gridData.data.length > 0) {
-            //return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
-            return this.data.map((item, index) => this.renderRow(item, index, isHost));
-        //}
-        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 7 : 6}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        if (this.props.gridData?.data.length > 0) {
+            return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
+        }
+        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 9 : 8}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     renderPanelItem = (item, index, panels) => (
@@ -115,14 +89,14 @@ export class DataGrid extends Component {
     renderRow = (item, index, isHost) => {
         return (
             <Row key={`row${index}`}>
-                <Cell>{item.createdDate}</Cell> 
+                <Cell>{item.createdDate && DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell> 
                 <Cell>{item.username}</Cell>
                 <Cell className='text-center'>{item.level}</Cell>
                 <Cell className='text-center'>{item.site}</Cell>
-                <Cell className='text-center'>{item.function}</Cell>
+                <Cell className='text-center'>{item.funcName ? item.funcName : 'N/A'}</Cell>
                 <Cell className='text-center'>{item.reviewStatus}</Cell>
                 <Cell>{this.renderPanelItem(item.comment, index, this.panelComment)}</Cell>
-                <Cell>{this.renderPanelItem(item.discussionSolution, index, this.panelDisCuss)}</Cell>
+                <Cell>{this.renderPanelItem(item.discussion, index, this.panelDisCuss)}</Cell>
                 {
                     isHost && <Cell className="text-center">
                         <span className="rounded-circle fa fa-pencil icon-edit"
@@ -135,17 +109,19 @@ export class DataGrid extends Component {
     };
 
     render() {
-        // if (!this.props.gridData || !this.props.gridData.data) {
-        //     return null;
-        // }
+        if (!this.props.gridData || !this.props.gridData.data) {
+             return null;
+        }
+        const { isHost } = this.props;
         const { pageIndex, pageSize } = this.props.gridParams;
+        const { totalItems } = this.props.gridData;
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
-            TotalItem: 5,
+            TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
-        //console.log('panel', this.panels);
+
         return (
             <Fragment>
                 <div className='d-flex table-title-v2 justify-content-between align-items-center'>
@@ -166,10 +142,8 @@ export class DataGrid extends Component {
                     minWidth={960}
                     maxWidth={document.getElementById('right-row-container').clientWidth}
                     autoWidth
-                    // header={this.buildHeader(isHost)}
-                    // body={this.buildBody(isHost)}
-                    header={this.buildHeader(true)}
-                    body={this.buildBody(true)}
+                    header={this.buildHeader(isHost)}
+                    body={this.buildBody(isHost)}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}

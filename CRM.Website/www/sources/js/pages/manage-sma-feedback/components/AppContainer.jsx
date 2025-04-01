@@ -16,6 +16,13 @@ export class AppContainer extends Component {
             policy: null
         };
     }
+
+    componentDidMount() {
+        getPermission(FunctionKey.ManageSMAFeedback).then(response => {
+            this.setState({policy: response});
+        });
+        document.title = LangHelper.getResource('ManageSMAFeedback');
+    }
     
     handleCloseDialog = isSuccessful => {
         this.props.setEditSmaFeedbackDialog({ show: false });
@@ -25,20 +32,19 @@ export class AppContainer extends Component {
     };
 
     render() {
-        // if(!this.state.policy){
-        //     return null;
-        // }
+        if(!this.state.policy){
+            return null;
+        }
         const isHost = this.state.policy === Policy.Host;
         const { editSmaFeedbackDialog } = this.props;
 
         return (
             <Fragment>
                 <Filter/>
-                <DataGrid isHost={true}/>
+                <DataGrid isHost={isHost}/>
                 {
                     editSmaFeedbackDialog.show &&
-                    <EditSmaFeedback reviewStatus={editSmaFeedbackDialog.reviewStatus}
-                        discussion={editSmaFeedbackDialog.discussion}
+                    <EditSmaFeedback data={editSmaFeedbackDialog}
                         onClose={this.handleCloseDialog}
                     />
                 }
