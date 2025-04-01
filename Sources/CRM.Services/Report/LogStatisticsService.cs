@@ -73,13 +73,13 @@ public class LogStatisticsService(IBaseService baseService, ICommonService commo
 
         criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
         criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-        var (reportDetails, communicationTools) = 
-            await baseService.FetchMultipleAsync<StatisticsDetailbyDateModel, LatestFeedbackCommunicationTool>(criteria);
+        var (reportDetails, communicationTools) =
+            await baseService.FetchMultipleAsync<StatisticsDetailByDateModel, LatestFeedbackCommunicationTool>(criteria);
         foreach (var report in reportDetails)
         {
             report.FeedbackDate = commonService.ConvertToClientDateTime(report.FeedbackDate);
             report.ResolutionDate = commonService.ConvertToClientDateTime(report.ResolutionDate);
-                report.FirstResponseTime = report.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(report.FirstResponseTime.Value) : null;
+            report.FirstResponseTime = report.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(report.FirstResponseTime.Value) : null;
             report.CreateDate = commonService.ConvertToClientDateTime(report.CreateDate);
             report.NewContact = GetNewFeedbackCommunicationTool(communicationTools, report.FeedbackID);
             report.IsHeadline = communicationTools.FirstOrDefault(x => x.FeedbackID.Equals(report.FeedbackID))?.isHeadline ?? false;
@@ -99,12 +99,12 @@ public class LogStatisticsService(IBaseService baseService, ICommonService commo
     {
         var contactInfo = new StringBuilder();
         foreach (var communicationTool in from communicationTool in communicationTools
-                 where communicationTool.FeedbackID.Equals(feedbackID)
-                 select communicationTool)
+                                          where communicationTool.FeedbackID.Equals(feedbackID)
+                                          select communicationTool)
         {
             if (!contactInfo.ToString().Contains(communicationTool.PicInfo))
             {
-                var picInfo = !contactInfo.Length.Equals(0) ? 
+                var picInfo = !contactInfo.Length.Equals(0) ?
                     $"<br/>{communicationTool.PicInfo}:" : $"{communicationTool.PicInfo}:";
                 contactInfo.Append(picInfo);
             }

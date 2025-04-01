@@ -22,7 +22,7 @@ public class LogStatisticsDetailExcel(
 {
     private const byte RowStartBody = 5;
     private const byte RowStartHeader = 4;
-        private const byte TotalColumns = 26;
+    private const byte TotalColumns = 26;
 
     protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
     {
@@ -66,7 +66,7 @@ public class LogStatisticsDetailExcel(
         worksheet.Cells[RowStartBody, 1, RowStartBody, TotalColumns].LoadFromArrays(childReportOjb);
     }
 
-    private string CheckPerNewHeadlineContact(StatisticsDetailbyDateModel data) =>
+    private string CheckPerNewHeadlineContact(StatisticsDetailByDateModel data) =>
         (perReadHeadlineInfo || !data.IsHeadline) ? data.NewContact : string.Empty;
 
     protected internal override void ProcessUI(ExcelWorksheet worksheet)
@@ -77,18 +77,18 @@ public class LogStatisticsDetailExcel(
     protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
     {
         const int WidthSmall = 15;
-            const int WidthNormalSmall = 18;
+        const int WidthNormalSmall = 18;
         const int WidthNormal = 25;
         const int WidthLarge = 35;
         const int WidthExtraLarge = 45;
-            const int ColumnFirstResponse = 5;
-            const int ColumnCustomer = 7;
-            const int ColumnContactInfo = 12;
-            const int ColumnCategory = 16;
-            const int ColumnSubCategory = 17;
-            const int ColumnComplaints = 18;
-            const int ColumnSolution = 19;
-            const int ColumnCreatedTime = 26;
+        const int ColumnFirstResponse = 5;
+        const int ColumnCustomer = 7;
+        const int ColumnContactInfo = 12;
+        const int ColumnCategory = 16;
+        const int ColumnSubCategory = 17;
+        const int ColumnComplaints = 18;
+        const int ColumnSolution = 19;
+        const int ColumnCreatedTime = 26;
 
         worksheet.DefaultColWidth = WidthSmall;
         worksheet.Column(ColumnCustomer).Width = WidthLarge;
@@ -98,7 +98,7 @@ public class LogStatisticsDetailExcel(
         worksheet.Column(ColumnComplaints).Width = WidthExtraLarge;
         worksheet.Column(ColumnSolution).Width = WidthExtraLarge;
         worksheet.Column(ColumnCreatedTime).Width = WidthNormal;
-            worksheet.Column(ColumnFirstResponse).Width = WidthNormalSmall;
+        worksheet.Column(ColumnFirstResponse).Width = WidthNormalSmall;
     }
 
     private string GetCommunicationValue(int id)

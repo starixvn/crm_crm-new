@@ -87,7 +87,6 @@ public class LogStatisticsServiceTests
             item => Assert.Equal(expected.ProductColumns.First().Name, item.Name));
     }
 
-
     [Fact]
     public async Task GetReportDetailsAsync_WhenCalled_ReturnAsExpectedResult()
     {
@@ -110,7 +109,7 @@ public class LogStatisticsServiceTests
             commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
             commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
         var latestFeedbackCommunicationTool = fixture.Create<IEnumerable<LatestFeedbackCommunicationTool>>();
-        var logStatisticEntities = new List<StatisticsDetailbyDateModel>
+        var logStatisticEntities = new List<StatisticsDetailByDateModel>
         {
             new()
             {
@@ -137,8 +136,8 @@ public class LogStatisticsServiceTests
             ExcelFileName = excelFileName
         };
 
-        baseService.FetchMultipleAsync<StatisticsDetailbyDateModel, LatestFeedbackCommunicationTool>(criteria)
-            .Returns(new ValueTuple<IEnumerable<StatisticsDetailbyDateModel>, IEnumerable<LatestFeedbackCommunicationTool>>
+        baseService.FetchMultipleAsync<StatisticsDetailByDateModel, LatestFeedbackCommunicationTool>(criteria)
+            .Returns(new ValueTuple<IEnumerable<StatisticsDetailByDateModel>, IEnumerable<LatestFeedbackCommunicationTool>>
                 (logStatisticEntities, latestFeedbackCommunicationTool));
 
         // Act
@@ -215,6 +214,7 @@ public class LogStatisticsServiceTests
     }
 
     #region Helpers
+
     private LogStatisticsService GetService()
     {
         baseService = Substitute.For<IBaseService>();
@@ -222,5 +222,6 @@ public class LogStatisticsServiceTests
 
         return new LogStatisticsService(baseService, commonService);
     }
+
     #endregion Helpers
 }

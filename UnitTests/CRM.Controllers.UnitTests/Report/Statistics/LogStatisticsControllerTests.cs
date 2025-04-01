@@ -96,7 +96,7 @@ public class LogStatisticsControllerTests
         var criteria = fixture.Create<LogStatisticsDetailCriteria>();
         var reportDetails = new StatisticsDetailReportByDateModel
         {
-            ChildReports = new List<StatisticsDetailbyDateModel>
+            ChildReports = new List<StatisticsDetailByDateModel>
             {
                 new() {FeedbackID = 1}
             }
@@ -121,7 +121,7 @@ public class LogStatisticsControllerTests
 
         //Assert
         var jsonResult = Assert.IsType<JsonResult>(result);
-        var reportJson = (IEnumerable<StatisticsDetailbyDateModel>)jsonResult.Value.GetType().GetProperty("report").GetValue(jsonResult.Value);
+        var reportJson = (IEnumerable<StatisticsDetailByDateModel>)jsonResult.Value.GetType().GetProperty("report").GetValue(jsonResult.Value);
         var mainCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("mainCategories").GetValue(jsonResult.Value);
         var productsJson = (IEnumerable<Product>)jsonResult.Value.GetType().GetProperty("products").GetValue(jsonResult.Value);
         var subProductsJson = (IEnumerable<Product>)jsonResult.Value.GetType().GetProperty("subProducts").GetValue(jsonResult.Value);
@@ -174,7 +174,7 @@ public class LogStatisticsControllerTests
 
         var logStatisticsDetail = new StatisticsDetailReportByDateModel
         {
-            ChildReports = new List<StatisticsDetailbyDateModel>
+            ChildReports = new List<StatisticsDetailByDateModel>
             {
                 new() {FeedbackID = 1}
             },
