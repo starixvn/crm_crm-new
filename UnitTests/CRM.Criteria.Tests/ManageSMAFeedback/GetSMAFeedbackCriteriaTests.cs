@@ -50,7 +50,7 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             criteria.ToDate = toDate;
             criteria.ReviewStatus = reviewStatus;
             criteria.Username = username;
-            criteria.PageSize = pageSize;
+            criteria.ItemsPerPage = pageSize;
             criteria.PageIndex = pageIndex;
             criteria.TotalRows = totalRows;
 
@@ -59,7 +59,7 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             Assert.Equal(toDate, criteria.ToDate);
             Assert.Equal(reviewStatus, criteria.ReviewStatus);
             Assert.Equal(username, criteria.Username);
-            Assert.Equal(pageSize, criteria.PageSize);
+            Assert.Equal(pageSize, criteria.ItemsPerPage);
             Assert.Equal(pageIndex, criteria.PageIndex);
             Assert.Equal(totalRows, criteria.TotalRows);
         }

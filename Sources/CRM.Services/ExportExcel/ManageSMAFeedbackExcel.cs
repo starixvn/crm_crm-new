@@ -9,15 +9,11 @@ using OfficeOpenXml.Style;
 namespace CRM.Services.ExportExcel
 {
     public class ManageSmaFeedbackExcel(string templatePath, IEnumerable<SmaFeedbackInfo> smaFeedbackInfos, string titleExcel)
-        : ExcelBase(templatePath, 0, ViewResources.ManageSMAFeedback_ExcelTile)
+        : ExcelBase(templatePath, 0, ViewResources.ManageSMAFeedback)
     {
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
-        private const byte TotalCols = 12;
-        private const byte WidthExtraSmall = 7;
-        private const byte WidthSmall = 10;
-        private const byte WidthNormal = 15;
-        private const byte WidthLarge = 25;
+        private const byte TotalCols = 8;
 
         private int rowIndex = RowStartBody;
 
@@ -47,7 +43,7 @@ namespace CRM.Services.ExportExcel
         protected internal virtual void RenderRow(ExcelWorksheet worksheet, SmaFeedbackInfo smaFeedbackInfo, int index, int rowIndex)
         {
             var colIndex = 1;
-            worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.CreatedDate;
+            worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.CreatedDate.ToString("MMM dd, yyyy hh:mm:ss tt");
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Username;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Level;
             worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Site;
@@ -76,17 +72,25 @@ namespace CRM.Services.ExportExcel
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthLargest = 40;
-            const int WidthLarge = 35;
-            const int WidthNormal = 15;
+            const int WidthLarge = 30;
+            const int WidthNormal = 20;
             const int RowHeight = 15;
+            const int colCreatedDate = 1;
+            const int colFunc = 5;
+            const int colComment = 7;
+            const int colDiscussion = 8;
+
             worksheet.DefaultColWidth = WidthNormal;
             worksheet.Cells.AutoFitColumns();
-            worksheet.Column(1).Width = WidthLarge;
+            worksheet.Column(colCreatedDate).Width = WidthLarge;
             for (var index = 2; index <= TotalCols; index++)
             {
                 worksheet.Column(index).Width = WidthNormal;
             }
-            worksheet.Column(RowStartHeader).Width = WidthLargest;
+            worksheet.Column(colFunc).Width = WidthLarge;
+            worksheet.Column(colComment).Width = WidthLargest;
+            worksheet.Column(colDiscussion).Width = WidthLargest;
+
             for (var index = 0; index < smaFeedbackInfos.Count(); index++)
             {
                 worksheet.Row(RowStartBody + index).Height = RowHeight;

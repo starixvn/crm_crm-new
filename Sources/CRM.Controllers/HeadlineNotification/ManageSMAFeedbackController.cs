@@ -46,7 +46,7 @@ namespace CRM.Controllers.HeadlineNotification
             param.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var smaFeedbackInfos = await manageSmaFeedbackService.GetSmaFeedbackAsync(param);
-            var reportName = string.Format(ViewResources.ManageSMAFeedback_ExcelTile, param.FromDate.ToShortDateFormat(), param.ToDate.ToShortDateFormat());
+            var reportName = string.Format(ViewResources.ManageSMAFeedback_ExcelTile, param.FromDate.ToString("MM_dd_yyyy"), param.ToDate.ToString("MM_dd_yyyy"));
             var bytes = excelService.ExportManageSMAFeedback(smaFeedbackInfos, reportName);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }

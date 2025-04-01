@@ -648,4 +648,7 @@
   <data name="ManageSMAFeedback_ExcelTile" xml:space="preserve">
     <value>ManageSMAFeedback_{0}_{1}</value>
   </data>
+  <data name="ManageSMAFeedback" xml:space="preserve">
+    <value>Manage SMA Feedback</value>
+  </data>
 </root>

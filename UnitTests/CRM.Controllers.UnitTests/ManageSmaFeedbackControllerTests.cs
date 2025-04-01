@@ -25,6 +25,7 @@ namespace CRM.Controllers.UnitTests
     {
         private IManageSmaFeedbackService manageSmaFeedbackService;
         private IExportExcelService excelService;
+        private IPermissionService permissionService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -103,8 +104,11 @@ namespace CRM.Controllers.UnitTests
         {
             manageSmaFeedbackService = Substitute.For<IManageSmaFeedbackService>();
             excelService = Substitute.For<IExportExcelService>();
+            permissionService = Substitute.For<IPermissionService>();
+            
             return new ManageSmaFeedbackController(
                 manageSmaFeedbackService,
+                permissionService,
                 excelService
             );
         }
