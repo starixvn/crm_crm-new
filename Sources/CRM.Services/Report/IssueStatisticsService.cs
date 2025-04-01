@@ -25,7 +25,7 @@ public class IssueStatisticsService(IBaseService baseService, ICommonService com
         criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
         criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
         var issuesStatistics = await baseService.GetDataAsync<IssuesStatistics>(criteria);
-        foreach(var issue in issuesStatistics)
+        foreach (var issue in issuesStatistics)
         {
             issue.FeedbackDate = commonService.ConvertToClientDateTime(issue.FeedbackDate);
         }
@@ -171,7 +171,7 @@ public class IssueStatisticsService(IBaseService baseService, ICommonService com
             return statisticReport;
         }
 
-        var dateGroups = issuesStatistics.GroupBy(data => 
+        var dateGroups = issuesStatistics.GroupBy(data =>
             new DateTimeOffset(data.FeedbackDate.Year, data.FeedbackDate.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime);
         foreach (var dateGroup in dateGroups)
         {
@@ -203,7 +203,7 @@ public class IssueStatisticsService(IBaseService baseService, ICommonService com
                     dateGroup.Key.Day,
                     data.FeedbackDate.Hour,
                     0,
-                    0,TimeSpan.Zero).DateTime);
+                    0, TimeSpan.Zero).DateTime);
             foreach (var timeGroup in timeGroups)
             {
                 var timeReport = new IssuesStatisticsReportInfo
@@ -281,12 +281,11 @@ public class IssueStatisticsService(IBaseService baseService, ICommonService com
         for (var i = 0; i < countryLength; i++)
         {
             var country = countryList[i];
-            if (countryDictionary.ContainsKey(country.Id))
+            if (!countryDictionary.TryAdd(country.Id, currentCountryIndex))
             {
                 continue;
             }
 
-            countryDictionary.Add(country.Id, currentCountryIndex);
             currentCountryIndex++;
         }
 

@@ -1,5 +1,10 @@
 ﻿namespace CRM.Services.Feedback;
 
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using Criteria.Feedback.MultipleLogs;
 using CRM.Criteria.Feedback;
@@ -17,11 +22,6 @@ using CRM.Resources;
 using Fanex.Data.Repository;
 using Interfaces;
 using Models.Feedback.DeletedFeedback;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 public interface IFeedbackService
 {
@@ -78,7 +78,7 @@ public class FeedbackService(
             feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
             feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
             feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
-                feedback.FirstResponseTime = feedback.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(feedback.FirstResponseTime.Value) : null;
+            feedback.FirstResponseTime = feedback.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(feedback.FirstResponseTime.Value) : null;
             feedback.RelatedCustomers = customerFeedbackModel.RelatedCustomerPermission.OrderBy(x => x.Username);
             feedback.Settings = customerFeedbackModel.FeedbackSettingRelation.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
             feedback.LatestFeedbackCommunicationTools = customerFeedbackModel.FeedbackCommunicationTool;
@@ -234,7 +234,7 @@ public class FeedbackService(
             feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
             feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
             feedback.RelatedCustomer = string.Join(",", feedback.RelatedCustomer.Split(",").OrderBy(x => x));
-            feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
+            feedback.Status = statusHash.TryGetValue(feedback.StatusId, out var value) ? value : string.Empty;
         }
 
         return feedbacks;
@@ -258,7 +258,7 @@ public class FeedbackService(
     {
         command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
         command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
+        command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
         return await baseService.ExecuteNonQueryAsync(command);
     }
 
@@ -266,7 +266,7 @@ public class FeedbackService(
     {
         command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
         command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
-            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
+        command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
         return await baseService.ExecuteNonQueryAsync(command);
     }
 
@@ -313,7 +313,7 @@ public class FeedbackService(
             feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
             feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
             feedback.RelatedCustomer = string.Join(",", feedback.RelatedCustomer.Split(",").OrderBy(x => x));
-            feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
+            feedback.Status = statusHash.TryGetValue(feedback.StatusId, out var value) ? value : string.Empty;
         }
 
         return feedbacks;
@@ -337,7 +337,7 @@ public class FeedbackService(
         foreach (var feedback in feedbackStatistic)
         {
             feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
-            feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
+            feedback.Status = statusHash.TryGetValue(feedback.StatusId, out var value) ? value : string.Empty;
             feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
             feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
             feedback.RelatedCustomer = string.Join(",", feedback.RelatedCustomer.Split(",").OrderBy(x => x));
@@ -379,7 +379,7 @@ public class FeedbackService(
             communicationLog = communicationLogInfos.First();
             communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
             communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
-                communicationLog.FirstResponseTime = communicationLog.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(communicationLog.FirstResponseTime.Value) : null;
+            communicationLog.FirstResponseTime = communicationLog.FirstResponseTime.HasValue ? commonService.ConvertToClientDateTime(communicationLog.FirstResponseTime.Value) : null;
             communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
             communicationLog.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
             communicationLog.Settings = settingItems.ToList();

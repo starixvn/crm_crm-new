@@ -1,5 +1,9 @@
 ﻿namespace CRM.Controllers.Report;
 
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using CRM.Criteria.Report.WagerReport;
 using CRM.Models.Report.WagerReport;
@@ -10,10 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models;
 using Services.ExportExcel;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
@@ -77,9 +77,9 @@ public class WagerReportController(
                 wagerByMonth.Total += wager.Amount;
                 wagerByMonth.Wagers.Add(wager);
 
-                if (grandTotalHash.ContainsKey(wager.Name))
+                if (grandTotalHash.TryGetValue(wager.Name, out var value))
                 {
-                    grandTotalHash[wager.Name].Amount += wager.Amount;
+                    value.Amount += wager.Amount;
                 }
             }
 

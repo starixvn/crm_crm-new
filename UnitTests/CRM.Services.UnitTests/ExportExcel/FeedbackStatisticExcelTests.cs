@@ -71,7 +71,7 @@ public class FeedbackStatisticExcelTests
 
         service.Received().Protected("SetBackgroundMainCategory", Arg.Any<ExcelRange>());
         service.Received().Protected("SetSubTotalColor", Arg.Any<ExcelRange>());
-        service.Received().Protected("RendeGrandTotal", worksheet, Arg.Any<int>());
+        service.Received().Protected("RenderGrandTotal", worksheet, Arg.Any<int>());
     }
 
     [Fact]

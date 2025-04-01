@@ -37,7 +37,6 @@ public class DeletedFeedbackStatisticExcel(
 
     protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
     {
-        var colIndex = 1;
         var rowIndex = RowStartBody;
         var countTotalGrant = 0;
         var countLastItem = 0;
@@ -55,7 +54,7 @@ public class DeletedFeedbackStatisticExcel(
             foreach (var feedback in feedbacksDetails.DeletedFeedbacks)
             {
                 countLastItem++;
-                colIndex = 1;
+                var colIndex = 1;
                 var categoryContents = BuildCategoryContent(feedback, mainCategories);
                 var categoryCellValue = string.Join("\n\n", categoryContents);
                 worksheet.Cells[rowIndex, colIndex++].Value = feedback.CreateDate.ToString("MMM dd, yyyy");

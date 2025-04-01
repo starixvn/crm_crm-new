@@ -1,6 +1,4 @@
-﻿
-
-namespace CRM.Services.UnitTests.ExportExcel.TestableClasses;
+﻿namespace CRM.Services.UnitTests.ExportExcel.TestableClasses;
 
 using CRM.Models.Report.FeedbackStatistic;
 using CRM.Services.ExportExcel;
@@ -33,7 +31,7 @@ public class FeedbackStatisticExcelTestable(
 
     public void Public_RendeGrandTotal(ExcelWorksheet templateWorksheet, int rowTotal)
     {
-        base.RendeGrandTotal(templateWorksheet, rowTotal);
+        base.RenderGrandTotal(templateWorksheet, rowTotal);
     }
 
     public void Public_SetBackgroundTotalRow(ExcelRange cell)

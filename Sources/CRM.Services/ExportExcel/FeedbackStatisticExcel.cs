@@ -38,17 +38,16 @@ public class FeedbackStatisticExcel(string templatePath, FeedbackStatisticInfo f
 
     protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
     {
-        var colIndex = 1;
         var rowIndex = RowStartBody;
-        const string parternMain = "{0} - {1} item(s)";
+        const string patternMain = "{0} - {1} item(s)";
 
         for (var index = 0; index < feedbackStatistic.FeedbackCategories.Count; index++)
         {
-            colIndex = 1;
+            var colIndex = 1;
             var fbCategories = feedbackStatistic.FeedbackCategories[index];
             worksheet.Cells[rowIndex, 1, rowIndex, totalColumns].Merge = true;
             SetBackgroundMainCategory(worksheet.Cells[rowIndex, 1, rowIndex, totalColumns]);
-            worksheet.Cells[rowIndex, colIndex].Value = string.Format(parternMain, fbCategories.Name, fbCategories.FeedbackSubcategories.Count);
+            worksheet.Cells[rowIndex, colIndex].Value = string.Format(patternMain, fbCategories.Name, fbCategories.FeedbackSubcategories.Count);
             for (var indexSub = 0; indexSub < fbCategories.FeedbackSubcategories.Count; indexSub++)
             {
                 rowIndex++;
@@ -74,10 +73,10 @@ public class FeedbackStatisticExcel(string templatePath, FeedbackStatisticInfo f
             }
             rowIndex++;
         }
-        RendeGrandTotal(worksheet, rowIndex);
+        RenderGrandTotal(worksheet, rowIndex);
     }
 
-    protected internal virtual void RendeGrandTotal(ExcelWorksheet worksheet, int rowTotal)
+    protected internal virtual void RenderGrandTotal(ExcelWorksheet worksheet, int rowTotal)
     {
         var colIndex = 1;
         worksheet.Cells[rowTotal, colIndex++].Value = ViewResources.Grand_Total;
@@ -86,7 +85,7 @@ public class FeedbackStatisticExcel(string templatePath, FeedbackStatisticInfo f
             worksheet.Cells[rowTotal, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowTotal, colIndex++].Value = total;
         }
-        SetBackgroundTotalRow(worksheet.Cells[rowTotal, 1, rowTotal, colIndex -1]);
+        SetBackgroundTotalRow(worksheet.Cells[rowTotal, 1, rowTotal, colIndex - 1]);
         DrawBorderCell(worksheet.Cells[RowStartBody, 1, rowTotal, totalColumns]);
     }
 
@@ -104,7 +103,7 @@ public class FeedbackStatisticExcel(string templatePath, FeedbackStatisticInfo f
         cell.Style.Font.Bold = true;
     }
 
-    protected internal virtual void SetSubTotalColor (ExcelRange cell)
+    protected internal virtual void SetSubTotalColor(ExcelRange cell)
     {
         cell.Style.Font.Color.SetColor(Color.Black);
         cell.Style.Font.Bold = true;
@@ -128,7 +127,6 @@ public class FeedbackStatisticExcel(string templatePath, FeedbackStatisticInfo f
         worksheet.Cells[RowStartHeader, StartUserNameColumnIndex + 1, RowStartHeader, totalColumns].Style.Font.Color.SetColor(Color.White);
         worksheet.Cells[RowStartHeader, StartUserNameColumnIndex + 1, RowStartHeader, totalColumns].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
     }
-
 
     protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
     {

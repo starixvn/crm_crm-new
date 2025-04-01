@@ -1,5 +1,14 @@
 ﻿namespace CRM.Services.ActionLog;
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using Constants;
 using CRM.Criteria.ActionLog;
 using CRM.Criteria.AdminTool.LogSetting;
@@ -10,15 +19,6 @@ using CRM.Resources;
 using Interfaces;
 using Microsoft.Extensions.Options;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
 public interface IActionLogService
 {
@@ -78,8 +78,8 @@ public class ActionLogService(
     public static bool IsCategoryRemark(IDictionary<string, string> oldResults, IDictionary<string, string> newResults)
     {
         const string remarkKey = "Remark";
-        var oldRemark = oldResults.ContainsKey(remarkKey) ? oldResults[remarkKey] : string.Empty;
-        var newRemark = newResults.ContainsKey(remarkKey) ? newResults[remarkKey] : string.Empty;
+        var oldRemark = oldResults.TryGetValue(remarkKey, out var result) ? result : string.Empty;
+        var newRemark = newResults.TryGetValue(remarkKey, out var newResult) ? newResult : string.Empty;
 
         if (!string.Equals(oldRemark, newRemark, StringComparison.OrdinalIgnoreCase))
         {
@@ -114,7 +114,7 @@ public class ActionLogService(
         {
             foreach (var key in newResults.Keys)
             {
-                var oldString = oldResults.ContainsKey(key) ? oldResults[key] : string.Empty;
+                var oldString = oldResults.TryGetValue(key, out var result) ? result : string.Empty;
                 var newString = newResults[key];
                 if (!string.Equals(oldString, newString, StringComparison.OrdinalIgnoreCase) || IsCategoryRemark(oldResults, newResults))
                 {
@@ -249,10 +249,7 @@ public class ActionLogService(
                 foreach (var item in stringArray)
                 {
                     var upperKey = item.ToUpperInvariant();
-                    if (!actionLogKeyHash.ContainsKey(upperKey))
-                    {
-                        actionLogKeyHash.Add(upperKey, true);
-                    }
+                    actionLogKeyHash.TryAdd(upperKey, true);
                 }
             }
 
@@ -274,10 +271,7 @@ public class ActionLogService(
                 foreach (var item in stringArray)
                 {
                     var upperKey = item.ToUpperInvariant();
-                    if (!actionLogBoolValueHash.ContainsKey(upperKey))
-                    {
-                        actionLogBoolValueHash.Add(upperKey, boolValue);
-                    }
+                    actionLogBoolValueHash.TryAdd(upperKey, boolValue);
                 }
             }
 
