@@ -122,7 +122,7 @@
     </ItemGroup>
   <ItemGroup>
     <SonarQubeSetting Include="sonar.exclusions">
-      <Value>**/*.jsx</Value>
+      <Value>**/*.jsx,**/*.test.js</Value>
     </SonarQubeSetting>
   </ItemGroup>
     <ProjectExtensions><VisualStudio><UserProperties appsettings_1sit_1json__JsonSchema="https://docs.strmprivacy.io/jsonschema/BatchJob.json" /></VisualStudio></ProjectExtensions>
