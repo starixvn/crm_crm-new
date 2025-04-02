@@ -1,14 +1,13 @@
-﻿namespace CRM.Criteria.NewRemark
+﻿namespace CRM.Criteria.NewRemark;
+
+using Models;
+
+public class DeleteNewRemarkCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public int UserID { get; set; }
+    public int RemarkID { get; set; }
+    public string IP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_CustomerRemarkNewDel";
 
-    public class DeleteNewRemarkCommand : BaseNonQueryCommand
-    {
-        public int UserID { get; set; }
-        public int RemarkID { get; set; }
-        public string IP { get; set; }
-        public override string GetSettingKey() => "Acc_CRM_CustomerRemarkNewDel";
-
-        public override bool IsValid() => RemarkID > 0 && UserID > 0;
-    }
+    public override bool IsValid() => RemarkID > 0 && UserID > 0;
 }

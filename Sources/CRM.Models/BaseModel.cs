@@ -1,15 +1,14 @@
-﻿namespace CRM.Models
+﻿namespace CRM.Models;
+
+using System;
+using System.Xml.Serialization;
+
+[Serializable]
+public class BaseModel
 {
-    using System;
-    using System.Xml.Serialization;
+    [XmlAttribute("Id")]
+    public int Id { get; set; }
 
-    [Serializable]
-    public class BaseModel
-    {
-        [XmlAttribute("Id")]
-        public int Id { get; set; }
-
-        [XmlAttribute("Name")]
-        public string Name { get; set; }
-    }
+    [XmlAttribute("Name")]
+    public string Name { get; set; }
 }

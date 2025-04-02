@@ -1,18 +1,17 @@
-﻿namespace CRM.Criteria.NotificationTemplate
+﻿namespace CRM.Criteria.NotificationTemplate;
+
+using Models;
+
+public class DeleteNotificationTemplateCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public int NotificationTemplateId { get; set; }
+    public string NotificationTemplateName { get; set; }
+    public int UserId { get; set; }
+    public string LoginIP { get; set; }
 
-    public class DeleteNotificationTemplateCommand : BaseNonQueryCommand
-    {
-        public int NotificationTemplateId { get; set; }
-        public string NotificationTemplateName { get; set; }
-        public int UserId { get; set; }
-        public string LoginIP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_ChatBot_NotificationTemplate_Del";
 
-        public override string GetSettingKey() => "Acc_CRM_ChatBot_NotificationTemplate_Del";
-
-        public override bool IsValid() =>
-            UserId > 0
-            && NotificationTemplateId > 0;
-    }
+    public override bool IsValid() =>
+        UserId > 0
+        && NotificationTemplateId > 0;
 }

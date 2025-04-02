@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.ChatTypeMapping
+﻿namespace CRM.Criteria.ChatTypeMapping;
+
+using Fanex.Data.Repository;
+
+public class GetGroupHeadlineByRecipientCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public string RecipientIds { get; set; }
 
-    public class GetGroupHeadlineByRecipientCriteria : CriteriaBase
-    {
-        public string RecipientIds { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_GetHeadlineByRecipient";
 
-        public override string GetSettingKey() => "Acc_CRM_GetHeadlineByRecipient";
-
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(RecipientIds);
-    }
+    public override bool IsValid() => !string.IsNullOrWhiteSpace(RecipientIds);
 }

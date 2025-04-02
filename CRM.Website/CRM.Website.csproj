@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
         <UserSecretsId>9e4464f9-af12-46c5-ade4-26788aad9b4f</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -17,20 +17,10 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.1.14" />
-        <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.16" />
-        <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.16" />
-        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.1" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
-		<PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
-        <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
+        <PackageReference Include="Fanex.Logging.Sentry.RavenClient" Version="2.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
         <PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -41,7 +31,7 @@
 	</ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Sources\CRM.Controllers\CRM.Controllers.csproj" />
-        <ProjectReference Include="..\Sources\CRM.Core\CRM.Core.csproj" />
+        <ProjectReference Include="..\Sources\CRM\CRM.csproj" />
         <ProjectReference Include="..\Sources\CRM.Models\CRM.Models.csproj" />
         <ProjectReference Include="..\Sources\CRM.Resources\CRM.Resources.csproj" />
         <ProjectReference Include="..\Sources\CRM.Services\CRM.Services.csproj" />
@@ -132,7 +122,7 @@
     </ItemGroup>
   <ItemGroup>
     <SonarQubeSetting Include="sonar.exclusions">
-      <Value>**/*.jsx</Value>
+      <Value>**/*.jsx,**/*.test.js</Value>
     </SonarQubeSetting>
   </ItemGroup>
     <ProjectExtensions><VisualStudio><UserProperties appsettings_1sit_1json__JsonSchema="https://docs.strmprivacy.io/jsonschema/BatchJob.json" /></VisualStudio></ProjectExtensions>

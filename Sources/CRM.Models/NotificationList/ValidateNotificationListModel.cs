@@ -1,9 +1,8 @@
-﻿namespace CRM.Models.NotificationList
-{
-    public class ValidateNotificationListModel
-    {
-        public string NotificationIds { get; set; }
+﻿namespace CRM.Models.NotificationList;
 
-        public bool IsSingle { get; set; }
-    }
+public class ValidateNotificationListModel
+{
+    public string NotificationIds { get; set; }
+
+    public bool IsSingle { get; set; }
 }

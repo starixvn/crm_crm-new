@@ -51,7 +51,7 @@ export class AppContainer extends Component {
     render() {
         const { editFeedbackDialog, viewRelatedCustomerDialog } = this.props;
         return (
-            <Fragment>
+            <div>
                 <Filter/>
                 <DataGrid/>
                 {
@@ -75,7 +75,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditFeedbackDialog}
                     />
                 }
-            </Fragment>
+            </div>
         );
     }
 }

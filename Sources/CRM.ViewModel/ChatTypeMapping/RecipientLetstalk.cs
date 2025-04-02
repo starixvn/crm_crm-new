@@ -1,14 +1,13 @@
-﻿namespace CRM.ViewModels.ChatTypeMapping
+﻿namespace CRM.ViewModels.ChatTypeMapping;
+
+using System.Collections.Generic;
+using CRM.Models.ChatTypeMapping;
+
+public class RecipientLetstalk
 {
-    using System.Collections.Generic;
-    using CRM.Models.ChatTypeMapping;
+    public int RecipientId { get; set; }
 
-    public class RecipientLetstalk
-    {
-        public int RecipientId { get; set; }
+    public string RecipientName { get; set; }
 
-        public string RecipientName { get; set; }
-
-        public List<LetstalkAccountInGroup> Letstalks { get; set; }
-    }
+    public List<LetstalkAccountInGroup> Letstalks { get; set; }
 }

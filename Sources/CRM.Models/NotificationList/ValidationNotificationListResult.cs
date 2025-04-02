@@ -1,13 +1,12 @@
-﻿namespace CRM.Models.NotificationList
+﻿namespace CRM.Models.NotificationList;
+
+using System.Collections.Generic;
+
+public class ValidationNotificationListResult
 {
-    using System.Collections.Generic;
+    public bool IsSingle { get; set; }
 
-    public class ValidationNotificationListResult
-    {
-        public bool IsSingle { get; set; }
+    public IEnumerable<int> InActiveNotificationIds { get; set; }
 
-        public IEnumerable<int> InActiveNotificationIds { get; set; }
-
-        public IEnumerable<int> ResendIds { get; set; }
-    }
+    public IEnumerable<int> ResendIds { get; set; }
 }

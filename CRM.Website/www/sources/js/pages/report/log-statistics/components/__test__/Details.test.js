@@ -202,7 +202,7 @@ describe('Detail', () => {
         const header = shallow(container.buildHeader());
 
         // Assert
-        expect(header.find(HeaderCell).length).toBe(23);
+        expect(header.find(HeaderCell).length).toBe(24);
     });
 
     it('should render expected body no data', () => {

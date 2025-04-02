@@ -1,34 +1,28 @@
-﻿namespace CRM.Services.Feedback
+﻿namespace CRM.Services.Feedback;
+
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+public class CustomDelegatingHandler(string apiKey) : DelegatingHandler
 {
-    using System;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    public class CustomDelegatingHandler : DelegatingHandler
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        private readonly string apiKey;
-        public CustomDelegatingHandler(string apiKey)
+        var nonce = Guid.NewGuid().ToString("N");
+        var signatureRawData = apiKey + ":" + nonce;
+        using (var hmac = new HMACSHA256(Convert.FromBase64String(apiKey)))
         {
-            this.apiKey = apiKey;
+            var requestSignatureBase64String = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(signatureRawData)));
+            request.Headers.Authorization = new AuthenticationHeaderValue("amx",
+                $"{requestSignatureBase64String}:{nonce}");
         }
 
-        protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            string nonce = Guid.NewGuid().ToString("N");
-            string signatureRawData = apiKey + ":" + nonce;
-            using (HMACSHA256 hmac = new HMACSHA256(Convert.FromBase64String(apiKey)))
-            {
-                string requestSignatureBase64String = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(signatureRawData)));
-                request.Headers.Authorization = new AuthenticationHeaderValue("amx", string.Format("{0}:{1}", requestSignatureBase64String, nonce));
-            }
+        var response = await base.SendAsync(request, cancellationToken);
 
-            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
-
-            return response;
-        }
+        return response;
     }
 }

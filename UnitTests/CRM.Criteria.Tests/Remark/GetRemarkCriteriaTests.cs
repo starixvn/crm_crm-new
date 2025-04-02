@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.Remark
+﻿namespace CRM.Criteria.Tests.Remark;
+
+using CRM.Criteria.Remark;
+using Xunit;
+
+public class GetRemarkCriteriaTests
 {
-    using CRM.Criteria.Remark;
-    using Xunit;
-
-    public class GetRemarkCriteriaTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
-        {
-            //Arrange
-            var criteria = new GetRemarkCriteria();
-            var expected = "Acc_CRM_CustomerRemarkSel";
+        //Arrange
+        var criteria = new GetRemarkCriteria();
+        var expected = "Acc_CRM_CustomerRemarkSel";
 
-            //Act
-            var actual = criteria.GetSettingKey();
+        //Act
+        var actual = criteria.GetSettingKey();
 
-            //Assert
-            Assert.Equal(expected, actual);
-        }
+        //Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
-        {
-            //Arrange
-            var criteria = new GetRemarkCriteria();
+    [Fact]
+    public void IsValid_WhenCalled_ReturnTrue()
+    {
+        //Arrange
+        var criteria = new GetRemarkCriteria();
 
-            //Act
-            var actual = criteria.IsValid();
+        //Act
+        var actual = criteria.IsValid();
 
-            //Assert
-            Assert.True(actual);
-        }
+        //Assert
+        Assert.True(actual);
     }
 }

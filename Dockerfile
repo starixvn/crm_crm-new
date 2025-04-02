@@ -2,8 +2,7 @@ ARG CI_REGISTRY_IMAGE
 FROM $CI_REGISTRY_IMAGE:builder AS deps
 RUN mkdir -p /src/packages
 
-FROM hub.nexdev.net/base/dotnet/core/sdk:6.0-alpine AS builder
-
+FROM hub.nexdev.net/base/dotnet/core/sdk:9.0-alpine AS builder
 ENV NUGET_PACKAGES=/src/packages
 COPY --from=deps $NUGET_PACKAGES/. $NUGET_PACKAGES/
 
@@ -11,7 +10,7 @@ WORKDIR /src
 
 COPY ["CRM.Website/CRM.Website.csproj", "CRM.Website/"]
 COPY ["Sources/CRM.Controllers/CRM.Controllers.csproj", "Sources/CRM.Controllers/"]
-COPY ["Sources/CRM.Core/CRM.Core.csproj", "Sources/CRM.Core/"]
+COPY ["Sources/CRM/CRM.csproj", "Sources/CRM/"]
 COPY ["Sources/CRM.Resources/CRM.Resources.csproj", "Sources/CRM.Resources/"]
 COPY ["Sources/CRM.Models/CRM.Models.csproj", "Sources/CRM.Models/"]
 COPY ["Sources/CRM.Services/CRM.Services.csproj", "Sources/CRM.Services/"]
@@ -27,7 +26,7 @@ WORKDIR "/src/CRM.Website"
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app
 
-FROM hub.nexdev.net/nexus/aspnet6_crm_website AS base
+FROM hub.nexdev.net/nexus/crm_web_aspnet:9.0-latest AS base
 
 WORKDIR /app
 

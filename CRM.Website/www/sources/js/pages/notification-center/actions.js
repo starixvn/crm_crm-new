@@ -16,7 +16,7 @@ const getGridData = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getAdmNotificationById =  id => async () => {
+const getAdmNotificationById = id => async () => {
     const url = Site.resolveClientUrl(`NotificationCenter/GetResultAdmNotificationById/${id}`);
     return await DataService.getDataAsync(url).then(response => response);
 };
@@ -33,7 +33,7 @@ const editAdmStatus = params => async () => {
     return await DataService.postDataAsync(url, params).then(response => response.data);
 };
 
-const getSiteTicketsById =  id => async () => {
+const getSiteTicketsById = id => async () => {
     const url = Site.resolveClientUrl(`NotificationCenter/GetSiteTicketsById/${id}`);
     return await DataService.getDataAsync(url).then(response => response);
 };

@@ -1,54 +1,53 @@
-﻿namespace CRM.Criteria.Tests.InformHeadline
+﻿namespace CRM.Criteria.Tests.InformHeadline;
+
+using CRM.Criteria.InformHeadline;
+using Xunit;
+
+public class GetInformTitleDetailCriteriaTests
 {
-    using CRM.Criteria.InformHeadline;
-    using Xunit;
-
-    public class GetInformTitleDetailCriteriaTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
+        // Arrange
+        var criteria = new GetInformTitleDetailCriteria();
+        var expected = "Acc_CRM_InformTitleDetail";
+
+        // Act
+        var actual = criteria.GetSettingKey();
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void IsValid_ParamIdIsInvalid_ReturnFalse()
+    {
+        // Arrange
+        var criteria = new GetInformTitleDetailCriteria()
         {
-            // Arrange
-            var criteria = new GetInformTitleDetailCriteria();
-            var expected = "Acc_CRM_InformTitleDetail";
+            TitleId = 0
+        };
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.False(actual);
+    }
 
-        [Fact]
-        public void IsValid_ParamIdIsInvalid_ReturnFalse()
+    [Fact]
+    public void IsValid_ParamIsValid_ReturnTrue()
+    {
+        // Arrange
+        var criteria = new GetInformTitleDetailCriteria()
         {
-            // Arrange
-            var criteria = new GetInformTitleDetailCriteria()
-            {
-                TitleId = 0
-            };
+            TitleId = 100
+        };
 
-            // Act
-            var actual = criteria.IsValid();
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.False(actual);
-        }
-
-        [Fact]
-        public void IsValid_ParamIsValid_ReturnTrue()
-        {
-            // Arrange
-            var criteria = new GetInformTitleDetailCriteria()
-            {
-                TitleId = 100
-            };
-
-            // Act
-            var actual = criteria.IsValid();
-
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

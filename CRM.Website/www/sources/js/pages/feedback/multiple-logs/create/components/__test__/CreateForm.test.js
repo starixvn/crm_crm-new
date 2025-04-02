@@ -79,7 +79,8 @@ describe('CreateForm', () => {
                 solution: '',
                 isUseDefaultCommunicationTool: true,
                 isUseDefaultLanguage: true,
-                isUseDefaultCountry: true
+                isUseDefaultCountry: true,
+                rating: 0
             };
             const container = shallow(<CreateForm {...defaultProps} />).instance();
 

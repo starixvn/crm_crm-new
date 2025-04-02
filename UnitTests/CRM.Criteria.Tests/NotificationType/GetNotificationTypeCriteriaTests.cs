@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.NotificationType
+﻿namespace CRM.Criteria.Tests.NotificationType;
+
+using CRM.Criteria.NotificationType;
+using Xunit;
+
+public class GetNotificationTypeCriteriaTests
 {
-    using CRM.Criteria.NotificationType;
-    using Xunit;
-
-    public class GetNotificationTypeCriteriaTests
+    [Fact]
+    public void GetSettingKey_ReturnCorrectSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_ReturnCorrectSettingKey()
-        {
-            // Arrange
-            var criteria = new GetNotificationTypeCriteria();
-            var expected = "Acc_CRM_ChatBot_NotificationType_Sel";
+        // Arrange
+        var criteria = new GetNotificationTypeCriteria();
+        var expected = "Acc_CRM_ChatBot_NotificationType_Sel";
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = criteria.GetSettingKey();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnExpectedSettingKey()
-        {
-            // Arrange
-            var criteria = new GetNotificationTypeCriteria();
+    [Fact]
+    public void IsValid_WhenCalled_ReturnExpectedSettingKey()
+    {
+        // Arrange
+        var criteria = new GetNotificationTypeCriteria();
 
-            // Act
-            var actual = criteria.IsValid();
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

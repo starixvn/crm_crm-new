@@ -1,12 +1,11 @@
 ﻿
-namespace CRM.Criteria.PicAndHeadline
+namespace CRM.Criteria.PicAndHeadline;
+
+using Fanex.Data.Repository;
+
+public class GetActionTypeCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public override string GetSettingKey() => "Acc_CRM_ActionTypeSel";
 
-    public class GetActionTypeCriteria : CriteriaBase
-    {
-        public override string GetSettingKey() => "Acc_CRM_ActionTypeSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

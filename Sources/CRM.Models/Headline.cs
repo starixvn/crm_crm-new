@@ -1,11 +1,10 @@
-﻿namespace CRM.Models
+﻿namespace CRM.Models;
+
+public class Headline
 {
-    public class Headline
-    {
-        public int NotificationId { get; set; }
+    public int NotificationId { get; set; }
 
-        public int HeadlineId { get; set; }
+    public int HeadlineId { get; set; }
 
-        public string HeadlineName { get; set; }
-    }
+    public string HeadlineName { get; set; }
 }

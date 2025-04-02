@@ -1,22 +1,21 @@
-﻿namespace CRM.Models.Common
+﻿namespace CRM.Models.Common;
+
+using System;
+
+[Serializable]
+public class PersonalInfoContact
 {
-    using System;
+    public string Name { get; set; }
 
-    [Serializable]
-    public class PersonalInfoContact
+    public string Phone { get; set; }
+
+    public override string ToString()
     {
-        public string Name { get; set; }
-
-        public string Phone { get; set; }
-
-        public override string ToString()
+        if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Phone))
         {
-            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Phone))
-            {
-                return Name + Phone;
-            }
-
-            return Name + " - " + Phone;
+            return Name + Phone;
         }
+
+        return Name + " - " + Phone;
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.Feedback
+﻿namespace CRM.Models.Feedback;
+
+public class FeedbackDeleted : FeedbackDetail
 {
-    public class DeletedFeedback : FeedbackDetail
-    {
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        public string Solution { get; set; }
+    public string Solution { get; set; }
 
-        public string AutoField { get; set; }
-    }
+    public string AutoField { get; set; }
 }

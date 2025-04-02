@@ -1,52 +1,51 @@
-﻿namespace CRM.Criteria.Tests.NewRemark
+﻿namespace CRM.Criteria.Tests.NewRemark;
+
+using CRM.Criteria.NewRemark;
+using Xunit;
+
+public class CustomerRemarkNewCheckCommandTests
 {
-    using CRM.Criteria.NewRemark;
-    using Xunit;
-
-    public class CustomerRemarkNewCheckCommandTests
+    [Fact]
+    public void GetSettingKey_ReturnCorrectSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_ReturnCorrectSettingKey()
+        // Arrange
+        var criteria = new CustomerRemarkNewCheckCriteria();
+        var expected = "Acc_CRM_CustomerRemarkNewCheck";
+
+        // Act
+        var actual = criteria.GetSettingKey();
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void IsValid_ParamsAreInvalid_ReturnFalse()
+    {
+        // Arrange
+        var criteria = new CustomerRemarkNewCheckCriteria
         {
-            // Arrange
-            var criteria = new CustomerRemarkNewCheckCriteria();
-            var expected = "Acc_CRM_CustomerRemarkNewCheck";
+            Username = ""
+        };
+        // Act
+        var actual = criteria.IsValid();
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Assert
+        Assert.False(actual);
+    }
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void IsValid_ParamsAreInvalid_ReturnFalse()
+    [Fact]
+    public void IsValid_ParamsArevalid_ReturnTrue()
+    {
+        // Arrange
+        var criteria = new CustomerRemarkNewCheckCriteria
         {
-            // Arrange
-            var criteria = new CustomerRemarkNewCheckCriteria
-            {
-               Username = ""
-            };
-            // Act
-            var actual = criteria.IsValid();
+            Username = "test"
+        };
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.False(actual);
-        }
-
-        [Fact]
-        public void IsValid_ParamsArevalid_ReturnTrue()
-        {
-            // Arrange
-            var criteria = new CustomerRemarkNewCheckCriteria
-            {
-                Username = "test"
-            };
-            // Act
-            var actual = criteria.IsValid();
-
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

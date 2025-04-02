@@ -1,30 +1,29 @@
-﻿namespace CRM.ViewModels.ChatTypeMapping
+﻿namespace CRM.ViewModels.ChatTypeMapping;
+
+public class ChatTypeFilterViewModel
 {
-    public class ChatTypeFilterViewModel
-    {
-        public string BotIds { get; set; }
+    public string BotIds { get; set; }
 
-        public int? ChatType { get; set; }
+    public int? ChatType { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string GroupHeadline { get; set; }
+    public string GroupHeadline { get; set; }
 
-        public string RecipientIds { get; set; }
+    public string RecipientIds { get; set; }
 
-        public int? ChannelId { get; set; }
+    public int? ChannelId { get; set; }
 
-        public string LetstalkIdOrUsername { get; set; }
+    public string LetstalkIdOrUsername { get; set; }
 
 
-        public string MappingStatuses { get; set; }
+    public string MappingStatuses { get; set; }
 
-        public int? LanguageId { get; set; }
+    public int? LanguageId { get; set; }
 
-        public bool? IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
-        public int PageIndex { get; set; }
+    public int PageIndex { get; set; }
 
-        public int PageSize { get; set; }
-    }
+    public int PageSize { get; set; }
 }

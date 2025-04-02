@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.FeedbackSubject
+﻿namespace CRM.Models.AdminTool.FeedbackSubject;
+
+public class GetFeedbackSubjectParam
 {
-    public class GetFeedbackSubjectParam
-    {
-        public string Subject { get; set; }
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
-        public bool? IsActive { get; set; }
-        public int TotalRows { get; set; }
-    }
+    public string Subject { get; set; }
+    public int PageIndex { get; set; }
+    public int PageSize { get; set; }
+    public bool? IsActive { get; set; }
+    public int TotalRows { get; set; }
 }

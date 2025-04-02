@@ -1,146 +1,145 @@
-﻿namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using CRM.Models.Feedback;
+using Extensions.XML;
+using Fanex.Data;
+using Models;
+
+public class EditCustomerFeedbackCommand : BaseNonQueryCommand
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
-    using CRM.Models.Feedback;
-    using Fanex.Data;
+    public int FeedbackId { get; set; }
+    public int TitleId { get; set; }
+    public int UserId { get; set; }
+    public DateTime? Birthday { get; set; }
+    public int CountryId { get; set; }
+    public int ProvinceId { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int SiteId { get; set; }
 
-    public class EditCustomerFeedbackCommand : BaseNonQueryCommand
-    {
-        public int FeedbackId { get; set; }
-        public int TitleId { get; set; }
-        public int UserId { get; set; }
-        public DateTime? Birthday { get; set; }
-        public int CountryId { get; set; }
-        public int ProvinceId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int SiteId { get; set; }
+    public string Phone { get; set; }
+    public string PhoneCountryCode { get; set; }
+    public string PhoneAreaCode { get; set; }
 
-        public string Phone { get; set; }
-        public string PhoneCountryCode { get; set; }
-        public string PhoneAreaCode { get; set; }
+    public string Phone2 { get; set; }
+    public string Phone2CountryCode { get; set; }
+    public string Phone2AreaCode { get; set; }
 
-        public string Phone2 { get; set; }
-        public string Phone2CountryCode { get; set; }
-        public string Phone2AreaCode { get; set; }
+    public string Phone3 { get; set; }
+    public string Phone3CountryCode { get; set; }
+    public string Phone3AreaCode { get; set; }
 
-        public string Phone3 { get; set; }
-        public string Phone3CountryCode { get; set; }
-        public string Phone3AreaCode { get; set; }
+    public string MobilePhone { get; set; }
+    public string MobilePhoneCountryCode { get; set; }
+    public string MobilePhoneAreaCode { get; set; }
 
-        public string MobilePhone { get; set; }
-        public string MobilePhoneCountryCode { get; set; }
-        public string MobilePhoneAreaCode { get; set; }
+    public string Fax { get; set; }
+    public string FaxCountryCode { get; set; }
+    public string FaxAreaCode { get; set; }
 
-        public string Fax { get; set; }
-        public string FaxCountryCode { get; set; }
-        public string FaxAreaCode { get; set; }
+    public string Email { get; set; }
+    public string Skype { get; set; }
+    public string MSN { get; set; }
+    public string BBM { get; set; }
+    public string QQ { get; set; }
+    public string Yahoo { get; set; }
+    public string WeChat { get; set; }
+    public string Line { get; set; }
+    public string WhatsApp { get; set; }
 
-        public string Email { get; set; }
-        public string Skype { get; set; }
-        public string MSN { get; set; }
-        public string BBM { get; set; }
-        public string QQ { get; set; }
-        public string Yahoo { get; set; }
-        public string WeChat { get; set; }
-        public string Line { get; set; }
-        public string WhatsApp { get; set; }
+    public int LanguageId { get; set; }
 
-        public int LanguageId { get; set; }
+    public string Subject { get; set; }
 
-        public string Subject { get; set; }
+    [SpParam(SqlParamName = "RelatedCustId")]
+    public string RelatedCustomerIds { get; set; }
 
-        [SpParam(SqlParamName = "RelatedCustId")]
-        public string RelatedCustomerIds { get; set; }
+    public DateTime FeedbackDate { get; set; }
 
-        public DateTime FeedbackDate { get; set; }
-
-        public DateTime ResolutionDate { get; set; }
+    public DateTime ResolutionDate { get; set; }
 
         [SpParam(AllowNull = true)]
         public DateTime? FirstResponseTime { get; set; }
 
-        [SpParam(SqlParamName = "CommunicationId")]
-        public string CommunicationToolIds { get; set; }
+    [SpParam(SqlParamName = "CommunicationId")]
+    public string CommunicationToolIds { get; set; }
 
-        [SpParam(SqlParamName = "StationId")]
-        public string ExtensionIds { get; set; }
+    [SpParam(SqlParamName = "StationId")]
+    public string ExtensionIds { get; set; }
 
-        public int RoleId { get; set; }
+    public int RoleId { get; set; }
 
-        [SpParam(Ignored = true)]
-        public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; } = new List<ProductSubProductBettypeSetting>();
+    [SpParam(Ignored = true)]
+    public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; } = new List<ProductSubProductBettypeSetting>();
 
-        [SpParam(SqlParamName = "Product")]
-        public string ProductXml => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
+    [SpParam(SqlParamName = "Product")]
+    public string ProductXml => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
 
-        [SpParam(Ignored = true)]
-        public IEnumerable<CategorySubCategorySetting> Categories { get; set; } = new List<CategorySubCategorySetting>();
+    [SpParam(Ignored = true)]
+    public IEnumerable<CategorySubCategorySetting> Categories { get; set; } = new List<CategorySubCategorySetting>();
 
-        [SpParam(SqlParamName = "Category")]
-        public string CategoryXml => Categories.Any() ? Categories.DistinctBy(x => new { x.MainCategoryId, x.SubCategoryId }).ToXML("ROOT").ToString() : string.Empty;
+    [SpParam(SqlParamName = "Category")]
+    public string CategoryXml => Categories.Any() ? Categories.DistinctBy(x => new { x.MainCategoryId, x.SubCategoryId }).ToXML("ROOT").ToString() : string.Empty;
 
-        public int ResponseId { get; set; }
+    public int ResponseId { get; set; }
 
-        public int StatusId { get; set; }
+    public int StatusId { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        [SpParam(SqlParamName = "AutoField")]
-        public string AutoGenerated { get; set; }
+    [SpParam(SqlParamName = "AutoField")]
+    public string AutoGenerated { get; set; }
 
-        public string Solution { get; set; }
+    public string Solution { get; set; }
 
-        public byte UpdateReviewedMode { get; set; }
+    public byte UpdateReviewedMode { get; set; }
 
-        public bool IsReviewed { get; set; }
+    public bool IsReviewed { get; set; }
 
-        public string Review { get; set; }
+    public string Review { get; set; }
 
-        public int ReviewerId { get; set; }
+    public int ReviewerId { get; set; }
 
-        [SpParam(SqlParamName = "BettingCode")]
-        public string RefCode1 { get; set; }
+    [SpParam(SqlParamName = "BettingCode")]
+    public string RefCode1 { get; set; }
 
-        public string RefCode2 { get; set; }
+    public string RefCode2 { get; set; }
 
-        public string Passport { get; set; }
+    public string Passport { get; set; }
 
-        [SpParam(SqlParamName = "LicenseeType")]
-        public int LicenseeTypeId { get; set; }
+    [SpParam(SqlParamName = "LicenseeType")]
+    public int LicenseeTypeId { get; set; }
 
-        public string Pic1Name { get; set; }
-        public string Pic1 { get; set; }
+    public string Pic1Name { get; set; }
+    public string Pic1 { get; set; }
 
-        public string Pic2Name { get; set; }
-        public string Pic2 { get; set; }
+    public string Pic2Name { get; set; }
+    public string Pic2 { get; set; }
 
-        public string Pic3Name { get; set; }
-        public string Pic3 { get; set; }
+    public string Pic3Name { get; set; }
+    public string Pic3 { get; set; }
 
-        public string Pic4Name { get; set; }
-        public string Pic4 { get; set; }
+    public string Pic4Name { get; set; }
+    public string Pic4 { get; set; }
 
-        public int CustId { get; set; }
+    public int CustId { get; set; }
 
-        public string IP { get; set; }
+    public string IP { get; set; }
 
-        public bool IsOverwrite { get; set; }
+    public bool IsOverwrite { get; set; }
 
-        public int? NoInquiries { get; set; }
+    public int? NoInquiries { get; set; }
 
-        [SpParam(Ignored = true)]
-        public bool IsDeletedFeedbackView { get; set; }
+    [SpParam(Ignored = true)]
+    public bool IsDeletedFeedbackView { get; set; }
 
-        public override string GetSettingKey() => "Acc_CRM_FeedbackInfoUpd";
+    public override string GetSettingKey() => "Acc_CRM_FeedbackInfoUpd";
 
-        public override bool IsValid() => FeedbackId > 0
-            && !string.IsNullOrWhiteSpace(CommunicationToolIds)
-            && LanguageId > 0
-            && Categories.Any();
-    }
+    public override bool IsValid() => FeedbackId > 0
+                                      && !string.IsNullOrWhiteSpace(CommunicationToolIds)
+                                      && LanguageId > 0
+                                      && Categories.Any();
 }

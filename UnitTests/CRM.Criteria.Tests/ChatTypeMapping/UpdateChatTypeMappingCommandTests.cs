@@ -1,71 +1,70 @@
-﻿namespace CRM.Criteria.Tests.ChatTypeMapping
+﻿namespace CRM.Criteria.Tests.ChatTypeMapping;
+
+using CRM.Criteria.ChatTypeMapping;
+using Xunit;
+
+public class UpdateChatTypeMappingCommandTests
 {
-    using CRM.Criteria.ChatTypeMapping;
-    using Xunit;
-
-    public class UpdateChatTypeMappingCommandTests
+    [Fact]
+    public void GetSettingKey_ReturnCorrectSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_ReturnCorrectSettingKey()
+        // Arrange
+        var criteria = new UpdateChatTypeMappingCommand();
+        var expected = "Acc_CRM_ChatBot_ChatTypeMapping_Upd";
+
+        // Act
+        var actual = criteria.GetSettingKey();
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(0, 0, 0, "", "", "", 0, 0)]
+    [InlineData(0, 0, 0, "1", "", "", 0, 0)]
+    [InlineData(0, 2, 3, "1", "", "", 4, 5)]
+    public void IsValid_ParamsAreInvalid_ReturnFalse(int botId, int recipientTypeId, int recipientId,
+        string conversationName, string headlineIds, string conversationId, int langId, int userId)
+    {
+        // Arrange
+        var criteria = new UpdateChatTypeMappingCommand
         {
-            // Arrange
-            var criteria = new UpdateChatTypeMappingCommand();
-            var expected = "Acc_CRM_ChatBot_ChatTypeMapping_Upd";
+            BotId = botId,
+            ConversationGroupName = conversationName,
+            RecipientTypeId = recipientTypeId,
+            HeadlineIds = headlineIds,
+            RecipientIds = recipientId.ToString(),
+            ConversationId = conversationId,
+            LanguageId = langId,
+            UserId = userId
+        };
+        // Act
+        var actual = criteria.IsValid();
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Assert
+        Assert.False(actual);
+    }
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        [Theory]
-        [InlineData(0, 0, 0, "", "", "", 0, 0)]
-        [InlineData(0, 0, 0, "1", "", "", 0, 0)]
-        [InlineData(0, 2, 3, "1", "", "", 4, 5)]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(int botId, int recipientTypeId, int recipientId,
-            string conversationName, string headlineIds, string conversationId, int langId, int userId)
+    [Fact]
+    public void IsValid_ParamsArevalid_ReturnTrue()
+    {
+        // Arrange
+        var criteria = new UpdateChatTypeMappingCommand
         {
-            // Arrange
-            var criteria = new UpdateChatTypeMappingCommand
-            {
-                BotId = botId,
-                ConversationGroupName = conversationName,
-                RecipientTypeId = recipientTypeId,
-                HeadlineIds = headlineIds,
-                RecipientIds = recipientId.ToString(),
-                ConversationId = conversationId,
-                LanguageId = langId,
-                UserId = userId
-            };
-            // Act
-            var actual = criteria.IsValid();
+            ConversationGroupId = 1,
+            BotId = 1,
+            ConversationGroupName = "a",
+            RecipientTypeId = 1,
+            HeadlineIds = "abcx",
+            RecipientIds = "abc",
+            ConversationId = "ABC",
+            LanguageId = 2,
+            UserId = 10
+        };
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.False(actual);
-        }
-
-        [Fact]
-        public void IsValid_ParamsArevalid_ReturnTrue()
-        {
-            // Arrange
-            var criteria = new UpdateChatTypeMappingCommand
-            {
-                ConversationGroupId = 1,
-                BotId = 1,
-                ConversationGroupName = "a",
-                RecipientTypeId = 1,
-                HeadlineIds = "abcx",
-                RecipientIds = "abc",
-                ConversationId = "ABC",
-                LanguageId = 2,
-                UserId = 10
-            };
-            // Act
-            var actual = criteria.IsValid();
-
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

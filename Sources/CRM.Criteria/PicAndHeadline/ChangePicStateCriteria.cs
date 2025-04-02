@@ -1,19 +1,18 @@
-﻿namespace CRM.Criteria.PicAndHeadline
+﻿namespace CRM.Criteria.PicAndHeadline;
+
+using Models;
+
+public class ChangePicStateCriteria : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public int PicId { get; set; }
 
-    public class ChangePicStateCriteria : BaseNonQueryCommand
-    {
-        public int PicId { get; set; }
+    public bool IsActive { get; set; }
 
-        public bool IsActive { get; set; }
+    public int UserId { get; set; }
 
-        public int UserId { get; set; }
+    public string LoginIP { get; set; }
 
-        public string LoginIP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_PICStatusUpd";
 
-        public override string GetSettingKey() => "Acc_CRM_PICStatusUpd";
-
-        public override bool IsValid() => PicId > 0;
-    }
+    public override bool IsValid() => PicId > 0;
 }

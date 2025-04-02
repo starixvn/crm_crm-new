@@ -1,52 +1,51 @@
-namespace CRM.Controllers.UnitTests
+namespace CRM.Controllers.UnitTests;
+
+using Microsoft.AspNetCore.Mvc;
+using NSubstitute;
+using ONEbook.UM.Services;
+using Xunit;
+
+public class ErrorControllerTests
 {
-    using Microsoft.AspNetCore.Mvc;
-    using NSubstitute;
-    using ONEbook.UM.Services;
-    using Xunit;
+    private readonly IMaintenanceService maintenanceService;
+    private ErrorController controller;
 
-    public class ErrorControllerTests
+    public ErrorControllerTests()
     {
-        private readonly IMaintenanceService maintenanceService;
-        private ErrorController controller;
+        maintenanceService = Substitute.For<IMaintenanceService>();
+        controller = new ErrorController(maintenanceService);
+    }
 
-        public ErrorControllerTests()
-        {
-            maintenanceService = Substitute.For<IMaintenanceService>();
-            controller = new ErrorController(maintenanceService);
-        }
+    [Fact]
+    public void PageNotFound_WhenCalled_ReturnExpectedViewResult()
+    {
+        //Act
+        var actual = controller.PageNotFound();
 
-        [Fact]
-        public void PageNotFound_WhenCalled_ReturnExpectedViewResult()
-        {
-            //Act
-            var actual = controller.PageNotFound();
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(actual);
+        Assert.Null(viewResult.ViewName);
+    }
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
-        }
+    [Fact]
+    public void AccessDenied_WhenCalled_ReturnExpectedViewResult()
+    {
+        // Act
+        var actual = controller.AccessDenied();
 
-        [Fact]
-        public void AccessDenied_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Act
-            var actual = controller.AccessDenied();
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(actual);
+        Assert.Null(viewResult.ViewName);
+    }
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
-        }
+    [Fact]
+    public void InternalError_WhenCalled_ReturnExpectedViewResult()
+    {
+        // Act
+        var actual = controller.InternalError();
 
-        [Fact]
-        public void InternalError_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Act
-            var actual = controller.InternalError();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
-        }
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(actual);
+        Assert.Null(viewResult.ViewName);
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback;
+
+using Fanex.Data.Repository;
+
+public class CheckFeedbackIDIsNewCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public int FeedbackId { get; set; }
 
-    public class CheckFeedbackIDIsNewCriteria : CriteriaBase
-    {
-        public int FeedbackId { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew";
 
-        public override string GetSettingKey() => "Acc_CRM_NewManualFeedback_CheckFeedbackIDIsNew";
-
-        public override bool IsValid() => FeedbackId > 0;
-    }
+    public override bool IsValid() => FeedbackId > 0;
 }

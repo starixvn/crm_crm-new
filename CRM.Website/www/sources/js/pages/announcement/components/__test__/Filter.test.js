@@ -252,7 +252,7 @@ describe('Filter', () => {
             const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true });
             container.instance().handleSubmit = jest.fn();
             //Act
-            const render = container.find('.form-filter');
+            const render = container.find('.form-filter-v2');
             render.simulate('submit');
             // Assert
             expect(container.instance().handleSubmit).toHaveBeenCalled();

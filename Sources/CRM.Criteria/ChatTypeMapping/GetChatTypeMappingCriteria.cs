@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.ChatTypeMapping
+﻿namespace CRM.Criteria.ChatTypeMapping;
+
+using Fanex.Data.Repository;
+
+public class GetChatTypeMappingCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public int? ChatTypeId { get; set; }
 
-    public class GetChatTypeMappingCriteria : CriteriaBase
-    {
-        public int? ChatTypeId { get; set; }
+    public string ConversationGroupName { get; set; }
 
-        public string ConversationGroupName { get; set; }
+    public string Headline { get; set; }
 
-        public string Headline { get; set; }
+    public string RecipientName { get; set; }
 
-        public string RecipientName { get; set; }
+    public int? ChannelId { get; set; }
 
-        public int? ChannelId { get; set; }
+    public string LetstalkIdOrUsername { get; set; }
 
-        public string LetstalkIdOrUsername { get; set; }
+    public bool? IsActive { get; set; }
 
-        public bool? IsActive { get; set; }
+    public string BotIds { get; set; }
 
-        public string BotIds { get; set; }
+    public string MappingStatus { get; set; }
 
-        public string MappingStatus { get; set; }
+    public int? PageSize { get; set; }
 
-        public int? PageSize { get; set; }
+    public int? PageIndex { get; set; }
 
-        public int? PageIndex { get; set; }
+    public int TotalRows { get; set; }
 
-        public int TotalRows { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_ChatBot_ChatTypeMapping_Sel";
 
-        public override string GetSettingKey() => "Acc_CRM_ChatBot_ChatTypeMapping_Sel";
-
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(MappingStatus);
-    }
+    public override bool IsValid() => !string.IsNullOrWhiteSpace(MappingStatus);
 }

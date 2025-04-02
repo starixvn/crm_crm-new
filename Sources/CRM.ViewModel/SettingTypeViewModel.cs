@@ -1,7 +1,6 @@
-﻿namespace CRM.ViewModels
+﻿namespace CRM.ViewModels;
+
+public class SettingTypeViewModel
 {
-    public class SettingTypeViewModel
-    {
-        public string SettingName { get; set; }
-    }
+    public string SettingName { get; set; }
 }

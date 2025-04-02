@@ -1,29 +1,28 @@
-﻿namespace CRM.Models.Report.DeletedFeedbackStatistic
+﻿namespace CRM.Models.Report.DeletedFeedbackStatistic;
+
+using CRM.Models.Feedback;
+using System;
+using System.Collections.Generic;
+
+public class DeletedFeedbackStatistic
 {
-    using System;
-    using System.Collections.Generic;
-    using CRM.Models.Feedback;
+    public DateTime CreateDate { get; set; }
 
-    public class DeletedFeedbackStatistic
-    {
-        public DateTime CreateDate { get; set; }
+    public string Handler { get; set; }
 
-        public string Handler { get; set; }
+    public string Deletor { get; set; }
 
-        public string Deletor { get; set; }
+    public int FeedbackId { get; set; }
 
-        public int FeedbackId { get; set; }
+    public string Subject { get; set; }
 
-        public string Subject { get; set; }
+    public string MainCategory { get; set; }
 
-        public string MainCategory { get; set; }
+    public string SubCategory { get; set; }
 
-        public string SubCategory { get; set; }
+    public string Customer { get; set; }
 
-        public string Customer { get; set; }
+    public string RelatedCustomer { get; set; }
 
-        public string RelatedCustomer { get; set; }
-
-        public List<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
-    }
+    public List<FeedbackSettingRelation> Settings { get; set; } = [];
 }

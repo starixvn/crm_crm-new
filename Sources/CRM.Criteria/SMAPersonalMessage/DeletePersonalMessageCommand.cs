@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.SMAPersonalMessage
+﻿namespace CRM.Criteria.SMAPersonalMessage;
+
+using Models;
+
+public class DeletePersonalMessageCommand : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public int MessageID { get; set; }
+    public string IP { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_PersonalMessageDel";
 
-    public class DeletePersonalMessageCommand : BaseNonQueryCommand
-    {
-        public int MessageID { get; set; }
-        public string IP { get; set; }
-        public override string GetSettingKey() => "Acc_CRM_PersonalMessageDel";
-
-        public override bool IsValid() => MessageID > 0;
-    }
+    public override bool IsValid() => MessageID > 0;
 }

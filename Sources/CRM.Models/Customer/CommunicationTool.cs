@@ -1,8 +1,7 @@
-namespace CRM.Models.Customer
+namespace CRM.Models.Customer;
+
+public class CommunicationTool
 {
-    public class CommunicationTool
-    {
-        public int CommunicationID { get; set; }
-        public string CommunicationValue { get; set; }
-    }
+    public int CommunicationID { get; set; }
+    public string CommunicationValue { get; set; }
 }

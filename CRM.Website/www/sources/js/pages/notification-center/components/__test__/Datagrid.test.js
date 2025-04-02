@@ -6,20 +6,20 @@ import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { Button, Modal } from 'react-bootstrap';
 import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import  * as functions from '../../common.functions';
+import * as functions from '../../common.functions';
 import { toast } from 'react-toastify';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 describe('DataGrid', () => {
-    beforeAll(() =>{
+    beforeAll(() => {
         Site.resolveClientUrl = jest.fn();
         Site.displayCopiedToClipboard = jest.fn();
         LangHelper.getResource = jest.fn(key => key);
         DateTimeService.toLongDateTimeFormat = jest.fn(val => val);
         DateTimeService.toShortDateFormat = jest.fn(val => val);
         DateTimeService.toTimeFormat = jest.fn(val => val);
-        functions.filterAndSortSites = jest.fn(() => [{ siteType: 'Credit', siteGroupOrd: 1, siteNames:'siteNames' }]);
+        functions.filterAndSortSites = jest.fn(() => [{ siteType: 'Credit', siteGroupOrd: 1, siteNames: 'siteNames' }]);
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'right-row-container');
         document.body.appendChild(appContainer);
@@ -33,48 +33,46 @@ describe('DataGrid', () => {
         jest.clearAllMocks();
     });
 
-    const promise = Promise.resolve({isSuccessful: true, message: 'message'});
+    const promise = Promise.resolve({ isSuccessful: true, message: 'message' });
     const initProps = {
         isHost: true,
         gridData: {
-            data: [{notificationID: 1, messageID: 1, sessionID: 1, status: 'New', sender: 'sa', sendDate: ''}],
-            allSite: [{notificationID: 1, siteType: 'Credit', siteGroupOrd: 1, siteNames:'siteNames'}]
+            data: [{ notificationID: 1, messageID: 1, sessionID: 1, status: 'New', sender: 'sa', sendDate: '' }],
+            allSite: [{ notificationID: 1, siteType: 'Credit', siteGroupOrd: 1, siteNames: 'siteNames' }]
         },
         gridParams: {
             pageIndex: 1,
             pageSize: 100,
             isOstUser: true,
-
         },
         setGridParams: jest.fn(),
         getGridData: jest.fn(),
         navigate: jest.fn(),
         setIsRefresh: jest.fn(),
         editAdmStatus: jest.fn(() => promise),
-        
     }
 
     describe('buildHeader', () => {
         it('should render expected header when isHost = false', () => {
             // Arrange
-            const container = shallow(<DataGrid {...initProps}/>).instance();
+            const container = shallow(<DataGrid {...initProps} />).instance();
 
             // Act
             const header = shallow(container.buildHeader(false));
 
             // Assert
-            expect(header.find(HeaderCell).length).toBe(5);
+            expect(header.find(HeaderCell).length).toBe(6);
         });
 
         it('should render expected header when isHost = true', () => {
             // Arrange
-            const container = shallow(<DataGrid  {...initProps}/>).instance();
+            const container = shallow(<DataGrid  {...initProps} />).instance();
 
             // Act
             const header = shallow(container.buildHeader(true));
 
             // Assert
-            expect(header.find(HeaderCell).length).toBe(6);
+            expect(header.find(HeaderCell).length).toBe(7);
         });
     });
 
@@ -87,7 +85,7 @@ describe('DataGrid', () => {
                     data: []
                 }
             };
-            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={7}>ThereIsNoData</Cell></Row>];
+            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={8}>ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -99,7 +97,7 @@ describe('DataGrid', () => {
 
         it('should render expected rows when has data', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.renderRow = jest.fn(() => <div />);
 
@@ -114,7 +112,7 @@ describe('DataGrid', () => {
     describe('onPaging', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -129,7 +127,7 @@ describe('DataGrid', () => {
     describe('handleAction', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -143,7 +141,7 @@ describe('DataGrid', () => {
     describe('handleClosePopup', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -161,21 +159,21 @@ describe('DataGrid', () => {
     describe('getParamStatus', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
             var actual = container.getParamStatus(1, 'New');
 
             // Assert
-            expect(actual).toEqual({newStatus: 'New', notificationId: 1});
+            expect(actual).toEqual({ newStatus: 'New', notificationId: 1 });
         });
     });
 
     describe('handleUpdateStatus', () => {
         it('should call exactly props functions when isSuccessful', async () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleClosePopup = jest.fn();
             toast.success = jest.fn();
@@ -193,7 +191,7 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 ...initProps,
-                editAdmStatus: jest.fn(() => Promise.resolve({isSuccessful: false}))
+                editAdmStatus: jest.fn(() => Promise.resolve({ isSuccessful: false }))
             };
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleClosePopup = jest.fn();
@@ -211,7 +209,7 @@ describe('DataGrid', () => {
     describe('handleCancel', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -226,7 +224,7 @@ describe('DataGrid', () => {
     describe('handleCancelConfirm', () => {
         it('should call exactly props functions', async () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleUpdateStatus = jest.fn();
             container.getParamStatus = jest.fn();
@@ -243,7 +241,7 @@ describe('DataGrid', () => {
     describe('handleResendFail', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -258,7 +256,7 @@ describe('DataGrid', () => {
     describe('handleResendConfirm', () => {
         it('should call exactly props functions', async () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleUpdateStatus = jest.fn();
             container.getParamStatus = jest.fn();
@@ -275,7 +273,7 @@ describe('DataGrid', () => {
     describe('handleDeactivate', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -290,7 +288,7 @@ describe('DataGrid', () => {
     describe('handleDeactivateConfirm', () => {
         it('should call exactly props functions', async () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleUpdateStatus = jest.fn();
             container.getParamStatus = jest.fn();
@@ -307,7 +305,7 @@ describe('DataGrid', () => {
     describe('handleDetailNotification', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -322,7 +320,7 @@ describe('DataGrid', () => {
     describe('copySessionIdToClipboard', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             document.execCommand = jest.fn();
 
@@ -337,8 +335,8 @@ describe('DataGrid', () => {
     describe('copySitesToClipboard', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
-            const sites = [{ siteType: 'Credit', siteGroup: 1, siteNames:'siteNames' }];
+            const props = { ...initProps };
+            const sites = [{ siteType: 'Credit', siteGroup: 1, siteNames: 'siteNames' }];
             const container = shallow(<DataGrid {...props} />).instance();
             document.execCommand = jest.fn();
 
@@ -353,11 +351,11 @@ describe('DataGrid', () => {
     describe('renderTooltipComponent', () => {
         it('should render exactly', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
-            var actual = container.renderTooltipComponent('title', <div/>, 'className');
+            var actual = container.renderTooltipComponent('title', <div />, 'className');
             var form = shallow(<div>{actual}</div>);
 
             // Assert
@@ -368,7 +366,7 @@ describe('DataGrid', () => {
     describe('renderActionButtonOST', () => {
         it('should render exactly with status is New', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = 'New';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleAction = jest.fn();
@@ -387,7 +385,7 @@ describe('DataGrid', () => {
 
         it('should render exactly with status is Failed', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = 'Failed';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleResendFail = jest.fn();
@@ -403,7 +401,7 @@ describe('DataGrid', () => {
 
         it('should render exactly with status is Draft', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = 'Draft';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleAction = jest.fn();
@@ -422,7 +420,7 @@ describe('DataGrid', () => {
 
         it('should render exactly with status is Cancelled', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = 'Cancelled';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleAction = jest.fn();
@@ -438,7 +436,7 @@ describe('DataGrid', () => {
 
         it('should render null with status is null', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = '';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleAction = jest.fn();
@@ -454,7 +452,7 @@ describe('DataGrid', () => {
     describe('renderActionButtonCSD', () => {
         it('should render exactly with status is New', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = 'New';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleAction = jest.fn();
@@ -470,7 +468,7 @@ describe('DataGrid', () => {
 
         it('should render exactly with status is Active', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = 'Active';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleDeactivate = jest.fn();
@@ -486,7 +484,7 @@ describe('DataGrid', () => {
 
         it('should render exactly with status is Inactive', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const status = 'Inactive';
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleAction = jest.fn();
@@ -504,9 +502,9 @@ describe('DataGrid', () => {
     describe('renderConfirmPopup', () => {
         it('should return cancelPopup', () => {
             //Arrange
-            const props = {...initProps};
-            const state =  { cancelPopup: {show: true}, resendFailPopup: {show: false}, deactivatePopup: {show: false} };
-            const container = shallow(<DataGrid {...props}/>).instance();
+            const props = { ...initProps };
+            const state = { cancelPopup: { show: true }, resendFailPopup: { show: false }, deactivatePopup: { show: false } };
+            const container = shallow(<DataGrid {...props} />).instance();
             container.setState(state);
             container.handleCancelConfirm = jest.fn()
 
@@ -520,9 +518,9 @@ describe('DataGrid', () => {
 
         it('should return resendFailPopup', () => {
             //Arrange
-            const props = {...initProps};
-            const state =  { cancelPopup: {show: false}, resendFailPopup: {show: true}, deactivatePopup: {show: false} };
-            const container = shallow(<DataGrid {...props}/>).instance();
+            const props = { ...initProps };
+            const state = { cancelPopup: { show: false }, resendFailPopup: { show: true }, deactivatePopup: { show: false } };
+            const container = shallow(<DataGrid {...props} />).instance();
             container.setState(state);
             container.handleResendConfirm = jest.fn()
 
@@ -536,9 +534,9 @@ describe('DataGrid', () => {
 
         it('should return deactivatePopup', () => {
             //Arrange
-            const props = {...initProps};
-            const state =  { cancelPopup: {show: false}, resendFailPopup: {show: false}, deactivatePopup: {show: true} };
-            const container = shallow(<DataGrid {...props}/>).instance();
+            const props = { ...initProps };
+            const state = { cancelPopup: { show: false }, resendFailPopup: { show: false }, deactivatePopup: { show: true } };
+            const container = shallow(<DataGrid {...props} />).instance();
             container.setState(state);
             container.handleDeactivateConfirm = jest.fn()
 
@@ -554,9 +552,9 @@ describe('DataGrid', () => {
     describe('renderTotalSites', () => {
         it('should call exactly function Modal', () => {
             //Arrange
-            const props = {...initProps};
-            const state =  { totalSitesPopup: {sites: [{ siteType: 'Credit', siteGroup: 1, siteNames:'siteNames' }]} };
-            const container = shallow(<DataGrid {...props}/>).instance();
+            const props = { ...initProps };
+            const state = { totalSitesPopup: { sites: [{ siteType: 'Credit', siteGroup: 1, siteNames: 'siteNames' }] } };
+            const container = shallow(<DataGrid {...props} />).instance();
             container.setState(state);
             container.handleCloseTotalSites = jest.fn()
 
@@ -568,12 +566,11 @@ describe('DataGrid', () => {
             expect(container.handleCloseTotalSites).toHaveBeenCalled();
         });
 
-        
         it('should call exactly function Modal', () => {
             //Arrange
-            const props = {...initProps};
-            const state =  { totalSitesPopup: {sites: [{ siteType: 'Credit', siteGroup: 1, siteNames:'siteNames' }]} };
-            const container = shallow(<DataGrid {...props}/>).instance();
+            const props = { ...initProps };
+            const state = { totalSitesPopup: { sites: [{ siteType: 'Credit', siteGroup: 1, siteNames: 'siteNames' }] } };
+            const container = shallow(<DataGrid {...props} />).instance();
             container.setState(state);
             container.handleCloseTotalSites = jest.fn()
 
@@ -589,7 +586,7 @@ describe('DataGrid', () => {
     describe('handleCloseTotalSites', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -602,11 +599,11 @@ describe('DataGrid', () => {
     });
 
     describe('renderSiteSection', () => {
-        const sites = [{ siteType: 'Credit', siteGroup: 1, siteNames:'siteNames' }];
+        const sites = [{ siteType: 'Credit', siteGroup: 1, siteNames: 'siteNames' }];
 
         it('should call exactly function when click total-site', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleOpenTotalSites = jest.fn();
             container.copySitesToClipboard = jest.fn();
@@ -621,7 +618,7 @@ describe('DataGrid', () => {
 
         it('should call exactly function when click copySitesToClipboard', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.handleOpenTotalSites = jest.fn();
             container.copySitesToClipboard = jest.fn();
@@ -638,7 +635,7 @@ describe('DataGrid', () => {
     describe('renderMapSite', () => {
         it('should call exactly props functions', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.renderSiteSection = jest.fn();
 
@@ -653,7 +650,7 @@ describe('DataGrid', () => {
     describe('renderCollapseContent', () => {
         it('should render exactly', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const item = {
                 createdTime: '',
                 subject: 'subject'
@@ -671,7 +668,7 @@ describe('DataGrid', () => {
     describe('contentBlock', () => {
         it('should render exactly', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
@@ -685,7 +682,7 @@ describe('DataGrid', () => {
     describe('renderMapOstContent', () => {
         it('should render exactly', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const item = {
                 createdTime: '',
                 subject: 'subject',
@@ -723,7 +720,7 @@ describe('DataGrid', () => {
 
         it('should render exactly when click text-session', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.renderActionButtonOST = jest.fn();
             container.renderActionButtonCSD = jest.fn();
@@ -743,7 +740,7 @@ describe('DataGrid', () => {
 
         it('should render exactly when click show-icon', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.renderActionButtonOST = jest.fn();
             container.renderActionButtonCSD = jest.fn();
@@ -763,7 +760,7 @@ describe('DataGrid', () => {
 
         it('should render exactly when isOstUser true', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<DataGrid {...props} />).instance();
             container.renderActionButtonOST = jest.fn();
             container.renderActionButtonCSD = jest.fn();

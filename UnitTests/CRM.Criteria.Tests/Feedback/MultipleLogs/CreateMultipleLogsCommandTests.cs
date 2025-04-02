@@ -1,160 +1,159 @@
-﻿namespace CRM.Criteria.Tests.Feedback.MultipleLogs
+﻿namespace CRM.Criteria.Tests.Feedback.MultipleLogs;
+
+using System.Collections.Generic;
+using AutoFixture;
+using CRM.Criteria.Feedback.MultipleLogs;
+using CRM.Models;
+using CRM.Models.Feedback;
+using CRM.Models.Feedback.MultipleLogs;
+using Extensions.XML;
+using Xunit;
+
+public class CreateMultipleLogsCommandTests
 {
-    using System.Collections.Generic;
-    using AutoFixture;
-    using CRM.Core.Extensions.XML;
-    using CRM.Criteria.Feedback.MultipleLogs;
-    using CRM.Models;
-    using CRM.Models.Feedback;
-    using CRM.Models.Feedback.MultipleLogs;
-    using Xunit;
+    private readonly IFixture fixture = new Fixture();
 
-    public class CreateMultipleLogsCommandTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        private readonly IFixture fixture = new Fixture();
+        // Arrange
+        var command = new CreateMultipleLogsCommand();
+        var expected = "Acc_CRM_NewManualFeedback_FeedbackIns_Multiple";
 
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
+        // Act
+        var actual = command.GetSettingKey();
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void IsValid_WhenCalled_ReturnTrue()
+    {
+        // Arrange
+        var command = new CreateMultipleLogsCommand();
+
+        // Act
+        var actual = command.IsValid();
+
+        // Assert
+        Assert.True(actual);
+    }
+
+    [Fact]
+    public void CategoryXml_CategoriesAreEmpty_ReturnEmpty()
+    {
+        // Arrange
+
+        // Act
+        var command = new CreateMultipleLogsCommand();
+
+        // Assert
+        Assert.Empty(command.CategoryXml);
+    }
+
+    [Fact]
+    public void CategoryXml_CategoriesHaveData_ReturnAsExpected()
+    {
+        // Arrange
+        var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
+
+        // Act
+        var command = new CreateMultipleLogsCommand
         {
-            // Arrange
-            var command = new CreateMultipleLogsCommand();
-            var expected = "Acc_CRM_NewManualFeedback_FeedbackIns_Multiple";
+            Categories = categories
+        };
 
-            // Act
-            var actual = command.GetSettingKey();
+        // Assert
+        Assert.Equal(categories.ToXML("ROOT").ToString(), command.CategoryXml);
+    }
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+    [Fact]
+    public void ProductXml_ProductsAreEmpty_ReturnEmpty()
+    {
+        // Arrange
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
+        // Act
+        var command = new CreateMultipleLogsCommand();
+
+        // Assert
+        Assert.Empty(command.ProductXml);
+    }
+
+    [Fact]
+    public void ProductXml_ProductsHaveData_ReturnAsExpected()
+    {
+        // Arrange
+        var products = fixture.Create<IEnumerable<ProductSubProductBettypeSetting>>();
+
+        // Act
+        var command = new CreateMultipleLogsCommand
         {
-            // Arrange
-            var command = new CreateMultipleLogsCommand();
+            Products = products
+        };
 
-            // Act
-            var actual = command.IsValid();
+        // Assert
+        Assert.Equal(products.ToXML("ROOT").ToString(), command.ProductXml);
+    }
 
-            // Assert
-            Assert.True(actual);
-        }
+    [Fact]
+    public void CustomerXml_CustomersAreEmpty_ReturnEmpty()
+    {
+        // Arrange
 
-        [Fact]
-        public void CategoryXml_CategoriesAreEmpty_ReturnEmpty()
+        // Act
+        var command = new CreateMultipleLogsCommand();
+
+        // Assert
+        Assert.Empty(command.CustomerXml);
+    }
+
+    [Fact]
+    public void CustomerXml_CustomersHaveData_ReturnAsExpected()
+    {
+        // Arrange
+        var customers = new List<BaseModel>
         {
-            // Arrange
+            new() { Id = 1, Name = "SH5111001" },
+            new() { Id = 2, Name = "SH5111002" }
+        };
+        var customerXml = "<ROOT><Cust CustId='1' Username='SH5111001' /><Cust CustId='2' Username='SH5111002' /></ROOT>";
 
-            // Act
-            var command = new CreateMultipleLogsCommand();
-
-            // Assert
-            Assert.Empty(command.CategoryXml);
-        }
-
-        [Fact]
-        public void CategoryXml_CategoriesHaveData_ReturnAsExpected()
+        // Act
+        var command = new CreateMultipleLogsCommand
         {
-            // Arrange
-            var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
+            Customers = customers
+        };
 
-            // Act
-            var command = new CreateMultipleLogsCommand
-            {
-                Categories = categories
-            };
+        // Assert
+        Assert.Equal(customerXml, command.CustomerXml);
+    }
 
-            // Assert
-            Assert.Equal(categories.ToXML("ROOT").ToString(), command.CategoryXml);
-        }
+    [Fact]
+    public void RelatedCustomerXml_RelatedCustomersAreEmpty_ReturnEmpty()
+    {
+        // Arrange
 
-        [Fact]
-        public void ProductXml_ProductsAreEmpty_ReturnEmpty()
+        // Act
+        var command = new CreateMultipleLogsCommand();
+
+        // Assert
+        Assert.Empty(command.RelatedCustomerXml);
+    }
+
+    [Fact]
+    public void RelatedCustomerXml_RelatedCustomersHaveData_ReturnAsExpected()
+    {
+        // Arrange
+        var relatedCustomers = fixture.Create<IEnumerable<VerifyRelatedCustomerResult>>();
+
+        // Act
+        var command = new CreateMultipleLogsCommand
         {
-            // Arrange
+            RelatedCustomers = relatedCustomers
+        };
 
-            // Act
-            var command = new CreateMultipleLogsCommand();
-
-            // Assert
-            Assert.Empty(command.ProductXml);
-        }
-
-        [Fact]
-        public void ProductXml_ProductsHaveData_ReturnAsExpected()
-        {
-            // Arrange
-            var products = fixture.Create<IEnumerable<ProductSubProductBettypeSetting>>();
-
-            // Act
-            var command = new CreateMultipleLogsCommand
-            {
-                Products = products
-            };
-
-            // Assert
-            Assert.Equal(products.ToXML("ROOT").ToString(), command.ProductXml);
-        }
-
-        [Fact]
-        public void CustomerXml_CustomersAreEmpty_ReturnEmpty()
-        {
-            // Arrange
-
-            // Act
-            var command = new CreateMultipleLogsCommand();
-
-            // Assert
-            Assert.Empty(command.CustomerXml);
-        }
-
-        [Fact]
-        public void CustomerXml_CustomersHaveData_ReturnAsExpected()
-        {
-            // Arrange
-            var customers = new List<BaseModel>
-            {
-                new BaseModel { Id = 1, Name = "SH5111001" },
-                new BaseModel { Id = 2, Name = "SH5111002" }
-            };
-            var customerXml = "<ROOT><Cust CustId='1' Username='SH5111001' /><Cust CustId='2' Username='SH5111002' /></ROOT>";
-
-            // Act
-            var command = new CreateMultipleLogsCommand
-            {
-                Customers = customers
-            };
-
-            // Assert
-            Assert.Equal(customerXml, command.CustomerXml);
-        }
-
-        [Fact]
-        public void RelatedCustomerXml_RelatedCustomersAreEmpty_ReturnEmpty()
-        {
-            // Arrange
-
-            // Act
-            var command = new CreateMultipleLogsCommand();
-
-            // Assert
-            Assert.Empty(command.RelatedCustomerXml);
-        }
-
-        [Fact]
-        public void RelatedCustomerXml_RelatedCustomersHaveData_ReturnAsExpected()
-        {
-            // Arrange
-            var relatedCustomers = fixture.Create<IEnumerable<VerifyRelatedCustomerResult>>();
-
-            // Act
-            var command = new CreateMultipleLogsCommand
-            {
-                RelatedCustomers = relatedCustomers
-            };
-
-            // Assert
-            Assert.Equal(relatedCustomers.ToXML("ROOT").ToString(), command.RelatedCustomerXml);
-        }
+        // Assert
+        Assert.Equal(relatedCustomers.ToXML("ROOT").ToString(), command.RelatedCustomerXml);
     }
 }

@@ -128,7 +128,8 @@ describe('common functions', () => {
             customerNameInput: '',
             description: '',
             subject: '',
-            ticketRefInput: ''
+            ticketRefInput: '',
+            rating: 0
         };
 
         it('initialValues correctly', () => {
@@ -242,7 +243,8 @@ describe('common functions', () => {
                 headlineStaffInfoCommunications: [],
                 headlineStaffInfoLanguages: undefined,
                 headlineStaffInfoPics: undefined,
-                otherAccountCommunicationInfos: []
+                otherAccountCommunicationInfos: [],
+                rating: 0
             };
 
             const customerDetail = { ...values };
@@ -581,7 +583,9 @@ describe('common functions', () => {
                 Subject: undefined,
                 TitleId: NaN,
                 UserName: undefined,
-                lastName: undefined
+                lastName: undefined,
+                IsOverwrite: undefined,
+                rating: NaN
             });
         });
     });

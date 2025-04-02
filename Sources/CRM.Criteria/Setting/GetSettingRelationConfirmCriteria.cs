@@ -1,17 +1,16 @@
-﻿namespace CRM.Criteria.Setting
+﻿namespace CRM.Criteria.Setting;
+
+using Fanex.Data.Repository;
+
+public class GetSettingRelationConfirmCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public string SettingID { get; set; }
 
-    public class GetSettingRelationConfirmCriteria : CriteriaBase
-    {
-        public string SettingID { get; set; }
+    public int ParentID { get; set; }
 
-        public int ParentID { get; set; }
+    public string SettingName { get; set; }
 
-        public string SettingName { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_SettingRelationConfirm";
 
-        public override string GetSettingKey() => "Acc_CRM_SettingRelationConfirm";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

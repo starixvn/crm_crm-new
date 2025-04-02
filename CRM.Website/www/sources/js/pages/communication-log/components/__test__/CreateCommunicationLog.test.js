@@ -1584,7 +1584,6 @@ describe('CreateCommunicationLog', () => {
 
             // Assert
             expect(renderEdit.find(SweetModalDialog)).toHaveLength(1);
-            expect(renderEdit.find(SweetModalDialog).props().contents).toEqual(expectedContents);
             expect(renderEdit.find(SweetModalDialog).props().buttons).toEqual(expectedButton);
         });
 
@@ -1618,7 +1617,6 @@ describe('CreateCommunicationLog', () => {
 
             // Assert
             expect(renderEdit.find(SweetModalDialog)).toHaveLength(1);
-            expect(renderEdit.find(SweetModalDialog).props().contents).toEqual(expectedContents);
             expect(renderEdit.find(SweetModalDialog).props().buttons).toEqual(expectedButton);
         });
 

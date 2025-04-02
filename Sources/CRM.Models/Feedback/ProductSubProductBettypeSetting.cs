@@ -1,19 +1,18 @@
-﻿namespace CRM.Models.Feedback
+﻿namespace CRM.Models.Feedback;
+
+using System;
+using Extensions.XML;
+
+[Serializable]
+[XMLName("Product")]
+public class ProductSubProductBettypeSetting
 {
-    using System;
-    using CRM.Core.Extensions.XML;
+    [XMLName("ProductID")]
+    public int ProductId { get; set; }
 
-    [Serializable]
-    [XMLName("Product")]
-    public class ProductSubProductBettypeSetting
-    {
-        [XMLName("ProductID")]
-        public int ProductId { get; set; }
+    [XMLName("SubProductID")]
+    public int SubProductId { get; set; }
 
-        [XMLName("SubProductID")]
-        public int SubProductId { get; set; }
-
-        [XMLName("BetTypeID")]
-        public int BettypeId { get; set; }
-    }
+    [XMLName("BetTypeID")]
+    public int BettypeId { get; set; }
 }

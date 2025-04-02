@@ -1,9 +1,8 @@
-﻿namespace CRM.Models.NotificationType
-{
-    public class DeleteNotificationType
-    {
-        public int NotificationTypeId { get; set; }
+﻿namespace CRM.Models.NotificationType;
 
-        public string NotificationTypeName { get; set; }
-    }
+public class DeleteNotificationType
+{
+    public int NotificationTypeId { get; set; }
+
+    public string NotificationTypeName { get; set; }
 }

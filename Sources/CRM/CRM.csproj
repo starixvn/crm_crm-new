@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Fanex.Caching" Version="2.2.8" />
+        <PackageReference Include="Fanex.Data.ProxyClient" Version="1.0.3.4" />
+        <PackageReference Include="Fanex.Logging" Version="2.0.2" />
+        <PackageReference Include="Fanex.Logging.Extensions" Version="1.1.0" />
+        <PackageReference Include="Fanex.NAP.Client" Version="2.0.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
+	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
+    </ItemGroup>
+</Project>

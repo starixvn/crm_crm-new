@@ -1,13 +1,12 @@
-﻿namespace CRM.ViewModels.ChatTypeMapping
+﻿namespace CRM.ViewModels.ChatTypeMapping;
+
+using System.Collections.Generic;
+
+public class TelegramVerificationViewModel
 {
-    using System.Collections.Generic;
+    public long BotId { get; set; }
 
-    public class TelegramVerificationViewModel
-    {
-        public long BotId { get; set; }
+    public string GroupConversationId { get; set; }
 
-        public string GroupConversationId { get; set; }
-
-        public List<string> ChatIdMembers { get; set; }
-    }
+    public List<string> ChatIdMembers { get; set; }
 }

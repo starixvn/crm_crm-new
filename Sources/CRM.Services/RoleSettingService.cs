@@ -1,25 +1,25 @@
-﻿using CRM.Core.Constants;
-using CRM.Resources;
+﻿using CRM.Resources;
 
-namespace CRM.Services
+namespace CRM.Services;
+
+using Constants;
+
+public static class RoleSettingService
 {
-    public static class RoleSettingService
+#pragma warning disable S1541
+    public static string GetRoleName(int roleId)
     {
-        #pragma warning disable S1541
-        public static string GetRoleName(int roleId)
+        var roleName = roleId switch
         {
-            string roleName = roleId switch
-            {
-                RoleIdConstants.Member or RoleIdConstants.CRMMember => ViewResources.Member,
-                RoleIdConstants.Agent or RoleIdConstants.CRMAgent => ViewResources.Agent,
-                RoleIdConstants.Master or RoleIdConstants.CRMMaster => ViewResources.Master,
-                RoleIdConstants.Super or RoleIdConstants.CRMSuper => ViewResources.Super,
-                RoleIdConstants.Headline => ViewResources.Headline,
-                RoleIdConstants.Account => ViewResources.Account,
-                _ => ViewResources.Guest,
-            };
-            return roleName;
-        }
-        #pragma warning restore S1541
+            RoleIdConstants.Member or RoleIdConstants.CRMMember => ViewResources.Member,
+            RoleIdConstants.Agent or RoleIdConstants.CRMAgent => ViewResources.Agent,
+            RoleIdConstants.Master or RoleIdConstants.CRMMaster => ViewResources.Master,
+            RoleIdConstants.Super or RoleIdConstants.CRMSuper => ViewResources.Super,
+            RoleIdConstants.Headline => ViewResources.Headline,
+            RoleIdConstants.Account => ViewResources.Account,
+            _ => ViewResources.Guest,
+        };
+        return roleName;
     }
+#pragma warning restore S1541
 }

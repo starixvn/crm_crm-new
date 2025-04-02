@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.NewRemark
+﻿namespace CRM.Criteria.NewRemark;
+
+using Fanex.Data.Repository;
+
+public class GetRelatedPicsCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public int CustId { get; set; }
 
-    public class GetRelatedPicsCriteria : CriteriaBase
-    {
-        public int CustId { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_CustomerPicSel";
 
-        public override string GetSettingKey() => "Acc_CRM_CustomerPicSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

@@ -1,8 +1,7 @@
-﻿namespace CRM.Models.FeedbackSubject
+﻿namespace CRM.Models.AdminTool.FeedbackSubject;
+
+public class EditFeedbackSubjectTemplate
 {
-    public class EditFeedbackSubjectTemplate
-    {
-        public int TemplateId { get; set; }
-        public string Subject { get; set; }
-    }
+    public int TemplateId { get; set; }
+    public string Subject { get; set; }
 }

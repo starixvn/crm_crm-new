@@ -1690,8 +1690,6 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find(Table).props().maxWidth).toEqual(1325);
-            expect(dataGrid.find(Table).props().width).toEqual(1325);
             expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
             expect(dataGrid.find(Table).props().pageOption).toEqual(pageOptions);

@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+using System.Collections.Generic;
+
+public class PicOfDirectAccount
 {
-    using System.Collections.Generic;
+    public IEnumerable<PicModel> Pic { get; set; }
 
-    public class PicOfDirectAccount
-    {
-        public IEnumerable<PicModel> Pic { get; set; }
-
-        public IEnumerable<DirectAccountInfo> DirectAccounts { get; set; }
-    }
+    public IEnumerable<DirectAccountInfo> DirectAccounts { get; set; }
 }

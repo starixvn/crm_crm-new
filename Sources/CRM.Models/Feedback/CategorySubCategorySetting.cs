@@ -1,16 +1,15 @@
-﻿namespace CRM.Models.Feedback
+﻿namespace CRM.Models.Feedback;
+
+using System;
+using Extensions.XML;
+
+[Serializable]
+[XMLName("Category")]
+public class CategorySubCategorySetting
 {
-    using System;
-    using CRM.Core.Extensions.XML;
+    [XMLName("MainCategoryID")]
+    public int MainCategoryId { get; set; }
 
-    [Serializable]
-    [XMLName("Category")]
-    public class CategorySubCategorySetting
-    {
-        [XMLName("MainCategoryID")]
-        public int MainCategoryId { get; set; }
-
-        [XMLName("SubCategoryID")]
-        public int SubCategoryId { get; set; }
-    }
+    [XMLName("SubCategoryID")]
+    public int SubCategoryId { get; set; }
 }

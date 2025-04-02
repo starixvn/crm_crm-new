@@ -1,117 +1,116 @@
-﻿namespace CRM.Criteria.Tests.Feedback
+﻿namespace CRM.Criteria.Tests.Feedback;
+
+using System.Collections.Generic;
+using AutoFixture;
+using CRM.Criteria.Feedback;
+using CRM.Models.Feedback;
+using Extensions.XML;
+using Xunit;
+
+public class EditCustomerFeedbackCommandTests
 {
-    using System.Collections.Generic;
-    using AutoFixture;
-    using CRM.Core.Extensions.XML;
-    using CRM.Criteria.Feedback;
-    using CRM.Models.Feedback;
-    using Xunit;
+    private readonly IFixture fixture = new Fixture();
 
-    public class EditCustomerFeedbackCommandTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        private readonly IFixture fixture = new Fixture();
+        // Arrange
+        var command = new EditCustomerFeedbackCommand();
+        var expected = "Acc_CRM_FeedbackInfoUpd";
 
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
+        // Act
+        var actual = command.GetSettingKey();
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void IsValid_ParamsAreInvalid_ReturnFalse()
+    {
+        // Arrange
+        var command = new EditCustomerFeedbackCommand();
+
+        // Act
+        var actual = command.IsValid();
+
+        // Assert
+        Assert.False(actual);
+    }
+
+    [Fact]
+    public void IsValid_ParamsAreValid_ReturnTrue()
+    {
+        // Arrange
+        var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
+        var command = new EditCustomerFeedbackCommand
         {
-            // Arrange
-            var command = new EditCustomerFeedbackCommand();
-            var expected = "Acc_CRM_FeedbackInfoUpd";
+            FeedbackId = 1,
+            CommunicationToolIds = "1,2",
+            LanguageId = 1,
+            Categories = categories
+        };
 
-            // Act
-            var actual = command.GetSettingKey();
+        // Act
+        var actual = command.IsValid();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.True(actual);
+    }
 
-        [Fact]
-        public void IsValid_ParamsAreInvalid_ReturnFalse()
+    [Fact]
+    public void CategoryXml_CategoriesAreEmpty_ReturnEmpty()
+    {
+        // Arrange
+
+        // Act
+        var command = new EditCustomerFeedbackCommand();
+
+        // Assert
+        Assert.Empty(command.CategoryXml);
+    }
+
+    [Fact]
+    public void CategoryXml_CategoriesHaveData_ReturnAsExpected()
+    {
+        // Arrange
+        var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
+
+        // Act
+        var command = new EditCustomerFeedbackCommand
         {
-            // Arrange
-            var command = new EditCustomerFeedbackCommand();
+            Categories = categories
+        };
 
-            // Act
-            var actual = command.IsValid();
+        // Assert
+        Assert.Equal(categories.ToXML("ROOT").ToString(), command.CategoryXml);
+    }
 
-            // Assert
-            Assert.False(actual);
-        }
+    [Fact]
+    public void ProductXml_ProductsAreEmpty_ReturnEmpty()
+    {
+        // Arrange
 
-        [Fact]
-        public void IsValid_ParamsAreValid_ReturnTrue()
+        // Act
+        var command = new EditCustomerFeedbackCommand();
+
+        // Assert
+        Assert.Empty(command.ProductXml);
+    }
+
+    [Fact]
+    public void ProductXml_ProductsHaveData_ReturnAsExpected()
+    {
+        // Arrange
+        var products = fixture.Create<IEnumerable<ProductSubProductBettypeSetting>>();
+
+        // Act
+        var command = new EditCustomerFeedbackCommand
         {
-            // Arrange
-            var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
-            var command = new EditCustomerFeedbackCommand
-            {
-                FeedbackId = 1,
-                CommunicationToolIds = "1,2",
-                LanguageId = 1,
-                Categories = categories
-            };
+            Products = products
+        };
 
-            // Act
-            var actual = command.IsValid();
-
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Fact]
-        public void CategoryXml_CategoriesAreEmpty_ReturnEmpty()
-        {
-            // Arrange
-
-            // Act
-            var command = new EditCustomerFeedbackCommand();
-
-            // Assert
-            Assert.Empty(command.CategoryXml);
-        }
-
-        [Fact]
-        public void CategoryXml_CategoriesHaveData_ReturnAsExpected()
-        {
-            // Arrange
-            var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
-
-            // Act
-            var command = new EditCustomerFeedbackCommand
-            {
-                Categories = categories
-            };
-
-            // Assert
-            Assert.Equal(categories.ToXML("ROOT").ToString(), command.CategoryXml);
-        }
-
-        [Fact]
-        public void ProductXml_ProductsAreEmpty_ReturnEmpty()
-        {
-            // Arrange
-
-            // Act
-            var command = new EditCustomerFeedbackCommand();
-
-            // Assert
-            Assert.Empty(command.ProductXml);
-        }
-
-        [Fact]
-        public void ProductXml_ProductsHaveData_ReturnAsExpected()
-        {
-            // Arrange
-            var products = fixture.Create<IEnumerable<ProductSubProductBettypeSetting>>();
-
-            // Act
-            var command = new EditCustomerFeedbackCommand
-            {
-                Products = products
-            };
-
-            // Assert
-            Assert.Equal(products.ToXML("ROOT").ToString(), command.ProductXml);
-        }
+        // Assert
+        Assert.Equal(products.ToXML("ROOT").ToString(), command.ProductXml);
     }
 }

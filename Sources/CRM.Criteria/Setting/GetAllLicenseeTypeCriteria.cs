@@ -1,14 +1,13 @@
-﻿namespace CRM.Criteria.Setting
+﻿namespace CRM.Criteria.Setting;
+
+using Constants;
+using Fanex.Data.Repository;
+
+public class GetAllLicenseeTypeCriteria : CriteriaBase
 {
-    using CRM.Core.Constants;
-    using Fanex.Data.Repository;
+    public byte UserRole { get; } = Constants.UserRole;
 
-    public class GetAllLicenseeTypeCriteria : CriteriaBase
-    {
-        public byte UserRole { get; } = Constants.UserRole;
+    public override string GetSettingKey() => "Acc_CRM_LicenseeTypeSel";
 
-        public override string GetSettingKey() => "Acc_CRM_LicenseeTypeSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

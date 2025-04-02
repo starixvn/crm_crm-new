@@ -1,10 +1,9 @@
-﻿namespace CRM.Models.Feedback
-{
-    using System;
+﻿namespace CRM.Models.Feedback;
 
-    public class BalanceUpday
-    {
-        public DateTime BalanceUpDay { get; set; }
-        public DateTime MoveBetsDay { get; set; }
-    }
+using System;
+
+public class BalanceUpday
+{
+    public DateTime BalanceUpDay { get; set; }
+    public DateTime MoveBetsDay { get; set; }
 }

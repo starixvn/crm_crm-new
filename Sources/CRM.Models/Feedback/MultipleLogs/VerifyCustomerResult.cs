@@ -1,15 +1,14 @@
-﻿namespace CRM.Models.Feedback.MultipleLogs
+﻿namespace CRM.Models.Feedback.MultipleLogs;
+
+public class VerifyCustomerResult
 {
-    public class VerifyCustomerResult
-    {
-        public int HeadlineId { get; set; }
-        public string Headline { get; set; }
-        public int CustId { get; set; }
-        public string Username { get; set; }
-        public bool IsHeadline { get; set; }
-        public bool IsDirectAccount { get; set; }
-        public bool IsSiteActive { get; set; }
-        public bool IsLicensee { get; set; }
-        public bool IsAuthorized { get; set; }
-    }
+    public int HeadlineId { get; set; }
+    public string Headline { get; set; }
+    public int CustId { get; set; }
+    public string Username { get; set; }
+    public bool IsHeadline { get; set; }
+    public bool IsDirectAccount { get; set; }
+    public bool IsSiteActive { get; set; }
+    public bool IsLicensee { get; set; }
+    public bool IsAuthorized { get; set; }
 }

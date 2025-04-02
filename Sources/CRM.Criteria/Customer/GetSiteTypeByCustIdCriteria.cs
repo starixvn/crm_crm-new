@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.Customer
+﻿namespace CRM.Criteria.Customer;
+
+using Models;
+
+public class GetSiteTypeByCustIdCriteria : BaseNonQueryCommand
 {
-    using CRM.Core.Models;
+    public int CustId { get; set; }
 
-    public class GetSiteTypeByCustIdCriteria : BaseNonQueryCommand
-    {
-        public int CustId { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_CustomerCheckSiteType";
 
-        public override string GetSettingKey() => "Acc_CRM_CustomerCheckSiteType";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

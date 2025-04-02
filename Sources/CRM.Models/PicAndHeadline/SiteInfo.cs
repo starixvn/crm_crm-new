@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+public class SiteInfo
 {
-    public class SiteInfo
-    {
-        public string SiteLabel { get; set; }
+    public string SiteLabel { get; set; }
 
-        public int SiteID { get; set; }
+    public int SiteID { get; set; }
 
-        public string Site { get; set; }
-    }
+    public string Site { get; set; }
 }

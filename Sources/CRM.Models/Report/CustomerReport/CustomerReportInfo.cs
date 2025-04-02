@@ -1,11 +1,10 @@
-﻿namespace CRM.Models.Report.CustomerReport
+﻿namespace CRM.Models.Report.CustomerReport;
+
+using System.Collections.Generic;
+
+public class CustomerReportInfo
 {
-    using System.Collections.Generic;
+    public IEnumerable<CustomerInfo> CustomerList { get; set; }
 
-    public class CustomerReportInfo
-    {
-        public IEnumerable<CustomerInfo> CustomerList { get; set; }
-
-        public int TotalCustomer { get; set; }
-    }
+    public int TotalCustomer { get; set; }
 }

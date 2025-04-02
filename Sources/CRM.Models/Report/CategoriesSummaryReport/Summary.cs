@@ -1,12 +1,11 @@
-﻿namespace CRM.Models.Report.CategoriesSummaryReport
+﻿namespace CRM.Models.Report.CategoriesSummaryReport;
+
+using System;
+
+[Serializable]
+public class Summary
 {
-    using System;
+    public string Month { get; set; }
 
-    [Serializable]
-    public class Summary
-    {
-        public string Month { get; set; }
-
-        public int Amount { get; set; }
-    }
+    public int Amount { get; set; }
 }

@@ -1,7 +1,6 @@
-﻿namespace CRM.Models.NotificationTemplate
+﻿namespace CRM.Models.NotificationTemplate;
+
+public class EditNotificationTemplate : CreateNotificationTemplate
 {
-    public class EditNotificationTemplate : CreateNotificationTemplate
-    {
-        public int NotificationTemplateId { get; set; }
-    }
+    public int NotificationTemplateId { get; set; }
 }

@@ -1,15 +1,14 @@
-﻿namespace CRM.Criteria.FeedbackSubject
+﻿namespace CRM.Criteria.AdminTool.FeedbackSubject;
+
+using Constants;
+using Fanex.Data.Repository;
+
+public class GetFeedbackSubjectTemplateCriteria : CriteriaBase
 {
-    using CRM.Core.Constants;
-    using Fanex.Data.Repository;
+    public int TemplateId { get; set; }
+    public byte UserRole { get; } = Constants.UserRole;
 
-    public class GetFeedbackSubjectTemplateCriteria : CriteriaBase
-    {
-        public int TemplateId { get; set; }
-        public byte UserRole { get; } = Constants.UserRole;
+    public override string GetSettingKey() => "Acc_CRM_SubjectTemplateSel";
 
-        public override string GetSettingKey() => "Acc_CRM_SubjectTemplateSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

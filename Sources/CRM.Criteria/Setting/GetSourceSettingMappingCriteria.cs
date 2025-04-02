@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.Setting
+﻿namespace CRM.Criteria.Setting;
+
+using Fanex.Data.Repository;
+
+public class GetSourceSettingMappingCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public string Settings { get; set; }
 
-    public class GetSourceSettingMappingCriteria : CriteriaBase
-    {
-        public string Settings { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_SourceSettingMappingSel";
 
-        public override string GetSettingKey() => "Acc_CRM_SourceSettingMappingSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

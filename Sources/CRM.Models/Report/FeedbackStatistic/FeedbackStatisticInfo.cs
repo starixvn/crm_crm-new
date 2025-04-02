@@ -1,17 +1,16 @@
-﻿namespace CRM.Models.Report.FeedbackStatistic
+﻿namespace CRM.Models.Report.FeedbackStatistic;
+
+using System.Collections.Generic;
+
+public class FeedbackStatisticInfo: BaseModel
 {
-    using System.Collections.Generic;
+    public string Title { get; set; }
 
-    public class FeedbackStatisticInfo: BaseModel
-    {
-        public string Title { get; set; }
+    public IList<BaseModel> Usernames { get; set; } = new List<BaseModel>();
 
-        public IList<BaseModel> Usernames { get; set; } = new List<BaseModel>();
+    public int TotalItems { get; set; }
 
-        public int TotalItems { get; set; }
+    public IList<FeedbackCategory> FeedbackCategories { get; set; } = new List<FeedbackCategory>();
 
-        public IList<FeedbackCategory> FeedbackCategories { get; set; } = new List<FeedbackCategory>();
-
-        public int[] GrandTotals { get; set; }
-    }
+    public int[] GrandTotals { get; set; }
 }

@@ -1,35 +1,34 @@
-﻿namespace CRM.Criteria.Tests.PicAndHeadline
+﻿namespace CRM.Criteria.Tests.PicAndHeadline;
+
+using CRM.Criteria.PicAndHeadline;
+using Xunit;
+
+public class GetActionTypeCriteriaTests
 {
-    using CRM.Criteria.PicAndHeadline;
-    using Xunit;
-
-    public class GetActionTypeCriteriaTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
-        {
-            // Arrange
-            var criteria = new GetActionTypeCriteria();
-            var expected = "Acc_CRM_ActionTypeSel";
+        // Arrange
+        var criteria = new GetActionTypeCriteria();
+        var expected = "Acc_CRM_ActionTypeSel";
 
-            // Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = criteria.GetSettingKey();
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void IsValid_ParamIsValid_ReturnTrue()
-        {
-            // Arrange
-            var criteria = new GetActionTypeCriteria();
+    [Fact]
+    public void IsValid_ParamIsValid_ReturnTrue()
+    {
+        // Arrange
+        var criteria = new GetActionTypeCriteria();
 
-            // Act
-            var actual = criteria.IsValid();
+        // Act
+        var actual = criteria.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
+        // Assert
+        Assert.True(actual);
     }
 }

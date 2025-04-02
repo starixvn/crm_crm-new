@@ -68,7 +68,7 @@ describe('FeedbackInfo', () => {
             const feedbackInfo = shallow(<FeedbackInfo {...props} />);
 
             // Assert
-            expect(feedbackInfo.find(Form.Control)).toHaveLength(4);
+            expect(feedbackInfo.find(Form.Control)).toHaveLength(5);
         });
 
         it('onClick call exactly function', () => {
@@ -112,7 +112,7 @@ describe('FeedbackInfo', () => {
             const roleInfo = shallow(feedbackInfo.instance().renderRoleSection());
 
             // Action
-            roleInfo.find(Form.Control).at(3).simulate('paste', event);
+            roleInfo.find(Form.Control).at(4).simulate('paste', event);
 
             // Assert
             expect(props.onPasteCustomer).toHaveBeenCalled();

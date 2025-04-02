@@ -1,56 +1,55 @@
-﻿namespace CRM.Criteria.Tests.Customer
+﻿namespace CRM.Criteria.Tests.Customer;
+
+using CRM.Criteria.Customer;
+using Xunit;
+
+public class ValidateEditNewPicCriteriaTests
 {
-    using CRM.Criteria.Customer;
-    using Xunit;
-
-    public class ValidateEditNewPicCriteriaTests
+    [Fact]
+    public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
     {
-        [Fact]
-        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
+        //Arrange
+        var criteria = new ValidateEditNewPicCriteria();
+        var expected = "Acc_CRM_NewAccDetail_PicUpdValidation";
+
+        //Act
+        var actual = criteria.GetSettingKey();
+
+        //Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    public void IsValid_WhenCalled_ReturnTrue(int picId)
+    {
+        // Arrange
+        var command = new ValidateEditNewPicCriteria
         {
-            //Arrange
-            var criteria = new ValidateEditNewPicCriteria();
-            var expected = "Acc_CRM_NewAccDetail_PicUpdValidation";
+            PicId = picId
+        };
 
-            //Act
-            var actual = criteria.GetSettingKey();
+        // Act
+        var actual = command.IsValid();
 
-            //Assert
-            Assert.Equal(expected, actual);
-        }
+        // Assert
+        Assert.True(actual);
+    }
 
-        [Theory]
-        [InlineData(1)]
-        public void IsValid_WhenCalled_ReturnTrue(int picId)
+    [Theory]
+    [InlineData(0)]
+    public void IsInValid_WhenCalled_ReturnFalse(int picId)
+    {
+        // Arrange
+        var command = new ValidateEditNewPicCriteria
         {
-            // Arrange
-            var command = new ValidateEditNewPicCriteria
-            {
-                PicId = picId
-            };
+            PicId = picId
+        };
 
-            // Act
-            var actual = command.IsValid();
+        // Act
+        var actual = command.IsValid();
 
-            // Assert
-            Assert.True(actual);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        public void IsInValid_WhenCalled_ReturnFalse(int picId)
-        {
-            // Arrange
-            var command = new ValidateEditNewPicCriteria
-            {
-                PicId = picId
-            };
-
-            // Act
-            var actual = command.IsValid();
-
-            // Assert
-            Assert.False(actual);
-        }
+        // Assert
+        Assert.False(actual);
     }
 }

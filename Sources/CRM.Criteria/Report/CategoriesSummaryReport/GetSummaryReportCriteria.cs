@@ -1,22 +1,21 @@
-﻿namespace CRM.Criteria.Report.CategoriesSummaryReport
+﻿namespace CRM.Criteria.Report.CategoriesSummaryReport;
+
+using Fanex.Data;
+
+public class GetSummaryReportCriteria : BaseSitePermisionCriteria
 {
-    using Fanex.Data;
+    private readonly int minYear = 2011;
 
-    public class GetSummaryReportCriteria : BaseSitePermisionCriteria
-    {
-        private readonly int minYear = 2011;
+    public int Year { get; set; }
 
-        public int Year { get; set; }
+    public int SiteType { get; set; }
 
-        public int SiteType { get; set; }
+    public int TimeSpan { get; set; }
 
-        public int TimeSpan { get; set; }
+    [SpParam(Ignored = true)]
+    public string Categories { get; set; }
 
-        [SpParam(Ignored = true)]
-        public string Categories { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_Rpt_FeedbackStatisticsSummary";
 
-        public override string GetSettingKey() => "Acc_CRM_Rpt_FeedbackStatisticsSummary";
-
-        public override bool IsValid() => Year >= minYear;
-    }
+    public override bool IsValid() => Year >= minYear;
 }

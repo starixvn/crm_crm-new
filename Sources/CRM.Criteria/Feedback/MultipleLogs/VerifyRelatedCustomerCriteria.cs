@@ -1,12 +1,11 @@
-﻿namespace CRM.Criteria.Feedback.MultipleLogs
+﻿namespace CRM.Criteria.Feedback.MultipleLogs;
+
+public class VerifyRelatedCustomerCriteria : BaseSitePermisionCriteria
 {
-    public class VerifyRelatedCustomerCriteria : BaseSitePermisionCriteria
-    {
-        public string HeadlineIds { get; set; }
-        public string Username { get; set; }
+    public string HeadlineIds { get; set; }
+    public string Username { get; set; }
 
-        public override string GetSettingKey() => "CRM_MultipleLogs_VerifyRelatedCustomer";
+    public override string GetSettingKey() => "CRM_MultipleLogs_VerifyRelatedCustomer";
 
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(HeadlineIds) && !string.IsNullOrWhiteSpace(Username);
-    }
+    public override bool IsValid() => !string.IsNullOrWhiteSpace(HeadlineIds) && !string.IsNullOrWhiteSpace(Username);
 }

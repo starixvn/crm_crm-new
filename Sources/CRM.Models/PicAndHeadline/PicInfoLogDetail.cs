@@ -1,19 +1,18 @@
-﻿namespace CRM.Models.PicAndHeadline
+﻿namespace CRM.Models.PicAndHeadline;
+
+using System.Xml.Serialization;
+
+public class PicInfoLogDetail
 {
-    using System.Xml.Serialization;
+    [XmlAttribute("PicID")]
+    public int PicId { get; set; }
 
-    public class PicInfoLogDetail
-    {
-        [XmlAttribute("PicID")]
-        public int PicId { get; set; }
+    [XmlAttribute("PicName")]
+    public string PicName { get; set; }
 
-        [XmlAttribute("PicName")]
-        public string PicName { get; set; }
+    [XmlAttribute("RoleID")]
+    public int RoleId { get; set; }
 
-        [XmlAttribute("RoleID")]
-        public int RoleId { get; set; }
-
-        [XmlAttribute("RoleName")]
-        public string RoleName { get; set; }
-    }
+    [XmlAttribute("RoleName")]
+    public string RoleName { get; set; }
 }

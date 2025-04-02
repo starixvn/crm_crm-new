@@ -1,9 +1,8 @@
-﻿namespace CRM.Models.InformHeadline
-{
-    public class InformStatus
-    {
-        public int SettingId { get; set; }
+﻿namespace CRM.Models.InformHeadline;
 
-        public string SettingValue { get; set; }
-    }
+public class InformStatus
+{
+    public int SettingId { get; set; }
+
+    public string SettingValue { get; set; }
 }

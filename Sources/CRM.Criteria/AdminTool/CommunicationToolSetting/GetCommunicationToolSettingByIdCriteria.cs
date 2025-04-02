@@ -1,13 +1,12 @@
-﻿namespace CRM.Criteria.AdminTool.CommunicationToolSetting
+﻿namespace CRM.Criteria.AdminTool.CommunicationToolSetting;
+
+using Fanex.Data.Repository;
+
+public class GetCommunicationToolSettingByIdCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public int DefaultCommId { get; set; }
 
-    public class GetCommunicationToolSettingByIdCriteria : CriteriaBase
-    {
-        public int DefaultCommId { get; set; }
+    public override string GetSettingKey() => "Acc_CRM_DefaultCommToolSel";
 
-        public override string GetSettingKey() => "Acc_CRM_DefaultCommToolSel";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

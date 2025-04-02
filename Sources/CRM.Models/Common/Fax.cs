@@ -1,27 +1,26 @@
-﻿namespace CRM.Models.Common
+﻿namespace CRM.Models.Common;
+
+public class Fax
 {
-    public class Fax
+    public string CountryCode { get; set; }
+
+    public string AreaCode { get; set; }
+
+    public string FaxNumber { get; set; }
+
+    public override string ToString()
     {
-        public string CountryCode { get; set; }
+        var firstJoin = JoinTwoFields(CountryCode, AreaCode);
+        return JoinTwoFields(firstJoin, FaxNumber);
+    }
 
-        public string AreaCode { get; set; }
-
-        public string FaxNumber { get; set; }
-
-        public override string ToString()
+    private static string JoinTwoFields(string name, string value)
+    {
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(value))
         {
-            string firstJoin = JoinTwoFields(CountryCode, AreaCode);
-            return JoinTwoFields(firstJoin, FaxNumber);
+            return name + value;
         }
 
-        private static string JoinTwoFields(string name, string value)
-        {
-            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(value))
-            {
-                return name + value;
-            }
-
-            return name + " - " + value;
-        }
+        return name + " - " + value;
     }
 }

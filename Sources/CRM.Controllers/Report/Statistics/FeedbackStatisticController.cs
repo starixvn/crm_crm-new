@@ -1,115 +1,100 @@
-﻿namespace CRM.Services.Report
+﻿namespace CRM.Controllers.Report.Statistics;
+
+using System.Linq;
+using System.Threading.Tasks;
+using Constants;
+using CRM.Controllers;
+using CRM.Criteria.Report.FeedbackStatistic;
+using CRM.Resources;
+using CRM.Services.Feedback;
+using Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Services;
+using Services.ExportExcel;
+using Services.Interfaces;
+
+public class FeedbackStatisticController(
+    IFeedbackService feedbackService,
+    ICommonService commonService,
+    ISettingService settingService,
+    IExportExcelService excelService,
+    IPermissionService permissionService)
+    : BaseController
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using CRM.Controllers;
-    using CRM.Core;
-    using CRM.Core.Constants;
-    using CRM.Core.Services;
-    using CRM.Criteria.Report.FeedbackStatistic;
-    using CRM.Models.Feedback;
-    using CRM.Models.Setting;
-    using CRM.Resources;
-    using CRM.Services.Feedback;
-    using Microsoft.AspNetCore.Mvc;
-
-    public class FeedbackStatisticController : BaseController
+    [HttpPost]
+    public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
     {
-        private readonly IFeedbackService feedbackService;
-        private readonly ICommonService commonService;
-        private readonly ISettingService settingService;
-        private readonly IExportExcelService excelService;
-        private readonly IPermissionService permissionService;
+        var title = string.Format(ViewResources.FeedbackStatisticTitle,
+            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+        criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+        criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+        criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-        public FeedbackStatisticController(IFeedbackService feedbackService,
-           ICommonService commonService,
-           ISettingService settingService,
-           IExportExcelService excelService,
-           IPermissionService permissionService)
+        var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+        feedbackStatistic.Title = title;
+        feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
+        if (feedbackStatistic.TotalItems > 0)
         {
-            this.feedbackService = feedbackService;
-            this.settingService = settingService;
-            this.commonService = commonService;
-            this.excelService = excelService;
-            this.permissionService = permissionService;
+            feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
+        return Json(feedbackStatistic);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
+    {
+        criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+        var feedbackDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);
+        var total = feedbackDetail.Count();
+        if (feedbackDetail.Any())
         {
-            var title = string.Format(ViewResources.FeedbackStatisticTitle,
-                                        criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-
-            var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
-            feedbackStatistic.Title = title;
-            feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
-            if (feedbackStatistic.TotalItems > 0)
-            {
-                feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            }
-
-            return Json(feedbackStatistic);
+            feedbackDetail = feedbackDetail.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
         }
+        var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+        var feedbacksOrder = feedbackDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+        return Json(new { data = feedbacksOrder, mainCategories, total });
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
-        {
-            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-            var feedbackDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);
-            var total = feedbackDetail.Count();
-            if (feedbackDetail.Any())
-            {
-                feedbackDetail = feedbackDetail.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            }
-            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-            var feedbacksOrder = feedbackDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
-            return Json(new { data = feedbacksOrder, mainCategories, total });
-        }
+    [HttpPost]
+    public async Task<IActionResult> ExportExcel([FromBody] GetFeedbackStatisticCriteria criteria)
+    {
+        criteria.PageIndex = 0;
+        var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
+        var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
+        var title = string.Format(ViewResources.FeedbackStatisticTitle,
+            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+        criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+        criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+        criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-        [HttpPost]
-        public async Task<IActionResult> ExportExcel([FromBody] GetFeedbackStatisticCriteria criteria)
-        {
-            criteria.PageIndex = 0;
-            var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
-            var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
-            var title = string.Format(ViewResources.FeedbackStatisticTitle,
-                            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+        var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+        feedbackStatistic.Title = title;
+        var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
+        var reportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
+        return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+    }
 
-            var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
-            feedbackStatistic.Title = title;
-            var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
-            string reportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
-            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
-        }
+    [HttpPost]
+    public async Task<IActionResult> ExportExcelDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
+    {
+        criteria.PageIndex = 0;
+        criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-        [HttpPost]
-        public async Task<IActionResult> ExportExcelDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
-        {
-            criteria.PageIndex = 0;
-            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+        var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
+        var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
+        var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,
+            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+        var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+        var feedbacksDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);
+        var feedbacksOrder = feedbacksDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
-            var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
-            var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
-            var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,
-                                        criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-            IEnumerable<DeletedFeedback> feedbacksDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);
-            var feedbacksOrder = feedbacksDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
-
-            var bytes = excelService.ExportStatisticFeedbackDetail(feedbacksOrder, mainCategories, title);
-            string reportName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
-            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
-        }
+        var bytes = excelService.ExportStatisticFeedbackDetail(feedbacksOrder, mainCategories, title);
+        var reportName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
+        return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
     }
 }

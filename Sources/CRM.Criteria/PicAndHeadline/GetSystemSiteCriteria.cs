@@ -1,11 +1,10 @@
-﻿namespace CRM.Criteria.PicAndHeadline
+﻿namespace CRM.Criteria.PicAndHeadline;
+
+using Fanex.Data.Repository;
+
+public class GetSystemSiteCriteria : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public override string GetSettingKey() => "Acc_SiteSel_Credit";
 
-    public class GetSystemSiteCriteria : CriteriaBase
-    {
-        public override string GetSettingKey() => "Acc_SiteSel_Credit";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

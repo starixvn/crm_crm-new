@@ -1,23 +1,22 @@
-﻿namespace CRM.Models.Report.LogStatistics
+﻿namespace CRM.Models.Report.LogStatistics;
+
+public class LogStatisticsEntity
 {
-    public class LogStatisticsEntity
-    {
-        public int MainCategoryId { get; set; }
+    public int MainCategoryId { get; set; }
 
-        public string MainCategory { get; set; }
+    public string MainCategory { get; set; }
 
-        public int SubCategoryId { get; set; }
+    public int SubCategoryId { get; set; }
 
-        public string SubCategory { get; set; }
+    public string SubCategory { get; set; }
 
-        public int CommunicationId { get; set; }
+    public int CommunicationId { get; set; }
 
-        public string Communication { get; set; }
+    public string Communication { get; set; }
 
-        public int ProductId { get; set; }
+    public int ProductId { get; set; }
 
-        public string Product { get; set; }
+    public string Product { get; set; }
 
-        public int Total { get; set; }
-    }
+    public int Total { get; set; }
 }

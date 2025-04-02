@@ -1,7 +1,6 @@
-﻿namespace CRM.Models.RemarkNew
+﻿namespace CRM.Models.RemarkNew;
+
+public class RemarkNewHistory : RemarkNewInfo
 {
-    public class RemarkNewHistory : RemarkNewInfo
-    {
-        public int VersionID { get; set; }
-    }
+    public int VersionID { get; set; }
 }
