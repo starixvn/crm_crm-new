@@ -130,11 +130,26 @@ public class FeedbackService(
     public async Task<FeedbackStatisticInfo> GetFeedbackStatisticAsync(ICriteria criteria)
     {
         var dataset = await dynamicRepository.FetchDataSetAsync(criteria);
-        var datareader = dataset.Tables[0].CreateDataReader();
-        var datareader2 = dataset.Tables[1].CreateDataReader();
-        var results = ReadFeedbackStatistic(datareader, datareader2);
+        var feedbackStatisticInfo = new FeedbackStatisticInfo
+        {
+            FeedbackCategories = new List<FeedbackCategory>(),
+            GrandTotals = Array.Empty<int>()
+        };
 
-        return results;
+        if (dataset.Tables.Count == 0)
+        {
+            return feedbackStatisticInfo;
+        }
+
+        var datareader = dataset.Tables[0].CreateDataReader();
+
+        if (dataset.Tables.Count <= 1)
+        {
+            return feedbackStatisticInfo;
+        }
+
+        var datareader2 = dataset.Tables[1].CreateDataReader();
+        return ReadFeedbackStatistic(datareader, datareader2);
     }
 
     private static FeedbackStatisticInfo ReadFeedbackStatistic(IDataReader reader, IDataReader reader2)
