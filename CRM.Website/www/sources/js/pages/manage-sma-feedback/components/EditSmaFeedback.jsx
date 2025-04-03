@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { ActionCreators } from '../actions';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
-import CkEditor from '@jsroot/components/ckeditor/index';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import MultipleSelect from '../../../components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { statusOptions } from '../common.functions';
@@ -38,18 +33,17 @@ export default class EditSmaFeedback extends Component {
         this.formik.setSubmitting(true);
 
         const params = this.getParams();
-        console.log('params', params);
-        // await this.props.editSmaFeedback(params).then(() => {
-        //     this.handleClosePopup();
-        //     if (this.props.editSmaFeedbackResult.isSuccessful) {
-        //         this.setState({ editResult: this.props.editSmaFeedbackResult.message });
-        //         setTimeout(() => {
-        //             this.props.setEditSmaFeedbackDialog(null);
-        //         }, 3000);
-        //     } else {
-        //         this.formik.setSubmitting(false);
-        //     }
-        // });
+        await this.props.editSmaFeedback(params).then(() => {
+            this.handleClosePopup();
+            if (this.props.editSmaFeedbackResult.isSuccessful) {
+                this.setState({ editResult: this.props.editSmaFeedbackResult.message });
+                setTimeout(() => {
+                    this.props.setEditSmaFeedbackDialog(null);
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
     };
 
     renderForm = ({

@@ -6,14 +6,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-import { Button, Modal } from 'react-bootstrap';
-import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
-import ConfirmPopup from '@jsroot/components/ConfirmPopup';
-import Site from '@jsroot/common/site';
-import { toast } from 'react-toastify';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -53,16 +46,16 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={14}>{LangHelper.getResource('createdDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={14}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Level')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Site')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Function')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('ReviewStatus')}</HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('Comment')}</HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('discussion')}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource('Comment')}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource('discussion')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={12}>{LangHelper.getResource('Action')}</HeaderCell>
+                    isHost && <HeaderCell colWidth={8}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
         )
@@ -76,7 +69,7 @@ export class DataGrid extends Component {
     };
 
     renderPanelItem = (item, index, panels) => (
-        item.length > 10 ?
+        item.length > 60 ?
         <Panel ref={panel => panels[index] = panel}>
             <PanelHeader>
                 <div>{item.slice(0, 10)}</div>
