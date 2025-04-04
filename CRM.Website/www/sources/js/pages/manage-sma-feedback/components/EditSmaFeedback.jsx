@@ -5,13 +5,17 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import { statusOptions } from '../common.functions';
 
-export default class EditSmaFeedback extends Component {
+export class EditSmaFeedback extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            editResult: null
         };
     }
 
@@ -33,12 +37,11 @@ export default class EditSmaFeedback extends Component {
         this.formik.setSubmitting(true);
 
         const params = this.getParams();
-        await this.props.editSmaFeedback(params).then(() => {
-            this.handleClosePopup();
-            if (this.props.editSmaFeedbackResult.isSuccessful) {
-                this.setState({ editResult: this.props.editSmaFeedbackResult.message });
+        await this.props.editSmaFeedback(params).then(response => {
+            if (response.isSuccessful) {
+                this.setState({ editResult: response });
                 setTimeout(() => {
-                    this.props.setEditSmaFeedbackDialog(null);
+                    this.props.onClose(true);
                 }, 3000);
             } else {
                 this.formik.setSubmitting(false);
@@ -107,7 +110,6 @@ export default class EditSmaFeedback extends Component {
         const { discussion, functionID, createdDate, custID } = this.props.data;
         const reviewStatus = this.props.data.reviewStatus ? this.props.data.reviewStatus : statusOptions[0].id;
         const initialValues = { reviewStatus, discussion, functionID, createdDate, custID };
-
         return (
             <Modal show className="edit-sma-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="md" centered
@@ -128,3 +130,7 @@ export default class EditSmaFeedback extends Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+export default connect(null, mapDispatchToProps)(EditSmaFeedback);

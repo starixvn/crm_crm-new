@@ -3,8 +3,7 @@ import DataService from '@jsroot/common/dataService';
 import {
     setGridParams,
     setGridData,
-    setEditSmaFeedbackDialog,
-    setEditSmaFeedback
+    setEditSmaFeedbackDialog
 } from './smaFeedbackSlice';
 
 const getGridData = params => async dispatch => {
@@ -17,9 +16,7 @@ const getGridData = params => async dispatch => {
 
 const editSmaFeedback = data => async dispatch => {
     const url = Site.resolveClientUrl('ManageSmaFeedback/EditSmaFeedback');
-    await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditSmaFeedback(response.data));
-    });
+    return await DataService.postDataAsync(url, data).then(response => response.data);
 };
 
 const exportExcel = params => async () => {
