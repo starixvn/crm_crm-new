@@ -4,6 +4,7 @@ import Site from '@jsroot/common/site';
 import{
     setGridParams,
     setGridData,
+    setRatingGridData,
     setGridParamDetails,
     setDetailsDataGrid,
     setOpenDetailPopup,
@@ -15,8 +16,12 @@ import{
 const getGridData = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('FeedbackStatistic/GetFeedbackStatistic');
-    await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setGridData(response.data));
+    await DataService.postDataAsync(url, params).then(response => {
+        if (params.type === 12 || params.type === 13) {
+            dispatch(setRatingGridData(response.data));
+        } else {
+            dispatch(setGridData(response.data));
+        }
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 

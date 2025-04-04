@@ -3,7 +3,7 @@
 using System;
 using Fanex.Data;
 
-public class GetLogsByCustomerIdCriteria : BaseSitePermisionCriteria
+public class GetLogsByCustomerIdCriteria : BaseSitePermissionCriteria
 {
     [SpParam(SqlParamName = "CustId")]
     public int CustomerId { get; set; }

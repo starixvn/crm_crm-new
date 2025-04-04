@@ -1,6 +1,6 @@
 ﻿namespace CRM.Criteria.Customer;
 
-public class GetCustomerInfoByUsernameCriteria : BaseSitePermisionCriteria
+public class GetCustomerInfoByUsernameCriteria : BaseSitePermissionCriteria
 {
     public string SearchInfo { get; set; }
     public bool IsGuest { get; set; }

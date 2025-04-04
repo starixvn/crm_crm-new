@@ -2,7 +2,7 @@
 
 public class FeedbackRatingRecord
 {
-    public string ColumnData { get; set; }
+    public BaseModel ColumnData { get; set; }
     public int Excellent { get; set; }
     public int Good { get; set; }
     public int Neutral { get; set; }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class FeedbackRatingReport
 {
     public string Title { get; set; }
-    public int TotalItems { get; set; }
-    public List<BaseModel> DynamicColumns { get; set; }
+    public int TotalItems => Records.Count;
+    public List<string> ColumnNames { get; set; }
     public List<FeedbackRatingRecord> Records { get; set; }
 }

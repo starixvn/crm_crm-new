@@ -2,7 +2,7 @@
 
 using Fanex.Data;
 
-public class GetCommunicationToolSettingCriteria : BaseSitePermisionCriteria
+public class GetCommunicationToolSettingCriteria : BaseSitePermissionCriteria
 {
     public string Username { get; set; }
 

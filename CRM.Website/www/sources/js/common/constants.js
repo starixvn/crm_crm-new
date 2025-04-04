@@ -20,19 +20,19 @@ export const TimeFormat = 'hh:mm:ss a';
 export const BackGroundChange = 'background-change';
 
 export const RoleIds = {
-    'Member': 1,
-    'CRMMember': 7000
+    Member: 1,
+    CRMMember: 7000,
 };
 
 export const MappingStatus = {
-    'BotRemoved': 0,
-    'NotMapped': 1,
-    'Mapped': 2
+    BotRemoved: 0,
+    NotMapped: 1,
+    Mapped: 2,
 };
 
 export const ChatTypeMapping = {
-    'Personal': 2,
-    'Group': 1
+    Personal: 2,
+    Group: 1,
 };
 
 export const MULTI_SELECT_TEXT_OPTIONS = {
@@ -40,7 +40,7 @@ export const MULTI_SELECT_TEXT_OPTIONS = {
     SelectedItemCount: '# selected',
     SelectOptions: LanguageHelper.getResource('PleaseSelect'),
     NoData: LanguageHelper.getResource('NoData'),
-    NA: LanguageHelper.getResource('N/A')
+    NA: LanguageHelper.getResource('N/A'),
 };
 
 export const AUTO_REFRESH_TIMES = [90, 120, 150, 180];
@@ -52,14 +52,14 @@ export const MaximumDisplayRelatedCustomer = 20;
 export const Policy = {
     None: 0,
     Read: 1,
-    Host: 2
+    Host: 2,
 };
 
 export const CustomerType = {
     NA: 0,
     Credit: 1,
-    Licensee: 2
-}
+    Licensee: 2,
+};
 
 export const FunctionKey = {
     NotificationList: 'NotificationList',
@@ -98,12 +98,12 @@ export const FunctionKey = {
     Announcement: 'Announcement',
     Remarks: 'Remarks',
     CategoryClassification: 'CategoryClassification',
-    NotificationCenter: 'NotificationCenter'
+    NotificationCenter: 'NotificationCenter',
 };
 
 export const BorderStyle = {
     bottom: 'border-bottom-0',
-    top: 'border-top-0'
+    top: 'border-top-0',
 };
 
 export const LogActions = {
@@ -124,14 +124,14 @@ export const LogActions = {
     UpdateChatTypeMappingStatus: 1009,
     UpdateChatTypeMappingRemark: 1010,
     InsertChatTypeMapping: 1007,
-    DeleteConversationGroup: 1011
+    DeleteConversationGroup: 1011,
 };
 
 export const DefaultLanguages = {
     NotApply: 0,
     English: 1200,
     Mandarin: 1201,
-    Cantonese: 1202
+    Cantonese: 1202,
 };
 
 export const DateTypeOption = [
@@ -142,7 +142,7 @@ export const DateTypeOption = [
     { id: 4, name: 'This Month' },
     { id: 5, name: 'Last Month' },
     { id: 6, name: 'This Year' },
-    { id: 7, name: 'Specific Dates' }
+    { id: 7, name: 'Specific Dates' },
 ];
 
 export const DateType = {
@@ -153,7 +153,7 @@ export const DateType = {
     ThisMonth: 4,
     LastMonth: 5,
     ThisYear: 6,
-    SpecificDates: 7
+    SpecificDates: 7,
 };
 
 export const FeedbackSelectionType = [
@@ -169,12 +169,21 @@ export const FeedbackSelectionType = [
     { name: 'By CommunicationTool', id: 10 },
     { name: 'By Rating', id: 11 },
     { name: 'By Date and Rating', id: 12 },
-    { name: 'By Creator and Rating', id: 13 }
+    { name: 'By Creator and Rating', id: 13 },
 ];
+
+export const Rating = {
+    NA: 0,
+    VeryPoor: 1,
+    Poor: 2,
+    Neutral: 3,
+    Good: 4,
+    Excellent: 5
+}
 
 export const ReportBy = [
     { name: 'Month', id: 1 },
-    { name: 'Year', id: 2 }
+    { name: 'Year', id: 2 },
 ];
 
 export const SubMainMenu = [
@@ -184,7 +193,7 @@ export const SubMainMenu = [
     { id: 4, url: '/SpecialRemark' },
     { id: 5, url: '/Remark' },
     { id: 6, url: '/Redemption' },
-    { id: 7, url: '/ActionLog' }
+    { id: 7, url: '/ActionLog' },
 ];
 
 export const DetailMenu = [
@@ -197,7 +206,7 @@ export const DetailMenu = [
     { id: 7, url: '/Remark', title: 'Remark' },
     { id: 8, url: '/ActionLog', title: 'ActivityLog' },
     { id: 9, url: '/Detail', title: 'CRMInfo' },
-    { id: 10, url: '/SpecialRemark', title: 'SpecialRemark' }
+    { id: 10, url: '/SpecialRemark', title: 'SpecialRemark' },
 ];
 
 export const Languages = ['EN', 'SC', 'TC', 'TH', 'YN'];
@@ -207,24 +216,35 @@ export const Statuses = [
     { id: 'Cancelled', name: 'Cancelled', checked: true },
     { id: 'Completed', name: 'Completed', checked: true },
     { id: 'In-Progress', name: 'In-Progress', checked: true },
-    { id: 'Draft', name: 'Draft', checked: true }
+    { id: 'Draft', name: 'Draft', checked: true },
 ];
 
-export const IsRemoveDatagridRedemption = true; export const IsRemoveVerify = true;
+export const IsRemoveDatagridRedemption = true;
+export const IsRemoveVerify = true;
 export const IsLastFiveRemarks = true;
-export const RemovePageUrl = ['DirectCustomerReport', 'CustomerReport', 'WagerReport', 'RedemptionStatisticsReport'];
+export const RemovePageUrl = [
+    'DirectCustomerReport',
+    'CustomerReport',
+    'WagerReport',
+    'RedemptionStatisticsReport',
+];
 export const BotServices = [
     { id: 0, name: 'All' },
     { id: 1, name: 'Letstalk' },
-    { id: 2, name: 'Telegram' }
+    { id: 2, name: 'Telegram' },
 ];
 
 export const BotServiceType = {
     Letstalk: 1,
-    Telegram: 2
+    Telegram: 2,
 };
 
-export const FieldErrorHeadlineCommunicationInfo = ['picName', 'role', 'communication', 'authority'];
+export const FieldErrorHeadlineCommunicationInfo = [
+    'picName',
+    'role',
+    'communication',
+    'authority',
+];
 export const Letstalk = 'Letstalk';
 export const Telegram = 'Telegram';
 

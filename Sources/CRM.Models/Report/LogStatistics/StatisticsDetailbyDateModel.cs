@@ -3,7 +3,6 @@
 using System;
 using System.Text.RegularExpressions;
 using CRM.Models.Common;
-using System;
 
 public class StatisticsDetailByDateModel : PersonalInfo
 {
@@ -43,7 +42,6 @@ public class StatisticsDetailByDateModel : PersonalInfo
             return phone;
         }
     }
-
 
     public string CountryName { get; set; }
     public string Skype { get; set; }

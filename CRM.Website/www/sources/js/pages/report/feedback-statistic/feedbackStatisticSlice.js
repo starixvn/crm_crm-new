@@ -9,6 +9,7 @@ const initialState = {
         pageSize: 100
     },
     gridData: null,
+    ratingGridData: null,
     details: null,
     detailPopup: { show: false},
     chart: { show: false, chartInfo: null},
@@ -24,6 +25,9 @@ const feedbackStatisticSlice = createSlice({
         },
         setGridData: (state, action) => {
             state.gridData = action.payload;
+        },
+        setRatingGridData: (state, action) => {
+            state.ratingGridData = action.payload;
         },
         setGridParamDetails: (state, action) => {
             state.gridParamDetails = action.payload;
@@ -49,6 +53,7 @@ export const {
     resetState,
     setGridParams,
     setGridData,
+    setRatingGridData,
     setGridParamDetails,
     setDetailsDataGrid,
     setOpenDetailPopup,

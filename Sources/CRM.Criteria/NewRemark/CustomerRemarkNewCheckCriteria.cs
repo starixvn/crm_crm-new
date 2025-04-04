@@ -1,6 +1,6 @@
 ﻿namespace CRM.Criteria.NewRemark;
 
-public class CustomerRemarkNewCheckCriteria : BaseSitePermisionCriteria
+public class CustomerRemarkNewCheckCriteria : BaseSitePermissionCriteria
 {
     public string Username { get; set; }
     public bool IsGuest { get; set; }

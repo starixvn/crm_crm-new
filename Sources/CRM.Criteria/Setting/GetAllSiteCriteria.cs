@@ -1,6 +1,6 @@
 ﻿namespace CRM.Criteria.Setting;
 
-public class GetAllSiteCriteria : BaseSitePermisionCriteria
+public class GetAllSiteCriteria : BaseSitePermissionCriteria
 {
     public override string GetSettingKey() => "Acc_CRM_SiteSel";
 

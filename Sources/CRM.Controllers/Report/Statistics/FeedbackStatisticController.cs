@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.Report.Statistics;
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Constants;
@@ -9,6 +10,8 @@ using CRM.Resources;
 using CRM.Services.Feedback;
 using Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Models.Report.FeedbackStatistic;
+using Models.Report.FeedbackStatistic.FeedbackRating;
 using Services;
 using Services.ExportExcel;
 using Services.Interfaces;
@@ -21,51 +24,84 @@ public class FeedbackStatisticController(
     IPermissionService permissionService)
     : BaseController
 {
-    //[HttpPost]
-    //public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
-    //{
-    //    var title = string.Format(ViewResources.FeedbackStatisticTitle,
-    //        criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-    //    criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
-    //    criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-    //    criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-    //    criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-
-    //    var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
-    //    feedbackStatistic.Title = title;
-    //    feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
-    //    if (feedbackStatistic.TotalItems > 0)
-    //    {
-    //        feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-    //    }
-
-    //    return Json(feedbackStatistic);
-    //}
-
     [HttpPost]
-    public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackRatingStatisticCriteria criteria)
+    public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStaticBaseModel baseModel)
     {
         var title = string.Format(ViewResources.FeedbackStatisticTitle,
-            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-        criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
-        criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-        criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-
-        var feedbackStatistic = await feedbackService.GetFeedbackRatingStatisticAsync(criteria);
-        feedbackStatistic.Title = title;
-        feedbackStatistic.TotalItems = feedbackStatistic.Records.Count;
-        if (feedbackStatistic.TotalItems > 0)
+            baseModel.FromDate.ToShortDateFormat(), baseModel.ToDate.ToShortDateFormat());
+        baseModel.FromDate = commonService.ConvertClientFromTimeToServerTime(baseModel.FromDate);
+        baseModel.ToDate = commonService.ConvertClientToTimeToServerTime(baseModel.ToDate);
+        baseModel.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        baseModel.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+        if (baseModel.Type is 12 or 13)
         {
-            feedbackStatistic.Records = feedbackStatistic.Records.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            var ratingFbStatistics = await GetFeedbackRatingStatisticAndPaging(baseModel);
+            ratingFbStatistics.Title = title;
+            return Json(ratingFbStatistics);
         }
 
+        var feedbackStatistic = await GetFeedbackStatisticAndPaging(baseModel);
+        feedbackStatistic.Title = title;
         return Json(feedbackStatistic);
+    }
+
+    private async Task<FeedbackStatisticInfo> GetFeedbackStatisticAndPaging(GetFeedbackStaticBaseModel baseCriteria)
+    {
+        var criteria = new GetFeedbackStatisticCriteria
+        {
+            FromDate = baseCriteria.FromDate,
+            ToDate = baseCriteria.ToDate,
+            FromDuration = baseCriteria.FromDuration,
+            ToDuration = baseCriteria.ToDuration,
+            Type = baseCriteria.Type,
+            PageIndex = baseCriteria.PageIndex,
+            PageSize = baseCriteria.PageSize,
+            SitePermission = baseCriteria.SitePermission,
+            LicenseeType = baseCriteria.LicenseeType,
+            UserRole = baseCriteria.UserRole
+        };
+        var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+        if (feedbackStatistic.TotalItems > 0)
+        {
+            feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories
+                .Skip(criteria.PageSize * (criteria.PageIndex - 1))
+                .Take(criteria.PageSize).ToList();
+        }
+        return feedbackStatistic;
+    }
+
+    private async Task<FeedbackRatingReport> GetFeedbackRatingStatisticAndPaging(GetFeedbackStaticBaseModel baseCriteria)
+    {
+        var criteria = new GetFeedbackRatingStatisticCriteria
+        {
+            FromDate = baseCriteria.FromDate,
+            ToDate = baseCriteria.ToDate,
+            FromDuration = baseCriteria.FromDuration,
+            ToDuration = baseCriteria.ToDuration,
+            Type = baseCriteria.Type,
+            PageIndex = baseCriteria.PageIndex,
+            PageSize = baseCriteria.PageSize,
+            SitePermission = baseCriteria.SitePermission,
+            LicenseeType = baseCriteria.LicenseeType,
+            UserRole = baseCriteria.UserRole
+        };
+        var feedbackStatistic = await feedbackService.GetFeedbackRatingStatisticAsync(criteria);
+        if (feedbackStatistic.TotalItems > 0)
+        {
+            feedbackStatistic.Records = feedbackStatistic.Records
+                .Skip(criteria.PageSize * (criteria.PageIndex - 1))
+                .Take(criteria.PageSize).ToList();
+        }
+        return feedbackStatistic;
     }
 
     [HttpPost]
     public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
     {
+        if (!string.IsNullOrWhiteSpace(criteria.FeedbackDateString))
+        {
+            criteria.FeedbackDate = DateTime.Parse(criteria.FeedbackDateString);
+        }
         criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
         criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
         var feedbackDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);

@@ -2,7 +2,7 @@
 
 using Fanex.Data;
 
-public class GetCommunicationLogsCriteria : BaseSitePermisionCriteria
+public class GetCommunicationLogsCriteria : BaseSitePermissionCriteria
 {
     [SpParam(SqlParamName = "CustId")]
     public int CustomerId { get; set; }

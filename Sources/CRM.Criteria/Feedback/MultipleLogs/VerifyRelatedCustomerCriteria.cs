@@ -1,6 +1,6 @@
 ﻿namespace CRM.Criteria.Feedback.MultipleLogs;
 
-public class VerifyRelatedCustomerCriteria : BaseSitePermisionCriteria
+public class VerifyRelatedCustomerCriteria : BaseSitePermissionCriteria
 {
     public string HeadlineIds { get; set; }
     public string Username { get; set; }

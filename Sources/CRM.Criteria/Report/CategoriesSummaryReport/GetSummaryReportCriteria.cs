@@ -2,7 +2,7 @@
 
 using Fanex.Data;
 
-public class GetSummaryReportCriteria : BaseSitePermisionCriteria
+public class GetSummaryReportCriteria : BaseSitePermissionCriteria
 {
     private readonly int minYear = 2011;
 

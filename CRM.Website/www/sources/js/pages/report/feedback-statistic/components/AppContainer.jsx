@@ -9,6 +9,7 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Details from './Details';
 import Chart from './Chart';
+import RatingDataGrid from './RatingDataGrid';
 
 export class AppContainer extends Component {
     componentDidMount() {
@@ -32,52 +33,47 @@ export class AppContainer extends Component {
 
     renderDataGrid = (type) => {
         if (type === 12 || type === 13) {
-            return 'eee';
+            return <RatingDataGrid />;
         }
 
-        return <DataGrid />
-    }
+        return <DataGrid />;
+    };
 
     render() {
         const { detailPopup, viewRelatedCustomerDialog, chart, gridParams } = this.props;
-        
+
         return (
             <Fragment>
                 <Filter />
                 {this.renderDataGrid(gridParams.type)}
-                {
-                    detailPopup.show &&
-                    <Details onClose={this.handleCloseDetailDialog} />
-                }
-                {
-                    viewRelatedCustomerDialog.show &&
-                    <SweetModalDialog size="lg"
+                {detailPopup.show && <Details onClose={this.handleCloseDetailDialog} />}
+                {viewRelatedCustomerDialog.show && (
+                    <SweetModalDialog
+                        size="lg"
                         title={LangHelper.getResource('RelatedCustomer')}
-                        contents={
-                            <div>{viewRelatedCustomerDialog.relatedCustomers}</div>
-                        }
+                        contents={<div>{viewRelatedCustomerDialog.relatedCustomers}</div>}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCloseViewRelatedCustomerDialog}>
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={this.handleCloseViewRelatedCustomerDialog}
+                            >
                                 {LangHelper.getResource('Close')}
-                            </Button>
+                            </Button>,
                         ]}
                         onClose={this.handleCloseViewRelatedCustomerDialog}
                     />
-                }
-                {
-                    chart.show &&
-                    <Chart
-                        chartInfo={chart.chartInfo}
-                        onClose={this.handleCloseChartDialog}
-                    />
-                }
+                )}
+                {chart.show && (
+                    <Chart chartInfo={chart.chartInfo} onClose={this.handleCloseChartDialog} />
+                )}
             </Fragment>
         );
     }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-const mapStateToProps = state => {
+const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, dispatch);
+const mapStateToProps = (state) => {
     const { detailPopup, viewRelatedCustomerDialog, chart, gridParams } = state;
     return { detailPopup, viewRelatedCustomerDialog, chart, gridParams };
 };

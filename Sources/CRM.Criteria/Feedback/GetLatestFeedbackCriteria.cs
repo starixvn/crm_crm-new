@@ -1,6 +1,6 @@
 ﻿namespace CRM.Criteria.Feedback;
 
-public class GetLatestFeedbackCriteria : BaseSitePermisionCriteria
+public class GetLatestFeedbackCriteria : BaseSitePermissionCriteria
 {
     public int Top { get; set; }
 

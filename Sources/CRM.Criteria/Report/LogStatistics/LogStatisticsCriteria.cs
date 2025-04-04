@@ -2,7 +2,7 @@
 
 using System;
 
-public class LogStatisticsCriteria : BaseSitePermisionCriteria
+public class LogStatisticsCriteria : BaseSitePermissionCriteria
 {
     public DateTime FromDate { get; set; }
 

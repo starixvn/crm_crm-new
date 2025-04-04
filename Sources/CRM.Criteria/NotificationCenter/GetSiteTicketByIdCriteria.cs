@@ -1,6 +1,6 @@
 ﻿namespace CRM.Criteria.NotificationCenter;
 
-public class GetSiteTicketByIdCriteria : BaseSitePermisionCriteria
+public class GetSiteTicketByIdCriteria : BaseSitePermissionCriteria
 {
     public int NotiID { get; set; }
 

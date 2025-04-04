@@ -11,6 +11,7 @@ using CRM.Criteria.Feedback;
 using CRM.Criteria.Feedback.DeletedFeedback;
 using CRM.Criteria.Feedback.ManageFeedback;
 using CRM.Criteria.Report.FeedbackStatistic;
+using CRM.Extensions;
 using CRM.Models;
 using CRM.Models.CommunicationLogs;
 using CRM.Models.Customer;
@@ -118,9 +119,7 @@ public class FeedbackService(
 
     public async Task<IEnumerable<DeletedFeedbackStatistic>> GetDeletedFeedbackStatisticAsync(ICriteria criteria)
     {
-        var results = await baseService.FetchMultipleAsync<DeletedFeedbackStatistic, FeedbackSettingRelation>(criteria);
-        var feedbacks = results.Item1;
-        var settings = results.Item2;
+        var (feedbacks, settings) = await baseService.FetchMultipleAsync<DeletedFeedbackStatistic, FeedbackSettingRelation>(criteria);
 
         foreach (var feedback in feedbacks)
         {
@@ -144,59 +143,69 @@ public class FeedbackService(
         var dataset = await dynamicRepository.FetchDataSetAsync(criteria);
         if (dataset.Tables.Count > 0)
         {
-            var dataReader = dataset.Tables[0].CreateDataReader();
-            var dataReader2 = dataset.Tables.Count > 1 ? dataset.Tables[1].CreateDataReader() : null;
-            reportData = ReadFeedbackRatingStatistic(dataReader, dataReader2);
+            using var table1 = dataset.Tables[0];
+            using var table2 = dataset.Tables.Count > 1 ? dataset.Tables[1] : null;
+            reportData = ReadFeedbackRatingStatistic(table1, table2);
         }
         return reportData;
     }
 
-    private static FeedbackRatingReport ReadFeedbackRatingStatistic(IDataReader reader, IDataReader reader2)
+    private static string GetColumnDataValue(DataRow row, DataColumnCollection columns, int columnIndex)
+    {
+        var columnDataValue = columns[columnIndex].DataType == typeof(DateTime)
+            ? ((DateTime)row[columnIndex]).ToShortDateFormat()
+            : row[columnIndex].ToString();
+
+        return columnDataValue;
+    }
+
+    private static FeedbackRatingReport ReadFeedbackRatingStatistic(DataTable table1, DataTable table2)
     {
         var feedbackRatingRecords = new List<FeedbackRatingRecord>();
-        var dynamicTittles = new List<BaseModel>();
-        for (var i = 0; i < reader.FieldCount; i++)
+        var dynamicTitles = new List<string>();
+        for (var i = 0; i < table1.Columns.Count; i++)
         {
-            dynamicTittles.Add(new BaseModel { Name = reader.GetName(0) });
+            dynamicTitles.Add(table1.Columns[i].ColumnName);
         }
 
-        while (reader.Read())
+        foreach (DataRow row in table1.Rows)
         {
             var feedbackRatingRecord = new FeedbackRatingRecord
             {
-                ColumnData = reader.GetString(0),
-                Excellent = reader.GetInt32(1),
-                Good = reader.GetInt32(2),
-                Neutral = reader.GetInt32(3),
-                Poor = reader.GetInt32(4),
-                VeryPoor = reader.GetInt32(5),
-                NARating = reader.GetInt32(6)
+                ColumnData = new BaseModel { Name = GetColumnDataValue(row, table1.Columns, 0) },
+                Excellent = Convert.ToInt32(row[1]),
+                Good = Convert.ToInt32(row[2]),
+                Neutral = Convert.ToInt32(row[3]),
+                Poor = Convert.ToInt32(row[4]),
+                VeryPoor = Convert.ToInt32(row[5]),
+                NARating = Convert.ToInt32(row[6])
             };
 
             feedbackRatingRecords.Add(feedbackRatingRecord);
         }
 
-        if (reader2 != null)
+        if (table2 != null)
         {
-            while (reader2.Read())
+            var index = 0;
+            foreach (DataRow row in table2.Rows)
             {
-                dynamicTittles[0].Id = reader2.GetInt32(0);
+                feedbackRatingRecords[index++].ColumnData.Id = int.Parse(row["Item"].ToString());
             }
         }
 
         return new FeedbackRatingReport
         {
-            DynamicColumns = dynamicTittles,
+            ColumnNames = dynamicTitles,
             Records = feedbackRatingRecords
         };
     }
 
-    private static FeedbackStatisticInfo ReadFeedbackStatistic(IDataReader reader, IDataReader reader2)
+    private static FeedbackStatisticInfo ReadFeedbackStatistic(DataTable table, DataTable table1)
     {
         var userNames = new List<BaseModel>();
-        for (var i = 4; i < reader.FieldCount; i++)
+        for (var i = 4; i < table.Columns.Count; i++)
         {
-            userNames.Add(new BaseModel { Name = reader.GetName(i) });
+            userNames.Add(new BaseModel { Name = table.Columns[i].ColumnName });
         }
 
         var userNamesCount = userNames.Count;
@@ -204,22 +213,22 @@ public class FeedbackService(
         var report = new FeedbackStatisticInfo
         {
             Usernames = userNames,
-            FeedbackCategories = new List<FeedbackCategory>(),
+            FeedbackCategories = [],
             GrandTotals = grandTotals
         };
         var previousCategory = 0;
         FeedbackCategory feedbackCategory = null;
-        while (reader.Read())
+        foreach (DataRow row in table.Rows)
         {
-            var categoryId = int.Parse(reader["MainCategoryId"].ToString());
+            var categoryId = int.Parse(row["MainCategoryId"].ToString());
             if (categoryId != previousCategory)
             {
                 previousCategory = categoryId;
                 feedbackCategory = new FeedbackCategory
                 {
                     Id = categoryId,
-                    Name = reader["MainCategory"].ToString(),
-                    FeedbackSubcategories = new List<FeedbackSubcategory>(),
+                    Name = row["MainCategory"].ToString(),
+                    FeedbackSubcategories = [],
                     SubTotal = InitializeSubTotal(userNamesCount)
                 };
 
@@ -230,14 +239,14 @@ public class FeedbackService(
             {
                 var feedbackSubcategory = new FeedbackSubcategory
                 {
-                    Id = int.Parse(reader["SubCategoryId"].ToString()),
-                    Name = reader["SubCategory"].ToString(),
-                    Resolves = new List<int>(),
+                    Id = int.Parse(row["SubCategoryId"].ToString()),
+                    Name = row["SubCategory"].ToString(),
+                    Resolves = [],
                 };
 
                 for (var i = 0; i < userNamesCount; i++)
                 {
-                    var resolve = int.Parse(reader[userNames[i].Name].ToString());
+                    var resolve = int.Parse(row[userNames[i].Name].ToString());
                     feedbackSubcategory.Resolves.Add(resolve);
                     feedbackCategory.SubTotal.Resolves[i] += resolve;
                     grandTotals[i] += resolve;
@@ -247,16 +256,16 @@ public class FeedbackService(
             }
         }
 
-        ReadUsernameIds(reader2, report);
+        ReadUsernameIds(table1, report);
         return report;
     }
 
-    private static void ReadUsernameIds(IDataReader reader, FeedbackStatisticInfo report)
+    private static void ReadUsernameIds(DataTable table, FeedbackStatisticInfo report)
     {
         var index = 0;
-        while (reader.Read())
+        foreach (DataRow row in table.Rows)
         {
-            report.Usernames[index++].Id = int.Parse(reader["Item"].ToString());
+            report.Usernames[index++].Id = int.Parse(row["Item"].ToString());
         }
     }
 
@@ -281,7 +290,7 @@ public class FeedbackService(
 
         foreach (var feedback in feedbacks)
         {
-            feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
+            feedback.DurationTime = DurationCalculation(feedback.ResolutionDate, feedback.FeedbackDate);
             feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
             feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
             feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
@@ -360,7 +369,7 @@ public class FeedbackService(
         {
             var formatResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
             var formatFeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
-            feedback.DurationTime = calculationDuration(formatResolutionDate, formatFeedbackDate);
+            feedback.DurationTime = DurationCalculation(formatResolutionDate, formatFeedbackDate);
             feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
             feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
             feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
@@ -372,7 +381,7 @@ public class FeedbackService(
         return feedbacks;
     }
 
-    private static string calculationDuration(DateTime ResolutionDate, DateTime FeedbackDate)
+    private static string DurationCalculation(DateTime ResolutionDate, DateTime FeedbackDate)
     {
         var totalDays = ResolutionDate - FeedbackDate;
         return $"{totalDays.Days}:{totalDays.Hours}:{totalDays.Minutes}:{totalDays.Seconds}";
@@ -389,7 +398,7 @@ public class FeedbackService(
 
         foreach (var feedback in feedbackStatistic)
         {
-            feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
+            feedback.DurationTime = DurationCalculation(feedback.ResolutionDate, feedback.FeedbackDate);
             feedback.Status = statusHash.TryGetValue(feedback.StatusId, out var value) ? value : string.Empty;
             feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
             feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
@@ -407,7 +416,7 @@ public class FeedbackService(
 
         foreach (var feedback in feedbacks)
         {
-            feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
+            feedback.DurationTime = DurationCalculation(feedback.ResolutionDate, feedback.FeedbackDate);
             feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
             feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
             feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
@@ -442,9 +451,7 @@ public class FeedbackService(
     }
 
     public async Task<int> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria)
-    {
-        return await baseService.GetDataEntityAsync<int>(criteria);
-    }
+        => await baseService.GetDataEntityAsync<int>(criteria);
 
     private async Task<CustomerFeedbackModel> GetCustomerOldFeedbackByIdAsync(int feedbackId)
     {

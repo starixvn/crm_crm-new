@@ -3,7 +3,7 @@
 using System;
 using Fanex.Data;
 
-public class ManageFeedbackCriteria : BaseSitePermisionCriteria
+public class ManageFeedbackCriteria : BaseSitePermissionCriteria
 {
     public int? FeedbackId { get; set; }
 

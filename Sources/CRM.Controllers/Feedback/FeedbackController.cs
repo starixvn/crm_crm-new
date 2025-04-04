@@ -1,5 +1,9 @@
 ﻿namespace CRM.Controllers.Feedback;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using CRM.Criteria.Customer;
 using CRM.Criteria.Feedback;
@@ -19,10 +23,6 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Newtonsoft.Json;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 using FeedbackStatus = Enum.FeedbackStatus;
 
@@ -198,8 +198,8 @@ public class FeedbackController(
             };
         }
 
-        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
-        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
+        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)FeedbackStatus.Deleted;
+        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)FeedbackStatus.Deleted;
         if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
               && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
         {

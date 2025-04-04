@@ -143,7 +143,6 @@ public class FeedbackStatisticExcelTests
         feedbackStatistic = new FeedbackStatisticInfo
         {
             Title = "Feedback Statistics Report from Mar 24, 2022 to Mar 31, 2022",
-            TotalItems = 1,
             Usernames = new List<BaseModel> { new() { Id = 10278938, Name = "starixIT" } },
             GrandTotals = [5],
             FeedbackCategories = new List<FeedbackCategory>
