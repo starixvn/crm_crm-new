@@ -46,7 +46,7 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={18}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Level')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Site')}</HeaderCell>
@@ -82,7 +82,7 @@ export class DataGrid extends Component {
     renderRow = (item, index, isHost) => {
         return (
             <Row key={`row${index}`}>
-                <Cell>{item.createdDate && DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell> 
+                <Cell className='text-center'>{item.createdDate && DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell> 
                 <Cell>{item.username}</Cell>
                 <Cell className='text-center'>{item.level}</Cell>
                 <Cell className='text-center'>{item.site}</Cell>

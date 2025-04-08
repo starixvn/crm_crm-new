@@ -1,5 +1,5 @@
 ﻿using System;
-using Fanex.Data.Repository;
+using Fanex.Data;
 
 namespace CRM.Criteria.ManageSMAFeedback
 {
@@ -9,6 +9,7 @@ namespace CRM.Criteria.ManageSMAFeedback
 
         public DateTime? ToDate { get; set; }
 
+        [SpParam(AllowNull = true)]
         public string ReviewStatus { get; set; }
 
         public string Username { get; set; }
