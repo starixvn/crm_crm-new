@@ -14,8 +14,8 @@ namespace CRM.Services.HeadlineNotification
         {
             var criteria = new GetSmaFeedbackCriteria
             {
-                FromDate = commonService.ConvertToServerDateTime(param.FromDate),
-                ToDate = commonService.ConvertToServerDateTime(param.ToDate),
+                FromDate = commonService.ConvertClientFromTimeToServerTime(param.FromDate),
+                ToDate = commonService.ConvertClientToTimeToServerTime(param.ToDate),
                 PageIndex = param.PageIndex,
                 ItemsPerPage = param.PageSize,
                 ReviewStatus = param.ReviewStatus,

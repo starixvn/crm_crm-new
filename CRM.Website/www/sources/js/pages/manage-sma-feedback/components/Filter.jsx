@@ -14,10 +14,10 @@ import { statusOptions } from '../common.functions';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const fromDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(yesterday)));
-        const toDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
+        this.currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+        const toDate = new Date(DateTimeService.toShortDateTimeFormat(this.currentClientTime));
+        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(this.currentClientTime));
+        fromDate.setDate(fromDate.getDate() - 1);
 
         this.state = {
             filter: {
@@ -54,8 +54,8 @@ export class Filter extends Component {
     getParams = () => {
         const { fromDate, toDate, statuses, username } = this.state.filter;
         return {
-            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
-            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
             statuses: statuses.split(',').length === statusOptions.length ? null : statuses,
             username,
             pageIndex: this.props.gridParams.pageIndex,
