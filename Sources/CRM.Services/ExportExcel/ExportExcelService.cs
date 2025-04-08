@@ -16,6 +16,7 @@ using CRM.Models.Report.DeletedFeedbackStatistic;
 using CRM.Models.Report.DirectCustomerReport;
 using CRM.Models.Report.DynamicReport;
 using CRM.Models.Report.FeedbackStatistic;
+using CRM.Models.Report.FeedbackStatistic.FeedbackRating;
 using CRM.Models.Report.LogStatistics;
 using CRM.Models.Report.RedemptionStatistics;
 using CRM.Models.Report.SettlementReport;
@@ -71,6 +72,8 @@ public interface IExportExcelService
     byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel);
 
     byte[] ExportStatisticFeedback(FeedbackStatisticInfo feedbackStatistic);
+
+    byte[] ExportRatingStatisticFeedback(FeedbackRatingReport ratingFeedbackStatistic);
 
     byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel);
 
@@ -167,7 +170,7 @@ public class ExportExcelService(IWebHostEnvironment hostingEnvironment) : IExpor
         return excel.Export();
     }
 
-    public byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string reportName ,string reportTitle)
+    public byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string reportName, string reportTitle)
     {
         const string ExcelTemplatePath = "ExcelTemplates/ManageFeedback.xlsx";
         var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
@@ -230,6 +233,14 @@ public class ExportExcelService(IWebHostEnvironment hostingEnvironment) : IExpor
         return excel.Export();
     }
 
+    public byte[] ExportRatingStatisticFeedback(FeedbackRatingReport ratingFeedbackStatistic)
+    {
+        const string ExcelTemplatePath = "ExcelTemplates/RatingFeedbackStatistic.xlsx";
+        var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+        var excel = new RatingFeedbackStatisticExcel(templatePath, ratingFeedbackStatistic);
+        return excel.Export();
+    }
+
     public byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel)
     {
         const string ExcelTemplatePath = "ExcelTemplates/FeedbackStatisticDetail.xlsx";
@@ -284,7 +295,6 @@ public class ExportExcelService(IWebHostEnvironment hostingEnvironment) : IExpor
         var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
         var excel = new WagerReportExcel(templatePath, wagerreportInfo, year);
         return excel.Export();
-            
     }
 
     public byte[] ExportCategoryClassification(IEnumerable<CategoryClassification> categoryClassifications)

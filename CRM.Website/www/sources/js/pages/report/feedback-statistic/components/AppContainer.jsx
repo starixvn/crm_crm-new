@@ -10,6 +10,7 @@ import DataGrid from './DataGrid';
 import Details from './Details';
 import Chart from './Chart';
 import RatingDataGrid from './RatingDataGrid';
+import RatingChart from './RatingChart';
 
 export class AppContainer extends Component {
     componentDidMount() {
@@ -39,6 +40,13 @@ export class AppContainer extends Component {
         return <DataGrid />;
     };
 
+    renderChart = (type) => {
+        if (type === 12 || type === 13) {
+            return <RatingChart chartInfo={this.props.chart.chartInfo} onClose={this.handleCloseChartDialog} />;
+        }
+        return <Chart chartInfo={this.props.chart.chartInfo} onClose={this.handleCloseChartDialog} />;
+    }
+
     render() {
         const { detailPopup, viewRelatedCustomerDialog, chart, gridParams } = this.props;
 
@@ -64,9 +72,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseViewRelatedCustomerDialog}
                     />
                 )}
-                {chart.show && (
-                    <Chart chartInfo={chart.chartInfo} onClose={this.handleCloseChartDialog} />
-                )}
+                {chart.show && this.renderChart(gridParams.type)}
             </Fragment>
         );
     }
