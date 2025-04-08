@@ -269,6 +269,7 @@
     FeedbackSubjectManagementv2: 'Feedback Subject Management v2',
     FeedbackStatisticsv2: 'Feedback Statistics v2',
     File: 'File',
+    FunctionName: 'Function Name',
     FromDateMustSmallerThanToDate: 'From date must be smaller than to date',
     GeneralNotification: 'General Notification',
     GroupHeadline: 'Group Headline',

@@ -46,14 +46,14 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={14}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={18}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Level')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Function')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('FunctionName')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('ReviewStatus')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Comment')}</HeaderCell>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('discussion')}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource('DiscussionSolution')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={8}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
