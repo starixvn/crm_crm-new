@@ -23,7 +23,7 @@ export class Filter extends Component {
             filter: {
                 fromDate,
                 toDate: currentDate,
-                statuses: [],
+                reviewStatus: [],
                 username: ''
             }
         }
@@ -32,7 +32,7 @@ export class Filter extends Component {
 
     componentDidMount() {
         this.setState({
-            filter: {...this.state.filter, statuses: statusOptions.map(x=> x.name).join(',')}
+            filter: {...this.state.filter, reviewStatus: statusOptions.map(x=> x.name).join(',')}
         });
     }
 
@@ -52,11 +52,11 @@ export class Filter extends Component {
     };
 
     getParams = () => {
-        const { fromDate, toDate, statuses, username } = this.state.filter;
+        const { fromDate, toDate, reviewStatus, username } = this.state.filter;
         return {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
-            statuses: statuses.split(',').length === statusOptions.length ? null : statuses,
+            reviewStatus: reviewStatus.split(',').length === statusOptions.length ? null : reviewStatus,
             username,
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
@@ -65,7 +65,7 @@ export class Filter extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        if (!this.state.filter.statuses) {
+        if (!this.state.filter.reviewStatus) {
             toast.error(LangHelper.getResource('PleaseChooseReviewStatus'));
             return;
         }
@@ -109,7 +109,7 @@ export class Filter extends Component {
                                 maxDisplayItemCount={2}
                                 isAllTextShown
                                 onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChange('statuses', selectedItemsKey);
+                                    this.handleChange('reviewStatus', selectedItemsKey);
                                 }}
                             />
                         </div>
