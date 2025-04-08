@@ -14,20 +14,20 @@ import { statusOptions } from '../common.functions';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
-        const toDate = new Date(DateTimeService.toShortDateTimeFormat(this.currentClientTime));
-        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(this.currentClientTime));
-        fromDate.setDate(fromDate.getDate() - 1);
+        const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(currentClientTime));
+        const firstDateFirstMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() , 1);
+        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDateFirstMonth)));
 
         this.state = {
             filter: {
                 fromDate,
-                toDate,
+                toDate: currentDate,
                 statuses: [],
                 username: ''
             }
         }
-        this.maxDate = toDate;
+        this.maxDate = currentDate;
     }
 
     componentDidMount() {
