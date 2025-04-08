@@ -84,7 +84,6 @@ export class EditSmaFeedback extends Component {
                                     </option>)
                                     )
                                 }
-
                             </Form.Control>
                         </Col>
                     </Form.Group>

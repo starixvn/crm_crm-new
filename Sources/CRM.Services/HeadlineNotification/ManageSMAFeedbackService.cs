@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CRM.Criteria.ManageSMAFeedback;
 using CRM.Models;
@@ -13,8 +14,8 @@ namespace CRM.Services.HeadlineNotification
         {
             var criteria = new GetSmaFeedbackCriteria
             {
-                FromDate = param.FromDate,
-                ToDate = param.ToDate,
+                FromDate = commonService.ConvertToServerDateTime(param.FromDate),
+                ToDate = commonService.ConvertToServerDateTime(param.ToDate),
                 PageIndex = param.PageIndex,
                 ItemsPerPage = param.PageSize,
                 ReviewStatus = param.ReviewStatus,

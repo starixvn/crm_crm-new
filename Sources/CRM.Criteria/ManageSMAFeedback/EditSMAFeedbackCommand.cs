@@ -15,7 +15,7 @@ namespace CRM.Criteria.ManageSMAFeedback
 
         public string Discussion { get; set; }
 
-        public override string GetSettingKey() => "";
+        public override string GetSettingKey() => "Acc_CRM_SMAFeedbackInfoUpd";
 
         public override bool IsValid() => true;
     }
