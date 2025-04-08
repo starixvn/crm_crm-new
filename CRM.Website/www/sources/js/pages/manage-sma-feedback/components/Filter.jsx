@@ -123,7 +123,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <div className='btn-submit-notification'>
+                        <div className='btn-submit'>
                             <Button variant='primary' size='sm' type='submit'>
                                 {LangHelper.getResource('Submit')}
                             </Button>
