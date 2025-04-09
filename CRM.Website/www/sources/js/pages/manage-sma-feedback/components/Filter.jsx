@@ -113,7 +113,7 @@ export class Filter extends Component {
                                 startDate={this.state.filter.fromDate}
                                 endDate={this.state.filter.toDate}
                                 maxDate={this.maxDate}
-                                maxDateRange={Number.MAX_SAFE_INTEGER}
+                                maxDateRange={365}
                                 selectsRange
                                 isRangeDate
                             />
