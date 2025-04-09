@@ -17,14 +17,13 @@ using Xunit;
 
 public class ChatBotSendMessageTests
 {
-    private readonly BotServiceSettings botServiceSettings;
     private readonly IHttpClientFactory httpClientFactory;
     private readonly ICacheService cacheService;
     private readonly ChatBotSendMessageService chatBotSendMessageService;
 
     public ChatBotSendMessageTests()
     {
-        botServiceSettings = new BotServiceSettings
+        var botServiceSettings1 = new BotServiceSettings
         {
             ServiceUrl = "http://bot.com/",
             AppId = "Id",
@@ -32,15 +31,14 @@ public class ChatBotSendMessageTests
             AuthenticatePath = "api/authenticate",
             ApiConfigs =
             [
-                new()
+                new ApiConfig
                 {
                     Channel = BotChannel.Letstalk, SendMultipleMessagePath = "api/multiple-notify",
                     SendSingleMessagePath = "api/single-notify",
                     SendMultipleAnnouncementPath = "api/multiple-announcement",
                     SendOnlyImagesMultiplePath = "api/only-images-multiple"
                 },
-
-                new()
+                new ApiConfig
                 {
                     Channel = BotChannel.Telegram, SendMultipleMessagePath = "api/multiple-notify",
                     SendSingleMessagePath = "api/single-notify",
@@ -51,7 +49,7 @@ public class ChatBotSendMessageTests
         };
         httpClientFactory = Substitute.For<IHttpClientFactory>();
         cacheService = Substitute.For<ICacheService>();
-        chatBotSendMessageService = new ChatBotSendMessageService(botServiceSettings, httpClientFactory, cacheService);
+        chatBotSendMessageService = new ChatBotSendMessageService(botServiceSettings1, httpClientFactory, cacheService);
     }
 
     [Fact]
@@ -119,7 +117,7 @@ public class ChatBotSendMessageTests
     }
 
     [Fact]
-    public async Task SendImageOnlyAsync_WhenCalled_ReturnsUnAuthorized()
+    public async Task SendImageOnlyAsync_WhenCalled_ReturnsUnsuccessStatusCode()
     {
         // Arrange
         var botChannel = BotChannel.Telegram;
@@ -127,20 +125,14 @@ public class ChatBotSendMessageTests
         {
             new() { AnnouncementId = 1, Content = "Test message" }
         };
-        var expectedResponse = new List<SendNotificationResult>
-        {
-            new() { AnnouncementId = 1, IsSuccessful = true }
-        };
-        var responseMessage = new HttpResponseMessage(HttpStatusCode.Unauthorized)
-        {
-            Content = new StringContent("Unauthorized")
-        };
+
+        var responseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
         var httpMessageHandler = new MockHttpMessageHandler(responseMessage);
         var httpClient = new HttpClient(httpMessageHandler);
 
         httpClientFactory.CreateClient().Returns(httpClient);
-
+        cacheService.GetAsync<string>(Arg.Any<string>()).Returns("abcdef");
         await Assert.ThrowsAnyAsync<Exception>(async () =>
             await chatBotSendMessageService.SendImageOnlyAsync(botChannel, notifications));
         // Act
