@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using CRM.Constants;
-using CRM.Extensions;
 using CRM.Filters;
 using CRM.Models.ManageSmaFeedback;
 using CRM.Resources;
@@ -16,8 +15,16 @@ namespace CRM.Controllers.HeadlineNotification
     public class ManageSmaFeedbackController(
         IManageSmaFeedbackService manageSmaFeedbackService,
         IPermissionService permissionService,
+        ISettingService settingService,
         IExportExcelService excelService) : BaseController
     {
+        [HttpGet]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
+        public async Task<IActionResult> GetReviewStatusSetting()
+        {
+            var reviewStatus = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.ReviewStatus, SettingConstants.Active);
+            return Json(reviewStatus);
+        }
 
         [HttpPost]
         [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
