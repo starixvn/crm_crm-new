@@ -9,7 +9,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { statusOptions } from '../common.functions';
 
 export class Filter extends Component {
     constructor(props) {
@@ -24,16 +23,32 @@ export class Filter extends Component {
                 fromDate,
                 toDate: currentDate,
                 reviewStatus: [],
-                username: ''
+                username: '',
+                isTestOnly: false
             }
         }
         this.maxDate = currentDate;
     }
 
-    componentDidMount() {
-        this.setState({
-            filter: {...this.state.filter, reviewStatus: statusOptions.map(x=> x.name).join(',')}
+    componentDidMount = () => {
+        this.props.getReviewStatusSetting().then(response => {
+            this.setState({
+                filter: {...this.state.filter, reviewStatus: this.formatReviewStatus(response).map(x=> x.id).join(',')}
+            });
+            this.props.setReviewStatusSetting(this.formatReviewStatus(response));
         });
+    }
+
+    formatReviewStatus = reviewStatusSetting => {
+        const setting = [];
+        reviewStatusSetting.forEach(x=> {
+            setting.push({
+                id: x.id,
+                name: x.value,
+                checked: true
+            });
+        });
+        return setting;
     }
 
     handleChange = (name, value) => {
@@ -52,12 +67,13 @@ export class Filter extends Component {
     };
 
     getParams = () => {
-        const { fromDate, toDate, reviewStatus, username } = this.state.filter;
+        const { fromDate, toDate, reviewStatus, username, isTestOnly } = this.state.filter;
         return {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
-            reviewStatus: reviewStatus.split(',').length === statusOptions.length ? null : reviewStatus,
+            reviewStatusID: reviewStatus.split(',').length === this.props.reviewStatusSetting.length ? null : reviewStatus,
             username,
+            isTestOnly,
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };
@@ -77,6 +93,10 @@ export class Filter extends Component {
     };
 
     render() {
+        const { reviewStatusSetting } = this.props;
+        if (!reviewStatusSetting) {
+            return null;
+        }
         return (
             <Form className='form-filter-v2' onSubmit={e => this.handleSubmit(e)}>
                 <Form.Row bsPrefix='form-row'>
@@ -103,7 +123,7 @@ export class Filter extends Component {
                         <Form.Label htmlFor="status">{LangHelper.getResource('ReviewStatus')}</Form.Label>
                         <div className='form-control-wrapper status-match-date'>
                             <MultipleSelect
-                                dataSource={statusOptions}
+                                dataSource={reviewStatusSetting}
                                 keyField='id'
                                 valueField='name'
                                 maxDisplayItemCount={2}
@@ -123,6 +143,13 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
+                        <Form.Check className='is-test-only' type="checkbox" label={LangHelper.getResource('FilterByTestEvents')}
+                            htmlFor="is-test-only" checked={this.state.filter.isTestOnly}
+                            value={this.state.filter.isTestOnly}
+                            onChange={e => this.handleChange('isTestOnly', e.target.checked)}
+                        />
+                    </Form.Group>
+                    <Form.Group>
                         <div className='btn-submit'>
                             <Button variant='primary' size='sm' type='submit'>
                                 {LangHelper.getResource('Submit')}
@@ -138,8 +165,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams  } = state;
-    return { gridParams };
+    const { gridParams, reviewStatusSetting } = state;
+    return { gridParams, reviewStatusSetting };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

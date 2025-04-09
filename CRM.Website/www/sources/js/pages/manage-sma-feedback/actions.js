@@ -3,8 +3,14 @@ import DataService from '@jsroot/common/dataService';
 import {
     setGridParams,
     setGridData,
-    setEditSmaFeedbackDialog
+    setEditSmaFeedbackDialog,
+    setReviewStatusSetting
 } from './smaFeedbackSlice';
+
+const getReviewStatusSetting = () => async() => {
+    const url = Site.resolveClientUrl('ManageSmaFeedback/GetReviewStatusSetting');
+    return await DataService.getDataAsync(url).then(response => response.data).catch(Site.handleAxiosError);
+};
 
 const getGridData = params => async dispatch => {
     Site.blockUI();
@@ -14,7 +20,7 @@ const getGridData = params => async dispatch => {
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
-const editSmaFeedback = data => async dispatch => {
+const editSmaFeedback = data => async() => {
     const url = Site.resolveClientUrl('ManageSmaFeedback/EditSmaFeedback');
     return await DataService.postDataAsync(url, data).then(response => response.data);
 };
@@ -32,6 +38,8 @@ export const ActionCreators = {
     setGridParams,
     setGridData,
     setEditSmaFeedbackDialog,
+    setReviewStatusSetting,
+    getReviewStatusSetting,
     getGridData,
     editSmaFeedback,
     exportExcel

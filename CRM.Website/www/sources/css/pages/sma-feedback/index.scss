@@ -24,6 +24,22 @@
             }
         }
     }
+
+    .is-test-only {
+        padding-top: 25px;
+
+        input.form-check-input {
+            cursor: pointer;
+            margin-top: 7px;
+        }
+
+        label.form-check-label {
+            width: 100%;
+            margin-left: 6px;
+            font-weight: 600;
+            line-height: 2;
+        }
+    }
 }
 
 .edit-sma-feedback-modal-dialog {

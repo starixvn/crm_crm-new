@@ -8,7 +8,6 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { statusOptions } from '../common.functions';
 
 export class EditSmaFeedback extends Component {
     constructor(props) {
@@ -78,7 +77,7 @@ export class EditSmaFeedback extends Component {
                                 onChange={handleChange}
                             >
                                 {
-                                    statusOptions.map(item =>
+                                    this.props.reviewStatusSetting.map(item =>
                                     (<option key={item.reviewStatus} value={item.reviewStatus}>
                                         {item.name}
                                     </option>)
@@ -107,7 +106,7 @@ export class EditSmaFeedback extends Component {
 
     render() {
         const { discussion, functionID, createdDate, custID } = this.props.data;
-        const reviewStatus = this.props.data.reviewStatus ? this.props.data.reviewStatus : statusOptions[0].id;
+        const reviewStatus = this.props.data.reviewStatus ? this.props.data.reviewStatus : this.props.reviewStatusSetting[0].id;
         const initialValues = { reviewStatus, discussion, functionID, createdDate, custID };
         return (
             <Modal show className="edit-sma-feedback-modal-dialog" dialogAs={DraggableModalDialog}
@@ -132,4 +131,9 @@ export class EditSmaFeedback extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-export default connect(null, mapDispatchToProps)(EditSmaFeedback);
+const mapStateToProps = state => {
+    const { reviewStatusSetting } = state;
+    return { reviewStatusSetting };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditSmaFeedback);
