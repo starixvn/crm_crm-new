@@ -15,4 +15,5 @@ public static class SettingTypeConstants
     public const string LicenseeType = "Licensee Type";
     public const string PicRole = "PICRole";
     public const string PicCommunicationTool = "PICCommunicationTool";
+    public const string ReviewStatus = "ReviewStatus";
 }

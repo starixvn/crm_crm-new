@@ -18,7 +18,8 @@ namespace CRM.Services.HeadlineNotification
                 ToDate = commonService.ConvertClientToTimeToServerTime(param.ToDate),
                 PageIndex = param.PageIndex,
                 ItemsPerPage = param.PageSize,
-                ReviewStatus = param.ReviewStatus,
+                ReviewStatusID = param.ReviewStatusID,
+                TestOnly = param.TestOnly,
                 Username = param.Username,
                 SitePermission = param.SitePermission,
                 LicenseeType = param.LicenseeType
@@ -41,7 +42,7 @@ namespace CRM.Services.HeadlineNotification
                 CustID = param.CustID,
                 CreatedDate = commonService.ConvertToServerDateTime(param.CreatedDate),
                 FunctionID = param.FunctionID,
-                ReviewStatus = param.ReviewStatus,
+                ReviewStatusID = param.ReviewStatusID,
                 Discussion = param.Discussion,
             };
             return await baseService.ExecuteNonQueryAsync(command);

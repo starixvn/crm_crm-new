@@ -10,7 +10,9 @@ namespace CRM.Criteria.ManageSMAFeedback
         public DateTime? ToDate { get; set; }
 
         [SpParam(AllowNull = true)]
-        public string ReviewStatus { get; set; }
+        public string? ReviewStatusID { get; set; }
+
+        public bool TestOnly { get; set; }
 
         public string Username { get; set; }
 

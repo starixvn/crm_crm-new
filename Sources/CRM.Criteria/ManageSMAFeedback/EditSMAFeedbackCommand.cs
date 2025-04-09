@@ -11,7 +11,7 @@ namespace CRM.Criteria.ManageSMAFeedback
 
         public int FunctionID { get; set; }
 
-        public string ReviewStatus { get; set; }
+        public int ReviewStatusID { get; set; }
 
         public string Discussion { get; set; }
 

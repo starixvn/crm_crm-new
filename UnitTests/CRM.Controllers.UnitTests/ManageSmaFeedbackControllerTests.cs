@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoFixture;
+using CRM.Constants;
 using CRM.Controllers.HeadlineNotification;
-using CRM.Models.ManageSmaFeedback;
 using CRM.Models;
+using CRM.Models.ManageSmaFeedback;
+using CRM.Services;
 using CRM.Services.ExportExcel;
 using CRM.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Xunit;
 using NSubstitute;
-using CRM.Services.BotServices.Interfaces;
-using CRM.Services.HeadlineNotification;
-using CRM.Services;
-using Fanex.NAP.Client;
-using AutoFixture;
-using CRM.Constants;
-using CRM.Models.ChatTypeMapping;
+using Xunit;
 
 namespace CRM.Controllers.UnitTests
 {
@@ -26,6 +19,7 @@ namespace CRM.Controllers.UnitTests
         private IManageSmaFeedbackService manageSmaFeedbackService;
         private IExportExcelService excelService;
         private IPermissionService permissionService;
+        private ISettingService settingService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -59,7 +53,7 @@ namespace CRM.Controllers.UnitTests
             var param = new EditSmaFeedback
             {
                 CustID = 1,
-                ReviewStatus = "Approved",
+                ReviewStatusID = 1,
                 Discussion = "Solution discussed"
             };
             var commandResult = new CommandResult { Code = 0, Message = "Success" };
@@ -105,10 +99,12 @@ namespace CRM.Controllers.UnitTests
             manageSmaFeedbackService = Substitute.For<IManageSmaFeedbackService>();
             excelService = Substitute.For<IExportExcelService>();
             permissionService = Substitute.For<IPermissionService>();
+            settingService = Substitute.For<ISettingService>();
             
             return new ManageSmaFeedbackController(
                 manageSmaFeedbackService,
                 permissionService,
+                settingService,
                 excelService
             );
         }
