@@ -38,7 +38,7 @@ public class MultipleLogsController(
         command.IP = ClientIP;
         command.StartTime = commonService.ConvertToServerDateTime(command.StartTime);
         command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
-            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
+        command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
         var commandResult = await baseService.ExecuteNonQueryAsync(command);
         return Json(commandResult);
     }
@@ -167,7 +167,7 @@ public class MultipleLogsController(
             command.IP = ClientIP;
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-                command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
+            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
             result = await baseService.ExecuteNonQueryAsync(command);
         }
 
@@ -176,11 +176,11 @@ public class MultipleLogsController(
 
     private async Task<CreateFeedbackViewModel> GetAllSettingAsync()
     {
-        var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+        var extensionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
         var statusesTask = GetStatusListAsync();
         var productsTask = settingService.GetProductAsync(SettingConstants.Active);
-        var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
-        var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
+        var subProductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
+        var betTypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
         var responseTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
         var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
         var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
@@ -188,12 +188,12 @@ public class MultipleLogsController(
         var subCategoriesTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
         var communicationToolsTask = settingService.GetCommunicationToolAsync(SettingConstants.Active);
 
-        await Task.WhenAll(extentionsTask, statusesTask, productsTask, subproductsTask, bettypesTask, responseTask, languagesTask, countriesTask,
+        await Task.WhenAll(extensionsTask, statusesTask, productsTask, subProductsTask, betTypesTask, responseTask, languagesTask, countriesTask,
             mainCategoriesTask, subCategoriesTask, communicationToolsTask);
 
         var settings = new CreateFeedbackViewModel
         {
-            Extensions = extentionsTask.Result.Where(x => x.Id != NAConstants.ExtentionNA),
+            Extensions = extensionsTask.Result.Where(x => x.Id != NAConstants.ExtentionNA),
             CommunicationTools = communicationToolsTask.Result,
             Statuses = statusesTask.Result,
             Responses = responseTask.Result,
@@ -202,12 +202,12 @@ public class MultipleLogsController(
             MainCategories = mainCategoriesTask.Result,
             SubCategories = subCategoriesTask.Result,
             Products = productsTask.Result.Where(x => x.Id != NAConstants.ProductNA),
-            SubProducts = subproductsTask.Result.Where(x => x.Id != NAConstants.SubProductNA),
-            Bettypes = bettypesTask.Result.Where(x => x.Id != NAConstants.BettypeNA),
+            SubProducts = subProductsTask.Result.Where(x => x.Id != NAConstants.SubProductNA),
+            Bettypes = betTypesTask.Result.Where(x => x.Id != NAConstants.BettypeNA),
             ProductNA = productsTask.Result.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
-            SubProductNA = subproductsTask.Result.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
-            BettypeNA = bettypesTask.Result.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
-            ExtensionNA = extentionsTask.Result.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
+            SubProductNA = subProductsTask.Result.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
+            BettypeNA = betTypesTask.Result.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
+            ExtensionNA = extensionsTask.Result.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
         };
 
         return settings;
@@ -216,9 +216,9 @@ public class MultipleLogsController(
     private async Task<IEnumerable<Models.Setting.FeedbackStatus>> GetStatusListAsync()
     {
         var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-        var isHostDeleteFbPermision = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
+        var isHostDeleteFbPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
 
-        if (!isHostDeleteFbPermision)
+        if (!isHostDeleteFbPermission)
         {
             statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
         }

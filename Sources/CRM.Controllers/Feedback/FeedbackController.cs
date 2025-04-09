@@ -213,14 +213,6 @@ public class FeedbackController(
         return commandResult;
     }
 
-    private async Task<bool> IsNoPermissionDeleteFeedback(bool isDeletedFeedbackView, int statusId)
-    {
-        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)FeedbackStatus.Deleted;
-        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)FeedbackStatus.Deleted;
-        return !await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
-               && (isChangedStatusFromDeleted || isChangedStatusToDeleted);
-    }
-
     private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
     {
         var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();

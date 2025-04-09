@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 public interface ISendAnnouncementService
 {
-    Task ScanSendAndUpateAnnouncementNotification();
+    Task ScanSendAndUpdateAnnouncementNotification();
 }
 
 public class SendAnnouncementService(
@@ -28,7 +28,7 @@ public class SendAnnouncementService(
     private const string formatImageUrl = "{0}{1}/{2}";
     private const byte BatchSize = 10;
 
-    public async Task ScanSendAndUpateAnnouncementNotification()
+    public async Task ScanSendAndUpdateAnnouncementNotification()
     {
         var notifications = await GetAnnouncementNotificationAsync();
         var (emptyNotifications, actionableNotifications) = PartitionNotifications(notifications);
@@ -76,7 +76,7 @@ public class SendAnnouncementService(
     protected internal async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
     {
         var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
-        if (filterNotifications.Any())
+        if (filterNotifications.Count > 0)
         {
             var batches = DividedBatchToSendAnnouncement(filterNotifications);
             foreach (var batch in batches)
@@ -154,7 +154,7 @@ public class SendAnnouncementService(
     protected internal async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
     {
         var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
-        if (filterNotifications.Any())
+        if (filterNotifications.Count > 0)
         {
             var batches = DividedBatchToSendAnnouncement(filterNotifications);
             foreach (var batch in batches)
@@ -238,7 +238,7 @@ public class SendAnnouncementService(
         }
     }
 
-    #endregion Update status with content and fileName is null
+    #endregion Update status with content and fileName is empty
 
     protected internal async Task UpdateRecipientStatus(IEnumerable<AnnouncementNotificationUpdateResult> sentResults)
     {

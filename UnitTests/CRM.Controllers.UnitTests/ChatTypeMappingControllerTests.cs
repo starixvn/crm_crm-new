@@ -395,6 +395,62 @@ public class ChatTypeMappingControllerTests
         Assert.Equal($"{ViewResources.ChatTypeMapping}.xlsx", result.FileDownloadName);
     }
 
+    [Fact]
+    public async Task GetGroupTelegramDisplayName_WhenValidLetstalkId_ReturnExpectedName()
+    {
+        // Arrange
+        var telegramContact = new LetstalkTelegramContact { DisplayGroupName = "GroupDisplayName" };
+        var controller = GetController();
+        telegramService.GetGroupDisplayNameAsync(Arg.Any<long>(), Arg.Any<long>()).Returns(telegramContact);
+
+        // Act
+        var actual = await controller.GetGroupTelegramDisplayName(1, 1);
+
+        // Assert
+        Assert.Equal("GroupDisplayName", actual);
+    }
+
+    [Fact]
+    public async Task GetIgnoreNotificationType_WhenCalled_ReturnExpectedResult()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var notificationTypes = fixture.Create<IEnumerable<IgnoreNotificationType>>();
+        foreach (var notification in notificationTypes)
+        {
+            notification.NotificationTypeName = "Upload Announcement";
+        }
+        var controller = GetController();
+        chatTypeMappingService.GetIgnoreNotificationTypeAsync().Returns(notificationTypes);
+
+        // Act
+        var result = await controller.GetIgnoreNotificationType();
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actualNotificationTypes = Assert.IsAssignableFrom<IEnumerable<IgnoreNotificationType>>(jsonResult.Value);
+        Assert.Equal(notificationTypes, actualNotificationTypes);
+    }
+
+    [Fact]
+    public async Task VerifyTelegramInGroup_WhenValidBotIdAndGroupId_ReturnExpectedJsonResult()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var telegramValidationModel = fixture.Create<TelegramValidationModel>();
+        var model = fixture.Create<TelegramVerificationViewModel>();
+        var controller = GetController();
+        telegramService.VerifyTelegramInGroup(model).Returns(telegramValidationModel);
+
+        // Act
+        var result = await controller.VerifyTelegramInGroup(model);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actualResult = jsonResult.Value;
+        Assert.Equal(JsonConvert.SerializeObject(new { isBotRemoved = telegramValidationModel.IsBotRemoved, recipients = telegramValidationModel.Telegrams }), JsonConvert.SerializeObject(actualResult));
+    }
+
     #region helper
 
     private ChatTypeMappingController GetController()

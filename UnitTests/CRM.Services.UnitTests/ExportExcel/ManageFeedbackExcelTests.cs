@@ -1,5 +1,8 @@
 ﻿namespace CRM.Services.UnitTests.ExportExcel;
 
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using AutoFixture;
 using CRM.Extensions;
 using CRM.Models.Feedback;
@@ -9,9 +12,6 @@ using CRM.Services.UnitTests.ExportExcel.TestableClasses;
 using NSubstitute;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using Xunit;
 
 public class ManageFeedbackExcelTests
@@ -88,7 +88,7 @@ public class ManageFeedbackExcelTests
         var feedback = FakeFeedbackDetail();
         feedback.Status = "Closed";
         var feedbackCellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}\nRating: N/A" +
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" +
             $"\nReviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}";
         var categoryCellValue = "Special Notification\n  Abnormal Bets";
 
@@ -115,7 +115,7 @@ public class ManageFeedbackExcelTests
         var feedback = FakeFeedbackDetail();
         feedback.Status = "Pending";
         var feedbackCellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}\nRating: N/A" +
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" +
             $"\nReviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}";
         var categoryCellValue = "Special Notification\n  Abnormal Bets";
 
@@ -142,7 +142,7 @@ public class ManageFeedbackExcelTests
         var feedback = FakeFeedbackDetail();
         feedback.Status = "Checked";
         var feedbackCellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}\nRating: N/A" +
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" +
             $"\nReviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}";
         var categoryCellValue = "Special Notification\n  Abnormal Bets";
 

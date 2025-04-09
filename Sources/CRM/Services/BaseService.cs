@@ -1,11 +1,10 @@
 ﻿namespace CRM.Services;
 
-using Fanex.Data.Repository;
-using Fanex.NAP.Client.Helpers.Extensions;
-using Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Fanex.Data.Repository;
+using Fanex.NAP.Client.Helpers.Extensions;
 using Models;
 
 public interface IBaseService

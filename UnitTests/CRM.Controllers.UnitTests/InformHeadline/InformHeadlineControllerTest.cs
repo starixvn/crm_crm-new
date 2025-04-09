@@ -1,5 +1,8 @@
 ﻿namespace CRM.Controllers.UnitTests.InformHeadline;
 
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using AutoFixture;
 using Constants;
 using CRM.Controllers.InformHeadline;
@@ -16,9 +19,6 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Services.ExportExcel;
 using Services.Interfaces;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 using Xunit;
 
 public class InformHeadlineControllerTest
@@ -405,6 +405,27 @@ public class InformHeadlineControllerTest
         var excelResult = Assert.IsType<FileContentResult>(result);
         Assert.Equal(MimeType.XLSX, excelResult.ContentType);
         Assert.Equal(fileName, excelResult.FileDownloadName);
+    }
+
+    [Fact]
+    public async Task GetPermissions_WhenCalled_ReturnExpectedResult()
+    {
+        // Arrange
+        var informHeadlineContactPolicy = 1;
+        var informHeadlineSearchPolicy = 2;
+        var controller = GetController();
+        permissionService.GetPolicyPermissionAsync(FunctionKey.InformHeadlineContact).Returns(informHeadlineContactPolicy);
+        permissionService.GetPolicyPermissionAsync(FunctionKey.InformHeadlineSearch).Returns(informHeadlineSearchPolicy);
+
+        // Act
+        var result = await controller.GetPermissions();
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var permission = Assert.IsAssignableFrom<GetPermissionInform>(jsonResult.Value);
+        Assert.Equal(informHeadlineContactPolicy, permission.ContactPolicy);
+        Assert.Equal(informHeadlineSearchPolicy, permission.SearchPolicy);
+        Assert.False(permission.HasHostPermission);
     }
 
     private InformHeadlineController GetController()

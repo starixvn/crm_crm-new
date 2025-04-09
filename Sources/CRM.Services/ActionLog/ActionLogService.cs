@@ -1,15 +1,5 @@
 ﻿namespace CRM.Services.ActionLog;
 
-using Constants;
-using CRM.Criteria.ActionLog;
-using CRM.Criteria.AdminTool.LogSetting;
-using CRM.Models.ActionLog;
-using CRM.Models.AdminTool.SettingLog;
-using CRM.Models.Setting;
-using CRM.Resources;
-using Interfaces;
-using Microsoft.Extensions.Options;
-using Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

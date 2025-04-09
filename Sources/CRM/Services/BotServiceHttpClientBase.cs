@@ -1,9 +1,5 @@
 ﻿namespace CRM.Services;
 
-using Fanex.Caching;
-using Models.BotServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -11,6 +7,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Fanex.Caching;
+using Models.BotServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class BotServiceHttpClientBase(
     BotServiceSettings botSettings,
@@ -38,7 +38,7 @@ public class BotServiceHttpClientBase(
         return results;
     }
 
-    private async Task<string> GetTokenAsync()
+    protected async Task<string> GetTokenAsync()
     {
         var token = await cacheService.GetAsync<string>(JwtTokenCacheKey);
         if (token == null || string.IsNullOrWhiteSpace(token))

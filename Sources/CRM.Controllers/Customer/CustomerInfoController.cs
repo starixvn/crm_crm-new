@@ -62,10 +62,7 @@ public class CustomerInfoController(
         return Json(commandResult);
     }
 
-    public IActionResult GetCurrentCustomer()
-    {
-        return Json(sessionService.CurrentCustomer);
-    }
+    public IActionResult GetCurrentCustomer() => Json(sessionService.CurrentCustomer);
 
     public async Task<IActionResult> GetSettings()
     {

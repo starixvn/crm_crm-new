@@ -1,5 +1,8 @@
 ﻿namespace CRM.Controllers.Communication;
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using CRM.Criteria.Communication;
 using CRM.Criteria.Customer;
@@ -9,15 +12,12 @@ using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Communication;
 using CRM.ViewModels.Feedback;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Enum;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
@@ -88,7 +88,7 @@ public class CommunicationLogController(
             command.IP = ClientIP;
             command.StartTime = commonService.ConvertToServerDateTime(command.StartTime);
             command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
-                command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
+            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
             if (command.IsReviewed)
             {
                 command.ReviewerId = napSession.UserId;
@@ -150,16 +150,16 @@ public class CommunicationLogController(
     public async Task<CreateFeedbackViewModel> GetAllSettings(bool isEdit)
     {
         var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-        var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+        var extensions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
         var statuses = await GetStatusListAsync(isEdit);
         var products = await settingService.GetProductAsync(SettingConstants.Active);
-        var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
-        var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+        var subProducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
+        var betTypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
         var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
         var settings = new CreateFeedbackViewModel
         {
-            Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
-            ExtensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
+            Extensions = extensions.Where(x => x.Id != NAConstants.ExtentionNA),
+            ExtensionNA = extensions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
             Statuses = statuses,
             CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
             Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
@@ -170,12 +170,12 @@ public class CommunicationLogController(
             MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
             SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
             LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
-            Bettypes = bettypes.Where(x => x.Id != NAConstants.BettypeNA),
-            BettypeNA = bettypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
+            Bettypes = betTypes.Where(x => x.Id != NAConstants.BettypeNA),
+            BettypeNA = betTypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
             Products = products.Where(x => x.Id != NAConstants.ProductNA),
             ProductNA = products.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
-            SubProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
-            SubProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
+            SubProducts = subProducts.Where(x => x.Id != NAConstants.SubProductNA),
+            SubProductNA = subProducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
         };
         return settings;
     }
@@ -189,7 +189,7 @@ public class CommunicationLogController(
         command.IP = ClientIP;
         command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
         command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
+        command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
         command.IsCommunicationLog = true;
         var commandResult = await baseService.ExecuteNonQueryAsync(command);
         return Json(commandResult);
@@ -198,9 +198,9 @@ public class CommunicationLogController(
     private async Task<IEnumerable<Models.Setting.FeedbackStatus>> GetStatusListAsync(bool isEdit = false)
     {
         var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-        var isHostDeleteFbPermision = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
+        var isHostDeleteFbPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
 
-        if (!isEdit || !isHostDeleteFbPermision)
+        if (!isEdit || !isHostDeleteFbPermission)
         {
             statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
         }

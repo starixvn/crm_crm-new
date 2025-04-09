@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -533,6 +534,137 @@ public class FeedbackServiceTests
         Assert.Equal(expectedResult, actual);
         await baseService.Received(1).GetDataEntityAsync<int>(criteria);
     }
+
+    #region GetFeedbackStatisticAsync
+
+    [Fact]
+    public async Task GetFeedbackStatisticAsync_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var service = GetService();
+
+        var criteria = fixture.Create<GetFeedbackStatisticCriteria>();
+        var dataTable1 = new DataTable();
+        dataTable1.Columns.Add("MainCategoryId", typeof(int));
+        dataTable1.Columns.Add("MainCategory", typeof(string));
+        dataTable1.Columns.Add("SubCategoryId", typeof(int));
+        dataTable1.Columns.Add("SubCategory", typeof(string));
+        dataTable1.Columns.Add("User1", typeof(int));
+        dataTable1.Columns.Add("User2", typeof(int));
+
+        var dataTable2 = new DataTable();
+        dataTable2.Columns.Add("Item", typeof(int));
+
+        var dataRow1 = dataTable1.NewRow();
+        dataRow1["MainCategoryId"] = 1;
+        dataRow1["MainCategory"] = "Category1";
+        dataRow1["SubCategoryId"] = 1;
+        dataRow1["SubCategory"] = "SubCategory1";
+        dataRow1["User1"] = 10;
+        dataRow1["User2"] = 20;
+        dataTable1.Rows.Add(dataRow1);
+
+        var dataRow2 = dataTable2.NewRow();
+        dataRow2["Item"] = 1;
+        dataTable2.Rows.Add(dataRow2);
+
+        var dataSet = new DataSet();
+        dataSet.Tables.Add(dataTable1);
+        dataSet.Tables.Add(dataTable2);
+
+        dynamicRepository.FetchDataSetAsync(criteria).Returns(dataSet);
+
+        // Act
+        var result = await service.GetFeedbackStatisticAsync(criteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Usernames.Count);
+        Assert.Equal("User1", result.Usernames[0].Name);
+        Assert.Equal("User2", result.Usernames[1].Name);
+        Assert.Equal(1, result.FeedbackCategories.Count);
+        Assert.Equal("Category1", result.FeedbackCategories[0].Name);
+        Assert.Equal(1, result.FeedbackCategories[0].FeedbackSubcategories.Count);
+        Assert.Equal("SubCategory1", result.FeedbackCategories[0].FeedbackSubcategories[0].Name);
+        Assert.Equal(10, result.FeedbackCategories[0].FeedbackSubcategories[0].Resolves[0]);
+        Assert.Equal(20, result.FeedbackCategories[0].FeedbackSubcategories[0].Resolves[1]);
+    }
+
+    #endregion GetFeedbackStatisticAsync
+
+    #region Get rating feedback statistic Async
+
+    [Fact]
+    public async Task GetFeedbackRatingStatisticAsync_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var criteria = fixture.Create<GetFeedbackStatisticCriteria>();
+        var dataTable1 = new DataTable();
+        dataTable1.Columns.Add("Column1", typeof(string));
+        dataTable1.Columns.Add("Excellent", typeof(int));
+        dataTable1.Columns.Add("Good", typeof(int));
+        dataTable1.Columns.Add("Neutral", typeof(int));
+        dataTable1.Columns.Add("Poor", typeof(int));
+        dataTable1.Columns.Add("VeryPoor", typeof(int));
+        dataTable1.Columns.Add("NARating", typeof(int));
+
+        var dataTable2 = new DataTable();
+        dataTable2.Columns.Add("Item", typeof(int));
+
+        var dataRow1 = dataTable1.NewRow();
+        dataRow1["Column1"] = "Test Column";
+        dataRow1["Excellent"] = 10;
+        dataRow1["Good"] = 20;
+        dataRow1["Neutral"] = 30;
+        dataRow1["Poor"] = 40;
+        dataRow1["VeryPoor"] = 50;
+        dataRow1["NARating"] = 60;
+        dataTable1.Rows.Add(dataRow1);
+
+        var dataRow2 = dataTable2.NewRow();
+        dataRow2["Item"] = 1;
+        dataTable2.Rows.Add(dataRow2);
+
+        var dataSet = new DataSet();
+        dataSet.Tables.Add(dataTable1);
+        dataSet.Tables.Add(dataTable2);
+        var service = GetService();
+
+        dynamicRepository.FetchDataSetAsync(criteria).Returns(dataSet);
+
+        // Act
+        var result = await service.GetFeedbackRatingStatisticAsync(criteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.Records.Count);
+        Assert.Equal("Test Column", result.Records[0].ColumnData.Name);
+        Assert.Equal(10, result.Records[0].Excellent);
+        Assert.Equal(20, result.Records[0].Good);
+        Assert.Equal(30, result.Records[0].Neutral);
+        Assert.Equal(40, result.Records[0].Poor);
+        Assert.Equal(50, result.Records[0].VeryPoor);
+        Assert.Equal(60, result.Records[0].NARating);
+    }
+
+    [Fact]
+    public async Task GetFeedbackRatingStatisticAsync_WhenNoData_ReturnsNull()
+    {
+        // Arrange
+        var criteria = fixture.Create<GetFeedbackStatisticCriteria>();
+        var dataSet = new DataSet();
+        var service = GetService();
+
+        dynamicRepository.FetchDataSetAsync(criteria).Returns(dataSet);
+
+        // Act
+        var result = await service.GetFeedbackRatingStatisticAsync(criteria);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    #endregion Get rating feedback statistic Async
 
     #region Helpers
 

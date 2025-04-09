@@ -38,11 +38,11 @@ public class SendAnnouncementServiceTests
         baseService.GetDataAsync<AnnouncementNotification>(Arg.Any<GetAnnouncementNotificationToSendCriteria>()).Returns(noti);
 
         // Act
-        await service.ScanSendAndUpateAnnouncementNotification();
+        await service.ScanSendAndUpdateAnnouncementNotification();
 
         // Assert
         await service.Received().Public_ProcessEmptyNotifications(empty);
-        await service.Received().Public_ProcessActionableNotifications(actionable);    
+        await service.Received().Public_ProcessActionableNotifications(actionable);
     }
 
     [Fact]
@@ -261,7 +261,7 @@ public class SendAnnouncementServiceTests
         await service.Public_RetryImageByChannelAsync(BotChannel.Letstalk, notifications);
 
         // Assert
-        await logService.Received(1).ErrorAsync(Arg.Any<Exception>());         
+        await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
     }
 
     [Fact]
@@ -454,6 +454,7 @@ public class SendAnnouncementServiceTests
     }
 
     #region Helpers
+
     private SendAnnouncementServiceTestable GetService()
     {
         baseService = Substitute.For<IBaseService>();
@@ -462,5 +463,6 @@ public class SendAnnouncementServiceTests
         chatbotService = Substitute.For<IChatBotSendMessageService>();
         return Substitute.For<SendAnnouncementServiceTestable>(baseService, logService, configuration, chatbotService);
     }
+
     #endregion Helpers
 }

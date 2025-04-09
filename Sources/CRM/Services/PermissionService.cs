@@ -1,16 +1,16 @@
 ﻿namespace CRM.Services;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
+using Enum;
 using Fanex.NAP.Client;
 using Fanex.NAP.Client.Configuration;
 using Fanex.NAP.Client.Models.ValueObject;
 using Fanex.NAP.Client.Services;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Enum;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 public interface IPermissionService
@@ -36,11 +36,10 @@ public class PermissionService(
     public async Task<int> GetPolicyPermissionAsync(string functionKey, bool permissionCache = true)
     {
         int policy;
-        IEnumerable<FunctionPolicy> permissions;
         if (permissionCache)
         {
-            var cacheKey = $"{"CRMFunctions"}_{napSession.UserId}_{napSession.OnUserId}_{napSettings.SiteId}";
-            permissions = memoryCache.Get<IEnumerable<FunctionPolicy>>(cacheKey);
+            var cacheKey = $"CRMFunctions_{napSession.UserId}_{napSession.OnUserId}_{napSettings.SiteId}";
+            var permissions = memoryCache.Get<IEnumerable<FunctionPolicy>>(cacheKey);
 
             if (permissions == null)
             {

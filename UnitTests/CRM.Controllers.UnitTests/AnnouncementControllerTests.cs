@@ -115,7 +115,7 @@ public class AnnouncementControllerTests
         var command = new CreateAnnouncementCommand
         {
             AnnouncementId = 1,
-            FormFile = new List<IFormFile> { file }
+            FormFile = [file]
         };
         var commandResult = new CommandResult { Code = 0 };
         var clientIP = new DefaultHttpContext
@@ -143,10 +143,10 @@ public class AnnouncementControllerTests
         var controller = GetController();
 
         // Act
-        var result = await controller.SendMessageAnnouncementToBotEndpoint();
+        await controller.SendMessageAnnouncementToBotEndpoint();
 
         // Assert
-        await sendAnnouncementService.Received(1).ScanSendAndUpateAnnouncementNotification();
+        await sendAnnouncementService.Received(1).ScanSendAndUpdateAnnouncementNotification();
     }
 
     [Fact]
@@ -165,7 +165,7 @@ public class AnnouncementControllerTests
         var command = new EditAnnouncementCommand
         {
             AnnouncementId = 1,
-            FormFile = new List<IFormFile> { file }
+            FormFile = [file]
         };
         var commandResult = new CommandResult { Code = 0 };
         var clientIP = new DefaultHttpContext
@@ -221,7 +221,7 @@ public class AnnouncementControllerTests
             fileName: "myFile.txt");
         var command = new ValidateAnnouncementCommand
         {
-            FormFile = new List<IFormFile> { file }
+            FormFile = [file]
         };
         var commandResult = fixture.Create<CommandResult>();
 
@@ -251,7 +251,7 @@ public class AnnouncementControllerTests
             fileName: "myFile.txt");
         var command = new ValidateAnnouncementCommand
         {
-            FormFile = new List<IFormFile> { file }
+            FormFile = [file]
         };
         var commandResult = fixture.Create<CommandResult>();
         commandResult.Code = 0;

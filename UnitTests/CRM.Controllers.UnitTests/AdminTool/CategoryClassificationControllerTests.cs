@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using AutoFixture;
 using Constants;
 using CRM.Controllers.AdminTool;
+using CRM.Models;
 using CRM.Models.AdminTool.CategoryClassification;
 using CRM.Models.Setting;
+using CRM.Resources;
 using CRM.Services.AdminTool;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -70,8 +72,84 @@ public class CategoryClassificationControllerTests : Controller
         Assert.Equal(param.TotalRows, totalItems);
     }
 
+    [Fact]
+    public async Task GetCategoryClassById_WhenCalled_ReturnsExpectedDataAsync()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var mainCategoryId = fixture.Create<int>();
+        var subCategoryId = fixture.Create<int>();
+        var categoryClassification = fixture.Create<CategoryClassification>();
+        var controller = GetController();
+        categoryClassificationService.GetCategoryClassByIdAsync(mainCategoryId, subCategoryId).Returns(categoryClassification);
+
+        // Act
+        var result = await controller.GetCategoryClassById(mainCategoryId, subCategoryId);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        Assert.Equal(categoryClassification, jsonResult.Value);
+    }
+
+    [Fact]
+    public async Task GetCategoryClassById_WhenCalled_ReturnsNotFound()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var mainCategoryId = fixture.Create<int>();
+        var subCategoryId = fixture.Create<int>();
+        var controller = GetController();
+        categoryClassificationService.GetCategoryClassByIdAsync(mainCategoryId, subCategoryId).Returns((CategoryClassification)null);
+
+        // Act
+        var result = await controller.GetCategoryClassById(mainCategoryId, subCategoryId);
+
+        // Assert
+        Assert.IsType<NotFoundResult>(result);
+    }
+
+    [Fact]
+    public async Task EditCategoryClassification_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var model = fixture.Create<EditCategoryClassification>();
+        var commandResult = fixture.Create<CommandResult>();
+        var controller = GetController();
+        categoryClassificationService.EditCategoryClassificationAsync(model).Returns(commandResult);
+
+        // Act
+        var result = await controller.EditCategoryClassification(model);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        Assert.Equal(commandResult, jsonResult.Value);
+    }
+
+    [Fact]
+    public async Task ExportExcel_WhenCalled_ReturnsFileResult()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var param = fixture.Create<GetCategoryClassification>();
+        var categoryClassifications = fixture.Create<IEnumerable<CategoryClassification>>();
+        var excelBytes = fixture.Create<byte[]>();
+        var controller = GetController();
+        categoryClassificationService.GetCategoryClassificationAsync(param).Returns(categoryClassifications);
+        excelService.ExportCategoryClassification(categoryClassifications).Returns(excelBytes);
+
+        // Act
+        var result = await controller.ExportExcel(param);
+
+        // Assert
+        var fileResult = Assert.IsType<FileContentResult>(result);
+        Assert.Equal(excelBytes, fileResult.FileContents);
+        Assert.Equal("application/xlsx", fileResult.ContentType);
+        Assert.Equal($"{ViewResources.CategoryClassification}.xlsx", fileResult.FileDownloadName);
+    }
 
     #region Helpers
+
     private CategoryClassificationController GetController()
     {
         categoryClassificationService = Substitute.For<ICategoryClassificationService>();
@@ -79,5 +157,6 @@ public class CategoryClassificationControllerTests : Controller
         excelService = Substitute.For<IExportExcelService>();
         return new CategoryClassificationController(settingService, categoryClassificationService, excelService);
     }
+
     #endregion Helpers
 }

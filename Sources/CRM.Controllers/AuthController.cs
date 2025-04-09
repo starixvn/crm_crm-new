@@ -1,7 +1,14 @@
 ﻿namespace CRM.Controllers;
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using CRM.Models.Auth;
 using CRM.Resources;
+using Enum;
 using Fanex.NAP.Client;
 using Fanex.NAP.Client.Configuration;
 using Fanex.NAP.Client.Models;
@@ -16,13 +23,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models;
 using ONEbook.UM.Filters;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Enum;
 
 [ServiceFilter(typeof(CheckUMFilterAttribute))]
 public class AuthController(
@@ -166,8 +166,8 @@ public class AuthController(
 
     private static CultureInfo ResolveCulture(HttpRequest request)
     {
-        var userLangs = request.Headers["Accept-Language"].ToString();
-        var firstLang = userLangs.Split(',').FirstOrDefault();
+        var userLanguages = request.Headers["Accept-Language"].ToString();
+        var firstLang = userLanguages.Split(',').FirstOrDefault();
         var culture = new CultureInfo(firstLang);
         var isValidCulture = CultureInfo.GetCultures(CultureTypes.AllCultures).Contains(culture);
         return isValidCulture ? CultureInfo.CreateSpecificCulture(firstLang) : CultureInfo.CreateSpecificCulture("en");
@@ -204,16 +204,16 @@ public class AuthController(
         return new RedirectResult("~/Auth/SignIn");
     }
 
-    private async Task<int> SSOLogin(int userId, int onuserId)
+    private async Task<int> SSOLogin(int userId, int onUserId)
     {
         var ssoLoginParam = new SSOLoginParameter
         {
             UserId = userId,
             SiteId = napSettings.SiteId,
             Domain = HttpContext.Request?.Host.ToString(),
-            CheckOnUserId = onuserId,
+            CheckOnUserId = onUserId,
             IP = GetClientIP(HttpContext),
-            BrowserName = Request?.Headers["User-Agent"].ToString(),
+            BrowserName = Request.Headers["User-Agent"].ToString(),
             CountryCode = ResolveCountry(HttpContext.Request)?.GeoId.ToString(CultureInfo.CurrentCulture),
             NetSessionId = HttpContext?.Session.Id,
             Platform = Environment.OSVersion.Platform.ToString(),
@@ -229,10 +229,7 @@ public class AuthController(
         return new RedirectToActionResult("SignIn", "Auth", false);
     }
 
-    private static bool IsValidPassword(User user, SignIn signIn)
-    {
-        return string.Equals(signIn.Password, user.Password, StringComparison.CurrentCulture);
-    }
+    private static bool IsValidPassword(User user, SignIn signIn) => string.Equals(signIn.Password, user.Password, StringComparison.CurrentCulture);
 
     private async Task DoSignInAsync(User user, int onUserId)
     {
@@ -261,9 +258,9 @@ public class AuthController(
 
     private async Task<bool> IsValidTime(string time)
     {
-        DateTime.TryParse(CryptographyHelper.DecryptPassword(time.Replace(" ", "+")), out var descryptTime1);
-        DateTime.TryParse(await securityService.GetTimeAsync(), out var descryptTime2);
-        var expiration = descryptTime2 - descryptTime1;
+        DateTime.TryParse(CryptographyHelper.DecryptPassword(time.Replace(" ", "+")), out var decryptTime1);
+        DateTime.TryParse(await securityService.GetTimeAsync(), out var decryptTime2);
+        var expiration = decryptTime2 - decryptTime1;
 
         return expiration.TotalSeconds <= appSettings.SingleSignOnExpiredTime;
     }

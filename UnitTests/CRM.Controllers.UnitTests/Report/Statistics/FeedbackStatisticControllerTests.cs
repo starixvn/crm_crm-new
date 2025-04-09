@@ -60,7 +60,7 @@ public class FeedbackStatisticControllerTests
     }
 
     [Fact]
-    public async Task ExportExcel_WhenCalled_ReturnAsExpectedResult()
+    public async Task ExportExcel_WhenCalled_TypeNotIsRatingFeedback_ReturnAsExpectedResult()
     {
         var fromDateServer = fixture.Create<DateTime>();
         var toDateServer = fixture.Create<DateTime>();
@@ -68,10 +68,12 @@ public class FeedbackStatisticControllerTests
         {
             Title = "FeedbackStatistic",
             FeedbackCategories = [
-                new() { SubTotal = new FeedbackSubcategory { Id = 1 } }
+                new FeedbackCategory { SubTotal = new FeedbackSubcategory { Id = 1 } },
+                new FeedbackCategory { SubTotal = new FeedbackSubcategory { Id = 2 } }
             ]
         };
-        var param = fixture.Create<GetFeedbackStatisticCriteria>();
+        var param = fixture.Create<GetFeedbackStaticBaseModel>();
+        param.Type = 1;
         var fromDateFormat = param.FromDate.ToString("MMddyyyy");
         var toDateFormat = param.ToDate.ToString("MMddyyyy");
         var fileName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
@@ -79,7 +81,42 @@ public class FeedbackStatisticControllerTests
         var controller = GetController();
         commonService.ConvertClientFromTimeToServerTime(Arg.Any<DateTime>()).Returns(fromDateServer);
         commonService.ConvertClientToTimeToServerTime(Arg.Any<DateTime>()).Returns(toDateServer);
-        feedbackService.GetFeedbackStatisticAsync(param).Returns(feedbackStatistic);
+        feedbackService.GetFeedbackStatisticAsync(Arg.Any<GetFeedbackStatisticCriteria>()).Returns(feedbackStatistic);
+
+        // Act
+        var result = await controller.ExportExcel(param);
+
+        // Assert
+        var excelResult = Assert.IsType<FileContentResult>(result);
+        Assert.Equal(MimeType.XLSX, excelResult.ContentType);
+        Assert.Equal($"{fileName}.xlsx", excelResult.FileDownloadName);
+    }
+
+    [Fact]
+    public async Task ExportExcel_WhenCalled_TypeIsRatingFeedback_ReturnAsExpectedResult()
+    {
+        var fromDateServer = fixture.Create<DateTime>();
+        var toDateServer = fixture.Create<DateTime>();
+        var ratingFbs = new FeedbackRatingReport
+        {
+            Title = "FeedbackStatistic",
+            Records = [
+                new FeedbackRatingRecord
+                    {ColumnData = new BaseModel { Id = 1, Name = "Test"}, Excellent = 1, Good = 1, VeryPoor = 1, Neutral = 0, NARating = 1, Poor = 100},
+                new FeedbackRatingRecord
+                    { ColumnData = new BaseModel { Id = 2, Name = "Test" }, Excellent = 2, Good = 2, VeryPoor = 2, Neutral = 0, NARating = 2, Poor = 100 }
+            ]
+        };
+        var param = fixture.Create<GetFeedbackStaticBaseModel>();
+        param.Type = 12;
+        var fromDateFormat = param.FromDate.ToString("MMddyyyy");
+        var toDateFormat = param.ToDate.ToString("MMddyyyy");
+        var fileName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
+
+        var controller = GetController();
+        commonService.ConvertClientFromTimeToServerTime(Arg.Any<DateTime>()).Returns(fromDateServer);
+        commonService.ConvertClientToTimeToServerTime(Arg.Any<DateTime>()).Returns(toDateServer);
+        feedbackService.GetFeedbackRatingStatisticAsync(Arg.Any<GetFeedbackRatingStatisticCriteria>()).Returns(ratingFbs);
 
         // Act
         var result = await controller.ExportExcel(param);

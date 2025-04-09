@@ -80,16 +80,17 @@ public class CustomerInfoControllerTest : BaseController
         //Act
         var result = await controller.GetSettings();
 
-        //Asssert
+        //Assert
         var jsonResult = Assert.IsType<JsonResult>(result);
         var sitesJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("sites").GetValue(jsonResult.Value);
         var countriesJson = (IEnumerable<Country>)jsonResult.Value.GetType().GetProperty("countries").GetValue(jsonResult.Value);
         var languagesJson = (IEnumerable<Language>)jsonResult.Value.GetType().GetProperty("languages").GetValue(jsonResult.Value);
-        var siteInforJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("sitesLicenseeInactive").GetValue(jsonResult.Value);
+        var siteInfoJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("sitesLicenseeInactive").GetValue(jsonResult.Value);
+
         Assert.Equal(sitesJson, sites);
         Assert.Equal(countriesJson, countries);
         Assert.Equal(languagesJson, languages);
-        Assert.Equal(siteInforJson, sitesLicenseeInactive);
+        Assert.Equal(siteInfoJson, sitesLicenseeInactive);
     }
 
     [Fact]
@@ -149,6 +150,42 @@ public class CustomerInfoControllerTest : BaseController
         var jsonResult = Assert.IsType<JsonResult>(result);
         var customerInfo = jsonResult.Value;
         Assert.Equal(expected, customerInfo);
+    }
+
+    [Fact]
+    public async Task UpdateCustomerSuggestion_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var criteria = fixture.Create<UpdateCustomerSuggestionCriteria>();
+        var expectedResult = fixture.Create<CommandResult>();
+        var controller = GetController();
+        customerService.UpdateCustomerSuggestionAsync(criteria).Returns(expectedResult);
+
+        // Act
+        var result = await controller.UpdateCustomerSuggestion(criteria);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actualResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+        Assert.Equal(expectedResult, actualResult);
+    }
+
+    [Fact]
+    public void GetCurrentCustomer_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var expectedCustomer = new CurrentCustomer { CustId = 1, Name = "Test Customer" };
+        var controller = GetController();
+        sessionService.CurrentCustomer.Returns(expectedCustomer);
+
+        // Act
+        var result = controller.GetCurrentCustomer();
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actualCustomer = Assert.IsAssignableFrom<CurrentCustomer>(jsonResult.Value);
+        Assert.Equal(expectedCustomer, actualCustomer);
     }
 
     #region Helpers
