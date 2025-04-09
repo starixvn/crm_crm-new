@@ -92,7 +92,7 @@ public class PermissionServiceTests
 
         // Assert
         Assert.Equal(1, result);
-        memoryCache.DidNotReceive();
+        memoryCache.DidNotReceive().TryGetValue(Arg.Any<string>(), out _);
     }
 
     [Fact]

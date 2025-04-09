@@ -68,17 +68,19 @@ public class ManageFeedbackExcel(
         worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Status;
         worksheet.Cells[rowIndex, colIndex].Value = feedbackDetail.RelatedCustomer != null ? feedbackDetail.RelatedCustomer.Replace(",", ", ") : string.Empty;
 
-        if (feedbackDetail.Status == "Pending")
+        switch (feedbackDetail.Status)
         {
-            SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], PendingColor);
-        }
-        else if (feedbackDetail.Status == "Closed")
-        {
-            SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], ClosedColor);
-        }
-        else
-        {
-            SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], NormalColor);
+            case "Pending":
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], PendingColor);
+                break;
+
+            case "Closed":
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], ClosedColor);
+                break;
+
+            default:
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], NormalColor);
+                break;
         }
     }
 
@@ -178,10 +180,9 @@ public class ManageFeedbackExcel(
     protected static string GetFeedbackCellValue(FeedbackDetail feedback)
     {
         var creatorName = feedback.CreatorName ?? feedback.Creator;
-        var cellValue = $"{feedback.Subject}\n{"Feedback date " +
-                                feedback.FeedbackDate.ToShortDateTimeFormat()}\n" +
-                                $"{"By " + creatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n" +
-                                $"{"Solving Duration: " + feedback.DurationTime}";
+        var cellValue = $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}" +
+                        $"\n{"By " + creatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}" +
+                            $"\n{"Solving Duration: " + feedback.DurationTime}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {

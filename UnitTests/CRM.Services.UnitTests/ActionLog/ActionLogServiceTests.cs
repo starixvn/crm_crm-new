@@ -114,7 +114,7 @@ public class ActionLogServiceTests
         Assert.Equal("test", actionLog.OldValuesList[0]);
     }
 
-    #region Helpers
+    [Fact]
     private ActionLogService GetService()
     {
         baseService = Substitute.For<IBaseService>();
@@ -130,7 +130,4 @@ public class ActionLogServiceTests
         optionsAppSettings.Value.Returns(appSettings);
         return new ActionLogService(baseService, commonService, settingService, optionsAppSettings);
     }
-
-    #endregion Helpers
-
 }

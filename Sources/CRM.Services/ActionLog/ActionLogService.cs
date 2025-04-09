@@ -34,8 +34,8 @@ public class ActionLogService(
     IOptionsSnapshot<AppSettings> appSettings)
     : IActionLogService
 {
-    private IDictionary<string, string> allSetting;
     private readonly AppSettings appSettings = appSettings.Value;
+    private IDictionary<string, string> allSetting;
     private IDictionary<string, bool> actionLogKeyHash;
     private IDictionary<string, string[]> actionLogBoolValueHash;
     private const int NUMBER_OF_INDEX = 2;
@@ -75,7 +75,7 @@ public class ActionLogService(
         return actionLogs;
     }
 
-    public static bool IsCategoryRemark(IDictionary<string, string> oldResults, IDictionary<string, string> newResults)
+    private static bool IsCategoryRemark(IDictionary<string, string> oldResults, IDictionary<string, string> newResults)
     {
         const string remarkKey = "Remark";
         var oldRemark = oldResults.TryGetValue(remarkKey, out var result) ? result : string.Empty;
@@ -188,7 +188,7 @@ public class ActionLogService(
         return GetSettingValue(value, fieldName);
     }
 
-    public string GetSettingValue(string key, string settingType)
+    private string GetSettingValue(string key, string settingType)
     {
         if (string.Equals(key, "0", StringComparison.OrdinalIgnoreCase))
         {
@@ -203,7 +203,7 @@ public class ActionLogService(
         return settingValue;
     }
 
-    public string GetMultipleSettingValue(string value, string settingType)
+    private string GetMultipleSettingValue(string value, string settingType)
     {
         var valueList = value.Split(',');
 
@@ -309,9 +309,8 @@ public class ActionLogService(
         var fieldNames = new List<string>();
         var oldValuesList = new List<string>();
         var newValuesList = new List<string>();
-        for (var i = 0; i < newSettingLog.updateConfigs.Count; i++)
+        foreach (var newJobSettingLog in newSettingLog.updateConfigs)
         {
-            var newJobSettingLog = newSettingLog.updateConfigs[i];
             var fieldName = $"{newJobSettingLog.ServiceName} - {newJobSettingLog.SettingName}";
             fieldNames.Add(fieldName);
         }
@@ -326,9 +325,9 @@ public class ActionLogService(
 
     private static JobSettingLog ParseLogOldNewUpdateJobSetting(string xml)
     {
-        var regexStart = new Regex(@"<\s*[A-Za-z]");
+        var regexStart = new Regex(@"<\s*[A-Za-z]", RegexOptions.None, TimeSpan.FromSeconds(100));
         var matchStart = regexStart.Match(xml);
-        var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]");
+        var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]", RegexOptions.None, TimeSpan.FromSeconds(100));
         var matchEnd = regexEnd.Match(xml);
         var root = xml.Substring(matchStart.Index + matchStart.Length - 1, matchEnd.Index);
         var serializer = new XmlSerializer(typeof(JobSettingLog), new XmlRootAttribute(root));

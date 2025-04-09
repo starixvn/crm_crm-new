@@ -33,9 +33,9 @@ public class ChangeHeadlineDALog
     {
         if (!string.IsNullOrEmpty(xml))
         {
-            var regexStart = new Regex(@"<\s*[A-Za-z]");
+            var regexStart = new Regex(@"<\s*[A-Za-z]", RegexOptions.None, TimeSpan.FromSeconds(100));
             var matchStart = regexStart.Match(xml);
-            var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]");
+            var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]", RegexOptions.None, TimeSpan.FromSeconds(100));
             var matchEnd = regexEnd.Match(xml);
             var root = xml.Substring(matchStart.Index + matchStart.Length - 1, matchEnd.Index);
             var serializer = new XmlSerializer(typeof(DAInfoLog), new XmlRootAttribute(root));

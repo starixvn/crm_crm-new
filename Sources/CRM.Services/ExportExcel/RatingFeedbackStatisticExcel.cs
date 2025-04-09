@@ -49,8 +49,8 @@ public class RatingFeedbackStatisticExcel(string templatePath, FeedbackRatingRep
             worksheet.Cells[rowIndex, colIndex++].Value = record.Neutral;
             worksheet.Cells[rowIndex, colIndex++].Value = record.Poor;
             worksheet.Cells[rowIndex, colIndex++].Value = record.VeryPoor;
-            worksheet.Cells[rowIndex, colIndex++].Value = record.NARating;
-            if (rowIndex % 2 == 1)
+            worksheet.Cells[rowIndex, colIndex].Value = record.NARating;
+            if (rowIndex % 2 != 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, ratingFeedbackStatistic.ColumnNames.Count], EvenRowColor);
             }

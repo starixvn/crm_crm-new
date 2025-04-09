@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.UnitTests.Feedback;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -15,15 +16,18 @@ using CRM.Services;
 using CRM.Services.Customer;
 using CRM.Services.Feedback;
 using CRM.ViewModels.Feedback;
-using Fanex.NAP.Client.Configuration;
+using Enum;
 using Fanex.NAP.Client;
+using Fanex.NAP.Client.Configuration;
 using Fanex.NAP.Client.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Customer;
 using NSubstitute;
 using Services.Interfaces;
 using Xunit;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
+using FeedbackStatus = Models.Setting.FeedbackStatus;
 
 public class FeedbackControllerTests
 {
@@ -231,6 +235,29 @@ public class FeedbackControllerTests
         Assert.Equal(communicationTools[2], settings.CommunicationToolNA);
     }
 
+    [Fact]
+    public async Task GetCustomerFeedbackById_WhenFeedbackIsNull_ReturnsExpectedResult()
+    {
+        // Arrange
+        var controller = GetController();
+        var customer = new CustomerFeedback
+        {
+            CustId = 10,
+            RelatedCustomers = [new RelatedCustomerPermission { CustId = 10, IsAuthorized = true, IsCredit = true }],
+            CustomerType = SiteType.Credit
+        };
+        customerService.GetSiteTypeByCustIdAsync(customer.CustId).Returns(new CustomerFeedback { CustomerType = SiteType.Credit });
+        feedbackService.GetCustomerFeedbackByIdAsync(Arg.Any<int>()).Returns(customer);
+
+        // Act
+        var result = await controller.GetCustomerFeedbackById(1);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actual = jsonResult.Value;
+        Assert.NotNull(actual);
+    }
+
     #region EditCustomerFeedback
 
     [Fact]
@@ -346,6 +373,71 @@ public class FeedbackControllerTests
 
         // Assert
         Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public async Task EditCustomerNewManualFeedback_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var command = fixture.Create<EditCustomerNewManualFeedbackCommand>();
+        command.StatusID = 11004;
+        var commandResult = fixture.Create<CommandResult>();
+        var controller = GetController();
+        controller.ControllerContext.HttpContext = new DefaultHttpContext
+        {
+            Connection =
+            {
+                RemoteIpAddress = new IPAddress(1)
+            }
+        };
+        permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
+        permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+        permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit).Returns(true);
+        feedbackService.EditCustomerNewManualFeedbackAsync(Arg.Do<EditCustomerNewManualFeedbackCommand>(x => command = x)).Returns(commandResult);
+
+        // Act
+        var result = await controller.EditCustomerNewManualFeedback(command);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+        Assert.Equal(commandResult, actual);
+        Assert.Equal(napSession.UserId, command.UserID);
+        Assert.Equal("1.0.0.0", command.IP);
+    }
+
+    [Fact]
+    public async Task GetTicketInfoByRefNo_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var ticketInfo = fixture.Create<TicketInfo>();
+        ticketInfo.ErrorCode = "0";
+        var controller = GetController();
+        ticketRefService.GetTicketByRefNoAsync(Arg.Any<long>()).Returns(ticketInfo);
+
+        // Act
+        var result = await controller.GetTicketInfoByRefNo(12345);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actual = Assert.IsAssignableFrom<TicketInfo>(jsonResult.Value);
+        Assert.Equal(ticketInfo, actual);
+        Assert.Contains("This is an auto-generated entry.", actual.Description);
+    }
+
+    [Fact]
+    public async Task GetBalanceUpday_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var balanceDay = fixture.Create<DateTime>();
+        var controller = GetController();
+        ticketRefService.GetBalanceUpdayAsync().Returns(balanceDay);
+
+        // Act
+        var result = await controller.GetBalanceUpday();
+
+        // Assert
+        Assert.Equal(balanceDay.ToString("MM/dd/yyyy"), result);
     }
 
     #region Helpers

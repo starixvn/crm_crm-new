@@ -175,12 +175,10 @@ public class FeedbackController(
         int statusId)
     {
         var commandResult = new CommandResult { Code = 0 };
-        var isReadCustInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit) ||
-                             await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
-        var isHostCreateFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
+
         var isHostReviewFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
 
-        if (!isReadCustInfo || !isHostCreateFeedback)
+        if (await IsNoPermissionEditFeedback())
         {
             commandResult = new CommandResult
             {
@@ -198,10 +196,7 @@ public class FeedbackController(
             };
         }
 
-        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)FeedbackStatus.Deleted;
-        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)FeedbackStatus.Deleted;
-        if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
-              && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
+        if (await IsNoPermissionDeleteFeedback(isDeletedFeedbackView, statusId))
         {
             commandResult = new CommandResult
             {
@@ -211,6 +206,22 @@ public class FeedbackController(
         }
 
         return commandResult;
+    }
+
+    private async Task<bool> IsNoPermissionEditFeedback()
+    {
+        var isReadCustInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit) ||
+                             await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
+        var isHostCreateFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
+        return !isReadCustInfo || !isHostCreateFeedback;
+    }
+
+    private async Task<bool> IsNoPermissionDeleteFeedback(bool isDeletedFeedbackView, int statusId)
+    {
+        var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)FeedbackStatus.Deleted;
+        var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)FeedbackStatus.Deleted;
+        return !await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
+               && (isChangedStatusFromDeleted || isChangedStatusToDeleted);
     }
 
     private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)

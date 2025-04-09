@@ -1,10 +1,10 @@
 ﻿namespace CRM.Controllers.Report.Statistics;
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Constants;
-using CRM.Controllers;
 using CRM.Criteria.Report.FeedbackStatistic;
 using CRM.Resources;
 using CRM.Services.Feedback;
@@ -100,7 +100,7 @@ public class FeedbackStatisticController(
     {
         if (!string.IsNullOrWhiteSpace(criteria.FeedbackDateString))
         {
-            criteria.FeedbackDate = DateTime.Parse(criteria.FeedbackDateString);
+            criteria.FeedbackDate = DateTime.Parse(criteria.FeedbackDateString, new CultureInfo("en-US"));
         }
         criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
         criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();

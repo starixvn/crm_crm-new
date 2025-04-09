@@ -123,7 +123,7 @@ public class StatisticsDetailByDateModel : PersonalInfo
         return $"{totalDays:dd\\:hh\\:mm}";
     }
 
-    private string GetAutoFieldText() => new Regex("\n").Replace(AutoField, "<br>") + "<br><br>" + Remark;
+    private string GetAutoFieldText() => new Regex("\n", RegexOptions.None, TimeSpan.FromSeconds(100)).Replace(AutoField, "<br>") + "<br><br>" + Remark;
 
     public int Rating { get; set; }
 }

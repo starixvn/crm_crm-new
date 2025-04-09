@@ -142,9 +142,9 @@ public class DeletedFeedbackExcel(
     protected static string GetFeedbackCellValue(FeedbackDetail feedback)
     {
         var cellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " +
-                feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n" +
-            $"{"Solving Duration: " + feedback.DurationTime}";
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}" +
+            $"\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}" +
+                $"\n{"Solving Duration: " + feedback.DurationTime}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {
