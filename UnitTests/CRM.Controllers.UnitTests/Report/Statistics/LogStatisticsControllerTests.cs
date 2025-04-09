@@ -61,20 +61,9 @@ public class LogStatisticsControllerTests
         // Arrange
         var ibcReport = fixture.Create<LogStatisticsViewModel>();
         var criteria = fixture.Create<LogStatisticsCriteria>();
-        var criteriaIbc = new LogStatisticsCriteria
-        {
-            ProductId = criteria.ProductId,
-            MainCategoryId = criteria.MainCategoryId,
-            CommunicationId = criteria.CommunicationId,
-            FromDate = criteria.FromDate,
-            ToDate = criteria.ToDate,
-            ProductType = LogStatisticConstants.ProductTypeDetails,
-            CategoryType = LogStatisticConstants.SubCategory,
-            SiteType = LogStatisticConstants.IBC
-        };
 
         var controller = GetController();
-        logStatisticsService.GetReportDataAsync(Arg.Do<LogStatisticsCriteria>(x => criteriaIbc = x)).Returns(ibcReport);
+        logStatisticsService.GetReportDataAsync(Arg.Do<LogStatisticsCriteria>(x => _ = x)).Returns(ibcReport);
 
         // Act
         var result = await controller.GetMainReport(criteria);

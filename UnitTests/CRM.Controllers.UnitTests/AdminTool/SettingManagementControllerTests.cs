@@ -69,10 +69,10 @@ public class SettingManagementControllerTests
     public async Task GetLicensees_WhenCalled_ReturnExpectedJson()
     {
         //Arrange
-        var criteria = fixture.Create<GetLicenseeCriteria>();
+        fixture.Create<GetLicenseeCriteria>();
         var expected = fixture.Create<IEnumerable<string>>();
         var controller = GetController();
-        baseService.GetDataAsync<string>(Arg.Do<GetLicenseeCriteria>(x => criteria = x)).Returns(expected);
+        baseService.GetDataAsync<string>(Arg.Do<GetLicenseeCriteria>(x => _ = x)).Returns(expected);
 
         // Act
         var result = await controller.GetLicensees();

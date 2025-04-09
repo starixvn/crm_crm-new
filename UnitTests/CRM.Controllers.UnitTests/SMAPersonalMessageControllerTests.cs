@@ -31,7 +31,7 @@ public class SMAPersonalMessageControllerTests
         var controller = GetController();
         var sMAMessageInfors = fixture.Create<IEnumerable<SMAMessageInfor>>();
         var criteria = fixture.Create<GetPersonalMessageCriteria>();
-        var dateTimeClient =  new DateTime(2023, 04, 14);
+        var dateTimeClient = new DateTime(2023, 04, 14);
         commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(dateTimeClient);
         baseService.GetDataAsync<SMAMessageInfor>(Arg.Do<GetPersonalMessageCriteria>(x => criteria = x)).Returns(sMAMessageInfors);
 
@@ -77,14 +77,9 @@ public class SMAPersonalMessageControllerTests
                 RemoteIpAddress = new IPAddress(1)
             }
         };
-        var command = new DeletePersonalMessageCommand
-        {
-            MessageID = 1,
-            IP = clientIP.ToString()
-        };
-            
+
         controller.ControllerContext.HttpContext = clientIP;
-        baseService.ExecuteNonQueryAsync(Arg.Do<DeletePersonalMessageCommand>(x => command = x)).Returns(commandResult);
+        baseService.ExecuteNonQueryAsync(Arg.Do<DeletePersonalMessageCommand>(x => _ = x)).Returns(commandResult);
 
         // Act
         var result = await controller.Delete(1);

@@ -138,9 +138,9 @@
         <Setting Key="Acc_CRM_NewRpt_DailyStatisticsDetail" SpName="Acc_CRM_NewRpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsPeriod" SpName="Acc_CRM_Rpt_FeedbackStatisticsPeriod" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatistics" SpName="Acc_CRM_Rpt_FeedbackStatistics_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Rpt_RatingFeedbackStatistic" SpName="Acc_CRM_Rpt_RatingFeedbackStatistic_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticDetails" SpName="Acc_CRM_Rpt_FeedbackStatisticDetails_xtest" DbName="DBCRM.bodb_CRM.wsv_nap">
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatistics" SpName="Acc_CRM_Rpt_FeedbackStatistics" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_Rpt_RatingFeedbackStatistic" SpName="Acc_CRM_Rpt_RatingFeedbackStatistic" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticDetails" SpName="Acc_CRM_Rpt_FeedbackStatisticDetails" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="MainCategory" ObjectProperty="SettingId" />
             <Mapping DataField="SubCategory" ObjectProperty="SubSettingId" />
         </Setting>

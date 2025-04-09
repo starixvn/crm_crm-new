@@ -6,6 +6,9 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
     <ItemGroup>
+        <Content Include="App_Data\SpNames.dev.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="App_Data\SpNames.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

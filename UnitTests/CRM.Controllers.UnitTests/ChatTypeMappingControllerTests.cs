@@ -130,12 +130,12 @@ public class ChatTypeMappingControllerTests
         var commandResult = fixture.Create<CommandResult>();
         var letstalkProfile = fixture.Create<LetstalkTelegramContact>();
         var telegramProfile = fixture.Create<LetstalkTelegramContact>();
-        var criteria = fixture.Create<InsertPersonalMappingCommand>();
+        fixture.Create<InsertPersonalMappingCommand>();
         var controller = GetController();
         var invalidLetstalk = fixture.Create<string>();
         letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(letstalkProfile);
         telegramService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<long>()).Returns(telegramProfile);
-        chatTypeMappingService.CreatePersonalMappingAsync(Arg.Do<InsertPersonalMappingCommand>(x => criteria = x)).Returns(commandResult);
+        chatTypeMappingService.CreatePersonalMappingAsync(Arg.Do<InsertPersonalMappingCommand>(x => _ = x)).Returns(commandResult);
         var actual = await controller.InsertPersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk, RecipientIds = "1", ChannelId = 1 });
 
         var jsonResult = Assert.IsType<JsonResult>(actual);
