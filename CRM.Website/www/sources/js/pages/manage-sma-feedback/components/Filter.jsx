@@ -143,7 +143,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Check className='is-test-only' type="checkbox" label={LangHelper.getResource('FilterByTestEvents')}
+                        <Form.Check className='is-test-only' type="checkbox" label={LangHelper.getResource('FilterByTestData')}
                             htmlFor="is-test-only" checked={this.state.filter.isTestOnly}
                             value={this.state.filter.isTestOnly}
                             onChange={e => this.handleChange('isTestOnly', e.target.checked)}

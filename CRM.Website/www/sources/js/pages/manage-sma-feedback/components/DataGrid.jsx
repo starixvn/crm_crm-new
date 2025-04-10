@@ -7,6 +7,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
+import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -114,6 +115,10 @@ export class DataGrid extends Component {
         this.props.getGridData({ ...params });
     };
 
+    handleExportExcel = () => {
+        this.props.exportExcel(this.props.gridParams);
+    };
+
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;
@@ -134,14 +139,17 @@ export class DataGrid extends Component {
                     <div>{LangHelper.getResource('ManageSMAFeedback')}</div>
                     <div>
                         {
-                            <div className="has-icons">
-                                <span className={this.state.expandAllPanel ? 'fa fa-expand' : 'fa fa-compress'} onClick={this.toggleAllPanel} />
-                            </div>
+                            this.props.gridData?.data.length > 0 && (
+                                <div>
+                                    <div className="has-icons">
+                                        <span className={this.state.expandAllPanel ? 'fa fa-expand' : 'fa fa-compress'} onClick={this.toggleAllPanel} />
+                                    </div>
+                                    <ExcelIcon
+                                        handleExportExcel={this.handleExportExcel}
+                                    />
+                                </div>
+                            )
                         }
-                        <span
-                            className='fa fa-file-excel-o ml-3 icon-excel'
-                           onClick={() => this.props.exportExcel(this.props.gridParams)}
-                        />
                     </div>
                 </div>
                 <Table

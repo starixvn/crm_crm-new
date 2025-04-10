@@ -99,6 +99,9 @@ export class EditSmaFeedback extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button size="sm" type="submit" variant="primary" disabled={this.state.isSubmitting} id='submit'>Save</Button>
+                    <Button size="sm" type="button" variant="primary" onClick={() => this.props.onClose(false)}>
+                        {LangHelper.getResource('Cancel')}
+                    </Button>
                 </Modal.Footer>
             </Form>
         );

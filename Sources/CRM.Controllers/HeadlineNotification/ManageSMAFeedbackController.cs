@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using CRM.Constants;
 using CRM.Filters;
 using CRM.Models.ManageSmaFeedback;
@@ -23,7 +24,7 @@ namespace CRM.Controllers.HeadlineNotification
         public async Task<IActionResult> GetReviewStatusSetting()
         {
             var reviewStatus = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.ReviewStatus, SettingConstants.Active);
-            return Json(reviewStatus);
+            return Json(reviewStatus.OrderBy(item => item.Id));
         }
 
         [HttpPost]
