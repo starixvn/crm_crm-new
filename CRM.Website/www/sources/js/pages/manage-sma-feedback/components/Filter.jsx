@@ -71,9 +71,9 @@ export class Filter extends Component {
         return {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
-            reviewStatusID: reviewStatus.split(',').length === this.props.reviewStatusSetting.length ? null : reviewStatus,
+            listReviewStatusIDs: reviewStatus.split(',').length === this.props.reviewStatusSetting.length ? null : reviewStatus,
             username,
-            isTestOnly,
+            testOnly: isTestOnly,
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };

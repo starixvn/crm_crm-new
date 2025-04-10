@@ -28,8 +28,8 @@ export class EditSmaFeedback extends Component {
     };
 
     getParams = () => {
-        const { reviewStatus, discussion, functionID, createdDate, custID } = this.formik.values;
-        return { reviewStatus, discussion, functionID, createdDate, custID };
+        const { reviewStatusID, discussion, functionID, createdDate, custID } = this.formik.values;
+        return { reviewStatusID: parseInt(reviewStatusID, 10), discussion, functionID, createdDate, custID };
     };
 
     handleSubmit = async () => {
@@ -72,13 +72,13 @@ export class EditSmaFeedback extends Component {
                         <Col sm="5" md="5">
                             <Form.Control as="select" size="sm"
                                 column sm="3" md="3"
-                                name="reviewStatus" id="reviewStatus"
-                                value={values.reviewStatus}
+                                name="reviewStatusID" id="reviewStatusID"
+                                value={values.reviewStatusID}
                                 onChange={handleChange}
                             >
                                 {
                                     this.props.reviewStatusSetting.map(item =>
-                                    (<option key={item.reviewStatus} value={item.reviewStatus}>
+                                    (<option key={item.id} value={item.id}>
                                         {item.name}
                                     </option>)
                                     )
@@ -105,9 +105,13 @@ export class EditSmaFeedback extends Component {
     };
 
     render() {
-        const { discussion, functionID, createdDate, custID } = this.props.data;
-        const reviewStatus = this.props.data.reviewStatus ? this.props.data.reviewStatus : this.props.reviewStatusSetting[0].id;
-        const initialValues = { reviewStatus, discussion, functionID, createdDate, custID };
+        const { data, reviewStatusSetting } = this.props;
+        if(!data){
+            return null;
+        }
+        const { discussion, functionID, createdDate, custID } = data;
+        const reviewStatusID = data.reviewStatusID ? data.reviewStatusID : reviewStatusSetting[0].id;
+        const initialValues = { reviewStatusID, discussion, functionID, createdDate, custID };
         return (
             <Modal show className="edit-sma-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="md" centered

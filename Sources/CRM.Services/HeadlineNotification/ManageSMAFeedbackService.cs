@@ -18,7 +18,7 @@ namespace CRM.Services.HeadlineNotification
                 ToDate = commonService.ConvertClientToTimeToServerTime(param.ToDate),
                 PageIndex = param.PageIndex,
                 ItemsPerPage = param.PageSize,
-                ReviewStatusID = param.ReviewStatusID,
+                ListReviewStatusIDs = param.ListReviewStatusIDs,
                 TestOnly = param.TestOnly,
                 Username = param.Username,
                 SitePermission = param.SitePermission,

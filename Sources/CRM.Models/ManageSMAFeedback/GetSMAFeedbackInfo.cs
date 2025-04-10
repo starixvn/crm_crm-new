@@ -8,7 +8,7 @@ namespace CRM.Models.ManageSmaFeedback
 
         public DateTime ToDate { get; set; }
 
-        public string? ReviewStatusID { get; set; }
+        public string ListReviewStatusIDs { get; set; }
 
         public bool TestOnly { get; set; }
 

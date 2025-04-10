@@ -32,13 +32,18 @@ export class DataGrid extends Component {
         });
     };
 
+    getReviewStatusId = reviewStatus => {
+        return this.props.reviewStatusSetting.find(x => x.name === reviewStatus)?.id;
+    };
+
     handleEdit = item => {
+        var reviewStatusId = this.getReviewStatusId(item.reviewStatus);
         this.props.setEditSmaFeedbackDialog({
             show: true,
             custID: item.custID,
             createdDate: item.createdDate,
             functionID: item.funcID,
-            reviewStatus: item.reviewStatus,
+            reviewStatusID: parseInt(reviewStatusId, 10),
             discussion: item.discussion
         })
     };
@@ -159,15 +164,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const {
-        gridParams,
-        gridData
-    } = state;
-
-    return {
-        gridParams,
-        gridData
-    };
+    const { gridParams, gridData, reviewStatusSetting } = state;
+    return { gridParams, gridData, reviewStatusSetting };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
