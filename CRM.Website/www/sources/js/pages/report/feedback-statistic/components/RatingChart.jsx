@@ -128,6 +128,11 @@ export default class RatingChart extends PureComponent {
         );
     };
 
+    renderPieChartLabel = (text) => {
+        const match = text.match(/\((.*?)\)/);
+        return match ? match[1] : text;
+    }; 
+
     renderPieChart = () => {
         const { pieData } = this.state;
         if (!pieData || pieData.length === 0) {
@@ -142,7 +147,7 @@ export default class RatingChart extends PureComponent {
                         cx="50%"
                         cy="50%"
                         labelLine={true}
-                        label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                        label={({ name, percent }) => `${this.renderPieChartLabel(name)} (${(percent * 100).toFixed(0)}%)`}
                         outerRadius={200}
                         fill="#8884d8"
                         dataKey="value"
