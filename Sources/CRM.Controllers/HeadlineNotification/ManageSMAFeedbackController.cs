@@ -20,7 +20,6 @@ namespace CRM.Controllers.HeadlineNotification
         IExportExcelService excelService) : BaseController
     {
         [HttpGet]
-        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> GetReviewStatusSetting()
         {
             var reviewStatus = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.ReviewStatus, SettingConstants.Active);
