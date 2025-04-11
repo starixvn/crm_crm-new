@@ -13,6 +13,8 @@ namespace CRM.Criteria.ManageSMAFeedback
 
         public int ReviewStatusID { get; set; }
 
+        public string Comment { get; set; }
+
         public string Discussion { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_SMAFeedbackInfoUpd";

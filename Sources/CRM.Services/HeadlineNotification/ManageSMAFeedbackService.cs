@@ -44,6 +44,7 @@ namespace CRM.Services.HeadlineNotification
                 FunctionID = param.FunctionID,
                 ReviewStatusID = param.ReviewStatusID,
                 Discussion = param.Discussion,
+                Comment = param.Comment
             };
             return await baseService.ExecuteNonQueryAsync(command);
         }

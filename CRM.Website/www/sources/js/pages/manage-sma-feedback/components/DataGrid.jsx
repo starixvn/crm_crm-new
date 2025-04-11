@@ -45,7 +45,8 @@ export class DataGrid extends Component {
             createdDate: item.createdDate,
             functionID: item.funcID,
             reviewStatusID: parseInt(reviewStatusId, 10),
-            discussion: item.discussion
+            discussion: item.discussion,
+            comment: item.comment
         })
     };
 
