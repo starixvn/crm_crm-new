@@ -12,5 +12,5 @@ public class FeedbackStatisticInfo: BaseModel
 
     public IList<FeedbackCategory> FeedbackCategories { get; set; } = new List<FeedbackCategory>();
 
-    public int[] GrandTotals { get; set; }
+    public int[] GrandTotals { get; set; } = [];
 }

@@ -35,7 +35,7 @@ export class DataGrid extends Component {
     buildHeader = gridData => {
         const header = [];
         header.push(<HeaderCell className='sticky-header' colWidth={45}>{LangHelper.getResource('Subcategory')}</HeaderCell>);
-        gridData.usernames.forEach(item =>{
+        gridData.usernames?.forEach(item =>{
             header.push(<HeaderCell colWidth={15}>{item.name}</HeaderCell>);
         });
         return (
@@ -153,7 +153,7 @@ export class DataGrid extends Component {
         gridData.grandTotals.forEach((item,index) =>{
             cells.push(
             <Cell key={`grand-total-${index}`} className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
-                onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}
+                onClick={() => this.handleShowDetails(gridData.usernames?.[index]?.id,0,0)}
             >
                 {item}
             </Cell>);
@@ -205,7 +205,7 @@ export class DataGrid extends Component {
         return (
             <div>
                 {
-                    gridData.usernames.length > 0 &&
+                    gridData.usernames?.length > 0 &&
                     <OverlayTrigger
                         overlay={
                             <Tooltip><span>View Chart</span></Tooltip>
@@ -268,7 +268,7 @@ export class DataGrid extends Component {
         };
 
         const defaultWidth = 400;
-        const totalWidth = defaultWidth + gridData.usernames.length * 120;
+        const totalWidth = defaultWidth + (gridData.usernames ? gridData.usernames.length * 120 : 0);
         const width = this.getWidth(totalWidth) + 20;
 
         return (
