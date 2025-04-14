@@ -4,6 +4,7 @@ using System.Linq;
 using CRM.Models.ManageSmaFeedback;
 using CRM.Resources;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using OfficeOpenXml.Style;
 
 namespace CRM.Services.ExportExcel
@@ -63,7 +64,8 @@ namespace CRM.Services.ExportExcel
         {
             StyleDefault(worksheet);
             SetBackgroundColor(worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalCols], HeaderTitleColor);
-            for (var index = 3; index <= TotalCols; index++)
+            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            for (var index = 3; index <= 6; index++)
             {
                 worksheet.Column(index).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             }
