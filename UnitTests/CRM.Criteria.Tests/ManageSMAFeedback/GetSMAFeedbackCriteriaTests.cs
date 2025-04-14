@@ -16,7 +16,7 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             var result = criteria.GetSettingKey();
 
             // Assert
-            Assert.Equal("", result);
+            Assert.Equal("Acc_CRM_ManageSMAFeedback", result);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             var criteria = new GetSmaFeedbackCriteria();
             var fromDate = DateTime.Now.AddDays(-1);
             var toDate = DateTime.Now;
-            var reviewStatus = "Approved";
+            var listReviewStatusIDs = "1,2";
             var username = "testuser";
             var pageSize = 10;
             var pageIndex = 1;
@@ -48,7 +48,7 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             // Act
             criteria.FromDate = fromDate;
             criteria.ToDate = toDate;
-            criteria.ReviewStatus = reviewStatus;
+            criteria.ListReviewStatusIDs = listReviewStatusIDs;
             criteria.Username = username;
             criteria.ItemsPerPage = pageSize;
             criteria.PageIndex = pageIndex;
@@ -57,7 +57,7 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             // Assert
             Assert.Equal(fromDate, criteria.FromDate);
             Assert.Equal(toDate, criteria.ToDate);
-            Assert.Equal(reviewStatus, criteria.ReviewStatus);
+            Assert.Equal(listReviewStatusIDs, criteria.ListReviewStatusIDs);
             Assert.Equal(username, criteria.Username);
             Assert.Equal(pageSize, criteria.ItemsPerPage);
             Assert.Equal(pageIndex, criteria.PageIndex);

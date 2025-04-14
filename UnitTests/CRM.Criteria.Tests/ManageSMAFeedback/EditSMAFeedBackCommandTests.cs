@@ -16,7 +16,7 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             var result = command.GetSettingKey();
 
             // Assert
-            Assert.Equal("", result);
+            Assert.Equal("Acc_CRM_SMAFeedbackInfoUpd", result);
         }
 
         [Fact]
@@ -38,17 +38,17 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             // Arrange
             var command = new EditSmaFeedbackCommand();
             var custID = 1;
-            var reviewStatus = "Approved";
+            var reviewStatusID = 1;
             var discussion = "Solution discussed";
 
             // Act
             command.CustID = custID;
-            command.ReviewStatus = reviewStatus;
+            command.ReviewStatusID = reviewStatusID;
             command.Discussion = discussion;
 
             // Assert
             Assert.Equal(custID, command.CustID);
-            Assert.Equal(reviewStatus, command.ReviewStatus);
+            Assert.Equal(reviewStatusID, command.ReviewStatusID);
             Assert.Equal(discussion, command.Discussion);
         }
     }
