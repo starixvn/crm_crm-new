@@ -76,10 +76,10 @@ export class DataGrid extends Component {
     };
 
     renderPanelItem = (item, index, panels) => (
-        item.length > 60 ?
+        item.length > 50 ?
         <Panel ref={panel => panels[index] = panel}>
             <PanelHeader>
-                <div>{item.slice(0, 10)}</div>
+                <div>{item.slice(0, 50)}</div>
             </PanelHeader>
             <div>{item}</div>
         </Panel> :
