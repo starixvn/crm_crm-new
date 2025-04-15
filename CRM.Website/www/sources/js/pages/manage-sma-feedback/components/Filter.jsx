@@ -74,7 +74,7 @@ export class Filter extends Component {
             listReviewStatusIDs: reviewStatus.split(',').length === this.props.reviewStatusSetting.length ? null : reviewStatus,
             username,
             testOnly: isTestOnly,
-            pageIndex: this.props.gridParams.pageIndex,
+            pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
         };
     };
