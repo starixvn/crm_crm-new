@@ -61,6 +61,8 @@ public class FeedbackStatisticController(
             UserRole = baseCriteria.UserRole
         };
         var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+        feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
+
         if (feedbackStatistic.TotalItems > 0)
         {
             feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories
@@ -86,6 +88,7 @@ public class FeedbackStatisticController(
             UserRole = baseCriteria.UserRole
         };
         var feedbackStatistic = await feedbackService.GetFeedbackRatingStatisticAsync(criteria);
+        feedbackStatistic.TotalItems = feedbackStatistic.Records.Count;
         if (feedbackStatistic.TotalItems > 0)
         {
             feedbackStatistic.Records = feedbackStatistic.Records

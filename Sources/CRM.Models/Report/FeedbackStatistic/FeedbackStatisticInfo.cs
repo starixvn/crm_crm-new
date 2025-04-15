@@ -8,7 +8,7 @@ public class FeedbackStatisticInfo : BaseModel
 
     public IList<BaseModel> Usernames { get; set; } = new List<BaseModel>();
 
-    public int TotalItems => FeedbackCategories.Count;
+    public int TotalItems { get; set; }
 
     public IList<FeedbackCategory> FeedbackCategories { get; set; } = new List<FeedbackCategory>();
 

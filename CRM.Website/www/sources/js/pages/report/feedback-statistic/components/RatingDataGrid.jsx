@@ -71,9 +71,8 @@ export class RatingDataGrid extends Component {
         cells.push(
             <Cell
                 key={`excellent-${index}`}
-                className={`${
-                    item.excellent > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${item.excellent > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() =>
                     this.handleShowDetails(
                         Rating.Excellent,
@@ -88,9 +87,8 @@ export class RatingDataGrid extends Component {
         cells.push(
             <Cell
                 key={`good-${index}`}
-                className={`${
-                    item.good > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${item.good > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() =>
                     this.handleShowDetails(
                         Rating.Good,
@@ -105,9 +103,8 @@ export class RatingDataGrid extends Component {
         cells.push(
             <Cell
                 key={`neutral-${index}`}
-                className={`${
-                    item.neutral > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${item.neutral > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() =>
                     this.handleShowDetails(
                         Rating.Neutral,
@@ -122,9 +119,8 @@ export class RatingDataGrid extends Component {
         cells.push(
             <Cell
                 key={`poor-${index}`}
-                className={`${
-                    item.poor > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${item.poor > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() =>
                     this.handleShowDetails(
                         Rating.Poor,
@@ -139,9 +135,8 @@ export class RatingDataGrid extends Component {
         cells.push(
             <Cell
                 key={`verypoor-${index}`}
-                className={`${
-                    item.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${item.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() =>
                     this.handleShowDetails(
                         Rating.VeryPoor,
@@ -156,9 +151,8 @@ export class RatingDataGrid extends Component {
         cells.push(
             <Cell
                 key={`naRating-${index}`}
-                className={`${
-                    item.naRating > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${item.naRating > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() =>
                     this.handleShowDetails(
                         Rating.NA,
@@ -202,9 +196,8 @@ export class RatingDataGrid extends Component {
 
         cells.push(
             <Cell
-                className={`${
-                    totals.excellent > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${totals.excellent > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() => this.handleShowDetails(Rating.Excellent)}
             >
                 {totals.excellent}
@@ -213,9 +206,8 @@ export class RatingDataGrid extends Component {
 
         cells.push(
             <Cell
-                className={`${
-                    totals.good > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${totals.good > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() => this.handleShowDetails(Rating.Good)}
             >
                 {totals.good}
@@ -224,9 +216,8 @@ export class RatingDataGrid extends Component {
 
         cells.push(
             <Cell
-                className={`${
-                    totals.neutral > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${totals.neutral > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() => this.handleShowDetails(Rating.Neutral)}
             >
                 {totals.neutral}
@@ -235,9 +226,8 @@ export class RatingDataGrid extends Component {
 
         cells.push(
             <Cell
-                className={`${
-                    totals.poor > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${totals.poor > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() => this.handleShowDetails(Rating.Poor)}
             >
                 {totals.poor}
@@ -246,9 +236,8 @@ export class RatingDataGrid extends Component {
 
         cells.push(
             <Cell
-                className={`${
-                    totals.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${totals.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() => this.handleShowDetails(Rating.VeryPoor)}
             >
                 {totals.veryPoor}
@@ -257,9 +246,8 @@ export class RatingDataGrid extends Component {
 
         cells.push(
             <Cell
-                className={`${
-                    totals.naRating > 0 ? this.styleCLick : this.styleDisableCLick
-                } text-center`}
+                className={`${totals.naRating > 0 ? this.styleCLick : this.styleDisableCLick
+                    } text-center`}
                 onClick={() => this.handleShowDetails(Rating.NA)}
             >
                 {totals.naRating}
@@ -342,7 +330,7 @@ export class RatingDataGrid extends Component {
         const params = { ...this.props.gridParams };
         params['pageIndex'] = pageIndex;
         params['pageSize'] = pageSize;
-        this.props.getratingGridData(params);
+        this.props.getGridData(params);
         this.props.setGridParams(params);
     };
 
