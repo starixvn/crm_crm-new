@@ -69,7 +69,7 @@ public class NotificationTypeService(
         {
             foreach (var item in data.Item3)
             {
-                item.ChatTypeName = EnumHelper.GetDesciption((ChatType)item.ChatTypeId);
+                item.ChatTypeName = EnumHelper.GetDescription((ChatType)item.ChatTypeId);
             }
             foreach (var item in data.Item1)
             {

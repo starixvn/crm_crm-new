@@ -1,14 +1,14 @@
 ﻿namespace CRM.Models.ChatTypeMapping;
 
-using Extensions;
 using System.Collections.Generic;
 using Enum;
+using Extensions;
 
 public class ChatTypeMappingModel
 {
     public int ChatTypeId { get; set; }
 
-    public string ChatType => EnumHelper.GetDesciption((ChatType)ChatTypeId);
+    public string ChatType => EnumHelper.GetDescription((ChatType)ChatTypeId);
 
     public long BotId { get; set; }
 
@@ -28,7 +28,7 @@ public class ChatTypeMappingModel
 
     public int MappingStatusId { get; set; }
 
-    public string MappingStatus => EnumHelper.GetDesciption((MappingStatus)MappingStatusId);
+    public string MappingStatus => EnumHelper.GetDescription((MappingStatus)MappingStatusId);
 
     public int LanguageId { get; set; }
 

@@ -19,28 +19,13 @@ public class CommonService(
 {
     private readonly AppSettings appSettings = appSettings.Value;
 
-    public async Task<IEnumerable<BaseBotModel>> GetConversationBotAsync()
-    {
-        var criteria = new GetConversationBotsCriteria();
-        return await baseService.GetDataAsync<BaseBotModel>(criteria);
-    }
+    public async Task<IEnumerable<BaseBotModel>> GetConversationBotAsync() => await baseService.GetDataAsync<BaseBotModel>(new GetConversationBotsCriteria());
 
-    public async Task<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)> GetRecipientAsync(GetRecipientsCriteria criteria)
-    {
-        return await baseService.FetchMultipleAsync<RecipientModel, BotInfo>(criteria);
-    }
+    public async Task<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)> GetRecipientAsync(GetRecipientsCriteria criteria) => await baseService.FetchMultipleAsync<RecipientModel, BotInfo>(criteria);
 
-    public async Task<IEnumerable<BaseModel>> GetRecipientTypeAsync()
-    {
-        var criteria = new GetRecipientTypesCriteria();
-        return await baseService.GetDataAsync<BaseModel>(criteria);
-    }
+    public async Task<IEnumerable<BaseModel>> GetRecipientTypeAsync() => await baseService.GetDataAsync<BaseModel>(new GetRecipientTypesCriteria());
 
-    public async Task<IEnumerable<BaseModel>> GetBotServicesAsync()
-    {
-        var criteria = new GetBotServicesCriteria();
-        return await baseService.GetDataAsync<BaseModel>(criteria);
-    }
+    public async Task<IEnumerable<BaseModel>> GetBotServicesAsync() => await baseService.GetDataAsync<BaseModel>(new GetBotServicesCriteria());
 
     public async Task<IEnumerable<BaseModel>> GetSystemAsync()
     {
@@ -48,27 +33,19 @@ public class CommonService(
         return await baseService.GetDataAsync<BaseModel>(criteria);
     }
 
-    public async Task<IEnumerable<BaseModel>> GetHeadlineAsync(GetHeadlinesCriteria criteria)
-    {
-        return await baseService.GetDataAsync<BaseModel>(criteria);
-    }
+    public async Task<IEnumerable<BaseModel>> GetHeadlineAsync(GetHeadlinesCriteria criteria) => await baseService.GetDataAsync<BaseModel>(criteria);
 
-    public IEnumerable<BaseModel> GetChatTypes()
-    {
-        return Enum.GetValues(typeof(ChatType)).Cast<ChatType>()
-            .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDesciption(type) });
-    }
+    public IEnumerable<BaseModel> GetChatTypes() =>
+        Enum.GetValues(typeof(ChatType)).Cast<ChatType>()
+            .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDescription(type) });
 
-    public IEnumerable<BaseModel> GetMappingStatus()
-    {
-        return Enum.GetValues(typeof(MappingStatus)).Cast<MappingStatus>()
-            .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDesciption(type) });
-    }
+    public IEnumerable<BaseModel> GetMappingStatus() =>
+        Enum.GetValues(typeof(MappingStatus)).Cast<MappingStatus>()
+            .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDescription(type) });
 
     public DateTime ConvertToClientDateTime(DateTime date)
     {
         var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            
         return date.Add(timeSpan);
     }
 
@@ -93,24 +70,11 @@ public class CommonService(
 
     public DateTime GetEndOfDate(DateTime date)
     {
-        date = new DateTimeOffset(date.Year, date.Month, date.Day,0,0,0,TimeSpan.Zero).AddDays(1).AddSeconds(-1).DateTime;
+        date = new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero).AddDays(1).AddSeconds(-1).DateTime;
         return date;
     }
 
-    public DateTime GetStartOfDate(DateTime date)
-    {
-        date = new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero).DateTime;
-        return date;
-    }
+    public DateTime FirstDayOfMonth(DateTime dateTime) => new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime;
 
-    public DateTime FirstDayOfMonth(DateTime dateTime)
-    {
-        return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime;
-    }
-
-    public DateTime LastDayOfMonth(DateTime dateTime)
-    {
-        return FirstDayOfMonth(dateTime).AddMonths(1).AddDays(-1);
-    }
-
+    public DateTime LastDayOfMonth(DateTime dateTime) => FirstDayOfMonth(dateTime).AddMonths(1).AddDays(-1);
 }
