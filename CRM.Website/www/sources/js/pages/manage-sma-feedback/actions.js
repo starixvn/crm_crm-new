@@ -4,7 +4,8 @@ import {
     setGridParams,
     setGridData,
     setEditSmaFeedbackDialog,
-    setReviewStatusSetting
+    setReviewStatusSetting,
+    resetState
 } from './smaFeedbackSlice';
 
 const getReviewStatusSetting = () => async() => {
@@ -42,5 +43,6 @@ export const ActionCreators = {
     getReviewStatusSetting,
     getGridData,
     editSmaFeedback,
-    exportExcel
+    exportExcel,
+    resetState
 };

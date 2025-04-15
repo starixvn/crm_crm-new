@@ -14,6 +14,7 @@ const smaFeedbackSlice = createSlice({
     name: 'smaFeedback',
     initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -35,7 +36,8 @@ export const {
     setGridParams,
     setGridData,
     setEditSmaFeedbackDialog,
-    setReviewStatusSetting
+    setReviewStatusSetting,
+    resetState
 } = actions;
 
 export default reducer;

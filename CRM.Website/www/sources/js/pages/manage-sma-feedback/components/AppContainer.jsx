@@ -22,7 +22,11 @@ export class AppContainer extends Component {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('ManageSMAFeedback');
-    }
+    };
+
+    componentWillUnmount(){
+        this.props.resetState();
+    };
     
     handleCloseDialog = isSuccessful => {
         this.props.setEditSmaFeedbackDialog({ show: false });
