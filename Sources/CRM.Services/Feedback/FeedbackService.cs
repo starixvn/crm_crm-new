@@ -134,7 +134,7 @@ public class FeedbackService(
     {
         var dataset = await dynamicRepository.FetchDataSetAsync(criteria);
 
-        return dataset.Tables.Count < 2 ? new FeedbackStatisticInfo() : ReadFeedbackStatistic(dataset.Tables[0].CreateDataReader(), dataset.Tables[1].CreateDataReader());
+        return dataset.Tables.Count < 2 ? new FeedbackStatisticInfo() : ReadFeedbackStatistic(dataset.Tables[0], dataset.Tables[1]);
     }
 
     public async Task<FeedbackRatingReport> GetFeedbackRatingStatisticAsync(ICriteria criteria)
