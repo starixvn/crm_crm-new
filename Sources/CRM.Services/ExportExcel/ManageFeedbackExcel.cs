@@ -182,7 +182,8 @@ public class ManageFeedbackExcel(
         var creatorName = feedback.CreatorName ?? feedback.Creator;
         var cellValue = $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}" +
                         $"\n{"By " + creatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}" +
-                            $"\n{"Solving Duration: " + feedback.DurationTime}";
+                            $"\n{"Solving Duration: " + feedback.DurationTime}" +
+                        $"\n{"Rating: " + RenderRating(feedback.Rating, feedback.RatingDescription)}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {
@@ -192,4 +193,6 @@ public class ManageFeedbackExcel(
 
         return cellValue;
     }
+
+    private static string RenderRating(int rating, string ratingDescription) => rating > 0 ? $"{rating} ({ratingDescription})" : ratingDescription;
 }

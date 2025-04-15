@@ -88,7 +88,7 @@ public class ManageFeedbackExcelTests
         var feedback = FakeFeedbackDetail();
         feedback.Status = "Closed";
         var feedbackCellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" +
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" + "\nRating: N/A" +
             $"\nReviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}";
         var categoryCellValue = "Special Notification\n  Abnormal Bets";
 
@@ -115,7 +115,7 @@ public class ManageFeedbackExcelTests
         var feedback = FakeFeedbackDetail();
         feedback.Status = "Pending";
         var feedbackCellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" +
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" + "\nRating: N/A" +
             $"\nReviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}";
         var categoryCellValue = "Special Notification\n  Abnormal Bets";
 
@@ -142,7 +142,7 @@ public class ManageFeedbackExcelTests
         var feedback = FakeFeedbackDetail();
         feedback.Status = "Checked";
         var feedbackCellValue =
-            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" +
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n{"Solving Duration: " + feedback.DurationTime}" + "\nRating: N/A" +
             $"\nReviewed by {feedback.ReviewerName} on {feedback.SolveDate.ToShortDateTimeFormat()}";
         var categoryCellValue = "Special Notification\n  Abnormal Bets";
 
