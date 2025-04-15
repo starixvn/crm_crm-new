@@ -19,7 +19,10 @@ public class GetFeedbackStatisticDetailCriteria : BaseSitePermissionCriteria
     public int ValueId { get; set; }
 
     [SpParam(AllowNull = true)]
-    public DateTime? FeedbackDate { get; set; }
+    public DateTime? FromFeedbackDate { get; set; }
+
+    [SpParam(AllowNull = true)]
+    public DateTime? ToFeedbackDate { get; set; }
 
     [SpParam(Ignored = true)]
     public string FeedbackDateString { get; set; }

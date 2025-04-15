@@ -103,7 +103,9 @@ public class FeedbackStatisticController(
     {
         if (!string.IsNullOrWhiteSpace(criteria.FeedbackDateString))
         {
-            criteria.FeedbackDate = DateTime.Parse(criteria.FeedbackDateString, new CultureInfo("en-US"));
+            var fbDate = DateTime.Parse(criteria.FeedbackDateString, new CultureInfo("en-US"));
+            criteria.FromFeedbackDate = commonService.ConvertClientFromTimeToServerTime(fbDate);
+            criteria.ToFeedbackDate = commonService.ConvertClientToTimeToServerTime(fbDate);
         }
         criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
         criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
