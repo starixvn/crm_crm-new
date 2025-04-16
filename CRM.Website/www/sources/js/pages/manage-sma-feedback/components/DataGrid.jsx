@@ -8,6 +8,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
 import ExcelIcon from '@jsroot/components/ExcelIcon';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -53,7 +55,7 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={19}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Level')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Site')}</HeaderCell>
@@ -98,11 +100,21 @@ export class DataGrid extends Component {
                 <Cell>{this.renderPanelItem(item.comment, index, this.panelComment)}</Cell>
                 <Cell>{this.renderPanelItem(item.discussion, index, this.panelDisCuss)}</Cell>
                 {
-                    isHost && <Cell className="text-center">
-                        <span className="rounded-circle fa fa-pencil icon-edit"
-                            onClick={() => this.handleEdit(item)}
-                        />
-                    </Cell>
+                    isHost &&
+                    <OverlayTrigger
+                        placement="bottom"
+                        overlay={
+                            <Tooltip>
+                                <span>{LangHelper.getResource('Edit')}</span>
+                            </Tooltip>
+                        }
+                    >
+                        <Cell className="text-center">
+                            <span className="rounded-circle fa fa-pencil icon-edit"
+                                onClick={() => this.handleEdit(item)}
+                            />
+                        </Cell>
+                    </OverlayTrigger>      
                 }
             </Row>
         )

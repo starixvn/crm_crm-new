@@ -47,3 +47,17 @@
         font-weight: bold;
     }
 }
+
+.show-left-panel {
+    .sma-feedback {
+        @media only screen and (max-width:1550px) {
+            .form-filter-v2 {
+                .btn-submit {
+                    .btn {
+                        margin-top: 10px !important;
+                    }
+                }
+            }
+        }
+    }
+}
