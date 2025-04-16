@@ -65,10 +65,10 @@ export class RatingDataGrid extends Component {
         const { gridParams } = this.props;
         const total = item.excellent + item.good + item.neutral + item.poor + item.veryPoor + item.naRating
 
-        if (gridParams.type !== 13 || numOfRating === 0 || total === 0 ) {
+        if (gridParams.type !== 13 || numOfRating === 0 || total === 0) {
             return '';
         }
-      
+
         const percentage = Math.round((numOfRating / total) * 100);
 
         return ' (' + percentage + '%)';
@@ -175,7 +175,7 @@ export class RatingDataGrid extends Component {
         }
 
         const cells = [];
-        cells.push(<Cell className="first-column font-weight-bold">Total</Cell>);
+        cells.push(<Cell className="first-column font-weight-bold">Grand Total</Cell>);
 
         const totals = {
             excellent: 0,
@@ -199,7 +199,7 @@ export class RatingDataGrid extends Component {
             <Cell className="text-center">
                 <span className={`${totals.excellent > 0 ? this.styleCLick : this.styleDisableCLick}`}
                     onClick={() => this.handleShowDetails(Rating.Excellent)}>
-                        {totals.excellent}
+                    {totals.excellent}
                 </span>
                 <span>{this.displayRatingPercentage(totals, totals.excellent)}</span>
             </Cell>
