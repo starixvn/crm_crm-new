@@ -170,19 +170,21 @@ public class FeedbackService(
 
         foreach (DataRow row in table1.Rows)
         {
-            if (row.IsNull(0)) continue;
-            var feedbackRatingRecord = new FeedbackRatingRecord
+            if (!row.IsNull(0))
             {
-                ColumnData = new BaseModel { Name = GetColumnDataValue(row, table1.Columns, 0) },
-                Excellent = Convert.ToInt32(row[1]),
-                Good = Convert.ToInt32(row[2]),
-                Neutral = Convert.ToInt32(row[3]),
-                Poor = Convert.ToInt32(row[4]),
-                VeryPoor = Convert.ToInt32(row[5]),
-                NARating = Convert.ToInt32(row[6])
-            };
+                var feedbackRatingRecord = new FeedbackRatingRecord
+                {
+                    ColumnData = new BaseModel { Name = GetColumnDataValue(row, table1.Columns, 0) },
+                    Excellent = Convert.ToInt32(row[1]),
+                    Good = Convert.ToInt32(row[2]),
+                    Neutral = Convert.ToInt32(row[3]),
+                    Poor = Convert.ToInt32(row[4]),
+                    VeryPoor = Convert.ToInt32(row[5]),
+                    NARating = Convert.ToInt32(row[6])
+                };
 
-            feedbackRatingRecords.Add(feedbackRatingRecord);
+                feedbackRatingRecords.Add(feedbackRatingRecord);
+            }
         }
 
         if (table2 != null)

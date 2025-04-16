@@ -61,6 +61,19 @@ export class RatingDataGrid extends Component {
         return gridParams.type === 12 ? item.columnData.name : '';
     };
 
+    displayRatingPercentage = (item, numOfRating) => {
+        const { gridParams } = this.props;
+        const total = item.excellent + item.good + item.neutral + item.poor + item.veryPoor + item.naRating
+
+        if (gridParams.type !== 13 || numOfRating === 0 || total === 0 ) {
+            return '';
+        }
+      
+        const percentage = Math.round((numOfRating / total) * 100);
+
+        return ' (' + percentage + '%)';
+    }
+
     renderRatingRow = (item, index) => {
         const cells = [];
         cells.push(
@@ -69,99 +82,87 @@ export class RatingDataGrid extends Component {
             </Cell>
         );
         cells.push(
-            <Cell
-                key={`excellent-${index}`}
-                className={`${item.excellent > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() =>
-                    this.handleShowDetails(
-                        Rating.Excellent,
-                        item.columnData.id,
-                        this.getFeedbackDate(item)
-                    )
-                }
-            >
-                {item.excellent}
+            <Cell key={`excellent-${index}`} className='text-center' >
+                <span className={`${item.excellent > 0 ? this.styleCLick : this.styleDisableCLick} text-center`}
+                    onClick={() =>
+                        this.handleShowDetails(
+                            Rating.Excellent,
+                            item.columnData.id,
+                            this.getFeedbackDate(item)
+                        )}>
+                    {item.excellent}
+                </span>
+                <span>{this.displayRatingPercentage(item, item.excellent)}</span>
             </Cell>
         );
         cells.push(
-            <Cell
-                key={`good-${index}`}
-                className={`${item.good > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() =>
-                    this.handleShowDetails(
-                        Rating.Good,
-                        item.columnData.id,
-                        this.getFeedbackDate(item)
-                    )
-                }
-            >
-                {item.good}
+            <Cell key={`good-${index}`} className='text-center' >
+                <span className={`${item.good > 0 ? this.styleCLick : this.styleDisableCLick} text-center`}
+                    onClick={() =>
+                        this.handleShowDetails(
+                            Rating.Good,
+                            item.columnData.id,
+                            this.getFeedbackDate(item)
+                        )}>
+                    {item.good}
+                </span>
+                <span>{this.displayRatingPercentage(item, item.good)}</span>
             </Cell>
         );
         cells.push(
-            <Cell
-                key={`neutral-${index}`}
-                className={`${item.neutral > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() =>
-                    this.handleShowDetails(
-                        Rating.Neutral,
-                        item.columnData.id,
-                        this.getFeedbackDate(item)
-                    )
-                }
-            >
-                {item.neutral}
+            <Cell key={`neutral-${index}`} className='text-center' >
+                <span className={`${item.neutral > 0 ? this.styleCLick : this.styleDisableCLick} text-center`}
+                    onClick={() =>
+                        this.handleShowDetails(
+                            Rating.Neutral,
+                            item.columnData.id,
+                            this.getFeedbackDate(item)
+                        )}>
+                    {item.neutral}
+                </span>
+                <span>{this.displayRatingPercentage(item, item.neutral)}</span>
             </Cell>
         );
         cells.push(
-            <Cell
-                key={`poor-${index}`}
-                className={`${item.poor > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() =>
-                    this.handleShowDetails(
-                        Rating.Poor,
-                        item.columnData.id,
-                        this.getFeedbackDate(item)
-                    )
-                }
-            >
-                {item.poor}
+            <Cell key={`poor-${index}`} className='text-center' >
+                <span className={`${item.poor > 0 ? this.styleCLick : this.styleDisableCLick} text-center`}
+                    onClick={() =>
+                        this.handleShowDetails(
+                            Rating.Poor,
+                            item.columnData.id,
+                            this.getFeedbackDate(item)
+                        )}>
+                    {item.poor}
+                </span>
+                <span>{this.displayRatingPercentage(item, item.poor)}</span>
             </Cell>
         );
         cells.push(
-            <Cell
-                key={`verypoor-${index}`}
-                className={`${item.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() =>
-                    this.handleShowDetails(
-                        Rating.VeryPoor,
-                        item.columnData.id,
-                        this.getFeedbackDate(item)
-                    )
-                }
-            >
-                {item.veryPoor}
+            <Cell key={`verypoor-${index}`} className='text-center' >
+                <span className={`${item.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick} text-center`}
+                    onClick={() =>
+                        this.handleShowDetails(
+                            Rating.VeryPoor,
+                            item.columnData.id,
+                            this.getFeedbackDate(item)
+                        )}>
+                    {item.veryPoor}
+                </span>
+                <span>{this.displayRatingPercentage(item, item.veryPoor)}</span>
             </Cell>
         );
         cells.push(
-            <Cell
-                key={`naRating-${index}`}
-                className={`${item.naRating > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() =>
-                    this.handleShowDetails(
-                        Rating.NA,
-                        item.columnData.id,
-                        this.getFeedbackDate(item)
-                    )
-                }
-            >
-                {item.naRating}
+            <Cell key={`naRating-${index}`} className='text-center' >
+                <span className={`${item.naRating > 0 ? this.styleCLick : this.styleDisableCLick} text-center`}
+                    onClick={() =>
+                        this.handleShowDetails(
+                            Rating.NA,
+                            item.columnData.id,
+                            this.getFeedbackDate(item)
+                        )}>
+                    {item.naRating}
+                </span>
+                <span>{this.displayRatingPercentage(item, item.naRating)}</span>
             </Cell>
         );
 
@@ -195,62 +196,62 @@ export class RatingDataGrid extends Component {
         });
 
         cells.push(
-            <Cell
-                className={`${totals.excellent > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() => this.handleShowDetails(Rating.Excellent)}
-            >
-                {totals.excellent}
+            <Cell className="text-center">
+                <span className={`${totals.excellent > 0 ? this.styleCLick : this.styleDisableCLick}`}
+                    onClick={() => this.handleShowDetails(Rating.Excellent)}>
+                        {totals.excellent}
+                </span>
+                <span>{this.displayRatingPercentage(totals, totals.excellent)}</span>
             </Cell>
         );
 
         cells.push(
-            <Cell
-                className={`${totals.good > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() => this.handleShowDetails(Rating.Good)}
-            >
-                {totals.good}
+            <Cell className="text-center">
+                <span className={`${totals.good > 0 ? this.styleCLick : this.styleDisableCLick}`}
+                    onClick={() => this.handleShowDetails(Rating.Good)}>
+                    {totals.good}
+                </span>
+                <span>{this.displayRatingPercentage(totals, totals.good)}</span>
             </Cell>
         );
 
         cells.push(
-            <Cell
-                className={`${totals.neutral > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() => this.handleShowDetails(Rating.Neutral)}
-            >
-                {totals.neutral}
+            <Cell className="text-center">
+                <span className={`${totals.neutral > 0 ? this.styleCLick : this.styleDisableCLick}`}
+                    onClick={() => this.handleShowDetails(Rating.Neutral)}>
+                    {totals.neutral}
+                </span>
+                <span>{this.displayRatingPercentage(totals, totals.neutral)}</span>
             </Cell>
         );
 
         cells.push(
-            <Cell
-                className={`${totals.poor > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() => this.handleShowDetails(Rating.Poor)}
-            >
-                {totals.poor}
+            <Cell className="text-center">
+                <span className={`${totals.poor > 0 ? this.styleCLick : this.styleDisableCLick}`}
+                    onClick={() => this.handleShowDetails(Rating.Poor)}>
+                    {totals.poor}
+                </span>
+                <span>{this.displayRatingPercentage(totals, totals.poor)}</span>
             </Cell>
         );
 
         cells.push(
-            <Cell
-                className={`${totals.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() => this.handleShowDetails(Rating.VeryPoor)}
-            >
-                {totals.veryPoor}
+            <Cell className="text-center">
+                <span className={`${totals.veryPoor > 0 ? this.styleCLick : this.styleDisableCLick}`}
+                    onClick={() => this.handleShowDetails(Rating.VeryPoor)}>
+                    {totals.veryPoor}
+                </span>
+                <span>{this.displayRatingPercentage(totals, totals.veryPoor)}</span>
             </Cell>
         );
 
         cells.push(
-            <Cell
-                className={`${totals.naRating > 0 ? this.styleCLick : this.styleDisableCLick
-                    } text-center`}
-                onClick={() => this.handleShowDetails(Rating.NA)}
-            >
-                {totals.naRating}
+            <Cell className="text-center">
+                <span className={`${totals.naRating > 0 ? this.styleCLick : this.styleDisableCLick}`}
+                    onClick={() => this.handleShowDetails(Rating.NA)}>
+                    {totals.naRating}
+                </span>
+                <span>{this.displayRatingPercentage(totals, totals.naRating)}</span>
             </Cell>
         );
 
