@@ -170,6 +170,7 @@ public class FeedbackService(
 
         foreach (DataRow row in table1.Rows)
         {
+            if (row.IsNull(0)) continue;
             var feedbackRatingRecord = new FeedbackRatingRecord
             {
                 ColumnData = new BaseModel { Name = GetColumnDataValue(row, table1.Columns, 0) },
@@ -311,10 +312,7 @@ public class FeedbackService(
         return await baseService.GetDataEntityAsync<EditNoOfInquiry>(criteria);
     }
 
-    public async Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command)
-    {
-        return await baseService.ExecuteNonQueryAsync(command);
-    }
+    public async Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command) => await baseService.ExecuteNonQueryAsync(command);
 
     public async Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command)
     {
