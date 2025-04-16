@@ -156,7 +156,12 @@ public class FeedbackStatisticController(
         criteria.PageIndex = 0;
         criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
         criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-
+        if (!string.IsNullOrWhiteSpace(criteria.FeedbackDateString))
+        {
+            var fbDate = DateTime.Parse(criteria.FeedbackDateString, new CultureInfo("en-US"));
+            criteria.FromFeedbackDate = commonService.ConvertClientFromTimeToServerTime(fbDate);
+            criteria.ToFeedbackDate = commonService.ConvertClientToTimeToServerTime(fbDate);
+        }
         var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
         var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
         var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,

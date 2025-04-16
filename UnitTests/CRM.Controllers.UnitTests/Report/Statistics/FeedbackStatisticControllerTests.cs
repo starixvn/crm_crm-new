@@ -138,6 +138,7 @@ public class FeedbackStatisticControllerTests
         var feedbackDetail = fixture.Create<IEnumerable<FeedbackDeleted>>();
         fixture.Customize<GetFeedbackStatisticDetailCriteria>(x => x.With(b => b.PageIndex, 0).With(b => b.PageSize, 100));
         var param = fixture.Create<GetFeedbackStatisticDetailCriteria>();
+        param.FeedbackDateString = "Apr 02, 2025";
         var fromDateFormat = param.FromDate.ToString("MMddyyyy");
         var toDateFormat = param.ToDate.ToString("MMddyyyy");
         var fileName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
