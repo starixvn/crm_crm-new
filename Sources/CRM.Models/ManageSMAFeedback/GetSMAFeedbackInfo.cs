@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using CRM.Models.Setting;
 
 namespace CRM.Models.ManageSmaFeedback
 {
@@ -23,5 +25,7 @@ namespace CRM.Models.ManageSmaFeedback
         public int PageIndex { get; set; }
 
         public int TotalRows { get; set; }
+
+        public IEnumerable<SettingRelation> ReviewStatusSettings { get; set; } = new List<SettingRelation>();
     }
 }

@@ -28,6 +28,7 @@ export class Filter extends Component {
             }
         }
         this.maxDate = currentDate;
+        this.reviewStatusSettings = [];
     }
 
     componentDidMount = () => {
@@ -36,6 +37,7 @@ export class Filter extends Component {
                 filter: {...this.state.filter, reviewStatus: this.formatReviewStatus(response).map(x=> x.id).join(',')}
             });
             this.props.setReviewStatusSetting(this.formatReviewStatus(response));
+            this.reviewStatusSettings = response;
         });
     }
 
@@ -75,7 +77,8 @@ export class Filter extends Component {
             username,
             testOnly: isTestOnly,
             pageIndex: 1,
-            pageSize: this.props.gridParams.pageSize
+            pageSize: this.props.gridParams.pageSize,
+            reviewStatusSettings: this.reviewStatusSettings
         };
     };
 

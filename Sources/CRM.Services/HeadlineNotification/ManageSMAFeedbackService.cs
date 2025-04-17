@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CRM.Criteria.ManageSMAFeedback;
 using CRM.Models;
 using CRM.Models.ManageSmaFeedback;
+using CRM.Models.Setting;
 using CRM.Services.Interfaces;
 
 namespace CRM.Services.HeadlineNotification
@@ -30,9 +31,16 @@ namespace CRM.Services.HeadlineNotification
             foreach (var feedback in smaFeedbackInfos)
             {
                 feedback.CreatedDate = commonService.ConvertToClientDateTime(feedback.CreatedDate);
+                feedback.ReviewStatus = GetReviewStatusName(feedback.ReviewStatusID, param.ReviewStatusSettings);
             }
 
             return smaFeedbackInfos;
+        }
+
+        public static string GetReviewStatusName(int reviewStatusID, IEnumerable<SettingRelation> reviewStatusSettings)
+        {
+            var setting = reviewStatusSettings.FirstOrDefault(s => s.Id == reviewStatusID);
+            return setting != null ? setting.Value : string.Empty;
         }
 
         public async Task<CommandResult> EditSmaFeedbackAsync(EditSmaFeedback param)

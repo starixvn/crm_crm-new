@@ -18,6 +18,8 @@ namespace CRM.Models.ManageSmaFeedback
 
         public string FuncName { get; set; }
 
+        public int ReviewStatusID { get; set; }
+
         public string ReviewStatus { get; set; }
 
         public string Comment { get; set; }
