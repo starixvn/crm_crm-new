@@ -63,7 +63,7 @@ export class RatingDataGrid extends Component {
 
     displayRatingPercentage = (item, numOfRating) => {
         const { gridParams } = this.props;
-        const total = item.excellent + item.good + item.neutral + item.poor + item.veryPoor + item.naRating
+        const total = item.excellent + item.good + item.neutral + item.poor + item.veryPoor;
 
         if (gridParams.type !== 13 || numOfRating === 0 || total === 0) {
             return '';
@@ -151,21 +151,7 @@ export class RatingDataGrid extends Component {
                 <span>{this.displayRatingPercentage(item, item.veryPoor)}</span>
             </Cell>
         );
-        cells.push(
-            <Cell key={`naRating-${index}`} className='text-center' >
-                <span className={`${item.naRating > 0 ? this.styleCLick : this.styleDisableCLick} text-center`}
-                    onClick={() =>
-                        this.handleShowDetails(
-                            Rating.NA,
-                            item.columnData.id,
-                            this.getFeedbackDate(item)
-                        )}>
-                    {item.naRating}
-                </span>
-                <span>{this.displayRatingPercentage(item, item.naRating)}</span>
-            </Cell>
-        );
-
+       
         return <Row key={`row-${index}`}>{cells}</Row>;
     };
 
@@ -183,7 +169,6 @@ export class RatingDataGrid extends Component {
             neutral: 0,
             poor: 0,
             veryPoor: 0,
-            naRating: 0,
         };
 
         ratingGridData.records.forEach((record) => {
@@ -192,7 +177,6 @@ export class RatingDataGrid extends Component {
             totals.neutral += record.neutral;
             totals.poor += record.poor;
             totals.veryPoor += record.veryPoor;
-            totals.naRating += record.naRating;
         });
 
         cells.push(
@@ -242,16 +226,6 @@ export class RatingDataGrid extends Component {
                     {totals.veryPoor}
                 </span>
                 <span>{this.displayRatingPercentage(totals, totals.veryPoor)}</span>
-            </Cell>
-        );
-
-        cells.push(
-            <Cell className="text-center">
-                <span className={`${totals.naRating > 0 ? this.styleCLick : this.styleDisableCLick}`}
-                    onClick={() => this.handleShowDetails(Rating.NA)}>
-                    {totals.naRating}
-                </span>
-                <span>{this.displayRatingPercentage(totals, totals.naRating)}</span>
             </Cell>
         );
 

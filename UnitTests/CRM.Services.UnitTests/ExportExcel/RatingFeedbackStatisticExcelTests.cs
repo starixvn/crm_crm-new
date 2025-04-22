@@ -67,7 +67,6 @@ public class RatingFeedbackStatisticExcelTests
         Assert.Equal(3, worksheet.Cells[5, 4].Value);
         Assert.Equal(4, worksheet.Cells[5, 5].Value);
         Assert.Equal(5, worksheet.Cells[5, 6].Value);
-        Assert.Equal(6, worksheet.Cells[5, 7].Value);
 
         service.Received().Protected("RenderTotalRow", worksheet, Arg.Any<int>());
     }
@@ -136,8 +135,7 @@ public class RatingFeedbackStatisticExcelTests
                     Good = 2,
                     Neutral = 3,
                     Poor = 4,
-                    VeryPoor = 5,
-                    NARating = 6
+                    VeryPoor = 5
                 }
             ]
         };

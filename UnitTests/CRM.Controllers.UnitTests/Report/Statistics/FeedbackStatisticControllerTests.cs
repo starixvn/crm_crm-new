@@ -102,9 +102,9 @@ public class FeedbackStatisticControllerTests
             Title = "FeedbackStatistic",
             Records = [
                 new FeedbackRatingRecord
-                    {ColumnData = new BaseModel { Id = 1, Name = "Test"}, Excellent = 1, Good = 1, VeryPoor = 1, Neutral = 0, NARating = 1, Poor = 100},
+                    {ColumnData = new BaseModel { Id = 1, Name = "Test"}, Excellent = 1, Good = 1, VeryPoor = 1, Neutral = 0,  Poor = 100},
                 new FeedbackRatingRecord
-                    { ColumnData = new BaseModel { Id = 2, Name = "Test" }, Excellent = 2, Good = 2, VeryPoor = 2, Neutral = 0, NARating = 2, Poor = 100 }
+                    { ColumnData = new BaseModel { Id = 2, Name = "Test" }, Excellent = 2, Good = 2, VeryPoor = 2, Neutral = 0,  Poor = 100 }
             ]
         };
         var param = fixture.Create<GetFeedbackStaticBaseModel>();

@@ -179,8 +179,7 @@ public class FeedbackService(
                     Good = Convert.ToInt32(row[2]),
                     Neutral = Convert.ToInt32(row[3]),
                     Poor = Convert.ToInt32(row[4]),
-                    VeryPoor = Convert.ToInt32(row[5]),
-                    NARating = Convert.ToInt32(row[6])
+                    VeryPoor = Convert.ToInt32(row[5])
                 };
 
                 feedbackRatingRecords.Add(feedbackRatingRecord);

@@ -644,7 +644,6 @@ public class FeedbackServiceTests
         Assert.Equal(30, result.Records[0].Neutral);
         Assert.Equal(40, result.Records[0].Poor);
         Assert.Equal(50, result.Records[0].VeryPoor);
-        Assert.Equal(60, result.Records[0].NARating);
     }
 
     [Fact]

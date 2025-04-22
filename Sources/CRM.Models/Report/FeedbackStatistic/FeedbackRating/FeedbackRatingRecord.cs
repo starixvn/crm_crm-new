@@ -8,5 +8,4 @@ public class FeedbackRatingRecord
     public int Neutral { get; set; }
     public int Poor { get; set; }
     public int VeryPoor { get; set; }
-    public int NARating { get; set; }
 }

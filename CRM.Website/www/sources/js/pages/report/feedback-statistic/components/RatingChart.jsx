@@ -43,8 +43,7 @@ export default class RatingChart extends PureComponent {
                     '4 (Good)': record.good,
                     '3 (Neutral)': record.neutral,
                     '2 (Poor)': record.poor,
-                    '1 (Very Poor)': record.veryPoor,
-                    'N/A': record.naRating,
+                    '1 (Very Poor)': record.veryPoor
                 };
                 data.push(item);
             });
@@ -60,8 +59,7 @@ export default class RatingChart extends PureComponent {
                 '4 (Good)': 0,
                 '3 (Neutral)': 0,
                 '2 (Poor)': 0,
-                '1 (Very Poor)': 0,
-                'N/A': 0,
+                '1 (Very Poor)': 0
             };
 
             chartInfo.records.forEach((record) => {
@@ -70,7 +68,6 @@ export default class RatingChart extends PureComponent {
                 totals['3 (Neutral)'] += record.neutral;
                 totals['2 (Poor)'] += record.poor;
                 totals['1 (Very Poor)'] += record.veryPoor;
-                totals['N/A'] += record.naRating;
             });
 
             Object.entries(totals).forEach(([name, value]) => {
@@ -122,7 +119,6 @@ export default class RatingChart extends PureComponent {
                     <Bar dataKey="3 (Neutral)" fill={COLORS[2]} />
                     <Bar dataKey="2 (Poor)" fill={COLORS[3]} />
                     <Bar dataKey="1 (Very Poor)" fill={COLORS[4]} />
-                    <Bar dataKey="N/A" fill={COLORS[5]} />
                 </BarChart>
             </ResponsiveContainer>
         );
@@ -131,7 +127,7 @@ export default class RatingChart extends PureComponent {
     renderPieChartLabel = (text) => {
         const match = text.match(/\((.*?)\)/);
         return match ? match[1] : text;
-    }; 
+    };
 
     renderPieChart = () => {
         const { pieData } = this.state;
