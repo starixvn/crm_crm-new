@@ -37,7 +37,7 @@ namespace CRM.Services.HeadlineNotification
             return smaFeedbackInfos;
         }
 
-        public static string GetReviewStatusName(int reviewStatusID, IEnumerable<SettingRelation> reviewStatusSettings)
+        public static string GetReviewStatusName(int? reviewStatusID, IEnumerable<SettingRelation> reviewStatusSettings)
         {
             var setting = reviewStatusSettings.FirstOrDefault(s => s.Id == reviewStatusID);
             return setting != null ? setting.Value : string.Empty;
