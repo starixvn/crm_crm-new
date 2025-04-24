@@ -4,23 +4,28 @@ using System;
 using Constants;
 using Fanex.Data;
 
-public class GetFeedbackStatisticDetailCriteria : BaseSitePermisionCriteria
+public class GetFeedbackStatisticDetailCriteria : BaseSitePermissionCriteria
 {
     public DateTime FromDate { get; set; }
-
     public DateTime ToDate { get; set; }
-
     public string FromDuration { get; set; }
-
     public string ToDuration { get; set; }
-
     public int Type { get; set; }
-
     public int MainCategoryId { get; set; }
-
     public int SubCategoryId { get; set; }
 
+    public int? CreatorId { get; set; }
+
     public int ValueId { get; set; }
+
+    [SpParam(AllowNull = true)]
+    public DateTime? FromFeedbackDate { get; set; }
+
+    [SpParam(AllowNull = true)]
+    public DateTime? ToFeedbackDate { get; set; }
+
+    [SpParam(Ignored = true)]
+    public string FeedbackDateString { get; set; }
 
     [SpParam(Ignored = true)]
     public int PageIndex { get; set; }

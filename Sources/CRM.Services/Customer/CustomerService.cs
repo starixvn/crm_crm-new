@@ -4,7 +4,6 @@ using Constants;
 using CRM.Criteria.Customer;
 using CRM.Criteria.PicAndHeadline;
 using CRM.Models.Customer;
-using Enumerables;
 using Fanex.NAP.Client.Helpers.Business;
 using Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Enum;
 using Constants = Constants.Constants;
 
 public interface ICustomerService

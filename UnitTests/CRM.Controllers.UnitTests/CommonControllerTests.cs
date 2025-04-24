@@ -78,9 +78,8 @@ public class CommonControllerTests
         // Arrange
         var templates = fixture.Create<IEnumerable<FeedbackSubjectTemplate>>();
         var subject = fixture.Create<string>();
-        var param = new GetFeedbackSubjectParam();
         var controller = GetController();
-        feedbackSubjectService.GetFeedbackSubjectTemplateAsync(Arg.Do<GetFeedbackSubjectParam>(x => param = x)).Returns(templates);
+        feedbackSubjectService.GetFeedbackSubjectTemplateAsync(Arg.Do<GetFeedbackSubjectParam>(x => _ = x)).Returns(templates);
 
         // Act
         var result = await controller.GetFeedbackSubjectTemplate(subject);

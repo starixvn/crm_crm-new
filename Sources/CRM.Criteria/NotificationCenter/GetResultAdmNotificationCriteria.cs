@@ -2,7 +2,7 @@
 
 using System;
 
-public class GetResultAdmNotificationCriteria : BaseSitePermisionCriteria
+public class GetResultAdmNotificationCriteria : BaseSitePermissionCriteria
 {
     public DateTime? FCreatedDateGMT8 { get; set; }
 

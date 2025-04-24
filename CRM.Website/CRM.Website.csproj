@@ -6,6 +6,9 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
     <ItemGroup>
+        <Content Include="App_Data\SpNames.dev.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="App_Data\SpNames.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -18,6 +21,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Fanex.Logging.Sentry.RavenClient" Version="2.0.2" />
+        <PackageReference Include="Fanex.NAP.Signin" Version="2.0.2.8" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.2" />
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
@@ -48,6 +52,9 @@
         </None>
         <None Update="ExcelTemplates\DynamicReport.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\RatingFeedbackStatistic.xlsx">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="ExcelTemplates\RedemptionStatisticsDetail.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -3,7 +3,7 @@
 using System;
 using Fanex.Data;
 
-public class GetIssuesStatisticReportCriteria : BaseSitePermisionCriteria
+public class GetIssuesStatisticReportCriteria : BaseSitePermissionCriteria
 {
     [SpParam(Ignored = true)]
     public int ReportType { get; set; }

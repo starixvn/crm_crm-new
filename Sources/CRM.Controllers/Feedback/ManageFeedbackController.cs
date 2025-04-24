@@ -88,11 +88,11 @@ public class ManageFeedbackController(
     private async Task<IEnumerable<FeedbackStatus>> GetStatusListAsync(bool isEdit = false)
     {
         var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-        var isHostDeleteFbPermision = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
+        var isHostDeleteFbPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
 
-        if (!isEdit || !isHostDeleteFbPermision)
+        if (!isEdit || !isHostDeleteFbPermission)
         {
-            statuses = statuses.Where(x => x.StatusId != (int)Enumerables.FeedbackStatus.Deleted);
+            statuses = statuses.Where(x => x.StatusId != (int)Enum.FeedbackStatus.Deleted);
         }
 
         return statuses;

@@ -24,7 +24,6 @@ public static class ServiceDIExtensions
 {
     public static void AddCrmServices(this IServiceCollection services)
     {
-        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<INotificationListService, NotificationListService>();
         services.AddScoped<INotificationTemplateService, NotificationTemplateService>();

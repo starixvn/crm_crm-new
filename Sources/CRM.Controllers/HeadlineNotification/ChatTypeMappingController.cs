@@ -11,7 +11,7 @@ using CRM.Models.ChatTypeMapping;
 using CRM.Resources;
 using CRM.Services.BotServices.Interfaces;
 using CRM.ViewModels.ChatTypeMapping;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;

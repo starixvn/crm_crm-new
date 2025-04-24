@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 public static class EnumHelper
 {
-    public static string GetDesciption(Enum enumType)
+    public static string GetDescription(Enum enumType)
     {
         var description = string.Empty;
 

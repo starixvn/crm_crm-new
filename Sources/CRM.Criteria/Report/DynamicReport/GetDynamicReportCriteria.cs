@@ -4,7 +4,7 @@ using System;
 using Constants;
 using Fanex.Data;
 
-public class GetDynamicReportCriteria : BaseSitePermisionCriteria
+public class GetDynamicReportCriteria : BaseSitePermissionCriteria
 {
     [SpParam(Ignored = true)]
     public int ReportType { get; set; }

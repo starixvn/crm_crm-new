@@ -1,5 +1,9 @@
 ﻿namespace CRM.Controllers.Feedback;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using CRM.Criteria.Customer;
 using CRM.Criteria.Feedback;
@@ -11,7 +15,7 @@ using CRM.Services;
 using CRM.Services.Customer;
 using CRM.Services.Feedback;
 using CRM.ViewModels.Feedback;
-using Enumerables;
+using Enum;
 using Fanex.Logging.Extensions;
 using Fanex.NAP.Client;
 using Filters;
@@ -19,12 +23,8 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Newtonsoft.Json;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
-using FeedbackStatus = Enumerables.FeedbackStatus;
+using FeedbackStatus = Enum.FeedbackStatus;
 
 public class FeedbackController(
     INapSession napSession,
@@ -175,12 +175,10 @@ public class FeedbackController(
         int statusId)
     {
         var commandResult = new CommandResult { Code = 0 };
-        var isReadCustInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit) ||
-                             await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
-        var isHostCreateFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
+
         var isHostReviewFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
 
-        if (!isReadCustInfo || !isHostCreateFeedback)
+        if (await IsNoPermissionEditFeedback())
         {
             commandResult = new CommandResult
             {
@@ -208,6 +206,14 @@ public class FeedbackController(
         }
 
         return commandResult;
+    }
+
+    private async Task<bool> IsNoPermissionEditFeedback()
+    {
+        var isReadCustInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit) ||
+                             await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
+        var isHostCreateFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
+        return !isReadCustInfo || !isHostCreateFeedback;
     }
 
     private async Task<bool> IsNoPermissionDeleteFeedback(bool isDeletedFeedbackView, int statusId)

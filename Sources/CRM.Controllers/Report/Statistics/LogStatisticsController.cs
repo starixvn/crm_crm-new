@@ -5,7 +5,7 @@ using Constants;
 using CRM.Criteria.Report.LogStatistics;
 using CRM.Services;
 using CRM.Services.Report;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client.Helpers.Business;
 using Filters;
 using Microsoft.AspNetCore.Mvc;

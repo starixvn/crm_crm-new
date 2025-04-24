@@ -1,0 +1,89 @@
+﻿@using CRM.Resources
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+</head>
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/dev/pages/auth/login.chunk.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/pro/pages/auth/login.chunk.css" asp-append-version="true" />
+    </environment>
+}
+@{
+    ViewData["Title"] = ViewResources.SignIn;
+}
+<body>
+    <div id='not-supported-browser-panel' style="display: none">
+        Your browser is no longer supported. Some parts will not work & you may experience
+        problems.<br />
+        If you are having problems, try <a href='http://browsehappy.com/'>this</a> for full
+        browsing experience. Thank you!
+    </div>
+
+    <div id="login-box">
+        <div class="login-left">
+            <span class="welcome">Welcome to</span>
+            <img class="logo" src="/www/dist/css/images/login/login-logo.png" />
+            <img class="login-security" src="/www/dist/css/images/login/login-security.png" alt=""/>
+        </div>
+        <div class="login-right">
+            @if (!string.IsNullOrWhiteSpace(Model.Message))
+            {
+                <div id="msg">
+                    <span id="inner-msg">@Model.Message</span>
+                </div>
+            }
+            <form asp-controller="Auth" method="POST" id="login-form" name="frmLogin" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input id="loginToken" name="loginToken" value="@Model.FormToken" type="hidden" />
+                <span class="header-text">Login to your account</span>
+                <div class="form-input">
+                    <span class="input-name">Account</span>
+                    <div class="field-password">
+                        <span class="icon-user"></span>
+                        <input type="text" id="username" name="username" autocomplete="off" required placeholder="Enter your username" />
+                    </div>
+                </div>
+                <div class="form-input">
+                    <span class="input-name">Password</span>
+                    <div class="field-password">
+                        <span class="icon-password"></span>
+                        <input type="password" id="password" name="password" autocomplete="off" required placeholder="Enter your password" />
+                        <span id="toggle-password" class="field-icon icon-eye-hidden"></span>
+                    </div>
+                </div>
+                <input type="submit" id="btnLogin" value="Sign in" />
+                <div class="bestview">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/lib/CryptoJS.js" asp-append-version="true"></script>
+    <script>
+        const form = document.getElementById('login-form');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var password = document.getElementById('password').value;
+            var loginToken = document.getElementById('loginToken').value;
+            var encryptedPassword = CryptoJS.CfsEnCode(password);
+            var hashPwd = CryptoJS.SHA256(encryptedPassword + loginToken);
+            document.getElementById('password').value = hashPwd;
+            form.submit();
+        });
+
+        document.getElementById("toggle-password").addEventListener("click", function() {
+            const toggle= document.getElementById("toggle-password");
+            const passwordField = document.getElementById("password");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+            toggle.classList.toggle("icon-eye-show");
+            toggle.classList.toggle("icon-eye-hidden");
+        });
+    </script>
+</body>
+</html>

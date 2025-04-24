@@ -1,14 +1,17 @@
 ﻿namespace CRM.Controllers.Report.Statistics;
 
+using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Constants;
-using CRM.Controllers;
 using CRM.Criteria.Report.FeedbackStatistic;
 using CRM.Resources;
 using CRM.Services.Feedback;
 using Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Models.Report.FeedbackStatistic;
+using Models.Report.FeedbackStatistic.FeedbackRating;
 using Services;
 using Services.ExportExcel;
 using Services.Interfaces;
@@ -22,29 +25,88 @@ public class FeedbackStatisticController(
     : BaseController
 {
     [HttpPost]
-    public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
+    public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStaticBaseModel baseModel)
     {
         var title = string.Format(ViewResources.FeedbackStatisticTitle,
-            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-        criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
-        criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-        criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-
-        var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
-        feedbackStatistic.Title = title;
-        feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
-        if (feedbackStatistic.TotalItems > 0)
+            baseModel.FromDate.ToShortDateFormat(), baseModel.ToDate.ToShortDateFormat());
+        baseModel.FromDate = commonService.ConvertClientFromTimeToServerTime(baseModel.FromDate);
+        baseModel.ToDate = commonService.ConvertClientToTimeToServerTime(baseModel.ToDate);
+        baseModel.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        baseModel.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+        if (baseModel.Type is 12 or 13)
         {
-            feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            var ratingFbStatistics = await GetFeedbackRatingStatisticAndPaging(baseModel);
+            ratingFbStatistics.Title = title;
+            return Json(ratingFbStatistics);
         }
 
+        var feedbackStatistic = await GetFeedbackStatisticAndPaging(baseModel);
+        feedbackStatistic.Title = title;
         return Json(feedbackStatistic);
+    }
+
+    private async Task<FeedbackStatisticInfo> GetFeedbackStatisticAndPaging(GetFeedbackStaticBaseModel baseCriteria)
+    {
+        var criteria = new GetFeedbackStatisticCriteria
+        {
+            FromDate = baseCriteria.FromDate,
+            ToDate = baseCriteria.ToDate,
+            FromDuration = baseCriteria.FromDuration,
+            ToDuration = baseCriteria.ToDuration,
+            Type = baseCriteria.Type,
+            PageIndex = baseCriteria.PageIndex,
+            PageSize = baseCriteria.PageSize,
+            SitePermission = baseCriteria.SitePermission,
+            LicenseeType = baseCriteria.LicenseeType,
+            UserRole = baseCriteria.UserRole
+        };
+        var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+        feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
+
+        if (feedbackStatistic.TotalItems > 0)
+        {
+            feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories
+                .Skip(criteria.PageSize * (criteria.PageIndex - 1))
+                .Take(criteria.PageSize).ToList();
+        }
+        return feedbackStatistic;
+    }
+
+    private async Task<FeedbackRatingReport> GetFeedbackRatingStatisticAndPaging(GetFeedbackStaticBaseModel baseCriteria)
+    {
+        var criteria = new GetFeedbackRatingStatisticCriteria
+        {
+            FromDate = baseCriteria.FromDate,
+            ToDate = baseCriteria.ToDate,
+            FromDuration = baseCriteria.FromDuration,
+            ToDuration = baseCriteria.ToDuration,
+            Type = baseCriteria.Type,
+            PageIndex = baseCriteria.PageIndex,
+            PageSize = baseCriteria.PageSize,
+            SitePermission = baseCriteria.SitePermission,
+            LicenseeType = baseCriteria.LicenseeType,
+            UserRole = baseCriteria.UserRole
+        };
+        var feedbackStatistic = await feedbackService.GetFeedbackRatingStatisticAsync(criteria);
+        feedbackStatistic.TotalItems = feedbackStatistic.Records.Count;
+        if (feedbackStatistic.TotalItems > 0)
+        {
+            feedbackStatistic.Records = feedbackStatistic.Records
+                .Skip(criteria.PageSize * (criteria.PageIndex - 1))
+                .Take(criteria.PageSize).ToList();
+        }
+        return feedbackStatistic;
     }
 
     [HttpPost]
     public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
     {
+        if (!string.IsNullOrWhiteSpace(criteria.FeedbackDateString))
+        {
+            var fbDate = DateTime.Parse(criteria.FeedbackDateString, new CultureInfo("en-US"));
+            criteria.FromFeedbackDate = commonService.ConvertClientFromTimeToServerTime(fbDate);
+            criteria.ToFeedbackDate = commonService.ConvertClientToTimeToServerTime(fbDate);
+        }
         criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
         criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
         var feedbackDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);
@@ -59,20 +121,30 @@ public class FeedbackStatisticController(
     }
 
     [HttpPost]
-    public async Task<IActionResult> ExportExcel([FromBody] GetFeedbackStatisticCriteria criteria)
+    public async Task<IActionResult> ExportExcel([FromBody] GetFeedbackStaticBaseModel baseModel)
     {
-        criteria.PageIndex = 0;
-        var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
-        var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
+        baseModel.PageIndex = 0;
+        var fromDateFormat = baseModel.FromDate.ToShortDateFormatNoDash();
+        var toDateFormat = baseModel.ToDate.ToShortDateFormatNoDash();
         var title = string.Format(ViewResources.FeedbackStatisticTitle,
-            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-        criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
-        criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-        criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
-        criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            baseModel.FromDate.ToShortDateFormat(), baseModel.ToDate.ToShortDateFormat());
+        baseModel.FromDate = commonService.ConvertClientFromTimeToServerTime(baseModel.FromDate);
+        baseModel.ToDate = commonService.ConvertClientToTimeToServerTime(baseModel.ToDate);
+        baseModel.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+        baseModel.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-        var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsync(criteria);
+        if (baseModel.Type is 12 or 13)
+        {
+            var ratingFbStatistics = await GetFeedbackRatingStatisticAndPaging(baseModel);
+            ratingFbStatistics.Title = title;
+            var ratingReportExcel = excelService.ExportRatingStatisticFeedback(ratingFbStatistics);
+            var ratingReportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
+            return File(ratingReportExcel, MimeType.XLSX, $"{ratingReportName}.xlsx");
+        }
+
+        var feedbackStatistic = await GetFeedbackStatisticAndPaging(baseModel);
         feedbackStatistic.Title = title;
+
         var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
         var reportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
         return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
@@ -84,7 +156,12 @@ public class FeedbackStatisticController(
         criteria.PageIndex = 0;
         criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
         criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-
+        if (!string.IsNullOrWhiteSpace(criteria.FeedbackDateString))
+        {
+            var fbDate = DateTime.Parse(criteria.FeedbackDateString, new CultureInfo("en-US"));
+            criteria.FromFeedbackDate = commonService.ConvertClientFromTimeToServerTime(fbDate);
+            criteria.ToFeedbackDate = commonService.ConvertClientToTimeToServerTime(fbDate);
+        }
         var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
         var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
         var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,

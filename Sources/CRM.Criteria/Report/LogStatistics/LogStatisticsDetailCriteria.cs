@@ -3,7 +3,7 @@
 using System;
 using Fanex.Data;
 
-public class LogStatisticsDetailCriteria : BaseSitePermisionCriteria
+public class LogStatisticsDetailCriteria : BaseSitePermissionCriteria
 {
     private const int LogStatisticDayValid = 93;
 

@@ -9,7 +9,7 @@ public class ChangePicLogInfo
 {
     public int LogId { get; set; }
 
-    public string LogTime => $"{LogDate.ToString("MMM dd, yyyy")}\n({LogDate.ToString("hh:mm:ss tt")})";
+    public string LogTime => $"{LogDate:MMM dd, yyyy}\n({LogDate:hh:mm:ss tt})";
 
     public string Name { get; set; }
 
@@ -35,9 +35,9 @@ public class ChangePicLogInfo
     {
         if (!string.IsNullOrEmpty(xml))
         {
-            var regexStart = new Regex(@"<\s*[A-Za-z]");
+            var regexStart = new Regex(@"<\s*[A-Za-z]", RegexOptions.None, TimeSpan.FromSeconds(100));
             var matchStart = regexStart.Match(xml);
-            var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]");
+            var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]", RegexOptions.None, TimeSpan.FromSeconds(100));
             var matchEnd = regexEnd.Match(xml);
             var root = xml.Substring(matchStart.Index + matchStart.Length - 1, matchEnd.Index);
             var serializer = new XmlSerializer(typeof(PicInfoLog), new XmlRootAttribute(root));

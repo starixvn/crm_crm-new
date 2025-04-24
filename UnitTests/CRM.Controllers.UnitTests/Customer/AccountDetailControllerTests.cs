@@ -21,7 +21,7 @@ using Controllers.Customer;
 using Models.Setting;
 using CRM.Criteria.PicAndHeadline;
 using CRM.Resources;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client.Helpers.Business;
 using Services.Interfaces;
 

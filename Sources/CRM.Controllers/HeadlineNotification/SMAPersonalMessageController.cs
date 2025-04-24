@@ -22,13 +22,13 @@ public class SMAPersonalMessageController(
     [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Read)]
     public async Task<IActionResult> GetGridData([FromBody] GetPersonalMessageCriteria criteria)
     {
-        var messageInfors = await baseService.GetDataAsync<SMAMessageInfor>(criteria);
-        foreach(var message in messageInfors)
+        var messageInfo = await baseService.GetDataAsync<SMAMessageInfor>(criteria);
+        foreach (var message in messageInfo)
         {
             message.CreateTime = commonService.ConvertToClientDateTime(message.CreateTime);
         }
 
-        return Json(new { totalItems = criteria.TotalRows, data = messageInfors });
+        return Json(new { totalItems = criteria.TotalRows, data = messageInfo });
     }
 
     [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Host)]

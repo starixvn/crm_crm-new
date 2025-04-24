@@ -130,12 +130,12 @@ public class ChatTypeMappingControllerTests
         var commandResult = fixture.Create<CommandResult>();
         var letstalkProfile = fixture.Create<LetstalkTelegramContact>();
         var telegramProfile = fixture.Create<LetstalkTelegramContact>();
-        var criteria = fixture.Create<InsertPersonalMappingCommand>();
+        fixture.Create<InsertPersonalMappingCommand>();
         var controller = GetController();
         var invalidLetstalk = fixture.Create<string>();
         letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(letstalkProfile);
         telegramService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<long>()).Returns(telegramProfile);
-        chatTypeMappingService.CreatePersonalMappingAsync(Arg.Do<InsertPersonalMappingCommand>(x => criteria = x)).Returns(commandResult);
+        chatTypeMappingService.CreatePersonalMappingAsync(Arg.Do<InsertPersonalMappingCommand>(x => _ = x)).Returns(commandResult);
         var actual = await controller.InsertPersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk, RecipientIds = "1", ChannelId = 1 });
 
         var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -393,6 +393,62 @@ public class ChatTypeMappingControllerTests
         Assert.Equal(expected, result.FileContents);
         Assert.Equal(MimeType.XLSX, result.ContentType);
         Assert.Equal($"{ViewResources.ChatTypeMapping}.xlsx", result.FileDownloadName);
+    }
+
+    [Fact]
+    public async Task GetGroupTelegramDisplayName_WhenValidLetstalkId_ReturnExpectedName()
+    {
+        // Arrange
+        var telegramContact = new LetstalkTelegramContact { DisplayGroupName = "GroupDisplayName" };
+        var controller = GetController();
+        telegramService.GetGroupDisplayNameAsync(Arg.Any<long>(), Arg.Any<long>()).Returns(telegramContact);
+
+        // Act
+        var actual = await controller.GetGroupTelegramDisplayName(1, 1);
+
+        // Assert
+        Assert.Equal("GroupDisplayName", actual);
+    }
+
+    [Fact]
+    public async Task GetIgnoreNotificationType_WhenCalled_ReturnExpectedResult()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var notificationTypes = fixture.Create<IEnumerable<IgnoreNotificationType>>();
+        foreach (var notification in notificationTypes)
+        {
+            notification.NotificationTypeName = "Upload Announcement";
+        }
+        var controller = GetController();
+        chatTypeMappingService.GetIgnoreNotificationTypeAsync().Returns(notificationTypes);
+
+        // Act
+        var result = await controller.GetIgnoreNotificationType();
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actualNotificationTypes = Assert.IsAssignableFrom<IEnumerable<IgnoreNotificationType>>(jsonResult.Value);
+        Assert.Equal(notificationTypes, actualNotificationTypes);
+    }
+
+    [Fact]
+    public async Task VerifyTelegramInGroup_WhenValidBotIdAndGroupId_ReturnExpectedJsonResult()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var telegramValidationModel = fixture.Create<TelegramValidationModel>();
+        var model = fixture.Create<TelegramVerificationViewModel>();
+        var controller = GetController();
+        telegramService.VerifyTelegramInGroup(model).Returns(telegramValidationModel);
+
+        // Act
+        var result = await controller.VerifyTelegramInGroup(model);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var actualResult = jsonResult.Value;
+        Assert.Equal(JsonConvert.SerializeObject(new { isBotRemoved = telegramValidationModel.IsBotRemoved, recipients = telegramValidationModel.Telegrams }), JsonConvert.SerializeObject(actualResult));
     }
 
     #region helper

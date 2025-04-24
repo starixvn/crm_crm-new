@@ -9,68 +9,78 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Details from './Details';
 import Chart from './Chart';
+import RatingDataGrid from './RatingDataGrid';
+import RatingChart from './RatingChart';
 
 export class AppContainer extends Component {
-  componentDidMount(){
-    document.title = LangHelper.getResource('FeedbackStatisticsv2');
-  }
-  componentWillUnmount(){
-    this.props.resetState();
-  }
+    componentDidMount() {
+        document.title = LangHelper.getResource('FeedbackStatisticsv2');
+    }
+    componentWillUnmount() {
+        this.props.resetState();
+    }
 
-  handleCloseDetailDialog = () =>{
-    this.props.setOpenDetailPopup({ show: false});
-  };
+    handleCloseDetailDialog = () => {
+        this.props.setOpenDetailPopup({ show: false });
+    };
 
-  handleCloseViewRelatedCustomerDialog = () => {
-    this.props.setViewRelatedCustomerDialog({ show: false });
-  };
+    handleCloseViewRelatedCustomerDialog = () => {
+        this.props.setViewRelatedCustomerDialog({ show: false });
+    };
 
-  handleCloseChartDialog = () =>{
-    this.props.setOpenChartPopup({ show: false, chartInfo: null});
-  };
+    handleCloseChartDialog = () => {
+        this.props.setOpenChartPopup({ show: false, chartInfo: null });
+    };
 
-  render() {
-    const {detailPopup, viewRelatedCustomerDialog, chart} = this.props;
-    return (
-        <Fragment>
-            <Filter />
-            <DataGrid />
-            {
-              detailPopup.show &&
-              <Details onClose={this.handleCloseDetailDialog}/>
-            }
-            {
-                viewRelatedCustomerDialog.show &&
-                <SweetModalDialog size="lg"
-                    title={LangHelper.getResource('RelatedCustomer')}
-                    contents={
-                        <div>{viewRelatedCustomerDialog.relatedCustomers}</div>
-                    }
-                    buttons={[
-                        <Button variant="primary" size="sm" onClick={this.handleCloseViewRelatedCustomerDialog}>
-                            {LangHelper.getResource('Close')}
-                        </Button>
-                    ]}
-                    onClose={this.handleCloseViewRelatedCustomerDialog}
-                />
-            }
-            {
-              chart.show &&
-              <Chart
-                  chartInfo={chart.chartInfo}
-                  onClose={this.handleCloseChartDialog}
-              />
-            }
-        </Fragment>
-    );
-  }
+    renderDataGrid = (type) => {
+        if (type === 12 || type === 13) {
+            return <RatingDataGrid />;
+        }
+
+        return <DataGrid />;
+    };
+
+    renderChart = (type) => {
+        if (type === 12 || type === 13) {
+            return <RatingChart chartInfo={this.props.chart.chartInfo} onClose={this.handleCloseChartDialog} />;
+        }
+        return <Chart chartInfo={this.props.chart.chartInfo} onClose={this.handleCloseChartDialog} />;
+    }
+
+    render() {
+        const { detailPopup, viewRelatedCustomerDialog, chart, gridParams } = this.props;
+
+        return (
+            <Fragment>
+                <Filter />
+                {this.renderDataGrid(gridParams.type)}
+                {detailPopup.show && <Details onClose={this.handleCloseDetailDialog} />}
+                {viewRelatedCustomerDialog.show && (
+                    <SweetModalDialog
+                        size="lg"
+                        title={LangHelper.getResource('RelatedCustomer')}
+                        contents={<div>{viewRelatedCustomerDialog.relatedCustomers}</div>}
+                        buttons={[
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={this.handleCloseViewRelatedCustomerDialog}
+                            >
+                                {LangHelper.getResource('Close')}
+                            </Button>,
+                        ]}
+                        onClose={this.handleCloseViewRelatedCustomerDialog}
+                    />
+                )}
+                {chart.show && this.renderChart(gridParams.type)}
+            </Fragment>
+        );
+    }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-const mapStateToProps = state => {
-    const { detailPopup, viewRelatedCustomerDialog, chart } = state;
-    return { detailPopup, viewRelatedCustomerDialog, chart };
+const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, dispatch);
+const mapStateToProps = (state) => {
+    const { detailPopup, viewRelatedCustomerDialog, chart, gridParams } = state;
+    return { detailPopup, viewRelatedCustomerDialog, chart, gridParams };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
-

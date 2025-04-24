@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using CRM.Extensions;
+using Enum;
 
 public class FeedbackDetail
 {
@@ -47,4 +49,8 @@ public class FeedbackDetail
     public IList<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
 
     public string DurationTime { get; set; }
+
+    public int Rating { get; set; }
+
+    public string RatingDescription => EnumHelper.GetDescription((FeedbackRating)Rating);
 }

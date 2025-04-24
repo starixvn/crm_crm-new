@@ -1,19 +1,17 @@
 ﻿namespace CRM.Services;
 
+using System;
+using System.Threading.Tasks;
 using Fanex.Data.Repository;
 using Fanex.Logging.Extensions;
 using Models;
 using Newtonsoft.Json;
 using NLog;
 using NLog.Web;
-using System;
-using System.Threading.Tasks;
 
 public interface ICRMLogService
 {
     Task ErrorMessageAsync(string error);
-
-    Task InfoMessageAsync(string info);
 
     Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
 
@@ -22,8 +20,6 @@ public interface ICRMLogService
     Task ErrorAsync(Exception exception);
 
     void LogInformation(string message);
-
-    void LogFileError(Exception exception);
 }
 
 public class CRMLogService(Fanex.Logging.ILogger logger) : ICRMLogService
@@ -33,11 +29,6 @@ public class CRMLogService(Fanex.Logging.ILogger logger) : ICRMLogService
     public async Task ErrorMessageAsync(string error)
     {
         await logger.ErrorAsync(error);
-    }
-
-    public async Task InfoMessageAsync(string info)
-    {
-        await logger.InfoAsync(info);
     }
 
     public async Task ErrorAsync(Exception exception)
@@ -65,11 +56,6 @@ public class CRMLogService(Fanex.Logging.ILogger logger) : ICRMLogService
             .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
             .ToString();
         await logger.ErrorAsync(logMessage);
-    }
-
-    public void LogFileError(Exception exception)
-    {
-        nlog.Error(exception);
     }
 
     public void LogInformation(string message)

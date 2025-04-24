@@ -35,8 +35,6 @@ public interface ICommonService
 
     DateTime GetEndOfDate(DateTime date);
 
-    DateTime GetStartOfDate(DateTime date);
-
     DateTime FirstDayOfMonth(DateTime dateTime);
 
     DateTime LastDayOfMonth(DateTime dateTime);

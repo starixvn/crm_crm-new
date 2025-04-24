@@ -1,22 +1,22 @@
 ﻿namespace CRM.Controllers.HeadlineNotification;
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using CRM.Criteria.Announcement;
 using CRM.Criteria.PicAndHeadline;
 using CRM.Models;
 using CRM.Services;
 using CRM.Services.Interfaces;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
 [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Read)]
@@ -28,7 +28,7 @@ public class AnnouncementController(
     ISendAnnouncementService sendAnnouncementService)
     : BaseController
 {
-    private readonly string pathImages = "www/dist/images/announcement";
+    private const string pathImages = "www/dist/images/announcement";
 
     public async Task<IActionResult> GetAnnouncementTemplate()
     {
@@ -65,7 +65,7 @@ public class AnnouncementController(
         {
             SiteList = sites,
             CurrencyList = currency,
-            HeadlineTypeList = Enum.GetValues(typeof(HeadlineType)).Cast<HeadlineType>().Select(status => new BaseModel { Id = (int)status, Name = status.ToString() }),
+            HeadlineTypeList = Enum.GetValues<HeadlineType>().Select(status => new BaseModel { Id = (int)status, Name = status.ToString() })
         };
 
         return Json(allSetting);
@@ -86,7 +86,7 @@ public class AnnouncementController(
             }
             if (command.CloneAnnouncementId > 0)
             {
-                await CoppyOldFileToNewFileAsync(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
+                await CopyOldFileToNewFileAsync(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
             }
         }
         return Json(commandResult);
@@ -98,7 +98,7 @@ public class AnnouncementController(
     {
         try
         {
-            await sendAnnouncementService.ScanSendAndUpateAnnouncementNotification();
+            await sendAnnouncementService.ScanSendAndUpdateAnnouncementNotification();
             return Ok("Send Successful !!!");
         }
         catch (Exception err)
@@ -151,17 +151,17 @@ public class AnnouncementController(
         return Json(commandResult);
     }
 
-    private async Task CoppyOldFileToNewFileAsync(IList<string> files, int cloneAnnouncementId, int announcementId)
+    private async Task CopyOldFileToNewFileAsync(IList<string> files, int cloneAnnouncementId, int announcementId)
     {
         foreach (var file in files)
         {
-            var targetFolder = getPathFile(announcementId.ToString());
+            var targetFolder = GetPathFile(announcementId.ToString());
             var isExist = System.IO.File.Exists(targetFolder);
             if (!isExist)
             {
                 Directory.CreateDirectory(targetFolder);
             }
-            var targetFile = getPathFile(announcementId.ToString(), file);
+            var targetFile = GetPathFile(announcementId.ToString(), file);
             var sourceStreamFile = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, cloneAnnouncementId.ToString(), file);
             await Task.Run(() => System.IO.File.Copy(sourceStreamFile, targetFile, true));
         }
@@ -172,7 +172,7 @@ public class AnnouncementController(
         foreach (var file in formFiles)
         {
             var fileFolder = GetFileFolder(announcementId);
-            var pathFile = getPathFile(fileFolder, file.FileName);
+            var pathFile = GetPathFile(fileFolder, file.FileName);
             await using Stream stream = new FileStream(pathFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
             await file.CopyToAsync(stream);
         }
@@ -183,7 +183,7 @@ public class AnnouncementController(
         foreach (var file in filesString)
         {
             var fileFolder = announcementId.ToString();
-            var filePath = getPathFile(fileFolder, file);
+            var filePath = GetPathFile(fileFolder, file);
             var isExist = System.IO.File.Exists(filePath);
             if (isExist)
             {
@@ -196,15 +196,13 @@ public class AnnouncementController(
         }
     }
 
-    private string getPathFile(string folder, string fileName = "")
-    {
-        return Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
-    }
+    private string GetPathFile(string folder, string fileName = "")
+        => Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
 
     private string GetFileFolder(int announcementId)
     {
         var fileFolder = announcementId.ToString();
-        var path = getPathFile(fileFolder);
+        var path = GetPathFile(fileFolder);
         var isExist = System.IO.File.Exists(path);
         if (!isExist)
         {

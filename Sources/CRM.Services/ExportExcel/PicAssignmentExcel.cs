@@ -8,7 +8,7 @@ using Constants;
 using CRM.Models.PicAndHeadline;
 using CRM.Models.Setting;
 using CRM.Resources;
-using Enumerables;
+using Enum;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 

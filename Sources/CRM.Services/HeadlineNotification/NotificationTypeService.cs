@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CRM.Criteria.NotificationType;
 using CRM.Extensions;
 using CRM.Models.NotificationType;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -69,7 +69,7 @@ public class NotificationTypeService(
         {
             foreach (var item in data.Item3)
             {
-                item.ChatTypeName = EnumHelper.GetDesciption((ChatType)item.ChatTypeId);
+                item.ChatTypeName = EnumHelper.GetDescription((ChatType)item.ChatTypeId);
             }
             foreach (var item in data.Item1)
             {

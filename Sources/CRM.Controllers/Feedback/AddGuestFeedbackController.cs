@@ -6,7 +6,7 @@ using Constants;
 using CRM.Criteria.Feedback.AddFeedback;
 using CRM.Services;
 using CRM.ViewModels.Feedback;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -26,10 +26,10 @@ public class AddGuestFeedbackController(
     {
         var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
-        var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
-        var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
-        var mainCategorysTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
-        var subCategorysTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
+        var subProductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
+        var betTypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
+        var mainCategoriesTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
+        var subCategoriesTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
         var communicationToolsTask = settingService.GetCommunicationToolAsync(SettingConstants.Active);
         var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
         var titlesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
@@ -37,22 +37,22 @@ public class AddGuestFeedbackController(
         var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback);
         var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
         var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
-        var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+        var extensionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
         var statusesTask = settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
         var productsTask = settingService.GetProductAsync(SettingConstants.Active);
         var sitesTask = settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType);
 
-        await Task.WhenAll(languagesTask, countriesTask, extentionsTask, statusesTask, communicationToolsTask, responsesTask, titlesTask, licenseeTypesTask,
-            productsTask, subproductsTask, bettypesTask, mainCategorysTask, subCategorysTask, sitesTask);
+        await Task.WhenAll(languagesTask, countriesTask, extensionsTask, statusesTask, communicationToolsTask, responsesTask, titlesTask, licenseeTypesTask,
+            productsTask, subProductsTask, betTypesTask, mainCategoriesTask, subCategoriesTask, sitesTask);
 
-        var extentionNA = extentionsTask.Result.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
+        var extensionNA = extensionsTask.Result.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
         var productNA = productsTask.Result.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
-        var subproductNA = subproductsTask.Result.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
-        var bettypeNA = bettypesTask.Result.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
+        var subProductNA = subProductsTask.Result.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
+        var betTypeNA = betTypesTask.Result.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
 
         var settings = new CreateFeedbackViewModel
         {
-            Extensions = extentionsTask.Result.Where(x => x.Id != NAConstants.ExtentionNA),
+            Extensions = extensionsTask.Result.Where(x => x.Id != NAConstants.ExtentionNA),
             Countries = countriesTask.Result,
             CommunicationTools = communicationToolsTask.Result,
             Languages = languagesTask.Result,
@@ -62,14 +62,14 @@ public class AddGuestFeedbackController(
             LicenseeTypes = licenseeTypesTask.Result,
             Sites = sitesTask.Result,
             ProductNA = productNA,
-            SubProductNA = subproductNA,
-            BettypeNA = bettypeNA,
-            ExtensionNA = extentionNA,
+            SubProductNA = subProductNA,
+            BettypeNA = betTypeNA,
+            ExtensionNA = extensionNA,
             Products = productsTask.Result.Where(p => p.Id != NAConstants.ProductNA),
-            SubProducts = subproductsTask.Result.Where(p => p.Id != NAConstants.SubProductNA && p.ParentId != 0),
-            Bettypes = bettypesTask.Result.Where(b => b.Id != NAConstants.BettypeNA),
-            MainCategories = mainCategorysTask.Result,
-            SubCategories = subCategorysTask.Result
+            SubProducts = subProductsTask.Result.Where(p => p.Id != NAConstants.SubProductNA && p.ParentId != 0),
+            Bettypes = betTypesTask.Result.Where(b => b.Id != NAConstants.BettypeNA),
+            MainCategories = mainCategoriesTask.Result,
+            SubCategories = subCategoriesTask.Result
         };
 
         if (hasCreateFeedbackPermission)
@@ -89,7 +89,7 @@ public class AddGuestFeedbackController(
         command.IP = ClientIP;
         command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
         command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-            command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
+        command.FirstResponseTime = command.FirstResponseTime.HasValue ? commonService.ConvertToServerDateTime(command.FirstResponseTime.Value) : null;
         var result = await baseService.ExecuteNonQueryAsync(command);
         return Json(result);
     }

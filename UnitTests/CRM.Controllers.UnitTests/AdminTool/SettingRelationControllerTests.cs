@@ -8,6 +8,7 @@ using AutoFixture;
 using CRM.Controllers.AdminTool;
 using CRM.Criteria.AdminTool;
 using CRM.Criteria.Setting;
+using CRM.Models.AdminTool.SettingLog;
 using CRM.Models.Setting;
 using CRM.Services;
 using CRM.ViewModels;
@@ -130,6 +131,22 @@ public class SettingRelationControllerTests
         Assert.Equal(commandResult, actual);
         Assert.Equal(napSession.UserId, command.UserId);
         Assert.Equal("1.0.0.0", command.Ip);
+    }
+
+    [Fact]
+    public async Task GetSettingRelationConfirm_WhenCalled_ReturnsExpectedResult()
+    {
+        // Arrange
+        var param = fixture.Create<GetSettingRelationConfirm>();
+        var expectedResult = fixture.Create<int>();
+        var controller = GetController();
+        settingService.GetSettingRelationConfirmAsync(param).Returns(expectedResult);
+
+        // Act
+        var result = await controller.GetSettingRelationConfirm(param);
+
+        // Assert
+        Assert.Equal(expectedResult, result);
     }
 
     private SettingRelationController GetController()

@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-public class FeedbackStatisticInfo: BaseModel
+public class FeedbackStatisticInfo : BaseModel
 {
     public string Title { get; set; }
 

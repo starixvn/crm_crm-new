@@ -12,7 +12,7 @@ using CRM.Models.AdminTool.SettingLog;
 using CRM.Models.Setting;
 using CRM.Resources;
 using Interfaces;
-using FeedbackStatus = Enumerables.FeedbackStatus;
+using FeedbackStatus = Enum.FeedbackStatus;
 
 public class SettingService(IBaseService baseService, IPermissionService permissionService)
     : ISettingService

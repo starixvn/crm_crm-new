@@ -1,5 +1,9 @@
 ﻿namespace CRM.Controllers.UnitTests.AdminTool;
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using AutoFixture;
 using CRM.Controllers.AdminTool;
 using CRM.Criteria.AdminTool.JobSettingManagement;
@@ -10,10 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using NSubstitute;
 using Services;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Xunit;
 
 public class JobSettingManagementControllerTests
@@ -27,9 +27,8 @@ public class JobSettingManagementControllerTests
     {
         // Arrange
         var controller = GetController();
-        var criteria = fixture.Create<GetServiceNameSettingCriteria>();
         var serviceNames = fixture.Create<IEnumerable<string>>();
-        baseService.GetDataAsync<string>(Arg.Do<GetServiceNameSettingCriteria>(x => criteria = x)).Returns(serviceNames);
+        baseService.GetDataAsync<string>(Arg.Do<GetServiceNameSettingCriteria>(x => _ = x)).Returns(serviceNames);
 
         // Act
         var result = await controller.GetServiceNameSettings();

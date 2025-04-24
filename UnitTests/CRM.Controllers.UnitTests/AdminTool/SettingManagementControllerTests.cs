@@ -1,5 +1,4 @@
-﻿
-namespace CRM.Controllers.UnitTests.AdminTool;
+﻿namespace CRM.Controllers.UnitTests.AdminTool;
 
 using System.Collections.Generic;
 using System.Net;
@@ -70,10 +69,10 @@ public class SettingManagementControllerTests
     public async Task GetLicensees_WhenCalled_ReturnExpectedJson()
     {
         //Arrange
-        var criteria = fixture.Create<GetLicenseeCriteria>();
+        fixture.Create<GetLicenseeCriteria>();
         var expected = fixture.Create<IEnumerable<string>>();
         var controller = GetController();
-        baseService.GetDataAsync<string>(Arg.Do<GetLicenseeCriteria>(x => criteria = x)).Returns(expected);
+        baseService.GetDataAsync<string>(Arg.Do<GetLicenseeCriteria>(x => _ = x)).Returns(expected);
 
         // Act
         var result = await controller.GetLicensees();
@@ -239,6 +238,24 @@ public class SettingManagementControllerTests
         var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
         Assert.Equal(expected, actual);
         Assert.Equal(napSession.UserId, command.UserId);
+    }
+
+    [Fact]
+    public async Task GetSourceMappingByType_WhenCalled_ReturnExpectedJson()
+    {
+        // Arrange
+        var settingType = fixture.Create<SettingTypeViewModel>();
+        var mappingByTypes = fixture.Create<IEnumerable<SettingMapping>>();
+        var controller = GetController();
+        settingService.GetSettingMappingAsync(settingType.SettingName).Returns(mappingByTypes);
+
+        // Act
+        var result = await controller.GetSourceMappingByType(settingType);
+
+        // Assert
+        var jsonResult = Assert.IsType<JsonResult>(result);
+        var settingsResult = jsonResult.Value;
+        Assert.Equal(settingsResult, mappingByTypes);
     }
 
     private SettingManagementController GetController()

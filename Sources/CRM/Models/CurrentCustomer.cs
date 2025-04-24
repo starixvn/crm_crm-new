@@ -1,6 +1,6 @@
 ﻿namespace CRM.Models;
 
-using Enumerables;
+using Enum;
 
 public class CurrentCustomer
 {

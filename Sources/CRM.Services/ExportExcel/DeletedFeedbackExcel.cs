@@ -21,23 +21,21 @@ public class DeletedFeedbackExcel(
 
     protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
     {
-        templateWorksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]
-            .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
+        CopyCells(templateWorksheet, worksheet, 1, 1, RowStartHeader - 1, StartComToolsIndex - 1);
         worksheet.Cells[1, 1].Value = string.Format(ViewResources.DeletedFeedback);
     }
 
     protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
     {
-        templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]
-            .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]);
+        CopyCells(templateWorksheet, worksheet, RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1);
     }
 
     protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
     {
         int rowIndex = RowStartBody;
-        for (var index = 0; index < feedbacks.Count(); index++)
+        foreach (var feedback in feedbacks.Select((value, index) => new { value, index }))
         {
-            RenderRow(worksheet, feedbacks.ToList()[index], index + 1, rowIndex++);
+            RenderRow(worksheet, feedback.value, feedback.index + 1, rowIndex++);
         }
     }
 
@@ -99,6 +97,11 @@ public class DeletedFeedbackExcel(
         }
     }
 
+    private static void CopyCells(ExcelWorksheet source, ExcelWorksheet destination, int fromRow, int fromCol, int toRow, int toCol)
+    {
+        source.Cells[fromRow, fromCol, toRow, toCol].Copy(destination.Cells[fromRow, fromCol, toRow, toCol]);
+    }
+
     public static string[] GetCategoryContent(
         IEnumerable<FeedbackSettingRelation> settings,
         IEnumerable<Setting> mainCategories)
@@ -140,9 +143,10 @@ public class DeletedFeedbackExcel(
 
     protected static string GetFeedbackCellValue(FeedbackDetail feedback)
     {
-        var cellValue = $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}\n{"By " +
-                feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}\n" +
-                        $"{"Solving Duration: " + feedback.DurationTime}";
+        var cellValue =
+            $"{feedback.Subject}\n{"Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat()}" +
+            $"\n{"By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat()}" +
+                $"\n{"Solving Duration: " + feedback.DurationTime}";
 
         if (!string.IsNullOrEmpty(feedback.ReviewerName))
         {
@@ -153,6 +157,7 @@ public class DeletedFeedbackExcel(
         return cellValue;
     }
 
-    private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
+    private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings,
+        IEnumerable<Setting> mainCategories)
         => GetCategoryContent(settings.Where(i => i.SettingType == "Category"), mainCategories);
 }

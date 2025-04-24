@@ -1,12 +1,12 @@
 ﻿namespace CRM.UnitTests.Services;
 
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using CRM.Services;
 using Fanex.Data.Repository;
 using Models;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 public class BaseServiceTests
@@ -186,7 +186,7 @@ public class BaseServiceTests
     public async Task FetchMultipleAsync_CriteriaIsValid_ReturnExpectedData()
     {
         // Arrange
-        var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 });
+        var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>>([1, 2], [1, 2]);
         var criteria = Substitute.For<ICriteria>();
         criteria.IsValid().Returns(true);
         var baseService = GetBaseService();
@@ -235,7 +235,7 @@ public class BaseServiceTests
     public async Task FetchMultipleAsync_WithThreeDataCriteriaIsValid_ReturnExpectedData()
     {
         // Arrange
-        var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 });
+        var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>([1, 2], [1, 2], [1, 2]);
         var criteria = Substitute.For<ICriteria>();
         criteria.IsValid().Returns(true);
         var baseService = GetBaseService();
@@ -286,7 +286,7 @@ public class BaseServiceTests
     public async Task FetchMultipleAsync_WithFourDataCriteriaIsValid_ReturnExpectedData()
     {
         // Arrange
-        var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 });
+        var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>([1, 2], [1, 2], [1, 2], [1, 2]);
         var criteria = Substitute.For<ICriteria>();
         criteria.IsValid().Returns(true);
         var baseService = GetBaseService();

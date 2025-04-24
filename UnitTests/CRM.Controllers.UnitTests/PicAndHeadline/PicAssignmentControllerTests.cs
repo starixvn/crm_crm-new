@@ -14,8 +14,7 @@ using CRM.Models.PicAndHeadline;
 using CRM.Models.Setting;
 using CRM.Resources;
 using CRM.Services;
-using Enumerables;
-using Extensions.XML;
+using Enum;
 using Fanex.NAP.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -109,17 +108,8 @@ public class PicAssignmentControllerTests
         };
 
         controller.ControllerContext.HttpContext = clientIP;
-        var command = new AssignPicCommand
-        {
-            HeadlineId = model.HeadlineId,
-            PicId = model.PicIds,
-            DirectAccount = model.DirectAccountIds,
-            IsKeepAssign = model.IsKeepAssign,
-            UserId = napSession.UserId,
-            LoginIP = clientIP.Connection.RemoteIpAddress.ToString()
-        };
 
-        baseService.ExecuteNonQueryAsync(Arg.Do<AssignPicCommand>(x => command = x)).Returns(expected);
+        baseService.ExecuteNonQueryAsync(Arg.Do<AssignPicCommand>(x => _ = x)).Returns(expected);
 
         // Action
         var result = await controller.AssignPIC(model) as JsonResult;
@@ -144,14 +134,8 @@ public class PicAssignmentControllerTests
         };
 
         controller.ControllerContext.HttpContext = clientIP;
-        var command = new RemoveAssignmentCommand
-        {
-            RemovedPICs = model.ToXML("ROOT").ToString(),
-            UserId = napSession.UserId,
-            LoginIP = clientIP.Connection.RemoteIpAddress.ToString()
-        };
 
-        baseService.ExecuteNonQueryAsync(Arg.Do<RemoveAssignmentCommand>(x => command = x)).Returns(expected);
+        baseService.ExecuteNonQueryAsync(Arg.Do<RemoveAssignmentCommand>(x => _ = x)).Returns(expected);
 
         // Action
         var result = await controller.RemoveAssignment(model) as JsonResult;

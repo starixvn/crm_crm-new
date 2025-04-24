@@ -2,7 +2,7 @@
 
 using System;
 
-public class GetNewRemarkCriteria : BaseSitePermisionCriteria
+public class GetNewRemarkCriteria : BaseSitePermissionCriteria
 {
     public string Username { get; set; }
     public DateTime? Fromdate { get; set; }

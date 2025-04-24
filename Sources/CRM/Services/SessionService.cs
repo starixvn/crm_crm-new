@@ -7,13 +7,13 @@ using Models;
 public interface ISessionService
 {
     CurrentCustomer CurrentCustomer { get; set; }
+
     void ClearKey(string key);
 }
 
 public class SessionService(ISession session) : ISessionService
 {
     private const string CurrentCustomerKey = "CurrentCustomer";
-
 
     public SessionService(IHttpContextAccessor accessor) : this(accessor.HttpContext.Session)
     {

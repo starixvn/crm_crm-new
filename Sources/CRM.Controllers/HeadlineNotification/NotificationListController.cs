@@ -7,7 +7,7 @@ using Constants;
 using CRM.Criteria.NotificationList;
 using CRM.Criteria.NotificationType;
 using CRM.Models.NotificationList;
-using Enumerables;
+using Enum;
 using Fanex.NAP.Client;
 using Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +27,7 @@ public class NotificationListController(
         var result = new
         {
             NotificationTypes = await notificationTypeService.GetNotificationTypeAsync(new GetNotificationTypeCriteria()),
-            Statuses = Enum.GetValues(typeof(NotificationStatus)).Cast<NotificationStatus>().Select(status => status.ToString())
+            Statuses = Enum.GetValues<NotificationStatus>().Select(status => status.ToString())
         };
 
         return Json(result);
@@ -35,7 +35,7 @@ public class NotificationListController(
 
     [HttpPost]
     [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Read)]
-    public async Task<IActionResult> GetGridData([FromBody]GetNotificationListCriteria param)
+    public async Task<IActionResult> GetGridData([FromBody] GetNotificationListCriteria param)
     {
         if (param.FromDate.HasValue && param.ToDate.HasValue)
         {
@@ -54,7 +54,7 @@ public class NotificationListController(
 
     [HttpPost]
     [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
-    public async Task<IActionResult> EditNotificationList([FromBody]EditNotificationListCommand command)
+    public async Task<IActionResult> EditNotificationList([FromBody] EditNotificationListCommand command)
     {
         command.UserId = napSession.UserId;
         var result = await notificationListService.EditNotificationListAsync(command);
@@ -63,7 +63,7 @@ public class NotificationListController(
 
     [HttpPost]
     [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
-    public async Task<IActionResult> ValidateNotificationList([FromBody]ValidateNotificationListModel model)
+    public async Task<IActionResult> ValidateNotificationList([FromBody] ValidateNotificationListModel model)
     {
         var criteria = new ValidateNotificationListCriteria { NotificationIds = model.NotificationIds };
         var result = await notificationListService.ValidateNotificationListAsync(criteria);
@@ -73,7 +73,7 @@ public class NotificationListController(
 
     [HttpPost]
     [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Host)]
-    public async Task<IActionResult> ResendNotificationList([FromBody]ResendNotificationsCommand command)
+    public async Task<IActionResult> ResendNotificationList([FromBody] ResendNotificationsCommand command)
     {
         command.UserId = napSession.UserId;
         var result = await notificationListService.ResendNotificationsAsync(command);

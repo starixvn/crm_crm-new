@@ -420,7 +420,7 @@ public class SettingServiceTests
     {
         // Arrange
         var expected = fixture.Create<IList<FeedbackStatus>>();
-        expected[0].StatusId = (int)Enumerables.FeedbackStatus.Closed;
+        expected[0].StatusId = (int)Enum.FeedbackStatus.Closed;
         var criteria = fixture.Create<GetAllStatusCriteria>();
         var service = GetService();
         baseService.GetDataAsync<FeedbackStatus>(Arg.Do<GetAllStatusCriteria>(x => criteria = x)).Returns(expected);

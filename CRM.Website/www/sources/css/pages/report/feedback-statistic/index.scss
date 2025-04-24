@@ -1,30 +1,31 @@
 @import '../../../abstracts/variables';
-.feedback-statistic{
+
+.feedback-statistic {
     .form-filter {
         background-color: #FFFFFF !important;
         border-radius: 5px 5px 5px 5px;
         border: 1px solid #CCCCCC;
         margin-bottom: 1rem;
-	    font-family: Open Sans, sans-serif;
+        font-family: Open Sans, sans-serif;
         font-weight: 600;
 
-        .react-datepicker__input-container input{
+        .react-datepicker__input-container input {
             width: 100% !important;
         }
-    
-        .small-width{
+
+        .small-width {
             width: 163px !important;
         }
-    
-        .width-duration{
+
+        .width-duration {
             width: 117px !important;
         }
-    
-        .width-320{
+
+        .width-320 {
             width: 320px !important;
         }
-    
-        .duration{
+
+        .duration {
             input::-webkit-outer-spin-button,
             input::-webkit-inner-spin-button {
                 -webkit-appearance: none;
@@ -36,15 +37,19 @@
             }
         }
     }
-    
-    .cursor-pointer{
+
+    .cursor-pointer {
         cursor: pointer;
     }
 
-    .fix-table-container{
-        .fix-table{
-            .footer-content{
+    .fix-table-container {
+        .fix-table {
+            .footer-content {
                 bottom: -2px !important;
+
+                .disable-click {
+                    pointer-events: none;
+                }
             }
         }
 
@@ -52,97 +57,98 @@
             border: 0 !important;
         }
 
-        .parent-level-0{
+        .parent-level-0 {
             height: 29px;
-            .subcategory, td{
+
+            .subcategory, td {
                 background-color: #e3e3e3 !important;
                 color: #0054a6 !important;
             }
-        
-            .subcategory{
+
+            .subcategory {
                 font-weight: 600;
                 cursor: pointer;
             }
         }
-    
-        .body-content{
-            tbody .child{ 
+
+        .body-content {
+            tbody .child {
                 background-color: #fff !important;
             }
-    
-            .sub-total{
+
+            .sub-total {
                 color: rgb(95, 95, 95);
                 font-weight: bold;
             }
-    
+
             .link-click {
                 cursor: pointer;
                 font-weight: 600;
                 color: $link-color !important;
             }
-    
-            .disable-click{
+
+            .disable-click {
                 pointer-events: none;
             }
 
-            .disable-click-subtotal{
+            .disable-click-subtotal {
                 font-weight: 600;
                 pointer-events: none;
             }
         }
-        
-        .footer-content{
-            .footer-container{
-                td{
-                    background: #c0cae3!important;
+
+        .footer-content {
+            .footer-container {
+                td {
+                    background: #c0cae3 !important;
                     color: #0054a6 !important;
                 }
             }
         }
 
-        .header-content table thead .sticky-header, td:first-child{
+        .header-content table thead .sticky-header, td:first-child {
             position: sticky !important;
         }
-        .header-content thead .sticky-header{
+
+        .header-content thead .sticky-header {
             z-index: 2;
             left: 0 !important;
         }
-    
+
         .body-content table tbody, .footer-content .footer-container {
-            td:first-child{
+            td:first-child {
                 left: 0 !important;
             }
         }
-    
-    
-        .table-title{
+
+        .table-title {
             border-right: 0;
         }
     }
 }
 
-.chart-modal-feedback-statistics{
+.chart-modal-feedback-statistics {
     .modal-dialog {
         .modal-content {
             left: -9%;
             width: 1350px !important;
         }
 
-        .recharts-default-legend{
+        .recharts-default-legend {
             width: 98%;
 
-            li{
+            li {
                 width: 153px !important;
             }
         }
 
-        .recharts-legend-wrapper{
+        .recharts-legend-wrapper {
             overflow: auto;
         }
-    } 
+    }
 }
 
-.feedback-detail-statistics .modal-content{
+.feedback-detail-statistics .modal-content {
     width: 1200px;
     max-height: 900px;
 
@@ -150,47 +156,47 @@
         background: #1D3557 !important;
     }
 
-    .table-container, .fix-table-container{
+    .table-container, .fix-table-container {
         max-height: 875px !important;
 
-        .body-content{
+        .body-content {
             max-height: 715px !important;
         }
     }
 
-    .manage-feedback-row{
-        .edit-feedback{
+    .manage-feedback-row {
+        .edit-feedback {
             &:hover {
                 color: $draft-color !important;
             }
         }
-    
+
         .fa-pencil:before {
             color: #D3B35D;
         }
-    
+
         strong.link-click {
             color: $link-color !important;
-        
+
             &:hover {
                 color: $draft-color !important;
             }
         }
-        
+
         .feedback-info {
             padding-left: 17px;
-        
-            .info{
+
+            .info {
                 padding: 3px 0px;
             }
         }
-    
+
         span.fa.fa-file-excel-o.icon-excel {
             color: #28a745;
             font-size: 14px;
         }
-    
-        .break-word{
+
+        .break-word {
             word-break: break-word;
         }
     }
