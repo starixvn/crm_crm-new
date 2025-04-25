@@ -3,6 +3,7 @@
     <Function Name="System Setting">
         <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
+    <Setting Key="Acc_CRM_SitePermissionSel" SpName="Acc_CRM_SitePermissionSel_xtest" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
     </Function>
     <Function Name="Job Setting Management">
         <Setting Key="Acc_CRM_ConfigAutoFeedback_ServiceSel" SpName="Acc_CRM_ConfigAutoFeedback_ServiceSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
