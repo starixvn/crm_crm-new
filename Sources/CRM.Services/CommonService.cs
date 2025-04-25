@@ -38,6 +38,19 @@ public class CommonService(
     public IEnumerable<BaseModel> GetChatTypes() =>
         Enum.GetValues(typeof(ChatType)).Cast<ChatType>()
             .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDescription(type) });
+    
+     
+    public async Task<string> GetSitePermission(short licenseeType, string sitePermission)
+    {
+        var criteria = new GetSitePermissionCriteria
+        {
+            LicenseeType = licenseeType,
+            SitePermission = sitePermission
+        };
+
+        return await baseService.GetDataEntityAsync<string>(criteria);
+    }     
+
 
     public IEnumerable<BaseModel> GetMappingStatus() =>
         Enum.GetValues(typeof(MappingStatus)).Cast<MappingStatus>()

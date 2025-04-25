@@ -1,9 +1,10 @@
 ﻿using System;
 using Fanex.Data;
+using Fanex.Data.Repository;
 
 namespace CRM.Criteria.ManageSMAFeedback
 {
-    public class GetSmaFeedbackCriteria : BaseSitePermisionCriteria
+    public class GetSmaFeedbackCriteria : CriteriaBase
     {
         public DateTime? FromDate { get; set; }
 
@@ -21,6 +22,8 @@ namespace CRM.Criteria.ManageSMAFeedback
         public int PageIndex { get; set; }
 
         public int TotalRows { get; set; }
+
+        public string SitePermission { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ManageSMAFeedback";
 
