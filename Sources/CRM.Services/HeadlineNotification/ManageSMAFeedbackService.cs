@@ -13,7 +13,7 @@ namespace CRM.Services.HeadlineNotification
     {
         public async Task<IEnumerable<SmaFeedbackInfo>> GetSmaFeedbackAsync(GetSmaFeedbackInfo param)
         {
-            var sitePermissionXml = await commonService.GetSitePermission(param.LicenseeType, param.SitePermission);
+            var sitePermissionXml = await commonService.GetSitePermissionXml(param.LicenseeType, param.SitePermission);
             var criteria = new GetSmaFeedbackCriteria
             {
                 FromDate = commonService.ConvertClientFromTimeToServerTime(param.FromDate),

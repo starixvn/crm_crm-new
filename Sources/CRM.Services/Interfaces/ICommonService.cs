@@ -25,7 +25,7 @@ public interface ICommonService
 
     Task<IEnumerable<BaseModel>> GetHeadlineAsync(GetHeadlinesCriteria criteria);
 
-    Task<string> GetSitePermission(short licenseeType, string sitePermission);
+    Task<string> GetSitePermissionXml(short licenseeType, string sitePermission);
 
     DateTime ConvertToClientDateTime(DateTime date);
 
