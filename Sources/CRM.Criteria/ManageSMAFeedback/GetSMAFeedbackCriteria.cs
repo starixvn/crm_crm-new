@@ -23,6 +23,8 @@ namespace CRM.Criteria.ManageSMAFeedback
 
         public int TotalRows { get; set; }
 
+        public short UserRole { get; set; } = Constants.Constants.UserRole;
+
         public string SitePermission { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ManageSMAFeedback";
