@@ -82,13 +82,25 @@ export class Filter extends Component {
         };
     };
 
+    isValidateParams = () => {
+        const { filter } = this.state;
+        if (!filter.reviewStatus) {
+            toast.error(LangHelper.getResource('PleaseChooseReviewStatus'));
+            return false;
+        }
+
+        if(!filter.fromDate || !filter.toDate){
+            toast.error("Invalid range date");
+            return false;
+        }
+
+        return true;
+    };
+
     handleSubmit = event => {
         event.preventDefault();
-        if (!this.state.filter.reviewStatus) {
-            toast.error(LangHelper.getResource('PleaseChooseReviewStatus'));
-            return;
-        }
-        if (isHavePermissionOnSite()) {
+        
+        if (isHavePermissionOnSite() && this.isValidateParams()) {
             const params = this.getParams();
             this.props.setGridParams(params);
             this.props.getGridData(params);
