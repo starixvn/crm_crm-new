@@ -42,7 +42,6 @@ export class EditSmaFeedback extends Component {
         this.formik.setSubmitting(true);
 
         const params = this.getParams();
-        console.log('params', params);
         await this.props.editSmaFeedback(params).then(response => {
             if (response.isSuccessful) {
                 this.setState({ editResult: response });
