@@ -87,7 +87,7 @@ namespace CRM.Services.HeadlineNotification
                 )
             );
 
-            return rootElement.ToString();
+            return rootElement.ToString(SaveOptions.DisableFormatting);
         }
     }
 }
