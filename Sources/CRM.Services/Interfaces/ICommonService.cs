@@ -27,6 +27,8 @@ public interface ICommonService
 
     Task<string> GetSitePermissionXml(short licenseeType, string sitePermission);
 
+    Task<CommandResult> WriteLogSPAsync(LogSPInfo param);
+
     DateTime ConvertToClientDateTime(DateTime date);
 
     DateTime ConvertToServerDateTime(DateTime date);

@@ -42,6 +42,10 @@ namespace CRM.Controllers.HeadlineNotification
         public async Task<IActionResult> EditSmaFeedback([FromBody] EditSmaFeedback param)
         {
             var commandResult = await manageSmaFeedbackService.EditSmaFeedbackAsync(param);
+            if (commandResult.IsSuccessful)
+            {
+                await manageSmaFeedbackService.WriteLogSmaFeedbackAsync(param);
+            }
             return Json(commandResult);
         }
 

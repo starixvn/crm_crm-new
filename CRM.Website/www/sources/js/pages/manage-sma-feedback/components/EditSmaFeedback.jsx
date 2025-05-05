@@ -29,13 +29,20 @@ export class EditSmaFeedback extends Component {
 
     getParams = () => {
         const { reviewStatusID, discussion, functionID, createdDate, custID, comment } = this.formik.values;
-        return { reviewStatusID: parseInt(reviewStatusID, 10), discussion, functionID, createdDate, custID, comment };
+        const reviewStatusID_Old = this.props.data.reviewStatusID;
+        const discussion_Old = this.props.data.discussion;
+        return {
+            reviewStatusID: parseInt(reviewStatusID, 10),
+            reviewStatusID_Old: parseInt(reviewStatusID_Old, 10),
+            discussion, discussion_Old, functionID, createdDate, custID, comment
+        };
     };
 
     handleSubmit = async () => {
         this.formik.setSubmitting(true);
 
         const params = this.getParams();
+        console.log('params', params);
         await this.props.editSmaFeedback(params).then(response => {
             if (response.isSuccessful) {
                 this.setState({ editResult: response });
@@ -115,6 +122,7 @@ export class EditSmaFeedback extends Component {
         const { discussion, functionID, createdDate, custID, comment } = data;
         const reviewStatusID = data.reviewStatusID ? data.reviewStatusID : reviewStatusSetting[0].id;
         const initialValues = { reviewStatusID, discussion, functionID, createdDate, custID, comment };
+
         return (
             <Modal show className="edit-sma-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="md" centered

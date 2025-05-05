@@ -12,8 +12,12 @@ namespace CRM.Models.ManageSmaFeedback
 
         public int ReviewStatusID { get; set; }
 
+        public int ReviewStatusID_Old { get; set; }
+
         public string Comment { get; set; }
 
         public string Discussion { get; set; }
+
+        public string Discussion_Old { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using CRM.Criteria.ManageSMAFeedback;
 using CRM.Models;
+using CRM.Models.Common;
 using CRM.Models.ManageSmaFeedback;
 using CRM.Models.Setting;
 using CRM.Services.Interfaces;
@@ -55,6 +57,37 @@ namespace CRM.Services.HeadlineNotification
                 Comment = param.Comment
             };
             return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> WriteLogSmaFeedbackAsync(EditSmaFeedback param)
+        {
+            var oldValue = GetOldNewValueXml(false, param);
+            var newValue = GetOldNewValueXml(true, param);
+            var logInfo = new LogSPInfo
+            {
+                CustID = param.CustID,
+                ActionID = 1022,
+                OldValues = oldValue,
+                NewValues = newValue,
+            };
+
+            return await commonService.WriteLogSPAsync(logInfo);
+        }
+
+        public string GetOldNewValueXml(bool isNewValue, EditSmaFeedback value)
+        {
+            var rootElement = new XElement("Acc_CRM_SMAFeedbackInfoUpd",
+                new XElement("Site",
+                    new XAttribute("Custid", value.CustID),
+                    new XAttribute("CreatedDate", commonService.ConvertToServerDateTime(value.CreatedDate)),
+                    new XAttribute("FunctionID", value.FunctionID),
+                    new XAttribute("Comment", value.Comment),
+                    new XAttribute("ReviewStatusID", isNewValue ? value.ReviewStatusID : value.ReviewStatusID_Old),
+                    new XAttribute("Discussion", isNewValue ? value.Discussion : value.Discussion_Old)
+                )
+            );
+
+            return rootElement.ToString();
         }
     }
 }

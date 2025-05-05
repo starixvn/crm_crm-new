@@ -113,4 +113,17 @@ public class CommonService(
 
         return rootElement.ToString();
     }
+
+    public async Task<CommandResult> WriteLogSPAsync(LogSPInfo param)
+    {
+        var command = new WriteLogSPCommand
+        {
+            UserID = param.CustID,
+            CustID = param.CustID,
+            ActionID = param.ActionID,
+            OldValues = param.OldValues,
+            NewValues = param.NewValues
+        };
+        return await baseService.ExecuteNonQueryAsync(command);
+    }
 }

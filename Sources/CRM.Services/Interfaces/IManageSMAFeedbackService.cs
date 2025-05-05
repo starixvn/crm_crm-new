@@ -10,5 +10,7 @@ namespace CRM.Services.Interfaces
         Task<IEnumerable<SmaFeedbackInfo>> GetSmaFeedbackAsync(GetSmaFeedbackInfo param);
 
         Task<CommandResult> EditSmaFeedbackAsync(EditSmaFeedback param);
+
+        Task<CommandResult> WriteLogSmaFeedbackAsync(EditSmaFeedback param);
     }
 }

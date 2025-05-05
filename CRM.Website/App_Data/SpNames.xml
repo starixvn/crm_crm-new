@@ -390,4 +390,7 @@
         <Setting Key="MNC_Notification_AdmUpdNotiReason" SpName="MNC_Notification_AdmUpdNotiReason" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_ReasonSettingSel" SpName="Acc_CRM_ReasonSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
     </Function>
+    <Function Name="WriteLog">
+      <Setting Key="WriteLog_UserLog_crmUserLog_RunSP" SpName="WriteLog_UserLog_crmUserLog_RunSP" DbName="DBCRM.bodb_CRM.wsv_nap" />
+    </Function>
 </Functions>
