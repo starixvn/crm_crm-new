@@ -65,7 +65,9 @@ namespace CRM.Services.HeadlineNotification
             var newValue = GetOldNewValueXml(true, param);
             var logInfo = new LogSPInfo
             {
+                UserID = param.UserID,
                 CustID = param.CustID,
+                IP = param.IP,
                 ActionID = 1022,
                 OldValues = oldValue,
                 NewValues = newValue,
@@ -82,7 +84,7 @@ namespace CRM.Services.HeadlineNotification
                     new XAttribute("CreatedDate", commonService.ConvertToServerDateTime(value.CreatedDate)),
                     new XAttribute("FunctionID", value.FunctionID),
                     new XAttribute("Comment", value.Comment),
-                    new XAttribute("ReviewStatusID", isNewValue ? value.ReviewStatusID : value.ReviewStatusID_Old),
+                    new XAttribute("ReviewStatusID", isNewValue ? value.ReviewStatusID : value.ReviewStatusID_Old?.ToString() ?? ""),
                     new XAttribute("Discussion", isNewValue ? value.Discussion : value.Discussion_Old)
                 )
             );

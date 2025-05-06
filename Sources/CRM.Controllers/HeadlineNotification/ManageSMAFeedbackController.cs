@@ -7,6 +7,7 @@ using CRM.Resources;
 using CRM.Services;
 using CRM.Services.ExportExcel;
 using CRM.Services.Interfaces;
+using Fanex.NAP.Client;
 using Microsoft.AspNetCore.Mvc;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 
@@ -16,6 +17,7 @@ namespace CRM.Controllers.HeadlineNotification
     public class ManageSmaFeedbackController(
         IManageSmaFeedbackService manageSmaFeedbackService,
         IPermissionService permissionService,
+        INapSession napSession,
         ISettingService settingService,
         IExportExcelService excelService) : BaseController
     {
@@ -41,6 +43,8 @@ namespace CRM.Controllers.HeadlineNotification
         [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> EditSmaFeedback([FromBody] EditSmaFeedback param)
         {
+            param.UserID = napSession.UserId;
+            param.IP = ClientIP;
             var commandResult = await manageSmaFeedbackService.EditSmaFeedbackAsync(param);
             if (commandResult.IsSuccessful)
             {

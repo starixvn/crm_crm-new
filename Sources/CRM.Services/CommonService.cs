@@ -118,7 +118,8 @@ public class CommonService(
     {
         var command = new WriteLogSPCommand
         {
-            UserID = param.CustID,
+            UserID = param.UserID,
+            IP = param.IP,
             CustID = param.CustID,
             ActionID = param.ActionID,
             OldValues = param.OldValues,

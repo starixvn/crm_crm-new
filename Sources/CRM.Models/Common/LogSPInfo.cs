@@ -6,6 +6,8 @@
 
         public int CustID { get; set; }
 
+        public string IP { get; set; }
+
         public int ActionID { get; set; }
 
         public string OldValues { get; set; }

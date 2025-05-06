@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using AutoFixture;
 using CRM.Constants;
@@ -8,6 +9,8 @@ using CRM.Models.ManageSmaFeedback;
 using CRM.Services;
 using CRM.Services.ExportExcel;
 using CRM.Services.Interfaces;
+using Fanex.NAP.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
@@ -20,6 +23,7 @@ namespace CRM.Controllers.UnitTests
         private IExportExcelService excelService;
         private IPermissionService permissionService;
         private ISettingService settingService;
+        private INapSession napSession;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -50,6 +54,14 @@ namespace CRM.Controllers.UnitTests
         {
             // Arrange
             var controller = GetController();
+            var clientIP = new DefaultHttpContext
+            {
+                Connection =
+                {
+                    RemoteIpAddress = new IPAddress(1)
+                }
+            };
+            controller.ControllerContext.HttpContext = clientIP;
             var param = new EditSmaFeedback
             {
                 CustID = 1,
@@ -100,10 +112,12 @@ namespace CRM.Controllers.UnitTests
             excelService = Substitute.For<IExportExcelService>();
             permissionService = Substitute.For<IPermissionService>();
             settingService = Substitute.For<ISettingService>();
-            
+            napSession = Substitute.For<INapSession>();
+
             return new ManageSmaFeedbackController(
                 manageSmaFeedbackService,
                 permissionService,
+                napSession,
                 settingService,
                 excelService
             );

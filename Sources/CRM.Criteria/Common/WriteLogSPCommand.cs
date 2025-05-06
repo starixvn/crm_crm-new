@@ -7,6 +7,8 @@ namespace CRM.Criteria.Common
     {
         public int UserID { get; set; }
 
+        public string IP { get; set; }
+
         public int CustID { get; set; }
 
         public int ActionID { get; set; }
