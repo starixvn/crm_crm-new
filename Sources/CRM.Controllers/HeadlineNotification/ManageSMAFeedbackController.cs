@@ -1,0 +1,69 @@
+﻿using System.Linq;
+using System.Threading.Tasks;
+using CRM.Constants;
+using CRM.Filters;
+using CRM.Models.ManageSmaFeedback;
+using CRM.Resources;
+using CRM.Services;
+using CRM.Services.ExportExcel;
+using CRM.Services.Interfaces;
+using Fanex.NAP.Client;
+using Microsoft.AspNetCore.Mvc;
+using static Fanex.NAP.Client.Helpers.Business.Constant;
+
+namespace CRM.Controllers.HeadlineNotification
+{
+    [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Read)]
+    public class ManageSmaFeedbackController(
+        IManageSmaFeedbackService manageSmaFeedbackService,
+        IPermissionService permissionService,
+        INapSession napSession,
+        ISettingService settingService,
+        IExportExcelService excelService) : BaseController
+    {
+        [HttpGet]
+        public async Task<IActionResult> GetReviewStatusSetting()
+        {
+            var reviewStatus = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.ReviewStatus, SettingConstants.Active);
+            return Json(reviewStatus.OrderBy(item => item.Id));
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
+        public async Task<IActionResult> GetSmaFeedback([FromBody] GetSmaFeedbackInfo param)
+        {
+            param.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            param.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+
+            var smaFeedbackInfos = await manageSmaFeedbackService.GetSmaFeedbackAsync(param);
+            return Json(new { totalItems = param.TotalRows, data = smaFeedbackInfos });
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.ManageSMAFeedback, Policy = Policy.Host)]
+        public async Task<IActionResult> EditSmaFeedback([FromBody] EditSmaFeedback param)
+        {
+            param.UserID = napSession.UserId;
+            param.IP = ClientIP;
+            var commandResult = await manageSmaFeedbackService.EditSmaFeedbackAsync(param);
+            if (commandResult.IsSuccessful)
+            {
+                await manageSmaFeedbackService.WriteLogSmaFeedbackAsync(param);
+            }
+            return Json(commandResult);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
+        public async Task<IActionResult> ExportExcel([FromBody] GetSmaFeedbackInfo param)
+        {
+            param.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            param.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+
+            var smaFeedbackInfos = await manageSmaFeedbackService.GetSmaFeedbackAsync(param);
+            var reportName = string.Format(ViewResources.ManageSMAFeedback_ExcelTile, param.FromDate.ToString("MM_dd_yyyy"), param.ToDate.ToString("MM_dd_yyyy"));
+            var bytes = excelService.ExportManageSMAFeedback(smaFeedbackInfos, reportName);
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
+    }
+}

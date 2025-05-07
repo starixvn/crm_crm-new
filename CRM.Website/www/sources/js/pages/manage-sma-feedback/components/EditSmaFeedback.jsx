@@ -1,0 +1,153 @@
+import React, { Component } from 'react';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Formik } from 'formik';
+import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
+import LangHelper from '@jsroot/common/langHelper';
+import ResponseMessage from '@jsroot/components/ResponseMessage';
+import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+
+export class EditSmaFeedback extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            editResult: null
+        };
+    }
+
+    validateFormik = values => {
+        const errors = {};
+        if (values.discussion.length > 4000) {
+            errors.discussion = LangHelper.getResource('Maximum 4000 characters');
+        }
+
+        return errors;
+    };
+
+    getParams = () => {
+        const { reviewStatusID, discussion, functionID, createdDate, custID, comment } = this.formik.values;
+        const reviewStatusID_Old = this.props.data.reviewStatusID;
+        const discussion_Old = this.props.data.discussion;
+        return {
+            reviewStatusID: parseInt(reviewStatusID, 10),
+            reviewStatusID_Old: parseInt(reviewStatusID_Old, 10),
+            discussion, discussion_Old, functionID, createdDate, custID, comment
+        };
+    };
+
+    handleSubmit = async () => {
+        this.formik.setSubmitting(true);
+
+        const params = this.getParams();
+        await this.props.editSmaFeedback(params).then(response => {
+            if (response.isSuccessful) {
+                this.setState({ editResult: response });
+                setTimeout(() => {
+                    this.props.onClose(true);
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
+    };
+
+    renderForm = ({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleSubmit,
+        setFieldValue
+    }) => {
+        const { editResult } = this.state;
+        return (
+            <Form noValidate onSubmit={handleSubmit}>
+                <Modal.Body>
+                    <FormikErrorMessage isSubmitting={this.state.isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    {
+                        editResult &&
+                        <ResponseMessage isSuccessful={editResult.isSuccessful}
+                            message={editResult.message || LangHelper.getResource('UpdateSuccessfully')}
+                        />
+                    }
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="3" htmlFor="review-status" className='bold'>{LangHelper.getResource('ReviewStatus')}</Form.Label>
+                        <Col sm="5" md="5">
+                            <Form.Control as="select" size="sm"
+                                column sm="3" md="3"
+                                name="reviewStatusID" id="reviewStatusID"
+                                value={values.reviewStatusID}
+                                onChange={handleChange}
+                            >
+                                {
+                                    this.props.reviewStatusSetting.map(item =>
+                                    (<option key={item.id} value={item.id}>
+                                        {item.name}
+                                    </option>)
+                                    )
+                                }
+                            </Form.Control>
+                        </Col>
+                    </Form.Group>
+                    <div className="text-editor">
+                        <Form.Label htmlFor="discussion" className='bold'>{LangHelper.getResource('DiscussionSolution')}</Form.Label>
+                        <Form.Control as="textarea"
+                            className="shadow-none form-control"
+                            name={'discussion'} id={'discussion' } rows="8"
+                            value={values.discussion}
+                            isInvalid={touched.discussion && errors.discussion}
+                            onChange={event => setFieldValue('discussion', event.target.value)}
+                        />
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button size="sm" type="submit" variant="primary" disabled={this.state.isSubmitting} id='submit'>Save</Button>
+                    <Button size="sm" type="button" variant="primary" onClick={() => this.props.onClose(false)}>
+                        {LangHelper.getResource('Cancel')}
+                    </Button>
+                </Modal.Footer>
+            </Form>
+        );
+    };
+
+    render() {
+        const { data, reviewStatusSetting } = this.props;
+        if(!data){
+            return null;
+        }
+        const { discussion, functionID, createdDate, custID, comment } = data;
+        const reviewStatusID = data.reviewStatusID ? data.reviewStatusID : reviewStatusSetting[0].id;
+        const initialValues = { reviewStatusID, discussion, functionID, createdDate, custID, comment };
+
+        return (
+            <Modal show className="edit-sma-feedback-modal-dialog" dialogAs={DraggableModalDialog}
+                backdrop="static" keyboard={false} size="md" centered
+                onHide={() => this.props.onClose(false)}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title as="div">{LangHelper.getResource('Update')}</Modal.Title>
+                </Modal.Header>
+                <Formik
+                    innerRef={el => this.formik = el}
+                    initialValues={initialValues}
+                    validate={this.validateFormik}
+                    onSubmit={this.handleSubmit}
+                >
+                    {this.renderForm}
+                </Formik>
+            </Modal>
+        );
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { reviewStatusSetting } = state;
+    return { reviewStatusSetting };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditSmaFeedback);

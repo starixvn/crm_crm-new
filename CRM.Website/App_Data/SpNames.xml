@@ -3,6 +3,7 @@
     <Function Name="System Setting">
         <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_SitePermissionSel" SpName="Acc_CRM_SitePermissionSel" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
     </Function>
     <Function Name="Job Setting Management">
         <Setting Key="Acc_CRM_ConfigAutoFeedback_ServiceSel" SpName="Acc_CRM_ConfigAutoFeedback_ServiceSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -354,6 +355,10 @@
         <Setting Key="Acc_CRM_PersonalMessageDel" SpName="Acc_CRM_PersonalMessageDel" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="Acc_CRM_PersonalMessageCheck" SpName="Acc_CRM_PersonalMessageCheck" DbName="DBACC.bodb02.wsv_nap" />
     </Function>
+    <Function Name="ManageSMAFeedback">
+        <Setting Key="Acc_CRM_ManageSMAFeedback" SpName="Acc_CRM_ManageSMAFeedback" DbName="DBBOT.bodb_Chatbot.wsv_nap" />
+        <Setting Key="Acc_CRM_SMAFeedbackInfoUpd" SpName="Acc_CRM_SMAFeedbackInfoUpd" DbName="DBBOT.bodb_Chatbot.wsv_nap" />
+    </Function>
     <Function Name="Announcement">
         <Setting Key="Acc_CRM_ChatBot_Announcement_Sel" SpName="Acc_CRM_ChatBot_Announcement_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_ChatBot_AnnouncementNotificationTemplate_Sel" SpName="Acc_CRM_ChatBot_AnnouncementNotificationTemplate_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -384,5 +389,8 @@
         <Setting Key="MNC_Notification_AdmUpdNotiSts" SpName="MNC_Notification_AdmUpdNotiSts" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="MNC_Notification_AdmUpdNotiReason" SpName="MNC_Notification_AdmUpdNotiReason" DbName="DBCRM.MessageNotification.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_ReasonSettingSel" SpName="Acc_CRM_ReasonSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+    </Function>
+    <Function Name="WriteLog">
+      <Setting Key="WriteLog_UserLog_crmUserLog_RunSP" SpName="WriteLog_UserLog_crmUserLog_RunSP" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
 </Functions>

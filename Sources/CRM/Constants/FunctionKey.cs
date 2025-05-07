@@ -12,6 +12,7 @@ public static class FunctionKey
     public const string Announcement = "Announcement";
     public const string SMAPersonalMessage = "SMAPersonalMessage";
     public const string CustomerInfo = "CustomerInfo";
+    public const string ManageSMAFeedback = "ManageSMAFeedback";
 
     public const string SettlementIssuesReport = "SettlementIssuesReport";
     public const string CategoriesSummaryReport = "CategoriesSummaryReport";

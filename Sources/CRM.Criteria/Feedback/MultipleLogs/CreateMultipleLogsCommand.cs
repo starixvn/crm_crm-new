@@ -24,8 +24,8 @@ public class CreateMultipleLogsCommand : BaseNonQueryCommand
     [SpParam(SqlParamName = "resolutiondate")]
     public DateTime EndTime { get; set; }
 
-        [SpParam(AllowNull = true)]
-        public DateTime? FirstResponseTime { get; set; }
+    [SpParam(AllowNull = true)]
+    public DateTime? FirstResponseTime { get; set; }
 
     [SpParam(SqlParamName = "stationid")]
     public string ExtensionIds { get; set; }

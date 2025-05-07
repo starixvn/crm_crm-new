@@ -7,6 +7,7 @@ using CRM.Models.AdminTool.CategoryClassification;
 using CRM.Models.ChatTypeMapping;
 using CRM.Models.Feedback;
 using CRM.Models.InformHeadline;
+using CRM.Models.ManageSmaFeedback;
 using CRM.Models.NotificationCenter;
 using CRM.Models.PicAndHeadline;
 using CRM.Models.Report;
@@ -88,6 +89,8 @@ public interface IExportExcelService
     byte[] ExportCategoryClassification(IEnumerable<CategoryClassification> categoryClassifications);
 
     byte[] ExportSiteTicket(IEnumerable<AdmSiteTicket> siteTickets, string eventTime, string eventName);
+
+    byte[] ExportManageSMAFeedback(IEnumerable<SmaFeedbackInfo> smaFeedbackInfos, string titleExcel);
 }
 
 public class ExportExcelService(IWebHostEnvironment hostingEnvironment) : IExportExcelService
@@ -310,6 +313,14 @@ public class ExportExcelService(IWebHostEnvironment hostingEnvironment) : IExpor
         const string ExcelTemplatePath = "ExcelTemplates/SiteAffectedTicket.xlsx";
         var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
         var excel = new MncAffectedTicketExcel(templatePath, siteTickets, eventTime, eventName);
+        return excel.Export();
+    }
+
+    public byte[] ExportManageSMAFeedback(IEnumerable<SmaFeedbackInfo> smaFeedbackInfos, string titleExcel)
+    {
+        const string ExcelTemplatePath = "ExcelTemplates/ManageSMAFeedback.xlsx";
+        var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+        var excel = new ManageSmaFeedbackExcel(templatePath, smaFeedbackInfos, titleExcel);
         return excel.Export();
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using CRM.Criteria.Common;
 using CRM.Extensions;
 using CRM.Models;
@@ -38,7 +39,7 @@ public class CommonService(
     public IEnumerable<BaseModel> GetChatTypes() =>
         Enum.GetValues(typeof(ChatType)).Cast<ChatType>()
             .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDescription(type) });
-
+    
     public IEnumerable<BaseModel> GetMappingStatus() =>
         Enum.GetValues(typeof(MappingStatus)).Cast<MappingStatus>()
             .Select(type => new BaseModel { Id = (int)type, Name = EnumHelper.GetDescription(type) });
@@ -77,4 +78,53 @@ public class CommonService(
     public DateTime FirstDayOfMonth(DateTime dateTime) => new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime;
 
     public DateTime LastDayOfMonth(DateTime dateTime) => FirstDayOfMonth(dateTime).AddMonths(1).AddDays(-1);
+
+    public async Task<IEnumerable<SitePermissionModel>> GetSitePermission(short licenseeType, string sitePermission)
+    {
+        var criteria = new GetSitePermissionCriteria
+        {
+            LicenseeType = licenseeType,
+            SitePermission = sitePermission
+        };
+        return await baseService.GetDataAsync<SitePermissionModel>(criteria);
+    }
+
+    public async Task<string> GetSitePermissionXml(short licenseeType, string sitePermission)
+    {
+        var sitePermissions = await GetSitePermission(licenseeType, sitePermission);
+
+        if (sitePermissions == null)
+        {
+            return new XElement("ROOT").ToString();
+        }
+
+        var rootElement = new XElement("ROOT",
+            sitePermissions.Select(site =>
+                new XElement("r",
+                    new XAttribute("SiteID", site.SiteID),
+                    new XAttribute("SiteName", site.SiteName ?? ""),
+                    new XAttribute("IsLicensee", site.IsLicensee),
+                    new XAttribute("IsActive", site.IsActive),
+                    new XAttribute("SiteLabel", site.SiteLabel ?? ""),
+                    new XAttribute("SiteOffer", site.SiteOffer)
+                )
+            )
+        );
+
+        return rootElement.ToString();
+    }
+
+    public async Task<CommandResult> WriteLogSPAsync(LogSPInfo param)
+    {
+        var command = new WriteLogSPCommand
+        {
+            UserID = param.UserID,
+            IP = param.IP,
+            CustID = param.CustID,
+            ActionID = param.ActionID,
+            OldValues = param.OldValues,
+            NewValues = param.NewValues
+        };
+        return await baseService.ExecuteNonQueryAsync(command);
+    }
 }

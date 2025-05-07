@@ -961,6 +961,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage SMA Feedback.
+        /// </summary>
+        public static string ManageSMAFeedback {
+            get {
+                return ResourceManager.GetString("ManageSMAFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageSMAFeedback_{0}_{1}.
+        /// </summary>
+        public static string ManageSMAFeedback_ExcelTile {
+            get {
+                return ResourceManager.GetString("ManageSMAFeedback_ExcelTile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Master.
         /// </summary>
         public static string Master {

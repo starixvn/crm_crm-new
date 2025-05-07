@@ -56,6 +56,9 @@
         <None Update="ExcelTemplates\RatingFeedbackStatistic.xlsx">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="ExcelTemplates\ManageSMAFeedback.xlsx">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Update="ExcelTemplates\RedemptionStatisticsDetail.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>

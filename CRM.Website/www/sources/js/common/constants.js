@@ -99,6 +99,7 @@ export const FunctionKey = {
     Remarks: 'Remarks',
     CategoryClassification: 'CategoryClassification',
     NotificationCenter: 'NotificationCenter',
+    ManageSMAFeedback: 'ManageSMAFeedback'
 };
 
 export const BorderStyle = {

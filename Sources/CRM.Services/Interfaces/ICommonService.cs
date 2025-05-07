@@ -25,6 +25,10 @@ public interface ICommonService
 
     Task<IEnumerable<BaseModel>> GetHeadlineAsync(GetHeadlinesCriteria criteria);
 
+    Task<string> GetSitePermissionXml(short licenseeType, string sitePermission);
+
+    Task<CommandResult> WriteLogSPAsync(LogSPInfo param);
+
     DateTime ConvertToClientDateTime(DateTime date);
 
     DateTime ConvertToServerDateTime(DateTime date);
