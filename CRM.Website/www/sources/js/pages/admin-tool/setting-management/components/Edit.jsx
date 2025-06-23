@@ -21,8 +21,8 @@ export class Edit extends Component {
         };
     }
 
-    componentDidMount(){
-        this.props.sourceMapping.length > 0 &&  this.handleOptionMapping();
+    componentDidMount() {
+        this.props.sourceMapping.length > 0 && this.handleOptionMapping();
     }
 
     handleKeyDownFunc = event => {
@@ -32,10 +32,10 @@ export class Edit extends Component {
         }
     }
 
-    handleOptionMapping(){
-        const {sourceMapping, editPopup} = this.props;
+    handleOptionMapping() {
+        const { sourceMapping, editPopup } = this.props;
         let selectedMapping = [];
-        if(editPopup.data.settingSource !== null){
+        if (editPopup.data.settingSource !== null) {
             selectedMapping = editPopup.data.settingSource.split(', ').map(tool => {
                 return {
                     id: tool,
@@ -47,23 +47,23 @@ export class Edit extends Component {
 
         const optionMappings = sourceMapping.map(tool => {
             return {
-                id: tool.source,
-                name: tool.source,
+                id: tool.source.trim(),
+                name: tool.source.trim(),
                 checked: false
             };
         });
         const concatenated = [];
         concatenated.push(...selectedMapping);
         concatenated.push(...optionMappings);
-        this.setState({optionMappings: concatenated, sourceMappings: editPopup.data.settingSource});
+        this.setState({ optionMappings: concatenated, sourceMappings: editPopup.data.settingSource });
     }
 
-    validateFormik = values =>{
+    validateFormik = values => {
         const errors = {};
-        if(values.settingValue === ''){
+        if (values.settingValue === '') {
             errors.settingValue = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue'));
         }
-        if(values.settingName === ''){
+        if (values.settingName === '') {
             errors.settingName = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingName'));
         }
         return errors;
@@ -75,7 +75,7 @@ export class Edit extends Component {
             settingName: values.settingName,
             extraInfo: values.extraInfo,
             settingValue: values.settingValue,
-            settingSource: this.state.sourceMappings === ''? null : this.state.sourceMappings
+            settingSource: this.state.sourceMappings === '' ? null : this.state.sourceMappings
         };
         setSubmitting(true);
         this.props.editNewSetting(params).then(() => {
@@ -100,7 +100,7 @@ export class Edit extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
                     <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.editNewSettingResult &&
@@ -121,7 +121,7 @@ export class Edit extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="3"  sm="4" htmlFor="extraInfo" >
+                        <Form.Label column md="3" sm="4" htmlFor="extraInfo" >
                             {LangHelper.getResource('ExtraInfo')}
                         </Form.Label>
                         <Col sm="8" md="9">
@@ -132,7 +132,7 @@ export class Edit extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="3"  sm="4" htmlFor="settingValue" className="required">
+                        <Form.Label column md="3" sm="4" htmlFor="settingValue" className="required">
                             {LangHelper.getResource('SettingValue')}
                         </Form.Label>
                         <Col sm="8" md="9">
@@ -150,13 +150,13 @@ export class Edit extends Component {
                             </Form.Label>
                             <Col sm="8" md="9">
                                 <MultipleSelect
-                                        keyField='id' valueField='name'
-                                        hasSearchBox isNAOption
-                                        dataSource={this.state.optionMappings}
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                           this.setState({sourceMappings: selectedItemsKey});
-                                        }}
-                                    />
+                                    keyField='id' valueField='name'
+                                    hasSearchBox isNAOption
+                                    dataSource={this.state.optionMappings}
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        this.setState({ sourceMappings: selectedItemsKey });
+                                    }}
+                                />
                             </Col>
                         </Form.Group>
                     }
@@ -174,8 +174,8 @@ export class Edit extends Component {
     };
 
     render() {
-        const {editPopup} = this.props;
-        if(!editPopup || editPopup.data === null){
+        const { editPopup } = this.props;
+        if (!editPopup || editPopup.data === null) {
             return null;
         }
 

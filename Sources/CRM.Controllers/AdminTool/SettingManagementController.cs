@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.AdminTool;
 
+using System.Linq;
 using System.Threading.Tasks;
 using Constants;
 using CRM.Criteria.AdminTool.SettingManagement;
@@ -58,12 +59,11 @@ public class SettingManagementController(
         var settingByTypes = await settingService.GetSettingByTypes(settingType.SettingName);
         return Json(settingByTypes);
     }
-        
 
     [HttpPost]
     public async Task<IActionResult> GetSourceMappingByType([FromBody] SettingTypeViewModel settingType)
     {
-        var mappingByTypes = await settingService.GetSettingMappingAsync(settingType.SettingName);            
+        var mappingByTypes = await settingService.GetSettingMappingAsync(settingType.SettingName);
         return Json(mappingByTypes);
     }
 
@@ -85,7 +85,6 @@ public class SettingManagementController(
         command.IP = ClientIP;
         var commandResult = await baseService.ExecuteNonQueryAsync(command);
         return Json(commandResult);
-
     }
 
     [HttpPost]
@@ -95,7 +94,8 @@ public class SettingManagementController(
         var criteria = new EditSourceSettingMappingCriteria
         {
             SettingID = command.SettingId,
-            SettingSource = command.SettingSource,
+            SettingSource = NormalizeCommaSeparatedString(command.SettingSource),
+            UserId = napSession.UserId,
             IP = command.IP
         };
 
@@ -107,6 +107,17 @@ public class SettingManagementController(
         _ = await baseService.ExecuteNonQueryAsync(criteria);
 
         return Json(commandResult);
+    }
+
+    private static string NormalizeCommaSeparatedString(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return string.Empty;
+
+        return string.Join(",", input
+            .Split(',')
+            .Select(s => s.Trim())
+            .Where(s => !string.IsNullOrEmpty(s)));
     }
 
     [HttpPost]
