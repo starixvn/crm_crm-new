@@ -111,13 +111,12 @@ public class SettingManagementController(
 
     private static string NormalizeCommaSeparatedString(string input)
     {
-        if (string.IsNullOrWhiteSpace(input))
-            return string.Empty;
-
-        return string.Join(",", input
-            .Split(',')
-            .Select(s => s.Trim())
-            .Where(s => !string.IsNullOrEmpty(s)));
+        return string.IsNullOrWhiteSpace(input)
+            ? string.Empty
+            : string.Join(",", input
+                .Split(',')
+                .Select(s => s.Trim())
+                .Where(s => !string.IsNullOrEmpty(s)));
     }
 
     [HttpPost]
