@@ -25,7 +25,9 @@ public class ManageSmaFeedbackService(IBaseService baseService, ICommonService c
             ListReviewStatusIDs = param.ListReviewStatusIDs,
             TestOnly = param.TestOnly,
             Username = param.Username,
-            SitePermission = sitePermissionXml
+            SitePermission = sitePermissionXml,
+            ListRate = param.Rating,
+            IsGetAllFBs = param.AllFeedback
         };
         var smaFeedbackInfos = await baseService.GetDataAsync<SmaFeedbackInfo>(criteria);
         param.TotalRows = criteria.TotalRows;

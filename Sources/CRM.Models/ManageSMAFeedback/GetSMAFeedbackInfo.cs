@@ -27,5 +27,9 @@ namespace CRM.Models.ManageSmaFeedback
         public int TotalRows { get; set; }
 
         public IEnumerable<SettingRelation> ReviewStatusSettings { get; set; } = new List<SettingRelation>();
+
+        public string Rating { get; set; }
+
+        public bool AllFeedback { get; set; }
     }
 }

@@ -25,5 +25,7 @@ namespace CRM.Models.ManageSmaFeedback
         public string Comment { get; set; }
 
         public string Discussion { get; set; }
+
+        public string RateInfo { get; set; }
     }
 }
