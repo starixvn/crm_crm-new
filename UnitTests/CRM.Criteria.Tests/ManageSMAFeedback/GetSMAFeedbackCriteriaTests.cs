@@ -44,6 +44,8 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             var pageSize = 10;
             var pageIndex = 1;
             var totalRows = 100;
+            var rating = "5,4,3,2,1";
+            var allFeedback = true;
 
             // Act
             criteria.FromDate = fromDate;
@@ -53,6 +55,8 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             criteria.ItemsPerPage = pageSize;
             criteria.PageIndex = pageIndex;
             criteria.TotalRows = totalRows;
+            criteria.ListRate = rating;
+            criteria.IsGetAllFBs = allFeedback;
 
             // Assert
             Assert.Equal(fromDate, criteria.FromDate);
@@ -62,6 +66,8 @@ namespace CRM.Criteria.Tests.ManageSMAFeedback
             Assert.Equal(pageSize, criteria.ItemsPerPage);
             Assert.Equal(pageIndex, criteria.PageIndex);
             Assert.Equal(totalRows, criteria.TotalRows);
+            Assert.Equal(rating, criteria.ListRate);
+            Assert.Equal(allFeedback, criteria.IsGetAllFBs);
         }
     }
 }
