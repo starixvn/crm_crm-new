@@ -233,9 +233,8 @@ export class Filter extends Component {
               onChange={(e) => this.handleChange("username", e.target.value)}
             />
           </Form.Group>
-          <Form.Group>
+          <div className="margin-top-26">
             <Form.Check
-              className="is-test-only"
               id="all-feedback"
               type="checkbox"
               label={LangHelper.getResource("AllFeedback")}
@@ -245,10 +244,9 @@ export class Filter extends Component {
                 this.handleChange("allFeedback", e.target.checked)
               }
             />
-          </Form.Group>
-          <Form.Group>
+          </div>
+          <div className="margin-top-26">
             <Form.Check
-              className="is-test-only"
               id="is-test-only"
               type="checkbox"
               label={LangHelper.getResource("FilterByTestData")}
@@ -258,14 +256,12 @@ export class Filter extends Component {
                 this.handleChange("isTestOnly", e.target.checked)
               }
             />
-          </Form.Group>
-          <Form.Group>
-            <div className="btn-submit">
-              <Button variant="primary" size="sm" type="submit">
-                {LangHelper.getResource("Submit")}
-              </Button>
-            </div>
-          </Form.Group>
+          </div>
+          <div className="margin-top-26">
+            <Button variant="primary" size="sm" type="submit">
+              {LangHelper.getResource("Submit")}
+            </Button>
+          </div>
         </Form.Row>
       </Form>
     );
