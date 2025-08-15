@@ -3,7 +3,7 @@
     <Function Name="System Setting">
         <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_SitePermissionSel" SpName="Acc_CRM_SitePermissionSel_xtest" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_SitePermissionSel" SpName="Acc_CRM_SitePermissionSel" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
     </Function>
     <Function Name="Job Setting Management">
         <Setting Key="Acc_CRM_ConfigAutoFeedback_ServiceSel" SpName="Acc_CRM_ConfigAutoFeedback_ServiceSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -73,7 +73,7 @@
         </Setting>
         <Setting Key="Acc_CRM_MainCategoryList" SpName="Acc_CRM_MainCategoryList" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_SubCategoryList" SpName="Acc_CRM_SubCategoryList" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_SettingGetRelationBySettingName" SpName="Acc_CRM_SettingGetRelationBySettingName_xtest" DbName="DBCRM.bodb_CRM.wsv_nap">
+        <Setting Key="Acc_CRM_SettingGetRelationBySettingName" SpName="Acc_CRM_SettingGetRelationBySettingName" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="SettingId" ObjectProperty="Id" />
             <Mapping DataField="SettingValue" ObjectProperty="Value" />
             <Mapping DataField="IsSub" ObjectProperty="IsChild" />
@@ -139,9 +139,9 @@
         <Setting Key="Acc_CRM_NewRpt_DailyStatisticsDetail" SpName="Acc_CRM_NewRpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsPeriod" SpName="Acc_CRM_Rpt_FeedbackStatisticsPeriod" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatistics" SpName="Acc_CRM_Rpt_FeedbackStatistics_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Rpt_RatingFeedbackStatistic" SpName="Acc_CRM_Rpt_RatingFeedbackStatistic_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticDetails" SpName="Acc_CRM_Rpt_FeedbackStatisticDetails_xtest" DbName="DBCRM.bodb_CRM.wsv_nap">
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatistics" SpName="Acc_CRM_Rpt_FeedbackStatistics" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_Rpt_RatingFeedbackStatistic" SpName="Acc_CRM_Rpt_RatingFeedbackStatistic" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticDetails" SpName="Acc_CRM_Rpt_FeedbackStatisticDetails" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="MainCategory" ObjectProperty="SettingId" />
             <Mapping DataField="SubCategory" ObjectProperty="SubSettingId" />
         </Setting>
@@ -356,8 +356,8 @@
         <Setting Key="Acc_CRM_PersonalMessageCheck" SpName="Acc_CRM_PersonalMessageCheck" DbName="DBACC.bodb02.wsv_nap" />
     </Function>
     <Function Name="ManageSMAFeedback">
-        <Setting Key="Acc_CRM_ManageSMAFeedback" SpName="Acc_CRM_ManageSMAFeedback_xtest" DbName="DBBOT.bodb_Chatbot.wsv_nap" />
-        <Setting Key="Acc_CRM_SMAFeedbackInfoUpd" SpName="Acc_CRM_SMAFeedbackInfoUpd_xtest" DbName="DBBOT.bodb_Chatbot.wsv_nap" />
+        <Setting Key="Acc_CRM_ManageSMAFeedback" SpName="Acc_CRM_ManageSMAFeedback" DbName="DBBOT.bodb_Chatbot.wsv_nap" />
+        <Setting Key="Acc_CRM_SMAFeedbackInfoUpd" SpName="Acc_CRM_SMAFeedbackInfoUpd" DbName="DBBOT.bodb_Chatbot.wsv_nap" />
     </Function>
     <Function Name="Announcement">
         <Setting Key="Acc_CRM_ChatBot_Announcement_Sel" SpName="Acc_CRM_ChatBot_Announcement_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
@@ -392,5 +392,5 @@
     </Function>
     <Function Name="WriteLog">
         <Setting Key="WriteLog_UserLog_crmUserLog_RunSP" SpName="WriteLog_UserLog_crmUserLog_RunSP" DbName="DBCRM.bodb_CRM.wsv_nap" />
-    </Function>  
+    </Function>
 </Functions>
