@@ -27,6 +27,10 @@ public class GetSmaFeedbackCriteria : CriteriaBase
 
     public string SitePermission { get; set; }
 
+    public string ListRate { get; set; }
+
+    public bool IsGetAllFBs { get; set; }
+
     public override string GetSettingKey() => "Acc_CRM_ManageSMAFeedback";
 
     public override bool IsValid() => true;

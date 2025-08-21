@@ -12,7 +12,7 @@ public class ManageSmaFeedbackExcel(string templatePath, IEnumerable<SmaFeedback
 {
     private const byte RowStartHeader = 4;
     private const byte RowStartBody = 5;
-    private const byte TotalCols = 8;
+    private const byte TotalCols = 9;
 
     private int rowIndex = RowStartBody;
 
@@ -48,6 +48,7 @@ public class ManageSmaFeedbackExcel(string templatePath, IEnumerable<SmaFeedback
         worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Site;
         worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.FuncName;
         worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.ReviewStatus;
+        worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.RateInfo;
         worksheet.Cells[rowIndex, colIndex++].Value = smaFeedbackInfo.Comment;
         worksheet.Cells[rowIndex, colIndex].Value = smaFeedbackInfo.Discussion;
     }
@@ -63,7 +64,7 @@ public class ManageSmaFeedbackExcel(string templatePath, IEnumerable<SmaFeedback
         StyleDefault(worksheet);
         SetBackgroundColor(worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalCols], HeaderTitleColor);
         worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-        for (var index = 3; index <= 6; index++)
+        for (var index = 3; index <= 7; index++)
         {
             worksheet.Column(index).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
@@ -77,8 +78,8 @@ public class ManageSmaFeedbackExcel(string templatePath, IEnumerable<SmaFeedback
         const int RowHeight = 15;
         const int colCreatedDate = 1;
         const int colFunc = 5;
-        const int colComment = 7;
-        const int colDiscussion = 8;
+        const int colComment = 8;
+        const int colDiscussion = 9;
 
         worksheet.DefaultColWidth = WidthNormal;
         worksheet.Cells.AutoFitColumns();

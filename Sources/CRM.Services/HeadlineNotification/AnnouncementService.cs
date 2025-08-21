@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CRM.Criteria.Announcement;
+using CRM.Models;
 using CRM.Models.Announcement;
 using CRM.Services.Interfaces;
 
 namespace CRM.Services.HeadlineNotification;
 
-using Models;
-
-public class AnnouncementService(
-    IBaseService baseService,
-    ICommonService commonService)
-    : IAnnouncementService
+public class AnnouncementService(IBaseService baseService, ICommonService commonService) : IAnnouncementService
 {
-    private readonly string FormatMMMddyyyy = "MMM dd, yyyy";
-    private readonly string Formathhmmsstt = "hh:mm:ss tt";
-
+    private const string FormatMMMddyyyy = "MMM dd, yyyy";
+    private const string Formathhmmsstt = "hh:mm:ss tt";
 
     public async Task<IEnumerable<AnnouncementInfo>> GetAnnouncementAsync(GetAnnouncementCriteria criteria)
     {
@@ -26,7 +21,7 @@ public class AnnouncementService(
             criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate.Value);
         }
         var announcements = await baseService.GetDataAsync<AnnouncementInfo>(criteria);
-        foreach(var announcement in announcements)
+        foreach (var announcement in announcements)
         {
             if (announcement.SendDate != null)
             {
@@ -89,7 +84,7 @@ public class AnnouncementService(
         return await baseService.FetchMultipleAsync<NotificationTemplate, ContentLanguage>(criteria);
     }
 
-    public async Task<(IEnumerable<AnnouncementDetail> , CommandResult)> ValidateAnnouncementAsync(ValidateAnnouncementCommand command)
+    public async Task<(IEnumerable<AnnouncementDetail>, CommandResult)> ValidateAnnouncementAsync(ValidateAnnouncementCommand command)
     {
         var sendDate = command.SendImmediately ? command.SendDate : commonService.ConvertToServerDateTime((DateTime)command.SendDate);
         IEnumerable<AnnouncementDetail> announcements = new List<AnnouncementDetail>();

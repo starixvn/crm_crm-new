@@ -22,7 +22,7 @@ public class IssueStatisticsController(
     public async Task<ActionResult> GetAllSettings()
     {
         var mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
-        var subCategories = await settingService.GetSubCategoryAsync(null, SettingConstants.Active);
+        var subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
 
         return Json(new { mainCategories, subCategories });
     }
