@@ -8,7 +8,7 @@
 @inject ICommonService commonService
 @inject INapSession napSession
 @{
-    var currentClientTime = commonService.ConvertToClientDateTime(DateTime.Now);
+    var currentClientTime = commonService.ConvertToClientDateTime(DateTimeOffset.Now.DateTime);
     var currentUsername = napSession.UserName;
 }
 <!DOCTYPE html>
