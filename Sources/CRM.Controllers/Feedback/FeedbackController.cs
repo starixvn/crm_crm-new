@@ -26,6 +26,8 @@ using Services.Interfaces;
 using static Fanex.NAP.Client.Helpers.Business.Constant;
 using FeedbackStatus = Enum.FeedbackStatus;
 
+#pragma warning disable S107
+
 public class FeedbackController(
     INapSession napSession,
     ISettingService settingService,
@@ -35,6 +37,7 @@ public class FeedbackController(
     IPermissionService permissionService,
     ICustomerService customerService,
     IBaseService baseService)
+#pragma warning restore S107
     : BaseController
 {
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
