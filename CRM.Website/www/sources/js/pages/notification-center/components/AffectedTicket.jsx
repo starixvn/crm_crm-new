@@ -76,7 +76,7 @@ export default class AffectedTicket extends Component {
 
         return (
             <HeaderRow>
-                <HeaderCell colWidth={5}>{LangHelper.getResource('#')}</HeaderCell>
+                <HeaderCell colWidth={8}>{LangHelper.getResource('#')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Site')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('BetID')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource(usernameColumn)}</HeaderCell>
